@@ -1,0 +1,5 @@
+# Ignore prototypes and build files.
+prototype
+build
+codebase
+documentation
