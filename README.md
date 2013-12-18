@@ -31,7 +31,7 @@ Compiling and Execution
 -----------------------
 
 ```sh
-git clone [git-repo-url] clockwork
+git clone https://github.com/supranove/clockwork.git
 cd clockwork/codebase
 qmake
 make
