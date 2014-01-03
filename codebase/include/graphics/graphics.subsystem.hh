@@ -55,6 +55,22 @@ public:
 	 * Raise the 'updateComplete' signal.
 	 */
 	void signalUpdateComplete();
+	/**
+	 * Returns true if scissor testing is enabled, false otherwise.
+	 */
+	bool isScissorTestEnabled() const;
+	/**
+	 * Returns true if alpha testing is enabled, false otherwise.
+	 */
+	bool isAlphaTestEnabled() const;
+	/**
+	 * Returns true if stencil testing is enabled, false otherwise.
+	 */
+	bool isStencilTestEnabled() const;
+	/**
+	 * Returns true if depth testing is enabled, false otherwise.
+	 */
+	bool isDepthTestEnabled() const;
 private:
 	/**
 	 * All subsystems are singletons. As such the default constructor is hidden,

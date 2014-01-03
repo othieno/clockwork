@@ -30,6 +30,7 @@
 
 
 clockwork::graphics::GraphicsSubsystem::GraphicsSubsystem() :
+_framebuffer(800, 600),
 _imageFilterType(clockwork::graphics::ImageFilterFactory::getUniqueInstance().getDefaultKey())
 {}
 
@@ -66,4 +67,36 @@ void
 clockwork::graphics::GraphicsSubsystem::signalUpdateComplete()
 {
 	emit updateComplete();
+}
+
+
+bool
+clockwork::graphics::GraphicsSubsystem::isScissorTestEnabled() const
+{
+	std::cout << "clockwork::graphics::GraphicsSubsystem::isScissorTestEnabled" << std::endl;
+	return false;
+}
+
+
+bool
+clockwork::graphics::GraphicsSubsystem::isAlphaTestEnabled() const
+{
+	std::cout << "clockwork::graphics::GraphicsSubsystem::isAlphaTestEnabled" << std::endl;
+	return false;
+}
+
+
+bool
+clockwork::graphics::GraphicsSubsystem::isStencilTestEnabled() const
+{
+	std::cout << "clockwork::graphics::GraphicsSubsystem::isStencilTestEnabled" << std::endl;
+	return false;
+}
+
+
+bool
+clockwork::graphics::GraphicsSubsystem::isDepthTestEnabled() const
+{
+	std::cout << "clockwork::graphics::GraphicsSubsystem::isDepthTestEnabled" << std::endl;
+	return false;
 }

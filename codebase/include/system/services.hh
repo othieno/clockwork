@@ -23,6 +23,7 @@
  */
 #pragma once
 
+#include <cstdint>
 #include "error.hh"
 #include "execution.context.hh"
 #include "concurrency.subsystem.hh"
@@ -65,7 +66,7 @@ public:
 	 * Block the current thread execution for a given duration.
 	 * @param milliseconds the number of milliseconds to block thread execution.
 	 */
-	static void sleep(clockwork::s64 milliseconds);
+	static void sleep(const int64_t& milliseconds);
 private:
 	/**
 	 * Create an execution context from command line arguments.

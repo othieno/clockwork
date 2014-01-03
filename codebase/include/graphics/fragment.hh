@@ -23,19 +23,52 @@
  */
 #pragma once
 
-#include <cstdint>
+#include <string>
 
 
 namespace clockwork {
+namespace graphics {
 
 /**
- * A unique identifier.
+ * A fragment is the result of a renderer's per-vertex operation applied to a vertex.
+ * Primarily, a fragment should contain a vertex's 2D normalised device coordinates (or
+ * viewport coordinates), its depth value, its surface normal and a base color that will all
+ * be used to determine a color that will be written to the framebuffer.
  */
-using UID = uint64_t;
+class Fragment
+{
+public:
+	/**
+	 * The fragment's position in window coordinates, as well as its depth value.
+	 */
+	double x, y, z;
+	/**
+	 * The fragment's texture mapping coordinates.
+	 */
+	double u, v;
+	/**
+	 * The fragment's normal vector components.
+	 */
+	double i, j, k;
+	/**
+	 * The fragment's normalised color channels.
+	 */
+	double a, r, g, b;
+	/**
+	 * The fragment's stencil value.
+	 */
+	uint8_t stencil;
+	/**
+	 * The default constructor.
+	 */
+	Fragment();
+	/**
+	 * Convert the fragment data into string format.
+	 * @param fragment the fragment to convert.
+	 */
+	static std::string toString(const Fragment& fragment);
+private:
+};
 
-/**
- * A function to generate a new UID.
- */
-UID generateUID();
-
+} // namespace graphics
 } // namespace clockwork

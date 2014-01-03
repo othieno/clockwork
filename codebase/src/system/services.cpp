@@ -67,7 +67,7 @@ clockwork::system::Services::buildExecutionContext(const int& argc, const char**
 
 
 void
-clockwork::system::Services::sleep(clockwork::s64 ms)
+clockwork::system::Services::sleep(const int64_t& ms)
 {
 	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }

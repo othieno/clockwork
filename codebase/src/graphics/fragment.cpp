@@ -21,18 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#pragma once
-
-#include <cstdint>
+#include "fragment.hh"
 
 
-namespace clockwork {
+clockwork::graphics::Fragment::Fragment() :
+x(0), y(0), z(0),
+u(0), v(0),
+i(0), j(0), k(0),
+a(1), r(1), g(1), b(1)
+{}
 
-using s16 = int16_t;
-using s32 = int32_t;
-using s64 = int64_t;
-using u16 = uint16_t;
-using u32 = uint32_t;
-using u64 = uint64_t;
 
-} // namespace clockwork
+std::string
+clockwork::graphics::Fragment::toString(const clockwork::graphics::Fragment&)
+{
+	return "Implement clockwork::graphics::Fragment::toString";
+}

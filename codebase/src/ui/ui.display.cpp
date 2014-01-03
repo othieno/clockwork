@@ -30,6 +30,7 @@
 
 
 clockwork::ui::GUIDisplay::GUIDisplay(clockwork::ui::UserInterface& ui) :
+QWidget(&ui),
 _qPainter(),
 _qPen(Qt::yellow),
 _framebuffer(clockwork::system::Services::Graphics.getFramebuffer())
@@ -48,12 +49,21 @@ _framebuffer(clockwork::system::Services::Graphics.getFramebuffer())
 void
 clockwork::ui::GUIDisplay::paintEvent(QPaintEvent* const event)
 {
+	// Create a QImage from the framebuffer's data.
+	const QImage image
+	(
+		reinterpret_cast<const uchar*>(_framebuffer.getPixelBuffer()),
+		_framebuffer.getWidth(),
+		_framebuffer.getHeight(),
+		QImage::Format_ARGB32
+	);
+
 	// Begin painting this device.
 	_qPainter.begin(this);
 
 	// Draw the framebuffer.
 	auto& rect = event->rect();
-	_qPainter.drawImage(rect, _framebuffer);
+	_qPainter.drawImage(rect, image);
 
 	// Turn on text anti-aliasing and print debug information.
 /*
