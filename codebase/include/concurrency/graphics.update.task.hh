@@ -75,21 +75,6 @@ private:
 	const clockwork::Matrix4& _CMTM;
 };
 
-/**
- * A task to render a scene entity.
- */
-class RenderTask : public clockwork::concurrency::Task
-{
-public:
-	/**
-	 * The default constructor.
-	 */
-	RenderTask();
-	/**
-	 * @see clockwork::concurrency::Task::onRun.
-	 */
-	virtual void onRun() override final;
-};
 
 /**
  * A task to apply an image filter to the framebuffer.

@@ -21,48 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#pragma once
+#include "render.task.hh"
+#include "renderer.factory.hh"
 
 
-namespace clockwork {
-namespace graphics {
+clockwork::concurrency::RenderTask::RenderTask
+(
+	const clockwork::graphics::Renderer& renderer,
+	const clockwork::physics::RigidBody& body,
+	const clockwork::scene::Viewer& viewer
+) :
+Task(RENDER_TASK_PRIORITY),
+_renderer(renderer),
+_viewpoint(viewer.getPosition()),
+_viewport(viewer.getViewport()),
+_MODEL(body.getModelMatrix()),
+_VIEW(viewer.getViewMatrix()),
+_PROJECTION(viewer.getProjectionMatrix()),
+_mesh(body.getMesh()),
+_material(body.getMaterial())
+{}
 
 
-class Renderer
+void
+clockwork::concurrency::RenderTask::onRun()
 {
-public:
-	/**
-	 * Types of renderers.
-	 */
-	enum class Type
-	{
-		Point,
-		Wireframe,
-		Random,
-		Depth,
-		Normals,
-		Texture,
-		Constant,
-		Phong,
-		Cel,
-		Bump,
-		Deferred
-	};
-	/**
-	 * Return the renderer's type.
-	 */
-	const Renderer::Type& getType() const;
-protected:
-	/**
-	 * Instantiate a renderer with a given type.
-	 */
-	Renderer(const Renderer::Type& type);
-private:
-	/**
-	 * This renderer's type.
-	 */
-	const Renderer::Type _type;
-};
-
-} // namespace graphics
-} // namespace clockwork
+	_MODELVIEW = _VIEW * _MODEL;
+	_NORMAL = clockwork::Matrix4::transpose(clockwork::Matrix4::inverse(_MODELVIEW));
+	_VIEWPROJECTION = _PROJECTION * _VIEW;
+	_MODELVIEWPROJECTION = _VIEWPROJECTION * _MODEL;
+}

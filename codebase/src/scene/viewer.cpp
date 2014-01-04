@@ -33,13 +33,6 @@ _projectionType(clockwork::graphics::ProjectionFactory::getUniqueInstance().getD
 {}
 
 
-clockwork::graphics::Renderer*
-clockwork::scene::Viewer::getRenderer()
-{
-	return clockwork::graphics::RendererFactory::getUniqueInstance().get(_rendererType);
-}
-
-
 const clockwork::graphics::Renderer::Type&
 clockwork::scene::Viewer::getRendererType() const
 {
@@ -93,4 +86,11 @@ void
 clockwork::scene::Viewer::updateProjectionMatrix()
 {
 	std::cerr << "Implement clockwork::scene::Viewer::updateProjectionMatrix" << std::endl;
+}
+
+
+const clockwork::graphics::Viewport&
+clockwork::scene::Viewer::getViewport() const
+{
+	return _viewport;
 }

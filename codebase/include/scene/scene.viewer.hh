@@ -46,10 +46,6 @@ public:
 	 */
 	const clockwork::Matrix4& getProjectionMatrix() const;
 	/**
-	 * Return the viewer's renderer.
-	 */
-	clockwork::graphics::Renderer* getRenderer();
-	/**
 	 * Return the viewer's renderer type.
 	 */
 	const clockwork::graphics::Renderer::Type& getRendererType() const;
@@ -70,7 +66,7 @@ public:
 	/**
 	 * Return the viewer's viewport.
 	 */
-	clockwork::graphics::Viewport& getViewport();
+	const clockwork::graphics::Viewport& getViewport() const;
 	/**
 	 * Set the viewer's viewport.
 	 * @param viewport the viewport to set.

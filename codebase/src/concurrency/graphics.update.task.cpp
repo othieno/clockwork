@@ -25,6 +25,7 @@
 #include "scene.viewer.hh"
 #include "scene.hh"
 #include "services.hh"
+#include "renderer.factory.hh"
 
 
 static const int POST_PROCESSING_TASK_PRIORITY = 0;
@@ -62,7 +63,8 @@ clockwork::concurrency::GraphicsUpdateTask::onRun()
 				node->updateGeometry(CMTM);
 
 			// Render the scene.
-			auto* renderer = viewer->getRenderer();
+			auto* const renderer =
+			clockwork::graphics::RendererFactory::getUniqueInstance().get(viewer->getRendererType());
 			if (renderer != nullptr)
 			{
 				for (auto* const node : rootNodes)
@@ -118,20 +120,6 @@ clockwork::concurrency::GeometryUpdateTask::onRun()
 	for (auto* const node : _object.getChildren())
 		node->updateGeometry(objectModelMatrix);
 }
-
-
-clockwork::concurrency::RenderTask::RenderTask
-(
-	//clockwork::graphics::Framebuffer& framebuffer,
-	//const clockwork::graphics::ImageFilter::Type& type
-) :
-Task(RENDER_TASK_PRIORITY)
-{}
-
-
-void
-clockwork::concurrency::RenderTask::onRun()
-{}
 
 
 clockwork::concurrency::PostProcessingTask::PostProcessingTask
