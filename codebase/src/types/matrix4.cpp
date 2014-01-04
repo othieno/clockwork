@@ -136,6 +136,73 @@ clockwork::Matrix4::scale(const double& x, const double& y, const double& z)
 
 
 clockwork::Matrix4
+clockwork::Matrix4::transpose(const clockwork::Matrix4& in)
+{
+	const auto& olddata = in._data;
+	std::array<double, 16> newdata;
+
+	for (unsigned int i = 0; i < 4; ++i)
+	{
+		for (unsigned int j = 0; j < 4; ++j)
+		{
+			const unsigned int offset = (i * 4) + j;
+			const unsigned int oldOffset = (j * 4) + i;
+
+			newdata[offset] = olddata[oldOffset];
+		}
+	}
+	return Matrix4(newdata);
+}
+
+
+clockwork::Matrix4
+clockwork::Matrix4::inverse(const clockwork::Matrix4& in)
+{
+	//TODO This function can be optimised...
+	const auto s0 = in.get(0, 0) * in.get(1, 1) - in.get(1, 0) * in.get(0, 1);
+	const auto s1 = in.get(0, 0) * in.get(1, 2) - in.get(1, 0) * in.get(0, 2);
+	const auto s2 = in.get(0, 0) * in.get(1, 3) - in.get(1, 0) * in.get(0, 3);
+	const auto s3 = in.get(0, 1) * in.get(1, 2) - in.get(1, 1) * in.get(0, 2);
+	const auto s4 = in.get(0, 1) * in.get(1, 3) - in.get(1, 1) * in.get(0, 3);
+	const auto s5 = in.get(0, 2) * in.get(1, 3) - in.get(1, 2) * in.get(0, 3);
+
+	const auto c5 = in.get(2, 2) * in.get(3, 3) - in.get(3, 2) * in.get(2, 3);
+	const auto c4 = in.get(2, 1) * in.get(3, 3) - in.get(3, 1) * in.get(2, 3);
+	const auto c3 = in.get(2, 1) * in.get(3, 2) - in.get(3, 1) * in.get(2, 2);
+	const auto c2 = in.get(2, 0) * in.get(3, 3) - in.get(3, 0) * in.get(2, 3);
+	const auto c1 = in.get(2, 0) * in.get(3, 2) - in.get(3, 0) * in.get(2, 2);
+	const auto c0 = in.get(2, 0) * in.get(3, 1) - in.get(3, 0) * in.get(2, 1);
+
+	// Calculate the inverse determinant.
+	const auto idet = 1.0 / (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
+
+	std::array<double, 16> newdata;
+
+	newdata[0]  = ( in.get(1, 1) * c5 - in.get(1, 2) * c4 + in.get(1, 3) * c3) * idet;
+	newdata[1]  = (-in.get(0, 1) * c5 + in.get(0, 2) * c4 - in.get(0, 3) * c3) * idet;
+	newdata[2]  = ( in.get(3, 1) * s5 - in.get(3, 2) * s4 + in.get(3, 3) * s3) * idet;
+	newdata[3]  = (-in.get(2, 1) * s5 + in.get(2, 2) * s4 - in.get(2, 3) * s3) * idet;
+
+	newdata[4]  = (-in.get(1, 0) * c5 + in.get(1, 2) * c2 - in.get(1, 3) * c1) * idet;
+	newdata[5]  = ( in.get(0, 0) * c5 - in.get(0, 2) * c2 + in.get(0, 3) * c1) * idet;
+	newdata[6]  = (-in.get(3, 0) * s5 + in.get(3, 2) * s2 - in.get(3, 3) * s1) * idet;
+	newdata[7]  = ( in.get(2, 0) * s5 - in.get(2, 2) * s2 + in.get(2, 3) * s1) * idet;
+
+	newdata[8]  = ( in.get(1, 0) * c4 - in.get(1, 1) * c2 + in.get(1, 3) * c0) * idet;
+	newdata[9]  = (-in.get(0, 0) * c4 + in.get(0, 1) * c2 - in.get(0, 3) * c0) * idet;
+	newdata[10] = ( in.get(3, 0) * s4 - in.get(3, 1) * s2 + in.get(3, 3) * s0) * idet;
+	newdata[11] = (-in.get(2, 0) * s4 + in.get(2, 1) * s2 - in.get(2, 3) * s0) * idet;
+
+	newdata[12] = (-in.get(1, 0) * c3 + in.get(1, 1) * c1 - in.get(1, 2) * c0) * idet;
+	newdata[13] = ( in.get(0, 0) * c3 - in.get(0, 1) * c1 + in.get(0, 2) * c0) * idet;
+	newdata[14] = (-in.get(3, 0) * s3 + in.get(3, 1) * s1 - in.get(3, 2) * s0) * idet;
+	newdata[15] = ( in.get(2, 0) * s3 - in.get(2, 1) * s1 + in.get(2, 2) * s0) * idet;
+
+	return clockwork::Matrix4(newdata);
+}
+
+
+clockwork::Matrix4
 clockwork::Matrix4::model(const Point3&, const Point3&, const Point3&)
 {
 	//FIXME The model matrix isn't the identity, obviously...

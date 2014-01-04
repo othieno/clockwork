@@ -109,16 +109,15 @@ public:
 	}
 */
 	/**
-	 * Transpose a matrix.
+	 * Return the transpose of a given matrix.
 	 * @param matrix the matrix to transpose.
 	 */
 	static Matrix4 transpose(const Matrix4& matrix);
 	/**
-	 * Return the inverse of a matrix.
+	 * Return the inverse of a given matrix.
 	 * @param matrix the matrix to invert.
 	 */
 	static Matrix4 inverse(const Matrix4& matrix);
-
 	/**
 	 * Return the model transformation matrix of a scene object.
 	 * @param position the object's position in the scene.
