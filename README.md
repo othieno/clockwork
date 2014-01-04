@@ -41,6 +41,25 @@ make
 Hierarchy
 ---------
 The folders provided with this software are structured in the following manner:
-* __assets__ contains icons sample 3D models, and textures.
+* __assets__ contains sample 3D models and textures.
 * __codebase__ contains the full source code tree, including unit tests.
 * __documentation__ contains research, design and implementation documentation.
+
+
+References
+----------
+- [__Graphics Programming Black Book__][abrash], Michael Abrash.
+- [__Designing the Framework of a Parallel Game Engine__][intel], Intel (R) Developer Zone.
+- [__Understanding and Using Scene Graphs__][woolford], David Woolford.
+- [__Qt vs. Java - A Comparison of Qt and Java for Large-scale, Industrial-strength GUI Development__][dalheimer], Matthias Kalle Dalheimer.
+- [__Event-Driven Programming: Introduction, Tutorial, History v0.2__][ferg], Stephen Ferg
+- [__FXAA white paper__][lottes], Timothy Lottes
+- [__The Inefficiency of C++ Fact or Fiction?__][lundgren-frimanson], Anders Lundgren & Lotta Frimanson
+
+[abrash]: https://github.com/supranove/GPBB
+[intel]: /documentation/research/
+[woolford]: /documentation/research/
+[dalheimer]: /documentation/research/
+[ferg]: /documentation/research/
+[lottes]: /documentation/research/
+[lundgren-frimanson]:  /documentation/research/
