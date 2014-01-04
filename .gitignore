@@ -5,6 +5,5 @@ build
 # Ignore Eclipse configuration files.
 .project
 
-
-# Ignore the documentation for now.
-documentation
+# Ignore design documentation.
+documentation/design
