@@ -27,7 +27,7 @@
 
 
 clockwork::scene::Viewer::Viewer(const std::string& name) :
-Object(name),
+RigidBody(name),
 _rendererType(clockwork::graphics::RendererFactory::getUniqueInstance().getDefaultKey()),
 _projectionType(clockwork::graphics::ProjectionFactory::getUniqueInstance().getDefaultKey())
 {}

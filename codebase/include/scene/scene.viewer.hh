@@ -23,7 +23,7 @@
  */
 #pragma once
 
-#include "scene.object.hh"
+#include "rigid.body.hh"
 #include "renderer.hh"
 #include "projection.hh"
 #include "viewport.hh"
@@ -33,7 +33,7 @@
 namespace clockwork {
 namespace scene {
 
-class Viewer : public clockwork::scene::Object
+class Viewer : public clockwork::physics::RigidBody
 {
 Q_OBJECT
 public:
