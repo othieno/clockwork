@@ -8,7 +8,7 @@ This is a work in progress so a few bugs may run wild until they get ironed out,
 you that none of them will attempt to find the answer to life, launch nuclear ABMs or, more
 realistically, destroy the content of your hard drive.
 
-Check out [implementation.pdf](https://github.com/supranove/clockwork/raw/master/documentation/implementation.pdf) [PDF]
+Check out [implementation.pdf](/documentation/implementation.pdf?raw=true) [PDF]
 included in the software documentation for a detailed description of
 the application's features and the reasoning behind their implementations, as well as what you can
 expect from Clockwork.
@@ -29,7 +29,7 @@ implements the __C++11__ standard at least.
 
 Compiling and Execution
 -----------------------
-
+For GNU/Linux distros, open up a terminal and run the following commands
 ```sh
 git clone https://github.com/supranove/clockwork.git
 cd clockwork/codebase
@@ -49,17 +49,17 @@ The folders provided with this software are structured in the following manner:
 References
 ----------
 - [__Graphics Programming Black Book__][abrash], Michael Abrash.
-- [__Designing the Framework of a Parallel Game Engine__][intel] (PDF), Intel (R) Developer Zone.
-- [__Understanding and Using Scene Graphs__][woolford] (PDF), David Woolford.
-- [__Qt vs. Java - A Comparison of Qt and Java for Large-scale, Industrial-strength GUI Development__][dalheimer] (PDF), Matthias Kalle Dalheimer.
-- [__Event-Driven Programming: Introduction, Tutorial, History v0.2__][ferg] (PDF), Stephen Ferg.
-- [__FXAA white paper__][lottes] (PDF), Timothy Lottes.
-- [__The Inefficiency of C++ Fact or Fiction?__][lundgren-frimanson] (PDF), Anders Lundgren & Lotta Frimanson.
+- [__Designing the Framework of a Parallel Game Engine__][intel] [PDF], Intel (R) Developer Zone.
+- [__Understanding and Using Scene Graphs__][woolford] [PDF], David Woolford.
+- [__Qt vs. Java - A Comparison of Qt and Java for Large-scale, Industrial-strength GUI Development__][dalheimer] [PDF], Matthias Kalle Dalheimer.
+- [__Event-Driven Programming: Introduction, Tutorial, History v0.2__][ferg] [PDF], Stephen Ferg.
+- [__FXAA white paper__][lottes] [PDF], Timothy Lottes.
+- [__The Inefficiency of C++ Fact or Fiction?__][lundgren-frimanson] [PDF], Anders Lundgren & Lotta Frimanson.
 
 [abrash]: https://github.com/supranove/GPBB
-[intel]: /documentation/research/Designing the Framework of a Parallel Game Engine.pdf?raw=true
-[woolford]: /documentation/research/Understanding and Using Scene Graphs.pdf?raw=true
-[dalheimer]: /documentation/research/Qt vs. Java - A Comparison of Qt and Java for Large-scale, Industrial-strength GUI Development.pdf?raw=true
-[ferg]: /documentation/research/Event-Driven Programming.pdf?raw=true
-[lottes]: /documentation/research/FXAA white paper.pdf?raw=true
-[lundgren-frimanson]:  /documentation/research/The Inefficiency of C++ Fact or Fiction?.pdf?raw=true
+[intel]: /documentation/research/Designing%20the%20Framework%20of%20a%20Parallel%20Game%20Engine.pdf?raw=true
+[woolford]: /documentation/research/Understanding%20and%20Using%20Scene%20Graphs.pdf?raw=true
+[dalheimer]: /documentation/research/Qt%20vs.%20Java%20-%20A%20Comparison%20of%20Qt%20and%20Java%20for%20Large-scale%2C%20Industrial-strength%20GUI%20Development.pdf?raw=true
+[ferg]: /documentation/research/Event-Driven%20Programming.pdf?raw=true
+[lottes]: /documentation/research/FXAA%20white%20paper.pdf?raw=true
+[lundgren-frimanson]:  /documentation/research/The%20Inefficiency%20of%20C++%20Fact%20or%20Fiction?.pdf?raw=true
