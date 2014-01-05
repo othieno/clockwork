@@ -33,7 +33,7 @@ _threadPool(QThreadPool::globalInstance())
 
 
 void
-clockwork::concurrency::ConcurrencySubsystem::enableMultiThreadedExecution(const double& enable)
+clockwork::concurrency::ConcurrencySubsystem::enableMultiThreadedExecution(const bool& enable)
 {
 	_threadPool->setMaxThreadCount(enable ? QThread::idealThreadCount() : 1);
 }

@@ -38,7 +38,7 @@ public:
     * Enable or disable multi-threaded execution.
     * @param enable true to enable multi-threaded execution, false to disable.
     */
-   void enableMultiThreadedExecution(const double& enable = true);
+   void enableMultiThreadedExecution(const bool& enable = true);
    /**
     * Is multi-threading enabled?
     */
