@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 #include "rigid.body.hh"
+#include "render.task.hh"
+#include "services.hh"
 
 
 clockwork::physics::RigidBody::RigidBody
@@ -34,6 +36,21 @@ Object(name),
 _mesh(mesh),
 _material(material)
 {}
+
+
+void
+clockwork::physics::RigidBody::render
+(
+	clockwork::graphics::Renderer& renderer,
+	const clockwork::scene::Viewer& viewer
+) const
+{
+	if (!isPruned())
+	{
+		auto* const task = new clockwork::concurrency::RenderTask(renderer, *this, viewer);
+		clockwork::system::Services::Concurrency.submitTask(task);
+	}
+}
 
 
 const clockwork::graphics::Mesh*

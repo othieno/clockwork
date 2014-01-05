@@ -50,6 +50,14 @@ public:
 		const clockwork::graphics::Material& material = nullptr
 	);
 	/**
+	 * @see clockwork::scene::Node::render.
+	 */
+	virtual void render
+	(
+		clockwork::graphics::Renderer& renderer,
+		const clockwork::scene::Viewer& viewer
+	) const override final;
+	/**
 	 * Return the rigid body's mesh data.
 	 */
 	const clockwork::graphics::Mesh* getMesh() const;
