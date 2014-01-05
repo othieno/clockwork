@@ -47,7 +47,7 @@ public:
 	(
 		const std::string& name,
 		const clockwork::graphics::Mesh* mesh = nullptr,
-		const clockwork::graphics::Material* material = nullptr
+		const clockwork::graphics::Material& material = nullptr
 	);
 	/**
 	 * Return the rigid body's mesh data.
@@ -61,12 +61,12 @@ public:
 	/**
 	 * Return the rigid body's material.
 	 */
-	const clockwork::graphics::Material* getMaterial() const;
+	const clockwork::graphics::Material& getMaterial() const;
 	/**
 	 * Set the rigid body's material.
 	 * @param material the material to set.
 	 */
-	void setMaterial(const clockwork::graphics::Material* material);
+	void setMaterial(const clockwork::graphics::Material& material);
 	/**
 	 * Convert RigidBody data into string format.
 	 * @param body the rigid body to convert.
@@ -80,7 +80,19 @@ private:
 	/**
 	 * The rigid body's material, i.e. its look and feel.
 	 */
-	const clockwork::graphics::Material* _material;
+	clockwork::graphics::Material _material;
+};
+
+/**
+ * The Suzanne rigid body used for debugging.
+ */
+class SuzanneRigidBody : public clockwork::physics::RigidBody
+{
+public:
+	/**
+	 * The default constructor.
+	 */
+	SuzanneRigidBody();
 };
 
 } // namespace physics

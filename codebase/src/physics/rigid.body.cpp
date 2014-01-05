@@ -28,7 +28,7 @@ clockwork::physics::RigidBody::RigidBody
 (
 	const std::string& name,
 	const clockwork::graphics::Mesh* mesh,
-	const clockwork::graphics::Material* material
+	const clockwork::graphics::Material& material
 ) :
 Object(name),
 _mesh(mesh),
@@ -50,7 +50,7 @@ clockwork::physics::RigidBody::setMesh(const clockwork::graphics::Mesh* mesh)
 }
 
 
-const clockwork::graphics::Material*
+const clockwork::graphics::Material&
 clockwork::physics::RigidBody::getMaterial() const
 {
 	return _material;
@@ -58,7 +58,7 @@ clockwork::physics::RigidBody::getMaterial() const
 
 
 void
-clockwork::physics::RigidBody::setMaterial(const clockwork::graphics::Material* material)
+clockwork::physics::RigidBody::setMaterial(const clockwork::graphics::Material& material)
 {
 	_material = material;
 }

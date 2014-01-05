@@ -23,36 +23,43 @@
  */
 #pragma once
 
+#include "rigid.body.hh"
+
 
 namespace clockwork {
+namespace system {
 
-class Point3
+class AssetManager
 {
+friend class Services;
 public:
 	/**
-	 * The point's X coordinate.
+	 * Load a 3D model from a given file and store its mesh and material
+	 * data in a rigid body data structure. If a 3D model has already been
+	 * loaded, then no load operations are performed and the 3D model in
+	 * memory is returned. This behavior can be changed if the 'forceReload' flag
+	 * is set to true.
+	 * @param filename the name of the file containing the 3D model.
+	 * @param body the rigid body container where the mesh and material data will be stored.
+	 * @param forceReload true to reload mesh and material data, false otherwise.
 	 */
-	double x;
+	void load3DModel
+	(
+		const std::string& filename,
+		clockwork::physics::RigidBody& body,
+		const bool forceReload = false
+	);
+private:
 	/**
-	 * The point's Y coordinate.
+	 * The AssetManager is a singleton object so only a single instance of this
+	 * class should be created. To prevent copying and accidental instantiation,
+	 * the constructor is hidden (accessible only by the Services class),
+	 * and its copy constructor and operator are deleted.
 	 */
-	double y;
-	/**
-	 * The point's Z coordinate.
-	 */
-	double z;
-	/**
-	 * Instantiate a point from a set of X, Y and Z coordinates.
-	 * @param x the point's X coordinate.
-	 * @param y the point's Y coordinate.
-	 * @param z the point's Z coordinate.
-	 */
-	Point3(const double& x = 0, const double& y = 0, const double& z = 0);
-	/**
-	 * Multiply a 3D point by -1 (minus one) and return the result.
-	 * @param input the point to multiply.
-	 */
-	static Point3 negative(const Point3& input);
+	AssetManager();
+	AssetManager(const AssetManager&) = delete;
+	AssetManager& operator=(const AssetManager&) = delete;
 };
 
+} // namespace system
 } // namespace clockwork

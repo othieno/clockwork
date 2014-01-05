@@ -35,7 +35,7 @@ namespace graphics {
  * viewport coordinates), its depth value, its surface normal and a base color that will all
  * be used to determine a color that will be written to the framebuffer.
  */
-class Fragment
+struct Fragment
 {
 public:
 	/**
@@ -67,7 +67,6 @@ public:
 	 * @param fragment the fragment to convert.
 	 */
 	static std::string toString(const Fragment& fragment);
-private:
 };
 
 } // namespace graphics

@@ -68,11 +68,6 @@ public:
 	 */
 	void setViewer(clockwork::scene::Viewer& viewer);
 	/**
-	 * Add a scene viewer.
-	 * @param viewer the scene viewer to add.
-	 */
-	void addViewer(clockwork::scene::Viewer* const viewer);
-	/**
 	 * Remove the viewer that is currently set.
 	 */
 	void removeViewer();
@@ -80,6 +75,11 @@ public:
 	 * Return true if the scene has a viewer, false otherwise.
 	 */
 	bool hasViewer() const;
+	/**
+	 * Add an object to the scene.
+	 * @param object the object to add.
+	 */
+	void addObject(clockwork::scene::Object* const object);
 	/**
 	 * Return the root nodes.
 	 */

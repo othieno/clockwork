@@ -25,34 +25,13 @@
 
 
 namespace clockwork {
+namespace graphics {
 
-class Point3
-{
-public:
-	/**
-	 * The point's X coordinate.
-	 */
-	double x;
-	/**
-	 * The point's Y coordinate.
-	 */
-	double y;
-	/**
-	 * The point's Z coordinate.
-	 */
-	double z;
-	/**
-	 * Instantiate a point from a set of X, Y and Z coordinates.
-	 * @param x the point's X coordinate.
-	 * @param y the point's Y coordinate.
-	 * @param z the point's Z coordinate.
-	 */
-	Point3(const double& x = 0, const double& y = 0, const double& z = 0);
-	/**
-	 * Multiply a 3D point by -1 (minus one) and return the result.
-	 * @param input the point to multiply.
-	 */
-	static Point3 negative(const Point3& input);
-};
+struct ColorRGB
+{};
 
+struct ColorARGB
+{};
+
+} // namespace graphics
 } // namespace clockwork

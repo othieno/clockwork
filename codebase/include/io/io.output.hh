@@ -30,6 +30,7 @@
 #include "image.filter.hh"
 #include "texture.filter.hh"
 #include "renderer.implementation.wireframe.hh"
+#include <QString>
 
 namespace clockwork {
 
@@ -42,6 +43,7 @@ std::string toString(const clockwork::graphics::WireframeRenderer::LineAlgorithm
 
 } // namespace clockwork
 
+std::ostream& operator<<(std::ostream&, const QString&);
 std::ostream& operator<<(std::ostream&, const clockwork::Error&);
 std::ostream& operator<<(std::ostream&, const clockwork::graphics::Renderer::Type&);
 std::ostream& operator<<(std::ostream&, const clockwork::graphics::Projection::Type&);

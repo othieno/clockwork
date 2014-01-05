@@ -26,33 +26,27 @@
 
 namespace clockwork {
 
-class Point3
+struct Vector3
 {
-public:
 	/**
-	 * The point's X coordinate.
+	 * The point's I component.
 	 */
-	double x;
+	double i;
 	/**
-	 * The point's Y coordinate.
+	 * The point's J component.
 	 */
-	double y;
+	double j;
 	/**
-	 * The point's Z coordinate.
+	 * The point's K component.
 	 */
-	double z;
+	double k;
 	/**
-	 * Instantiate a point from a set of X, Y and Z coordinates.
-	 * @param x the point's X coordinate.
-	 * @param y the point's Y coordinate.
-	 * @param z the point's Z coordinate.
+	 * Instantiate a vector from a set of I, J and K components.
+	 * @param i the point's I component.
+	 * @param j the point's J component.
+	 * @param k the point's K component.
 	 */
-	Point3(const double& x = 0, const double& y = 0, const double& z = 0);
-	/**
-	 * Multiply a 3D point by -1 (minus one) and return the result.
-	 * @param input the point to multiply.
-	 */
-	static Point3 negative(const Point3& input);
+	Vector3(const double& i = 0, const double& j = 0, const double& k = 0);
 };
 
 } // namespace clockwork

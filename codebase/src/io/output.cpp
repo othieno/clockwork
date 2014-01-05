@@ -25,6 +25,14 @@
 
 
 std::ostream&
+operator<<(std::ostream& os, const QString& qString)
+{
+	os << qString.toStdString();
+	return os;
+}
+
+
+std::ostream&
 operator<<(std::ostream& os, const clockwork::Error& error)
 {
 	os << "Error: " << clockwork::toString(error);

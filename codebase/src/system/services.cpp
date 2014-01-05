@@ -28,6 +28,7 @@
 clockwork::system::ExecutionContext clockwork::system::Services::Context;
 clockwork::concurrency::ConcurrencySubsystem clockwork::system::Services::Concurrency;
 clockwork::graphics::GraphicsSubsystem clockwork::system::Services::Graphics;
+clockwork::system::AssetManager clockwork::system::Services::Assets;
 
 
 clockwork::Error

@@ -62,5 +62,16 @@ signals:
 	void taskComplete();
 };
 
+/**
+ * Task priorities.
+ */
+enum class TaskPriority : int
+{
+	GraphicsPostProcessingTask = 0,
+	GraphicsGeometryUpdateTask = GraphicsPostProcessingTask + 1,
+	GraphicsRenderTask = GraphicsGeometryUpdateTask + 1,
+	GraphicsUpdateTask = GraphicsRenderTask + 1
+};
+
 } // namespace concurrency
 } // namespace clockwork

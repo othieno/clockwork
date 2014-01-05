@@ -41,7 +41,7 @@ public:
 	/**
 	 * Return the entity's unique identifier.
 	 */
-	const clockwork::UID& getIdentifier();
+	const clockwork::UID& getIdentifier() const;
 protected:
 	/**
 	 * Instantiate a named entity.

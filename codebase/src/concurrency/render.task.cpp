@@ -31,7 +31,7 @@ clockwork::concurrency::RenderTask::RenderTask
 	const clockwork::physics::RigidBody& body,
 	const clockwork::scene::Viewer& viewer
 ) :
-Task(RENDER_TASK_PRIORITY),
+Task(static_cast<int>(clockwork::concurrency::TaskPriority::GraphicsRenderTask)),
 _renderer(renderer),
 _viewpoint(viewer.getPosition()),
 _viewport(viewer.getViewport()),

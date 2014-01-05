@@ -28,14 +28,8 @@
 #include "renderer.factory.hh"
 
 
-static const int POST_PROCESSING_TASK_PRIORITY = 0;
-static const int GEOMETRY_UPDATE_TASK_PRIORITY = POST_PROCESSING_TASK_PRIORITY + 1;
-static const int RENDER_TASK_PRIORITY = GEOMETRY_UPDATE_TASK_PRIORITY + 1;
-static const int GRAPHICS_UPDATE_TASK_PRIORITY = RENDER_TASK_PRIORITY + 1;
-
-
 clockwork::concurrency::GraphicsUpdateTask::GraphicsUpdateTask() :
-Task(GRAPHICS_UPDATE_TASK_PRIORITY)
+Task(static_cast<int>(clockwork::concurrency::TaskPriority::GraphicsUpdateTask))
 {}
 
 
@@ -98,7 +92,7 @@ clockwork::concurrency::GeometryUpdateTask::GeometryUpdateTask
 	clockwork::scene::Object& object,
 	const clockwork::Matrix4& CMTM
 ) :
-Task(GEOMETRY_UPDATE_TASK_PRIORITY),
+Task(static_cast<int>(clockwork::concurrency::TaskPriority::GraphicsGeometryUpdateTask)),
 _object(object),
 _CMTM(CMTM)
 {}
@@ -127,7 +121,7 @@ clockwork::concurrency::PostProcessingTask::PostProcessingTask
 	clockwork::graphics::Framebuffer& framebuffer,
 	const clockwork::graphics::ImageFilter::Type& type
 ) :
-Task(POST_PROCESSING_TASK_PRIORITY),
+Task(static_cast<int>(clockwork::concurrency::TaskPriority::GraphicsPostProcessingTask)),
 _framebuffer(framebuffer),
 _imageFilter(clockwork::graphics::ImageFilterFactory::getUniqueInstance().get(type))
 {}

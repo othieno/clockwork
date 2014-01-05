@@ -49,7 +49,8 @@ clockwork::scene::Object::setModelMatrix(const clockwork::Matrix4& model)
 void
 clockwork::scene::Object::updateGeometry(const clockwork::Matrix4& CMTM)
 {
-	clockwork::system::Services::Concurrency.submitTask(new clockwork::concurrency::GeometryUpdateTask(*this, CMTM));
+	if (!isPruned())
+		clockwork::system::Services::Concurrency.submitTask(new clockwork::concurrency::GeometryUpdateTask(*this, CMTM));
 }
 
 

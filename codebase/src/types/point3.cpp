@@ -24,13 +24,6 @@
 #include "point3.hh"
 
 
-clockwork::Point3::Point3() :
-x(0),
-y(0),
-z(0)
-{}
-
-
 clockwork::Point3::Point3(const double& inx, const double& iny, const double& inz) :
 x(inx),
 y(iny),

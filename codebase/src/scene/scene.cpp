@@ -23,6 +23,7 @@
  */
 #include "scene.hh"
 #include "camera.hh"
+#include "rigid.body.hh"
 #include <iostream> // remove when done debugging.
 
 
@@ -34,9 +35,10 @@ _currentViewer(nullptr)
 	setTitle(QString("Scene Graph"));
 
 	// Populate the scene.
-	addViewer(new clockwork::graphics::Camera("Camera 1"));
-	addViewer(new clockwork::graphics::Camera("Camera 2"));
-	addViewer(new clockwork::graphics::Camera("Camera 3"));
+	addObject(new clockwork::graphics::Camera("Camera 1"));
+	addObject(new clockwork::graphics::Camera("Camera 2"));
+	addObject(new clockwork::graphics::Camera("Camera 3"));
+	addObject(new clockwork::physics::SuzanneRigidBody);
 }
 
 //FIXME This is the only way to stop the application from hanging at startup...
@@ -57,21 +59,6 @@ clockwork::scene::Scene::getViewer()
 }
 
 
-void
-clockwork::scene::Scene::addViewer(clockwork::scene::Viewer* viewer)
-{
-	if (viewer != nullptr)
-	{
-		// Add the viewer entity to the scene.
-		_rootNodes.insert(viewer);
-
-		// If no current viewer is set, then 'viewer' becomes the default.
-		if (_currentViewer == nullptr)
-			_currentViewer = viewer;
-	}
-}
-
-
 bool
 clockwork::scene::Scene::hasViewer() const
 {
@@ -83,6 +70,21 @@ void
 clockwork::scene::Scene::removeViewer()
 {
 	std::cerr << "Implement clockwork::scene::Scene::removeViewer" << std::endl;
+}
+
+
+void
+clockwork::scene::Scene::addObject(clockwork::scene::Object* const object)
+{
+	if (object != nullptr)
+	{
+		_rootNodes.insert(object);
+
+		// If the current viewer is not set and the object is a viewer,
+		// then make it the default viewer.
+		if (_currentViewer == nullptr)
+			_currentViewer = dynamic_cast<clockwork::scene::Viewer*>(object);
+	}
 }
 
 

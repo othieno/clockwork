@@ -105,14 +105,20 @@ clockwork::scene::Node::setNameEditable(const bool editable)
 void
 clockwork::scene::Node::updateGeometry(const clockwork::Matrix4& CMTM)
 {
-	for (auto* child : _children)
-		child->updateGeometry(CMTM);
+	if (!_isPruned)
+	{
+		for (auto* child : _children)
+			child->updateGeometry(CMTM);
+	}
 }
 
 
 void
 clockwork::scene::Node::render(clockwork::graphics::Renderer& renderer, const clockwork::scene::Viewer& viewer) const
 {
-	for (auto* child : _children)
-		child->render(renderer, viewer);
+	if (!_isPruned)
+	{
+		for (auto* child : _children)
+			child->render(renderer, viewer);
+	}
 }

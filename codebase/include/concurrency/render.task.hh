@@ -29,6 +29,7 @@
 #include "rigid.body.hh"
 #include "viewport.hh"
 #include "renderer.hh"
+#include "scene.viewer.hh"
 
 
 namespace clockwork {
@@ -106,7 +107,7 @@ private:
 	/**
 	 * The rigid body's material data.
 	 */
-	const clockwork::graphics::Material* const _material;
+	const clockwork::graphics::Material& _material;
 };
 
 } // namespace concurrency

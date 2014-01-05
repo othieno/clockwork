@@ -22,3 +22,22 @@
  * THE SOFTWARE.
  */
 #include "material.hh"
+
+
+clockwork::graphics::Material::Material
+(
+	const clockwork::graphics::Texture* a,
+	const clockwork::graphics::Texture* d,
+	const clockwork::graphics::Texture* n,
+	const clockwork::graphics::Texture* s
+) :
+shininess(1),
+transparency(0),
+//Ka(0.5, 0.5, 0.5),
+//Kd(0.5, 0.5, 0.5),
+//Ks(0.5, 0.5, 0.5),
+ambient(a),
+diffuse(d),
+normal(n),
+specular(s)
+{}

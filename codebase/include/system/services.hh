@@ -28,6 +28,7 @@
 #include "execution.context.hh"
 #include "concurrency.subsystem.hh"
 #include "graphics.subsystem.hh"
+#include "asset.manager.hh"
 
 
 namespace clockwork {
@@ -48,6 +49,10 @@ public:
 	 * The graphics subsystem.
 	 */
 	static clockwork::graphics::GraphicsSubsystem Graphics;
+	/**
+	 * The asset manager.
+	 */
+	static clockwork::system::AssetManager Assets;
 	/**
 	 * Initialise the services.
 	 * @param context the execution context that the application will be executed in.

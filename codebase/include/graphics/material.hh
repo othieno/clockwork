@@ -23,14 +23,65 @@
  */
 #pragma once
 
-#include "asset.hh"
+#include "color.hh"
+#include "texture.hh"
 
 
 namespace clockwork {
 namespace graphics {
 
-class Material : public clockwork::io::Asset
+struct Material
 {
+	/**
+	 * The material's shininess.
+	 */
+	double shininess;
+	/**
+	 * The material's transparency.
+	 */
+	double transparency;
+	/**
+	 * The material's coefficient of reflection for ambient light.
+	 */
+	clockwork::graphics::ColorRGB Ka;
+	/**
+	 * The material's coefficient of reflection for diffuse light.
+	 */
+	clockwork::graphics::ColorRGB Kd;
+	/**
+	 * The material's coefficient of reflection for specular light.
+	 */
+	clockwork::graphics::ColorRGB Ks;
+	/**
+	 * The ambient map.
+	 */
+	const clockwork::graphics::Texture* ambient;
+	/**
+	 * The diffuse map.
+	 */
+	const clockwork::graphics::Texture* diffuse;
+	/**
+	 * The normal map.
+	 */
+	const clockwork::graphics::Texture* normal;
+	/**
+	 * The specular map.
+	 */
+	const clockwork::graphics::Texture* specular;
+	/**
+	 * Instantiate a material with given ambient, diffuse, normal and specular maps.
+	 * @param ambient the material's ambient map.
+	 * @param diffuse the material's diffuse map.
+	 * @param normal the material's normal map.
+	 * @param specular the material's specular map.
+	 */
+	Material
+	(
+		const clockwork::graphics::Texture* ambient = nullptr,
+		const clockwork::graphics::Texture* diffuse = nullptr,
+		const clockwork::graphics::Texture* normal = nullptr,
+		const clockwork::graphics::Texture* specular = nullptr
+	);
 };
 
 } // namespace graphics
