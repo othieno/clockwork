@@ -28,10 +28,57 @@ namespace clockwork {
 namespace graphics {
 
 struct ColorRGB
-{};
+{
+	/**
+	 * The color's normalised red channel.
+	 */
+	double red;
+	/**
+	 * The color's normalised green channel.
+	 */
+	double green;
+	/**
+	 * The color's normalised blue channel.
+	 */
+	double blue;
+	/**
+	 * Instantiate an RGB color with normalised red,
+	 * green and blue channels.
+	 * @param red the red channel.
+	 * @param green the green channel.
+	 * @param blue the blue channel.
+	 */
+	ColorRGB(const double& red = 1, const double& green = 1, const double& blue = 1);
+};
 
 struct ColorARGB
-{};
+{
+	/**
+	 * The color's normalised alpha channel.
+	 */
+	double alpha;
+	/**
+	 * The color's normalised red channel.
+	 */
+	double red;
+	/**
+	 * The color's normalised green channel.
+	 */
+	double green;
+	/**
+	 * The color's normalised blue channel.
+	 */
+	double blue;
+	/**
+	 * Instantiate an ARGB color with normalised red,
+	 * green and blue channels.
+	 * @param alpha the alpha channel.
+	 * @param red the red channel.
+	 * @param green the green channel.
+	 * @param blue the blue channel.
+	 */
+	ColorARGB(const double& alpha = 1, const double& red = 1, const double& green = 1, const double& blue = 1);
+};
 
 } // namespace graphics
 } // namespace clockwork

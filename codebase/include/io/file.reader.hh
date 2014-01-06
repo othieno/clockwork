@@ -21,30 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "point3.hh"
+#pragma once
+
+#include "error.hh"
+#include <QFile>
+#include "mesh.hh"
+#include "material.hh"
 
 
-clockwork::Point3::Point3(const double& inx, const double& iny, const double& inz) :
-x(inx),
-y(iny),
-z(inz)
-{}
+namespace clockwork {
+namespace io {
 
+/**
+ * Load the content of an OBJ file and store it in the given mesh and material containers.
+ * @param file the file containing the data to load.
+ * @param outputMesh the container where mesh data will be stored.
+ * @param outputMaterial the container where material data will be stored.
+ */
+clockwork::Error loadOBJ
+(
+	QFile& file,
+	clockwork::graphics::Mesh& outputMesh,
+	clockwork::graphics::Material& outputMaterial
+);
 
-clockwork::Vector3
-clockwork::Point3::operator-(const Point3& p) const
-{
-	return clockwork::Vector3
-	(
-		x - p.x,
-		y - p.y,
-		z - p.z
-	);
-}
-
-
-clockwork::Point3
-clockwork::Point3::negative(const clockwork::Point3& p)
-{
-	return clockwork::Point3(-p.x, -p.y, -p.z);
-}
+} // namespace io
+} // namespace clockwork

@@ -22,3 +22,22 @@
  * THE SOFTWARE.
  */
 #include "vertex.hh"
+
+
+clockwork::graphics::Vertex::Vertex(const double& x, const double& y, const double& z) :
+Point3(x, y, z)
+{}
+
+
+const clockwork::Vector3&
+clockwork::graphics::Vertex::getNormal() const
+{
+	return _normal;
+}
+
+
+void
+clockwork::graphics::Vertex::setNormal(const clockwork::Vector3& normal)
+{
+	_normal = normal;
+}

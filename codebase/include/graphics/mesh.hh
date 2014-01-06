@@ -23,7 +23,6 @@
  */
 #pragma once
 
-#include "asset.hh"
 #include "vertex.hh"
 #include "point3.hh"
 #include "vector3.hh"
@@ -34,8 +33,9 @@
 namespace clockwork {
 namespace graphics {
 
-class Mesh : public clockwork::io::Asset
+class Mesh
 {
+public:
 	/**
 	 * TODO Explain me.
 	 */
@@ -44,30 +44,29 @@ class Mesh : public clockwork::io::Asset
 		/**
 		 * UV mapping coordinates.
 		 */
-		struct UVMap { double u, v; };
+		struct UVMap
+		{
+			double u, v;
+			/**
+			 * Instantiate a mapping coordinate with given U and V coordinates.
+			 */
+			UVMap(const double& u = 0, const double& v = 0);
+		};
 		/**
-		 * Instantiate a face with given indices and texture coordinates,
-		 * that is bound to a mesh.
-		 * @param mesh the mesh that this face is bound to.
-		 * @param indices the face's vertex indices.
+		 * Instantiate a face with given vertices and texture coordinates.
+		 * @param vertices the face's vertices.
 		 * @param uvmap the face's UV mapping coordinates.
 		 */
 		Face
 		(
-			const Mesh& mesh,
-			const std::array<uint32_t, 3> indices,
-			const std::array<Face::UVMap, 3> uvmap
+			const std::array<const clockwork::graphics::Vertex*, 3>& vertices,
+			const std::array<const Face::UVMap, 3>& uvmap
 		);
 		/**
-		 * Instantiate a face with given indices, that is bound to a mesh.
-		 * @param mesh the mesh that this face is bound to.
-		 * @param indices the face's vertex indices.
+		 * Instantiate a face with given vertices.
+		 * @param indices the face's vertices.
 		 */
-		Face
-		(
-			const Mesh& mesh,
-			const std::array<uint32_t, 3> indices
-		);
+		Face(const std::array<const clockwork::graphics::Vertex*, 3> vertices);
 		/**
 		 * The face's vertices.
 		 */
@@ -75,7 +74,7 @@ class Mesh : public clockwork::io::Asset
 		/**
 		 * The face's mapping coordinates.
 		 */
-		const std::array<Face::UVMap, 3> uvmap;
+		const std::array<const Face::UVMap, 3> uvmap;
 		/**
 		 * The face's surface normal.
 		 */
@@ -86,19 +85,13 @@ class Mesh : public clockwork::io::Asset
 		const clockwork::Point3 center;
 	};
 	/**
-	 * Add a face.
-	 * @param indices the indices of the vertices that make up the face.
-	 */
-	void addFace(const std::array<uint32_t, 3>& indices);
-	/**
-	 * Add a face.
-	 * @param face the face to add.
-	 */
-	void addFace(const Mesh::Face& face);
-	/**
 	 * Return the mesh's faces.
 	 */
 	const std::vector<Mesh::Face>& getFaces() const;
+	/**
+	 * Return the mesh's vertices.
+	 */
+	const std::vector<clockwork::graphics::Vertex>& getVertices() const;
 private:
 	/**
 	 * The mesh's vertices.

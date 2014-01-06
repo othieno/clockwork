@@ -22,6 +22,7 @@
  * THE SOFTWARE.
  */
 #include "vector3.hh"
+#include <cmath>
 
 
 clockwork::Vector3::Vector3(const double& ini, const double& inj, const double& ink) :
@@ -29,3 +30,37 @@ i(ini),
 j(inj),
 k(ink)
 {}
+
+
+double
+clockwork::Vector3::getMagnitude() const
+{
+	return std::sqrt((i * i) + (j * j) + (k * k));
+}
+
+
+clockwork::Vector3&
+clockwork::Vector3::normalise()
+{
+	double magnitude = getMagnitude();
+	if (magnitude != 0)
+	{
+		magnitude = 1/magnitude;
+		i *= magnitude;
+		j *= magnitude;
+		k *= magnitude;
+	}
+	return *this;
+}
+
+
+clockwork::Vector3
+clockwork::Vector3::cross(const clockwork::Vector3& v1, const clockwork::Vector3& v2)
+{
+	return Vector3
+	(
+		(v1.j * v2.k) - (v1.k * v2.j),
+		(v1.k * v2.i) - (v1.i * v2.k),
+		(v1.i * v2.j) - (v1.j * v2.i)
+	);
+}

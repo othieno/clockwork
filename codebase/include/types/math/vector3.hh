@@ -47,6 +47,20 @@ struct Vector3
 	 * @param k the point's K component.
 	 */
 	Vector3(const double& i = 0, const double& j = 0, const double& k = 0);
+	/**
+	 * Return the vector's magnitude.
+	 */
+	double getMagnitude() const;
+	/**
+	 * Normalise this vector.
+	 */
+	Vector3& normalise();
+	/**
+	 * Return the cross product of two vectors.
+	 * @param v1 the first vector.
+	 * @param v2 the second vector.
+	 */
+	static Vector3 cross(const Vector3& v1, const Vector3& v2);
 };
 
 } // namespace clockwork

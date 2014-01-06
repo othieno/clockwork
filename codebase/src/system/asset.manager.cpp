@@ -22,17 +22,48 @@
  * THE SOFTWARE.
  */
 #include "asset.manager.hh"
+#include <QFileInfo>
+#include "file.reader.hh"
 
 
 clockwork::system::AssetManager::AssetManager()
 {}
 
 
-void
-clockwork::system::AssetManager::load3DModel
-(
-	const std::string& filename,
-	clockwork::physics::RigidBody& body,
-	const bool forceReload
-)
-{}
+const clockwork::graphics::Model3D*
+clockwork::system::AssetManager::loadModel3D(const std::string& filename)
+{
+	clockwork::graphics::Model3D* model = nullptr;
+
+	QFileInfo fileInfo(QString(filename.c_str()));
+	if (fileInfo.exists() && fileInfo.isFile() && fileInfo.isReadable() && fileInfo.size())
+	{
+		// If the model was already loaded, then return the instance in memory instead.
+		const auto& key = fileInfo.canonicalFilePath();
+#ifdef __ENABLE_ASSET_HASHTABLE
+//TODO Find out why using maps or hash tables causes segmentation faults or exceptions.
+		if (contains(key))
+			model = static_cast<clockwork::graphics::Model3D*>(value(key));
+		else
+#endif // __ENABLE_ASSET_HASHTABLE
+		{
+			clockwork::graphics::Mesh mesh;
+			clockwork::graphics::Material material;
+
+			// Load the OBJ file.
+			QFile file(key);
+			const auto& error = clockwork::io::loadOBJ(file, mesh, material);
+			if (error == clockwork::Error::None)
+			{
+				// Create the asset and store it.
+				model = new clockwork::graphics::Model3D(mesh, material);
+#ifdef __ENABLE_ASSET_HASHTABLE
+				insert(key, model);
+#endif // __ENABLE_ASSET_HASHTABLE
+			}
+			else
+				std::cout << error << std::endl;
+		}
+	}
+	return model;
+}

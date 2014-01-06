@@ -22,3 +22,18 @@
  * THE SOFTWARE.
  */
 #include "color.hh"
+
+
+clockwork::graphics::ColorRGB::ColorRGB(const double& r, const double& g, const double& b) :
+red(r),
+green(g),
+blue(b)
+{}
+
+
+clockwork::graphics::ColorARGB::ColorARGB(const double& a, const double& r, const double& g, const double& b) :
+alpha(a),
+red(r),
+green(g),
+blue(b)
+{}

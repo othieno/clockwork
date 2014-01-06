@@ -24,31 +24,24 @@
 #pragma once
 
 #include "rigid.body.hh"
+#include "factory.hh"
+#include <QHash>
 
 
 namespace clockwork {
 namespace system {
 
-class AssetManager
+class AssetManager : private QHash<QString, clockwork::io::Asset*>
 {
 friend class Services;
 public:
 	/**
-	 * Load a 3D model from a given file and store its mesh and material
-	 * data in a rigid body data structure. If a 3D model has already been
-	 * loaded, then no load operations are performed and the 3D model in
-	 * memory is returned. This behavior can be changed if the 'forceReload' flag
-	 * is set to true.
+	 * Load, store and return a 3D model from a given file. The 3D model is stored
+	 * as an asset in the asset dictionary which makes sure only one instance of
+	 * it exists in memory.
 	 * @param filename the name of the file containing the 3D model.
-	 * @param body the rigid body container where the mesh and material data will be stored.
-	 * @param forceReload true to reload mesh and material data, false otherwise.
 	 */
-	void load3DModel
-	(
-		const std::string& filename,
-		clockwork::physics::RigidBody& body,
-		const bool forceReload = false
-	);
+	const clockwork::graphics::Model3D* loadModel3D(const std::string& filename);
 private:
 	/**
 	 * The AssetManager is a singleton object so only a single instance of this

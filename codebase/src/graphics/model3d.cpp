@@ -21,30 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "point3.hh"
+#include "model3d.hh"
 
 
-clockwork::Point3::Point3(const double& inx, const double& iny, const double& inz) :
-x(inx),
-y(iny),
-z(inz)
+clockwork::graphics::Model3D::Model3D
+(
+	const clockwork::graphics::Mesh& iMesh,
+	const clockwork::graphics::Material& iMaterial
+) :
+mesh(iMesh),
+material(iMaterial)
 {}
-
-
-clockwork::Vector3
-clockwork::Point3::operator-(const Point3& p) const
-{
-	return clockwork::Vector3
-	(
-		x - p.x,
-		y - p.y,
-		z - p.z
-	);
-}
-
-
-clockwork::Point3
-clockwork::Point3::negative(const clockwork::Point3& p)
-{
-	return clockwork::Point3(-p.x, -p.y, -p.z);
-}

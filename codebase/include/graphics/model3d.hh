@@ -21,30 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "point3.hh"
+#pragma once
+
+#include "asset.hh"
+#include "mesh.hh"
+#include "material.hh"
 
 
-clockwork::Point3::Point3(const double& inx, const double& iny, const double& inz) :
-x(inx),
-y(iny),
-z(inz)
-{}
+namespace clockwork {
+namespace graphics {
 
-
-clockwork::Vector3
-clockwork::Point3::operator-(const Point3& p) const
+struct Model3D : public clockwork::io::Asset
 {
-	return clockwork::Vector3
-	(
-		x - p.x,
-		y - p.y,
-		z - p.z
-	);
-}
+	/**
+	 * The model's mesh data.
+	 */
+	const clockwork::graphics::Mesh mesh;
+	/**
+	 * The model's material data.
+	 */
+	const clockwork::graphics::Material material;
+	/**
+	 * Instantiate a Model3D with given mesh and material data.
+	 * @param mesh the model's mesh data.
+	 * @param material the model's material data.
+	 */
+	Model3D(const clockwork::graphics::Mesh& mesh, const clockwork::graphics::Material& material);
+	/**
+	 * Instantiate a Model3D with given mesh data.
+	 * @param mesh the model's mesh data.
+	 */
+	Model3D(const clockwork::graphics::Mesh& mesh);
+};
 
-
-clockwork::Point3
-clockwork::Point3::negative(const clockwork::Point3& p)
-{
-	return clockwork::Point3(-p.x, -p.y, -p.z);
-}
+} // namespace graphics
+} // namespace clockwork

@@ -29,12 +29,10 @@
 clockwork::physics::RigidBody::RigidBody
 (
 	const std::string& name,
-	const clockwork::graphics::Mesh* mesh,
-	const clockwork::graphics::Material& material
+	const clockwork::graphics::Model3D* model3D
 ) :
 Object(name),
-_mesh(mesh),
-_material(material)
+_model3D(model3D)
 {}
 
 
@@ -45,7 +43,7 @@ clockwork::physics::RigidBody::render
 	const clockwork::scene::Viewer& viewer
 ) const
 {
-	if (!isPruned())
+	if (!isPruned() && _model3D != nullptr)
 	{
 		auto* const task = new clockwork::concurrency::RenderTask(renderer, *this, viewer);
 		clockwork::system::Services::Concurrency.submitTask(task);
@@ -53,31 +51,17 @@ clockwork::physics::RigidBody::render
 }
 
 
-const clockwork::graphics::Mesh*
-clockwork::physics::RigidBody::getMesh() const
+const clockwork::graphics::Model3D*
+clockwork::physics::RigidBody::getModel3D() const
 {
-	return _mesh;
+	return _model3D;
 }
 
 
 void
-clockwork::physics::RigidBody::setMesh(const clockwork::graphics::Mesh* mesh)
+clockwork::physics::RigidBody::setModel3D(const clockwork::graphics::Model3D* model3D)
 {
-	_mesh = mesh;
-}
-
-
-const clockwork::graphics::Material&
-clockwork::physics::RigidBody::getMaterial() const
-{
-	return _material;
-}
-
-
-void
-clockwork::physics::RigidBody::setMaterial(const clockwork::graphics::Material& material)
-{
-	_material = material;
+	_model3D = model3D;
 }
 
 

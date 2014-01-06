@@ -23,6 +23,8 @@
  */
 #pragma once
 
+#include "vector3.hh"
+
 
 namespace clockwork {
 
@@ -48,6 +50,11 @@ public:
 	 * @param z the point's Z coordinate.
 	 */
 	Point3(const double& x = 0, const double& y = 0, const double& z = 0);
+	/**
+	 * Return the difference between this point and another.
+	 * @param p the point that's being substracted from this.
+	 */
+	clockwork::Vector3 operator-(const Point3& p) const;
 	/**
 	 * Multiply a 3D point by -1 (minus one) and return the result.
 	 * @param input the point to multiply.

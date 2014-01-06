@@ -101,13 +101,9 @@ private:
 	 */
 	clockwork::Matrix4 _MODELVIEWPROJECTION;
 	/**
-	 * The rigid body's mesh data.
+	 * The rigid body's 3D model.
 	 */
-	const clockwork::graphics::Mesh* const _mesh;
-	/**
-	 * The rigid body's material data.
-	 */
-	const clockwork::graphics::Material& _material;
+	const clockwork::graphics::Model3D* const _model3D;
 };
 
 } // namespace concurrency

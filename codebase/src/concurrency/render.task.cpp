@@ -38,16 +38,18 @@ _viewport(viewer.getViewport()),
 _MODEL(body.getModelMatrix()),
 _VIEW(viewer.getViewMatrix()),
 _PROJECTION(viewer.getProjectionMatrix()),
-_mesh(body.getMesh()),
-_material(body.getMaterial())
+_model3D(body.getModel3D())
 {}
 
 
 void
 clockwork::concurrency::RenderTask::onRun()
 {
-	_MODELVIEW = _VIEW * _MODEL;
-	_NORMAL = clockwork::Matrix4::transpose(clockwork::Matrix4::inverse(_MODELVIEW));
-	_VIEWPROJECTION = _PROJECTION * _VIEW;
-	_MODELVIEWPROJECTION = _VIEWPROJECTION * _MODEL;
+	if (_model3D != nullptr)
+	{
+		_MODELVIEW = _VIEW * _MODEL;
+		_NORMAL = clockwork::Matrix4::transpose(clockwork::Matrix4::inverse(_MODELVIEW));
+		_VIEWPROJECTION = _PROJECTION * _VIEW;
+		_MODELVIEWPROJECTION = _VIEWPROJECTION * _MODEL;
+	}
 }

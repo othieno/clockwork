@@ -33,9 +33,9 @@ clockwork::graphics::Material::Material
 ) :
 shininess(1),
 transparency(0),
-//Ka(0.5, 0.5, 0.5),
-//Kd(0.5, 0.5, 0.5),
-//Ks(0.5, 0.5, 0.5),
+Ka(0.5, 0.5, 0.5),
+Kd(0.5, 0.5, 0.5),
+Ks(0.5, 0.5, 0.5),
 ambient(a),
 diffuse(d),
 normal(n),

@@ -24,31 +24,24 @@
 #pragma once
 
 #include "scene.object.hh"
-#include "mesh.hh"
-#include "material.hh"
+#include "model3d.hh"
 
 
 namespace clockwork {
 namespace physics {
 
 /**
- * A rigid body is a scene object that has a visual property.
+ * A rigid body is a scene object that has a visual property, i.e. a 3D model.
  */
 class RigidBody : public scene::Object
 {
 public:
 	/**
-	 * Instantiate a named rigid body with a given mesh and material.
+	 * Instantiate a named rigid body with a given 3D model.
 	 * @param name the rigid body's name.
-	 * @param mesh the rigid body's mesh data.
-	 * @param material the rigid body's material data.
+	 * @param model3D the rigid body's 3D model.
 	 */
-	RigidBody
-	(
-		const std::string& name,
-		const clockwork::graphics::Mesh* mesh = nullptr,
-		const clockwork::graphics::Material& material = nullptr
-	);
+	RigidBody(const std::string& name, const clockwork::graphics::Model3D* model3D = nullptr);
 	/**
 	 * @see clockwork::scene::Node::render.
 	 */
@@ -58,23 +51,14 @@ public:
 		const clockwork::scene::Viewer& viewer
 	) const override final;
 	/**
-	 * Return the rigid body's mesh data.
+	 * Return the rigid body's 3D model.
 	 */
-	const clockwork::graphics::Mesh* getMesh() const;
+	const clockwork::graphics::Model3D* getModel3D() const;
 	/**
-	 * Set the rigid body's mesh data.
-	 * @param mesh the mesh data to set.
+	 * Set the rigid body's 3D model.
+	 * @param model3D the 3D model to set.
 	 */
-	void setMesh(const clockwork::graphics::Mesh* mesh);
-	/**
-	 * Return the rigid body's material.
-	 */
-	const clockwork::graphics::Material& getMaterial() const;
-	/**
-	 * Set the rigid body's material.
-	 * @param material the material to set.
-	 */
-	void setMaterial(const clockwork::graphics::Material& material);
+	void setModel3D(const clockwork::graphics::Model3D* model3D);
 	/**
 	 * Convert RigidBody data into string format.
 	 * @param body the rigid body to convert.
@@ -82,13 +66,9 @@ public:
 	static std::string toString(const RigidBody& body);
 private:
 	/**
-	 * The rigid body's polygon mesh, i.e. its shape.
+	 * The rigid body's 3D model.
 	 */
-	const clockwork::graphics::Mesh* _mesh;
-	/**
-	 * The rigid body's material, i.e. its look and feel.
-	 */
-	clockwork::graphics::Material _material;
+	const clockwork::graphics::Model3D* _model3D;
 };
 
 /**
