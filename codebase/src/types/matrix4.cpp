@@ -65,22 +65,64 @@ clockwork::Matrix4::set(const unsigned int& i, const unsigned int& j, const doub
 
 
 clockwork::Matrix4
-clockwork::Matrix4::operator*(const clockwork::Matrix4& rhs) const
+clockwork::Matrix4::operator*(const clockwork::Matrix4& that) const
 {
 	std::array<double, 16> newdata;
 	for (unsigned int i = 0; i < 4; ++i)
 	{
-		const auto offset = i * 4;
-		for (int j = 0; j < 4; ++j)
+		unsigned int offset = i * 4;
+		for (unsigned int j = 0; j < 4; ++j)
 		{
 			newdata[offset] = 0;
 			for (unsigned int k = 0; k < 4; ++k)
-				newdata[offset] += get(i, k) * rhs.get(k, j);
+				newdata[offset] += get(i, k) * that.get(k, j);
+
+			++offset;
 		}
 	}
 	return Matrix4(newdata);
 }
 
+
+clockwork::Point3
+clockwork::Matrix4::operator*(const clockwork::Point3& p) const
+{
+	clockwork::Point4 hp = *this * clockwork::Point4(p.x, p.y, p.z, 1);
+	return clockwork::Point3
+	(
+		hp.x / hp.w,
+		hp.y / hp.w,
+		hp.z / hp.w
+	);
+}
+
+
+clockwork::Point4
+clockwork::Matrix4::operator*(const clockwork::Point4& p) const
+{
+	const std::array<double, 4> olddata = {p.x, p.y, p.z, p.w};
+	std::array<double, 4> newdata = {0, 0, 0, 0};
+
+	for (unsigned int i = 0; i < 4; ++i)
+	{
+		for (unsigned int j = 0; j < 4; ++j)
+			newdata[i] += get(i, j) * olddata[j];
+	}
+	return clockwork::Point4(newdata[0], newdata[1], newdata[2], newdata[3]);
+}
+
+
+clockwork::Vector3
+clockwork::Matrix4::operator*(const clockwork::Vector3& v) const
+{
+	clockwork::Point3 p = *this * clockwork::Point3(v.i, v.j, v.k);
+	return clockwork::Vector3
+	(
+		p.x,
+		p.y,
+		p.z
+	);
+}
 
 
 clockwork::Matrix4

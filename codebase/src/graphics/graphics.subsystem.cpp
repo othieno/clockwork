@@ -73,7 +73,6 @@ clockwork::graphics::GraphicsSubsystem::signalUpdateComplete()
 bool
 clockwork::graphics::GraphicsSubsystem::isScissorTestEnabled() const
 {
-	std::cout << "clockwork::graphics::GraphicsSubsystem::isScissorTestEnabled" << std::endl;
 	return false;
 }
 
@@ -81,7 +80,6 @@ clockwork::graphics::GraphicsSubsystem::isScissorTestEnabled() const
 bool
 clockwork::graphics::GraphicsSubsystem::isAlphaTestEnabled() const
 {
-	std::cout << "clockwork::graphics::GraphicsSubsystem::isAlphaTestEnabled" << std::endl;
 	return false;
 }
 
@@ -89,7 +87,6 @@ clockwork::graphics::GraphicsSubsystem::isAlphaTestEnabled() const
 bool
 clockwork::graphics::GraphicsSubsystem::isStencilTestEnabled() const
 {
-	std::cout << "clockwork::graphics::GraphicsSubsystem::isStencilTestEnabled" << std::endl;
 	return false;
 }
 
@@ -97,6 +94,5 @@ clockwork::graphics::GraphicsSubsystem::isStencilTestEnabled() const
 bool
 clockwork::graphics::GraphicsSubsystem::isDepthTestEnabled() const
 {
-	std::cout << "clockwork::graphics::GraphicsSubsystem::isDepthTestEnabled" << std::endl;
 	return false;
 }

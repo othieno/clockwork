@@ -24,8 +24,8 @@
 #include "vertex.hh"
 
 
-clockwork::graphics::Vertex::Vertex(const double& x, const double& y, const double& z) :
-Point3(x, y, z)
+clockwork::graphics::Vertex::Vertex(const double& x, const double& y, const double& z, const double& w) :
+Point4(x, y, z, w)
 {}
 
 

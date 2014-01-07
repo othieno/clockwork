@@ -27,8 +27,35 @@
 namespace clockwork {
 namespace graphics {
 
+/**
+ * A normalised viewport. Its values are independent of the display resolution.
+ */
 struct Viewport
 {
+	/**
+	 * The viewport's horizontal origin.
+	 */
+	double x;
+	/**
+	 * The viewport's vertical origin.
+	 */
+	double y;
+	/**
+	 * The viewport's width.
+	 */
+	double width;
+	/**
+	 * The viewport's height.
+	 */
+	double height;
+	/**
+	 * Instantiate a viewport with a given origin, width and height.
+	 * @param x the viewport's origin on the horizontal plane.
+	 * @param y the viewport's origin on the vertical plane.
+	 * @param width the viewport's width.
+	 * @param height the viewport's height.
+	 */
+	Viewport(const double& x = 0, const double& y = 0, const double& width = 1, const double& height = 1);
 };
 
 } // namespace graphics

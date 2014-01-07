@@ -39,18 +39,20 @@ clockwork::Vector3::getMagnitude() const
 }
 
 
-clockwork::Vector3&
-clockwork::Vector3::normalise()
+clockwork::Vector3
+clockwork::Vector3::normalise(const clockwork::Vector3& v)
 {
-	double magnitude = getMagnitude();
+	clockwork::Vector3 output(v);
+
+	double magnitude = v.getMagnitude();
 	if (magnitude != 0)
 	{
 		magnitude = 1/magnitude;
-		i *= magnitude;
-		j *= magnitude;
-		k *= magnitude;
+		output.i *= magnitude;
+		output.j *= magnitude;
+		output.k *= magnitude;
 	}
-	return *this;
+	return output;
 }
 
 

@@ -52,9 +52,10 @@ struct Vector3
 	 */
 	double getMagnitude() const;
 	/**
-	 * Normalise this vector.
+	 * Normalise a vector.
+	 * @param v the vector to normalise.
 	 */
-	Vector3& normalise();
+	static Vector3 normalise(const Vector3& v);
 	/**
 	 * Return the cross product of two vectors.
 	 * @param v1 the first vector.

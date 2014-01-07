@@ -23,21 +23,21 @@
  */
 #pragma once
 
-#include "point3.hh"
+#include "point4.hh"
 #include "vector3.hh"
 
 
 namespace clockwork {
 namespace graphics {
 
-class Vertex : public clockwork::Point3
+class Vertex : public clockwork::Point4
 {
 public:
 	/**
 	 * TODO Explain me better.
 	 * Instantiate a Vertex at the given position.
 	 */
-	Vertex(const double& x = 0, const double& y = 0, const double& z = 0);
+	Vertex(const double& x = 0, const double& y = 0, const double& z = 0, const double& w = 1);
 	/**
 	 * Return the vertex normal.
 	 */

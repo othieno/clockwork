@@ -24,6 +24,8 @@
 #pragma once
 
 #include <string>
+#include "vertex.hh"
+#include "color.hh"
 
 
 namespace clockwork {
@@ -39,29 +41,31 @@ struct Fragment
 {
 public:
 	/**
-	 * The fragment's position in window coordinates, as well as its depth value.
+	 * The fragment's position.
 	 */
-	double x, y, z;
-	/**
-	 * The fragment's texture mapping coordinates.
-	 */
-	double u, v;
+	double x, y, z, w;
 	/**
 	 * The fragment's normal vector components.
 	 */
 	double i, j, k;
 	/**
-	 * The fragment's normalised color channels.
+	 * The fragment's texture mapping coordinates.
 	 */
-	double a, r, g, b;
+	double u, v;
+	/**
+	 * The fragment's normalised color.
+	 */
+	clockwork::graphics::ColorARGB color;
 	/**
 	 * The fragment's stencil value.
 	 */
 	uint8_t stencil;
 	/**
-	 * The default constructor.
+	 * Instantiate a fragment with given texture mapping coordinates.
+	 * @param u the U texture mapping coordinate.
+	 * @param v the V texture mapping coordinate.
 	 */
-	Fragment();
+	Fragment(const double& u = 0, const double& v = 0);
 	/**
 	 * Convert the fragment data into string format.
 	 * @param fragment the fragment to convert.

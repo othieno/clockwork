@@ -21,44 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#pragma once
-
-#include "vector3.hh"
+#include "vsd.hh"
 
 
-namespace clockwork {
+void
+clockwork::graphics::vsd::clip(std::vector<clockwork::graphics::Fragment>&)
+{}
 
-struct Point3
+
+bool
+clockwork::graphics::vsd::isBackface(const std::array<clockwork::graphics::Fragment*, 3>&)
 {
-	/**
-	 * The point's X coordinate.
-	 */
-	double x;
-	/**
-	 * The point's Y coordinate.
-	 */
-	double y;
-	/**
-	 * The point's Z coordinate.
-	 */
-	double z;
-	/**
-	 * Instantiate a point from a set of X, Y and Z coordinates.
-	 * @param x the point's X coordinate.
-	 * @param y the point's Y coordinate.
-	 * @param z the point's Z coordinate.
-	 */
-	Point3(const double& x = 0, const double& y = 0, const double& z = 0);
-	/**
-	 * Return the difference between this point and another.
-	 * @param p the point that's being substracted from this.
-	 */
-	clockwork::Vector3 operator-(const Point3& p) const;
-	/**
-	 * Multiply a 3D point by -1 (minus one) and return the result.
-	 * @param input the point to multiply.
-	 */
-	static Point3 negative(const Point3& input);
-};
-
-} // namespace clockwork
+	return false;
+}

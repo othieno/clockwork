@@ -24,11 +24,11 @@
 #include "fragment.hh"
 
 
-clockwork::graphics::Fragment::Fragment() :
-x(0), y(0), z(0),
-u(0), v(0),
+clockwork::graphics::Fragment::Fragment(const double& inu, const double& inv) :
+x(0), y(0), z(0), w(1),
+u(inu), v(inv),
 i(0), j(0), k(0),
-a(1), r(1), g(1), b(1)
+color(1, 1, 1, 1)
 {}
 
 

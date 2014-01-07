@@ -30,6 +30,8 @@
 #include "viewport.hh"
 #include "renderer.hh"
 #include "scene.viewer.hh"
+#include "fragment.hh"
+#include "framebuffer.hh"
 
 
 namespace clockwork {
@@ -58,7 +60,43 @@ public:
 	 * @see clockwork::concurrency::Task::onRun.
 	 */
 	virtual void onRun() override final;
+protected:
+	/**
+	 * The vertex program is responsible for transforming a single vertex from
+	 * model space to a fragment in clip space, where it will be clipped and
+	 * passed onto the rasteriser.
+	 * @param input the vertex to transform.
+	 * @param output the container where the output fragment will be stored.
+	 */
+	virtual void vertexProgram
+	(
+		const clockwork::graphics::Vertex& input,
+		clockwork::graphics::Fragment& output
+	);
+	/**
+	 * The rasterisation operation converts a triangular polygonal face into
+	 * a raster image (a rectangular grid of pixels).
+	 */
+	virtual void rasterise(const std::array<clockwork::graphics::Fragment*, 3>& fragments);
+	/**
+	 * TODO Make pure virtual.
+	 * The primitive assembly operation creates a point, line or polygon primitive from
+	 * fragments. In the case of polygon primitives, missing fragments in the hollows of
+	 * the polygon triangles are interpolated. These primitives are then passed to the
+	 * fragment program which determines their color.
+	 * @param fragments a set of 3 fragments that will create a primitive.
+	 */
+	virtual void primitiveAssembly(const std::array<clockwork::graphics::Fragment*, 3>& fragments);
+	/**
+	 * The fragment program calculates a color value from a given fragment's attributes.
+	 * @param fragment the fragment from which to calculate a color value.
+	 */
+	virtual uint32_t fragmentProgram(const clockwork::graphics::Fragment& fragment);
 private:
+	/**
+	 * The framebuffer.
+	 */
+	static clockwork::graphics::Framebuffer& FRAMEBUFFER;
 	/**
 	 * The renderer containing the render function that will be
 	 * applied to the rigid body.
@@ -69,9 +107,9 @@ private:
 	 */
 	const clockwork::Point3& _viewpoint;
 	/**
-	 * The viewer's viewport.
+	 * The viewport transformation.
 	 */
-	const clockwork::graphics::Viewport& _viewport;
+	const double _VIEWPORTX, _VIEWPORTY;
 	/**
 	 * The scene object's model transformation matrix.
 	 */

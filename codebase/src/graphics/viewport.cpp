@@ -22,3 +22,11 @@
  * THE SOFTWARE.
  */
 #include "viewport.hh"
+
+
+clockwork::graphics::Viewport::Viewport(const double& inx, const double& iny, const double& inw, const double& inh) :
+x(inx),
+y(iny),
+width(inw),
+height(inh)
+{}

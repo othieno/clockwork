@@ -24,6 +24,7 @@
 #pragma once
 
 #include "point3.hh"
+#include "point4.hh"
 #include <array>
 
 
@@ -68,6 +69,21 @@ public:
 	 * @param rhs the right-hand side operand.
 	 */
 	Matrix4 operator*(const Matrix4& rhs) const;
+	/**
+	 * Multiply this matrix with a 3D affine point.
+	 * @param p the point to multiply this matrix by.
+	 */
+	clockwork::Point3 operator*(const clockwork::Point3& p) const;
+	/**
+	 * Multiply this matrix with a 3D homogeneous point.
+	 * @param p the point to multiply this matrix by.
+	 */
+	clockwork::Point4 operator*(const clockwork::Point4& p) const;
+	/**
+	 * Multiply this matrix with a 3D vector.
+	 * @param v the vector to multiply this matrix by.
+	 */
+	clockwork::Vector3 operator*(const clockwork::Vector3& v) const;
 	/**
 	 * Return a 4x4 matrix filled with zeros.
 	 */

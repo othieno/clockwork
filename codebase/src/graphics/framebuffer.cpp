@@ -269,8 +269,9 @@ clockwork::graphics::Framebuffer::getOffset(const double& x, const double& y) co
 int
 clockwork::graphics::Framebuffer::fragmentPasses(const clockwork::graphics::Fragment& fragment) const
 {
-	const auto xw = static_cast<uint32_t>(std::lround(fragment.x));
-	const auto yw = static_cast<uint32_t>(std::lround(fragment.y));
+	const uint32_t xw = static_cast<uint32_t>(std::lround(fragment.x));
+	const uint32_t yw = static_cast<uint32_t>(std::lround(fragment.y));
+
 	const auto offset = getOffset(xw, yw);
 	if (offset >= 0)
 	{
@@ -287,10 +288,8 @@ clockwork::graphics::Framebuffer::fragmentPasses(const clockwork::graphics::Frag
 
 		if (Services::Graphics.isDepthTestEnabled() && !(fragment.z < _depthBuffer[offset]))
 			return -1;
-
-		return 0;
 	}
-	return -1;
+	return offset;
 }
 
 

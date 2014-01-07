@@ -73,7 +73,7 @@ clockwork::io::loadOBJ(QFile& file, clockwork::graphics::Mesh& mesh, clockwork::
 						const auto& j = tokens.takeFirst().toDouble();
 						const auto& k = tokens.takeFirst().toDouble();
 
-						normals.push_back(clockwork::Vector3(i, j, k).normalise());
+						normals.push_back(clockwork::Vector3::normalise(clockwork::Vector3(i, j, k)));
 					}
 					else if (command == "f")
 					{

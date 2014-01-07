@@ -46,19 +46,20 @@ clockwork::graphics::Mesh::Face::Face
 vertices(vs),
 uvmap(uvs)
 {
-	const auto& V0 = *vertices[0];
-	const auto& V1 = *vertices[1];
-	const auto& V2 = *vertices[2];
+	// Get the vertex affine positions.
+	const clockwork::Point3& P0 = *vertices[0];
+	const clockwork::Point3& P1 = *vertices[1];
+	const clockwork::Point3& P2 = *vertices[2];
 
 	// Calculate the face's normal.
 	auto& _normal = const_cast<clockwork::Vector3&>(normal);
-	_normal = clockwork::Vector3::cross(V1 - V0, V2 - V0);
+	_normal = clockwork::Vector3::cross(P1 - P0, P2 - P0);
 
 	// Calculate the face's center.
 	auto& _center = const_cast<clockwork::Point3&>(center);
-	_center.x = (V0.x + V1.x + V2.x) * 0.333333; // 1/3 = 0.333333
-	_center.y = (V0.y + V1.y + V2.y) * 0.333333;
-	_center.z = (V0.z + V1.z + V2.z) * 0.333333;
+	_center.x = (P0.x + P1.x + P2.x) * 0.333333; // 1/3 = 0.333333
+	_center.y = (P0.y + P1.y + P2.y) * 0.333333;
+	_center.z = (P0.z + P1.z + P2.z) * 0.333333;
 }
 
 
