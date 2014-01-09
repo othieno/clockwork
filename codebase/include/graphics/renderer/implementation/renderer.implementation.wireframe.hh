@@ -25,6 +25,7 @@
 
 #include "renderer.hh"
 #include <list>
+#include "fragment.hh"
 
 
 namespace clockwork {
@@ -47,6 +48,14 @@ public:
 		XiaolinWu
 	};
 	/**
+	 * @see Renderer::createRenderTask.
+	 */
+	virtual clockwork::concurrency::RenderTask* createRenderTask
+	(
+		const clockwork::physics::RigidBody&,
+		const clockwork::scene::Viewer&
+	) const override final;
+	/**
 	 * Return the line algorithm used during rendering.
 	 */
 	const WireframeRenderer::LineAlgorithm& getLineAlgorithm() const;
@@ -59,6 +68,18 @@ public:
 	 * @param algorithm the line algorithm to set.
 	 */
 	void setLineAlgorithm(const WireframeRenderer::LineAlgorithm& algorithm);
+	/**
+	 * Draw a line between two fragments using Bresenham's line algorithm.
+	 * @param f0 the line's origin.
+	 * @param f1 the line's endpoint.
+	 */
+	void drawlineBresenham(const clockwork::graphics::Fragment& f0, const clockwork::graphics::Fragment& f1) const;
+	/**
+	 * Draw a line between two fragments using Xiaolin Wu's line algorithm.
+	 * @param f0 the line's origin.
+	 * @param f1 the line's endpoint.
+	 */
+	void drawlineXiaolinWu(const clockwork::graphics::Fragment& f0, const clockwork::graphics::Fragment& f1) const;
 private:
 	/**
 	 * The line algorithm to use during rendering.

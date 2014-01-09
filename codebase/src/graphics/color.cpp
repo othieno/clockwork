@@ -22,6 +22,7 @@
  * THE SOFTWARE.
  */
 #include "color.hh"
+#include <algorithm>
 
 
 clockwork::graphics::ColorRGB::ColorRGB(const double& r, const double& g, const double& b) :
@@ -37,3 +38,27 @@ red(r),
 green(g),
 blue(b)
 {}
+
+
+uint32_t
+clockwork::graphics::mergeColorChannels(const double& a, const double& r, const double& g, const double& b)
+{
+	uint32_t output = 0;
+
+	// Convert the channels to integer values.
+	const auto A = static_cast<uint32_t>(std::round(std::max(0.0, a) * 255.0));
+	const auto R = static_cast<uint32_t>(std::round(std::max(0.0, r) * 255.0));
+	const auto G = static_cast<uint32_t>(std::round(std::max(0.0, g) * 255.0));
+	const auto B = static_cast<uint32_t>(std::round(std::max(0.0, b) * 255.0));
+
+	if (A > 0)
+		output = std::min(255U, A) << 24;
+	if (R > 0)
+		output |= std::min(255U, R) << 16;
+	if (G > 0)
+		output |= std::min(255U, G) <<  8;
+	if (B > 0)
+		output |= std::min(255U, B);
+
+	return output;
+}

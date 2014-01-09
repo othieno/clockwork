@@ -24,11 +24,7 @@
 #pragma once
 
 #include "task.hh"
-#include "mesh.hh"
-#include "material.hh"
 #include "rigid.body.hh"
-#include "viewport.hh"
-#include "renderer.hh"
 #include "scene.viewer.hh"
 #include "fragment.hh"
 #include "framebuffer.hh"
@@ -46,16 +42,10 @@ public:
 	/**
 	 * Instantiate a RenderTask that will apply a render function
 	 * to a given rigid body, based on a scene viewer's position.
-	 * @param renderer the renderer containing the render function.
 	 * @param body the rigid body that will be rendered.
 	 * @param viewer the scene viewer.
 	 */
-	RenderTask
-	(
-		const clockwork::graphics::Renderer& renderer,
-		const clockwork::physics::RigidBody& body,
-		const clockwork::scene::Viewer& viewer
-	);
+	RenderTask(const clockwork::physics::RigidBody& body, const clockwork::scene::Viewer& viewer);
 	/**
 	 * @see clockwork::concurrency::Task::onRun.
 	 */
@@ -76,32 +66,45 @@ protected:
 	/**
 	 * The rasterisation operation converts a triangular polygonal face into
 	 * a raster image (a rectangular grid of pixels).
+	 * @param triangle the triplet of fragments that make up the triangular polygonal face.
 	 */
-	virtual void rasterise(const std::array<clockwork::graphics::Fragment*, 3>& fragments);
+	virtual void rasterise(const std::array<clockwork::graphics::Fragment*, 3>& triangle);
 	/**
-	 * TODO Make pure virtual.
 	 * The primitive assembly operation creates a point, line or polygon primitive from
 	 * fragments. In the case of polygon primitives, missing fragments in the hollows of
 	 * the polygon triangles are interpolated. These primitives are then passed to the
 	 * fragment program which determines their color.
-	 * @param fragments a set of 3 fragments that will create a primitive.
+	 * @param triangle a set of 3 fragments that will create one or more primitives.
 	 */
-	virtual void primitiveAssembly(const std::array<clockwork::graphics::Fragment*, 3>& fragments);
+	virtual void primitiveAssembly(const std::array<clockwork::graphics::Fragment*, 3>& triangle) = 0;
 	/**
 	 * The fragment program calculates a color value from a given fragment's attributes.
 	 * @param fragment the fragment from which to calculate a color value.
 	 */
 	virtual uint32_t fragmentProgram(const clockwork::graphics::Fragment& fragment);
+	/**
+	 * @see Framebuffer::plot(2).
+	 */
+	inline void plot
+	(
+		const clockwork::graphics::Fragment& fragment,
+		const std::function<uint32_t(const clockwork::graphics::Fragment&)>& fragOP
+	)
+	{
+		FRAMEBUFFER.plot(fragment, fragOP);
+	}
+	/**
+	 * @see Framebuffer::plot(3).
+	 */
+	inline void plot(const uint32_t& x, const uint32_t& y, const double& z, const uint32_t& pixel)
+	{
+		FRAMEBUFFER.plot(x, y, z, pixel);
+	}
 private:
 	/**
 	 * The framebuffer.
 	 */
 	static clockwork::graphics::Framebuffer& FRAMEBUFFER;
-	/**
-	 * The renderer containing the render function that will be
-	 * applied to the rigid body.
-	 */
-	const clockwork::graphics::Renderer& _renderer;
 	/**
 	 * The viewer's position. This is used for lighting calculations.
 	 */

@@ -39,6 +39,14 @@ class TextureRenderer : public clockwork::graphics::PolygonRenderer
 {
 public:
 	/**
+	 * @see Renderer::createRenderTask.
+	 */
+	virtual clockwork::concurrency::RenderTask* createRenderTask
+	(
+		const clockwork::physics::RigidBody&,
+		const clockwork::scene::Viewer&
+	) const override final;
+	/**
 	 * Set the texture filter to use.
 	 * @param type the type of texture filter to set.
 	 */

@@ -23,12 +23,49 @@
  */
 #include "model3d.hh"
 
+clockwork::graphics::Model3D::Model3D()
+{}
+
 
 clockwork::graphics::Model3D::Model3D
 (
-	const clockwork::graphics::Mesh& iMesh,
-	const clockwork::graphics::Material& iMaterial
+	const std::vector<clockwork::graphics::Vertex>& vertices,
+	const std::vector<clockwork::graphics::Face>& faces,
+	const clockwork::graphics::Material& material
 ) :
-mesh(iMesh),
-material(iMaterial)
+_vertices(vertices),
+_faces(faces),
+_material(material)
 {}
+
+
+const std::vector<clockwork::graphics::Vertex>&
+clockwork::graphics::Model3D::getVertices() const
+{
+	return _vertices;
+}
+
+
+const std::vector<clockwork::graphics::Face>&
+clockwork::graphics::Model3D::getFaces() const
+{
+	return _faces;
+}
+
+
+void
+clockwork::graphics::Model3D::addFace
+(
+	const std::array<const uint32_t, 3>& indices,
+	const std::array<const clockwork::graphics::Face::TextureCoordinates, 3>& textureCoordinates
+)
+{
+	_faces.push_back(clockwork::graphics::Face(*this, indices, textureCoordinates));
+}
+
+
+const clockwork::graphics::Material&
+clockwork::graphics::Model3D::getMaterial() const
+{
+	return _material;
+}

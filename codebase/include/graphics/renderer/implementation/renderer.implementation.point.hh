@@ -36,6 +36,15 @@ class RendererFactory;
 
 class PointRenderer : public clockwork::graphics::Renderer
 {
+public:
+	/**
+	 * @see Renderer::createRenderTask.
+	 */
+	virtual clockwork::concurrency::RenderTask* createRenderTask
+	(
+		const clockwork::physics::RigidBody&,
+		const clockwork::scene::Viewer&
+	) const override final;
 private:
 	/**
 	 * The default constructor. A renderer can only be instantiated by the renderer

@@ -101,7 +101,7 @@ public:
 	 * @param fragment the fragment to write to the framebuffer.
 	 * @param fragmentOperation the operation that converts the fragment into a pixel.
 	 */
-	void write
+	void plot
 	(
 		const clockwork::graphics::Fragment& fragment,
 		const std::function<uint32_t(const clockwork::graphics::Fragment&)>& fragmentOperation
@@ -113,7 +113,7 @@ public:
 	 * @param depth the depth value to write.
 	 * @param pixel the pixel value to write.
 	 */
-	void write(const uint32_t& x, const uint32_t& y, const double& depth, const uint32_t& pixel);
+	void plot(const uint32_t& x, const uint32_t& y, const double& depth, const uint32_t& pixel);
 	/**
 	 * Return the framebuffer's width.
 	 */

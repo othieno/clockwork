@@ -39,15 +39,12 @@ _model3D(model3D)
 void
 clockwork::physics::RigidBody::render
 (
-	clockwork::graphics::Renderer& renderer,
+	const clockwork::graphics::Renderer& renderer,
 	const clockwork::scene::Viewer& viewer
 ) const
 {
 	if (!isPruned() && _model3D != nullptr)
-	{
-		auto* const task = new clockwork::concurrency::RenderTask(renderer, *this, viewer);
-		clockwork::system::Services::Concurrency.submitTask(task);
-	}
+		clockwork::system::Services::Concurrency.submitTask(renderer.createRenderTask(*this, viewer));
 }
 
 

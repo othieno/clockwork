@@ -28,15 +28,14 @@
 
 
 clockwork::Error
-clockwork::io::loadOBJ(QFile& file, clockwork::graphics::Mesh& mesh, clockwork::graphics::Material&)
+clockwork::io::loadOBJ(QFile& file, clockwork::graphics::Model3D& model)
 {
 	clockwork::Error error = clockwork::Error::None;
 	if (file.open(QIODevice::ReadOnly))
 	{
-		auto& vertices = const_cast<std::vector<clockwork::graphics::Vertex>&>(mesh.getVertices());
-		auto& faces = const_cast<std::vector<clockwork::graphics::Mesh::Face>&>(mesh.getFaces());
+		auto& vertices = const_cast<std::vector<clockwork::graphics::Vertex>&>(model.getVertices());
 		std::vector<clockwork::Vector3> normals;
-		std::vector<clockwork::graphics::Mesh::Face::UVMap> uvmaps;
+		std::vector<clockwork::graphics::Face::TextureCoordinates> texcoords;
 
 		QTextStream stream(&file);
 		stream.skipWhiteSpace();
@@ -65,7 +64,7 @@ clockwork::io::loadOBJ(QFile& file, clockwork::graphics::Mesh& mesh, clockwork::
 						const auto& u = tokens.takeFirst().toDouble();
 						const auto& v = 1.0 - tokens.takeFirst().toDouble();
 
-						uvmaps.push_back(clockwork::graphics::Mesh::Face::UVMap(u, v));
+						texcoords.push_back(clockwork::graphics::Face::TextureCoordinates(u, v));
 					}
 					else if (command == "vn")
 					{
@@ -73,74 +72,77 @@ clockwork::io::loadOBJ(QFile& file, clockwork::graphics::Mesh& mesh, clockwork::
 						const auto& j = tokens.takeFirst().toDouble();
 						const auto& k = tokens.takeFirst().toDouble();
 
+						// The vector is normalised to make sure it is a unit.
 						normals.push_back(clockwork::Vector3::normalise(clockwork::Vector3(i, j, k)));
 					}
 					else if (command == "f")
 					{
-						const auto& nVertices = vertices.size();
-						const auto& nUVs = uvmaps.size();
-						const auto& nNormals = normals.size();
-
+						// Keep track of the current vertex so a normal can be assigned to it.
 						clockwork::graphics::Vertex* currentVertex = nullptr;
-						std::vector<const clockwork::graphics::Vertex*> localVertices;
-						std::vector<const clockwork::graphics::Mesh::Face::UVMap*> localUVMap;
+
+						const auto& vertexCount = vertices.size();
+						const auto& texcoordCount = texcoords.size();
+						const auto& normalCount = normals.size();
+
+						std::vector<uint32_t> faceIndices;
+						std::vector<clockwork::graphics::Face::TextureCoordinates*> faceTexcoords;
 
 						while (!tokens.empty())
 						{
 							// Split the token into one or more indices.
-							auto indices = tokens.takeFirst().split("/");
+							auto tokenisedIndices = tokens.takeFirst().split("/");
 
 							// Get the vertex from its index.
-							int index = indices.takeFirst().toInt() - 1;
+							int index = tokenisedIndices.takeFirst().toInt() - 1;
 							if (index < 0)
-								index += nVertices + 1;
+								index += vertexCount + 1;
+							faceIndices.push_back(index);
+
+							// Store the current vertex.
 							currentVertex = &vertices[index];
-							localVertices.push_back(currentVertex);
 
 							// Get the texture coordinate if it's given.
-							if (!indices.empty())
+							if (!tokenisedIndices.empty())
 							{
 								// Since texture coordinates are optional, make sure we're not
 								// parsing an empty string.
-								const auto& indexString = indices.takeFirst();
-								if (!indexString.isEmpty())
+								const auto& tokenisedIndex = tokenisedIndices.takeFirst();
+								if (!tokenisedIndex.isEmpty())
 								{
-									index = indexString.toInt() - 1;
+									index = tokenisedIndex.toInt() - 1;
 									if (index < 0)
-										index += nUVs + 1;
+										index += texcoordCount + 1;
 
-									localUVMap.push_back(&uvmaps[index]);
+									faceTexcoords.push_back(&texcoords[index]);
 								}
 							}
-
 							// Set the vertex normal if it's specified.
-							if (!indices.empty() && currentVertex != nullptr)
+							if (!tokenisedIndices.empty() && currentVertex != nullptr)
 							{
-								index = indices.takeFirst().toInt() - 1;
+								index = tokenisedIndices.takeFirst().toInt() - 1;
 								if (index < 0)
-									index += nNormals + 1;
+									index += normalCount + 1;
 
 								currentVertex->setNormal(normals[index]);
 							}
 						}
-
 						// Create polygonal faces from the vertices and mapping coordinates we obtained.
 						// If there're more than three vertices, triangulate.
-						for (unsigned int i = 0; i < localVertices.size() - 2; ++i)
+						for (unsigned int i = 0; i < faceIndices.size() - 2; ++i)
 						{
-							std::array<const clockwork::graphics::Vertex*, 3> faceVertices =
-							{
-								localVertices[0],
-								localVertices[i + 1],
-								localVertices[i + 2]
-							};
-							std::array<const clockwork::graphics::Mesh::Face::UVMap, 3> faceUVMap =
-							{
-								*localUVMap[0],
-								*localUVMap[i + 1],
-								*localUVMap[i + 2]
-							};
-							faces.push_back(clockwork::graphics::Mesh::Face(faceVertices, faceUVMap));
+							model.addFace
+							(
+								{
+									faceIndices[0],
+									faceIndices[i + 1],
+									faceIndices[i + 2]
+								},
+								{
+									*faceTexcoords[0],
+									*faceTexcoords[i + 1],
+									*faceTexcoords[i + 2]
+								}
+							);
 						}
 					}
 					else if (command == "mtllib")

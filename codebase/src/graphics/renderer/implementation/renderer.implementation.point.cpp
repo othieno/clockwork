@@ -22,8 +22,20 @@
  * THE SOFTWARE.
  */
 #include "renderer.implementation.point.hh"
+#include "point.render.task.hh"
 
 
 clockwork::graphics::PointRenderer::PointRenderer() :
 Renderer(clockwork::graphics::Renderer::Type::Point)
 {}
+
+
+clockwork::concurrency::RenderTask*
+clockwork::graphics::PointRenderer::createRenderTask
+(
+	const clockwork::physics::RigidBody& body,
+	const clockwork::scene::Viewer& viewer
+) const
+{
+	return new clockwork::concurrency::PointRenderTask(body, viewer);
+}

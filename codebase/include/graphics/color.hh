@@ -23,9 +23,20 @@
  */
 #pragma once
 
+#include <cstdint>
+
 
 namespace clockwork {
 namespace graphics {
+
+/**
+ * Merge normalised alpha, red, green and blue color channels into one 32-bit integer.
+ * @param alpha the color's alpha channel.
+ * @param red the color's red channel.
+ * @param green the color's green channel.
+ * @param blue the color's blue channel.
+ */
+uint32_t mergeColorChannels(const double& alpha, const double& red, const double& green, const double& blue);
 
 struct ColorRGB
 {
@@ -49,6 +60,13 @@ struct ColorRGB
 	 * @param blue the blue channel.
 	 */
 	ColorRGB(const double& red = 1, const double& green = 1, const double& blue = 1);
+	/**
+	 * Merge the red, green and blue channels into one 32-bit integer.
+	 */
+	inline uint32_t merge() const
+	{
+		return mergeColorChannels(1.0, red, green, blue);
+	}
 };
 
 struct ColorARGB
@@ -78,6 +96,13 @@ struct ColorARGB
 	 * @param blue the blue channel.
 	 */
 	ColorARGB(const double& alpha = 1, const double& red = 1, const double& green = 1, const double& blue = 1);
+	/**
+	 * Merge the alpha, red, green and blue channels into one 32-bit integer.
+	 */
+	inline uint32_t merge() const
+	{
+		return mergeColorChannels(alpha, red, green, blue);
+	}
 };
 
 } // namespace graphics

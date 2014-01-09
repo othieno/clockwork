@@ -30,6 +30,7 @@ clockwork::system::AssetManager::AssetManager()
 {}
 
 
+//TODO Use smart pointers.
 const clockwork::graphics::Model3D*
 clockwork::system::AssetManager::loadModel3D(const std::string& filename)
 {
@@ -47,22 +48,25 @@ clockwork::system::AssetManager::loadModel3D(const std::string& filename)
 		else
 #endif // __ENABLE_ASSET_HASHTABLE
 		{
-			clockwork::graphics::Mesh mesh;
-			clockwork::graphics::Material material;
-
-			// Load the OBJ file.
-			QFile file(key);
-			const auto& error = clockwork::io::loadOBJ(file, mesh, material);
-			if (error == clockwork::Error::None)
+			model = new clockwork::graphics::Model3D;
+			if (model != nullptr)
 			{
-				// Create the asset and store it.
-				model = new clockwork::graphics::Model3D(mesh, material);
+				// Load the OBJ file.
+				QFile file(key);
+				const auto& error = clockwork::io::loadOBJ(file, *model);
+				if (error == clockwork::Error::None)
+				{
 #ifdef __ENABLE_ASSET_HASHTABLE
-				insert(key, model);
+					insert(key, model);
 #endif // __ENABLE_ASSET_HASHTABLE
+				}
+				else
+				{
+					delete model;
+					model = nullptr;
+					std::cout << error << std::endl;
+				}
 			}
-			else
-				std::cout << error << std::endl;
 		}
 	}
 	return model;

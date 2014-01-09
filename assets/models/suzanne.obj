@@ -1,7 +1,7 @@
 # Blender3D v249 OBJ File: suzanne.blend
 # www.blender3d.org
 
-                     mtllib suzanne.mtl
+mtllib suzanne.mtl
 
 v 0.437500 0.164063 0.765625
 v -0.437500 0.164063 0.765625

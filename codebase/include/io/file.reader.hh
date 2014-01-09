@@ -25,25 +25,18 @@
 
 #include "error.hh"
 #include <QFile>
-#include "mesh.hh"
-#include "material.hh"
+#include "model3d.hh"
 
 
 namespace clockwork {
 namespace io {
 
 /**
- * Load the content of an OBJ file and store it in the given mesh and material containers.
+ * Load the content of an OBJ file and store it in the given 3D model container.
  * @param file the file containing the data to load.
- * @param outputMesh the container where mesh data will be stored.
- * @param outputMaterial the container where material data will be stored.
+ * @param outputModel the container where mesh and material data will be stored.
  */
-clockwork::Error loadOBJ
-(
-	QFile& file,
-	clockwork::graphics::Mesh& outputMesh,
-	clockwork::graphics::Material& outputMaterial
-);
+clockwork::Error loadOBJ(QFile& file, clockwork::graphics::Model3D& outputModel);
 
 } // namespace io
 } // namespace clockwork

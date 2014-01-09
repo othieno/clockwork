@@ -100,7 +100,11 @@ public:
 	 *        during the render task.
 	 * @param viewer the viewer containing the scene's point of view.
 	 */
-	virtual void render(clockwork::graphics::Renderer& renderer, const clockwork::scene::Viewer& viewer) const;
+	virtual void render
+	(
+		const clockwork::graphics::Renderer& renderer,
+		const clockwork::scene::Viewer& viewer
+	) const;
 protected:
 	/**
 	 * Instantiate a node with a given name.

@@ -67,6 +67,13 @@ public:
 	 */
 	Fragment(const double& u = 0, const double& v = 0);
 	/**
+	 * Interpolate the value of a fragment in between two other fragments.
+	 * @param start the first fragment.
+	 * @param end the second fragment.
+	 * @param p the interpolant.
+	 */
+	static Fragment interpolate(const Fragment& start, const Fragment& end, const double& p);
+	/**
 	 * Convert the fragment data into string format.
 	 * @param fragment the fragment to convert.
 	 */

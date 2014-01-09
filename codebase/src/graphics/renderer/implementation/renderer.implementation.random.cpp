@@ -22,8 +22,20 @@
  * THE SOFTWARE.
  */
 #include "renderer.implementation.random.hh"
+#include "random.render.task.hh"
 
 
 clockwork::graphics::RandomRenderer::RandomRenderer() :
 PolygonRenderer(clockwork::graphics::Renderer::Type::Random)
 {}
+
+
+clockwork::concurrency::RenderTask*
+clockwork::graphics::RandomRenderer::createRenderTask
+(
+	const clockwork::physics::RigidBody& body,
+	const clockwork::scene::Viewer& viewer
+) const
+{
+	return new clockwork::concurrency::RandomRenderTask(body, viewer);
+}

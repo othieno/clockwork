@@ -23,73 +23,41 @@
  */
 #pragma once
 
+#include "render.task.hh"
+
 
 namespace clockwork {
+namespace concurrency {
 
 /**
- * @see render.task.hh
+ * A wireframe renderer's render task.
  */
-namespace concurrency { class RenderTask; }
-
-/**
- * @see rigid.body.hh
- */
-namespace physics { class RigidBody; }
-
-/**
- * @see scene.viewer.hh
- */
-namespace scene { class Viewer; }
-
-
-namespace graphics {
-
-class Renderer
+class WireframeRenderTask : public clockwork::concurrency::RenderTask
 {
 public:
 	/**
-	 * Types of renderers.
+	 * Instantiate the task with a given rigid body and scene viewer, that uses
+	 * a specified line drawing function when rendering lines between two fragments.
+	 * @param body the rigid body containing the 3D model and transformation matrices.
+	 * @param viewer the scene's point of view.
+	 * @param drawline a function that draws a line between two fragments.
 	 */
-	enum class Type
-	{
-		Point,
-		Wireframe,
-		Random,
-		Depth,
-		Normals,
-		Texture,
-		Constant,
-		Phong,
-		Cel,
-		Bump,
-		Deferred
-	};
-	/**
-	 * Return the renderer's type.
-	 */
-	const Renderer::Type& getType() const;
-	/**
-	 * Create a new render task.
-	 * @param body the rigid body that contains the 3D model and transformation matrices.
-	 * @param viewer the viewer containing the scene's point of view.
-	 */
-	virtual clockwork::concurrency::RenderTask* createRenderTask
+	WireframeRenderTask
 	(
 		const clockwork::physics::RigidBody& body,
-		const clockwork::scene::Viewer& viewer
-
-	) const = 0;
-protected:
+		const clockwork::scene::Viewer& viewer,
+		const std::function<void(const clockwork::graphics::Fragment&, const clockwork::graphics::Fragment&)> drawline
+	);
 	/**
-	 * Instantiate a renderer with a given type.
+	 * @see RenderTask::primitiveAssembly.
 	 */
-	Renderer(const Renderer::Type& type);
+	virtual void primitiveAssembly(const std::array<clockwork::graphics::Fragment*, 3>& triangle) override final;
 private:
 	/**
-	 * This renderer's type.
+	 * The line drawing function.
 	 */
-	const Renderer::Type _type;
+	const std::function<void(const clockwork::graphics::Fragment&, const clockwork::graphics::Fragment&)> _drawline;
 };
 
-} // namespace graphics
+} // namespace concurrency
 } // namespace clockwork

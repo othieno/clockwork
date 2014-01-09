@@ -33,12 +33,10 @@ clockwork::system::Services::Graphics.getFramebuffer();
 
 clockwork::concurrency::RenderTask::RenderTask
 (
-	const clockwork::graphics::Renderer& renderer,
 	const clockwork::physics::RigidBody& body,
 	const clockwork::scene::Viewer& viewer
 ) :
 Task(static_cast<int>(clockwork::concurrency::TaskPriority::GraphicsRenderTask)),
-_renderer(renderer),
 _viewpoint(viewer.getPosition()),
 _VIEWPORTX((viewer.getViewport().width *  0.5) * FRAMEBUFFER.getWidth()),
 _VIEWPORTY((viewer.getViewport().height * 0.5) * FRAMEBUFFER.getHeight()),
@@ -61,23 +59,26 @@ clockwork::concurrency::RenderTask::onRun()
 		_MODELVIEWPROJECTION = _VIEWPROJECTION * _MODEL;
 
 		// Process the 3D model.
-		for (const auto& face : _model3D->mesh.getFaces())
+		for (const auto& face : _model3D->getFaces())
 		{
-			// A vector of potentially visible fragments.
+			// The face's vertices.
+			const auto& vertices = face.getVertices();
+			const auto& texcoords = face.getTextureCoordinates();
+
+			// A vector to store potentially visible fragments.
 			std::vector<clockwork::graphics::Fragment> fragments;
 
 			// Each face has a triplet of vertices and mapping coordinates.
 			// Convert each vertex into a fragment.
 			for (unsigned int i = 0; i < 3; ++i)
 			{
-				const auto& vertex = *face.vertices[i];
-				const auto& uvmap = face.uvmap[i];
-
 				// Create a new fragment and set its mapping coordinates.
-				clockwork::graphics::Fragment fragment(uvmap.u, uvmap.v);
+				const auto& texcoord = texcoords[i];
+				clockwork::graphics::Fragment fragment(texcoord.u, texcoord.v);
 
 				// Apply the vertex program and store its result to the newly
 				// created fragment. Then list the fragment as potentially visible.
+				const auto& vertex = *vertices[i];
 				vertexProgram(vertex, fragment);
 				fragments.push_back(fragment);
 			}
@@ -145,17 +146,6 @@ clockwork::concurrency::RenderTask::rasterise(const std::array<clockwork::graphi
 		}
 		primitiveAssembly(fragments);
 	}
-}
-
-
-void
-clockwork::concurrency::RenderTask::primitiveAssembly(const std::array<clockwork::graphics::Fragment*, 3>& fragments)
-{
-	const auto fragmentOperation =
-	std::bind(&clockwork::concurrency::RenderTask::fragmentProgram, this, std::placeholders::_1);
-
-	for (auto* const fragment : fragments)
-		FRAMEBUFFER.write(*fragment, fragmentOperation);
 }
 
 

@@ -47,7 +47,7 @@ public:
 	 */
 	virtual void render
 	(
-		clockwork::graphics::Renderer& renderer,
+		const clockwork::graphics::Renderer& renderer,
 		const clockwork::scene::Viewer& viewer
 	) const override final;
 	/**

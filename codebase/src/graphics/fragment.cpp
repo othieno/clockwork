@@ -26,10 +26,44 @@
 
 clockwork::graphics::Fragment::Fragment(const double& inu, const double& inv) :
 x(0), y(0), z(0), w(1),
-u(inu), v(inv),
 i(0), j(0), k(0),
-color(1, 1, 1, 1)
+u(inu), v(inv),
+color(1, 1, 1, 1),
+stencil(0)
 {}
+
+
+clockwork::graphics::Fragment
+clockwork::graphics::Fragment::interpolate
+(
+	const clockwork::graphics::Fragment& start,
+	const clockwork::graphics::Fragment& end,
+	const double& p
+)
+{
+	const double pp = 1 - p;
+	clockwork::graphics::Fragment output;
+
+	output.x = (p * start.x) + (pp * end.x);
+	output.y = (p * start.y) + (pp * end.y);
+	output.z = (p * start.z) + (pp * end.z);
+
+	output.u = (p * start.u) + (pp * end.u);
+	output.v = (p * start.v) + (pp * end.v);
+
+	output.i = (p * start.i) + (pp * end.i);
+	output.j = (p * start.j) + (pp * end.j);
+	output.k = (p * start.k) + (pp * end.k);
+
+	output.color.alpha = (p * start.color.alpha) + (pp * end.color.alpha);
+	output.color.red = (p * start.color.red) + (pp * end.color.red);
+	output.color.green = (p * start.color.green) + (pp * end.color.green);
+	output.color.blue = (p * start.color.blue) + (pp * end.color.blue);
+
+	output.stencil = (p * start.stencil) + (pp * end.stencil);
+
+	return output;
+}
 
 
 std::string

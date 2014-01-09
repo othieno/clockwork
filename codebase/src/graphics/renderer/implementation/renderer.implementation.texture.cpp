@@ -23,6 +23,7 @@
  */
 #include "renderer.implementation.texture.hh"
 #include "texture.filter.factory.hh"
+#include "texture.render.task.hh"
 
 
 clockwork::graphics::TextureRenderer::TextureRenderer() :
@@ -38,4 +39,15 @@ clockwork::graphics::TextureRenderer::setTextureFilter(const clockwork::graphics
 		return;
 
 	_textureFilter = clockwork::graphics::TextureFilterFactory::getUniqueInstance().get(type);
+}
+
+
+clockwork::concurrency::RenderTask*
+clockwork::graphics::TextureRenderer::createRenderTask
+(
+	const clockwork::physics::RigidBody& body,
+	const clockwork::scene::Viewer& viewer
+) const
+{
+	return new clockwork::concurrency::TextureRenderTask(body, viewer);
 }

@@ -24,34 +24,69 @@
 #pragma once
 
 #include "asset.hh"
-#include "mesh.hh"
+#include "face.hh"
 #include "material.hh"
+#include <vector>
 
 
 namespace clockwork {
 namespace graphics {
 
-struct Model3D : public clockwork::io::Asset
+class Model3D : public clockwork::io::Asset
 {
+public:
 	/**
-	 * The model's mesh data.
+	 * The default constructor.
 	 */
-	const clockwork::graphics::Mesh mesh;
+	Model3D();
 	/**
-	 * The model's material data.
-	 */
-	const clockwork::graphics::Material material;
-	/**
-	 * Instantiate a Model3D with given mesh and material data.
-	 * @param mesh the model's mesh data.
+	 * Instantiate a 3D model with a given set of vertices, polygonal faces
+	 * and a material.
+	 * @param vertices the model's vertex data.
+	 * @param faces the model's polygonal face data.
 	 * @param material the model's material data.
 	 */
-	Model3D(const clockwork::graphics::Mesh& mesh, const clockwork::graphics::Material& material);
+	Model3D
+	(
+		const std::vector<clockwork::graphics::Vertex>& vertices,
+		const std::vector<clockwork::graphics::Face>& faces,
+		const clockwork::graphics::Material& material
+	);
 	/**
-	 * Instantiate a Model3D with given mesh data.
-	 * @param mesh the model's mesh data.
+	 * Return the model's vertex data.
 	 */
-	Model3D(const clockwork::graphics::Mesh& mesh);
+	const std::vector<clockwork::graphics::Vertex>& getVertices() const;
+	/**
+	 * Return the model's polygonal face data.
+	 */
+	const std::vector<clockwork::graphics::Face>& getFaces() const;
+	/**
+	 * Add a polygonal face.
+	 * @param indices the face's index list.
+	 * @param textureCoordinates the face's texture mapping coordinates.
+	 */
+	void addFace
+	(
+		const std::array<const uint32_t, 3>& indices,
+		const std::array<const clockwork::graphics::Face::TextureCoordinates, 3>& textureCoordinates
+	);
+	/**
+	 * Return the model's material data.
+	 */
+	const clockwork::graphics::Material& getMaterial() const;
+private:
+	/**
+	 * The 3D model's vertex data.
+	 */
+	std::vector<clockwork::graphics::Vertex> _vertices;
+	/**
+	 * The 3D model's polygonal face data.
+	 */
+	std::vector<clockwork::graphics::Face> _faces;
+	/**
+	 * The 3D model's material data.
+	 */
+	clockwork::graphics::Material _material;
 };
 
 } // namespace graphics

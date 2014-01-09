@@ -21,75 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#pragma once
+#include "point.render.task.hh"
 
 
-namespace clockwork {
-
-/**
- * @see render.task.hh
- */
-namespace concurrency { class RenderTask; }
-
-/**
- * @see rigid.body.hh
- */
-namespace physics { class RigidBody; }
-
-/**
- * @see scene.viewer.hh
- */
-namespace scene { class Viewer; }
+clockwork::concurrency::PointRenderTask::PointRenderTask
+(
+	const clockwork::physics::RigidBody& body,
+	const clockwork::scene::Viewer& viewer
+) :
+RenderTask(body, viewer)
+{}
 
 
-namespace graphics {
-
-class Renderer
+void
+clockwork::concurrency::PointRenderTask::primitiveAssembly
+(
+	const std::array<clockwork::graphics::Fragment*, 3>& triangle
+)
 {
-public:
-	/**
-	 * Types of renderers.
-	 */
-	enum class Type
-	{
-		Point,
-		Wireframe,
-		Random,
-		Depth,
-		Normals,
-		Texture,
-		Constant,
-		Phong,
-		Cel,
-		Bump,
-		Deferred
-	};
-	/**
-	 * Return the renderer's type.
-	 */
-	const Renderer::Type& getType() const;
-	/**
-	 * Create a new render task.
-	 * @param body the rigid body that contains the 3D model and transformation matrices.
-	 * @param viewer the viewer containing the scene's point of view.
-	 */
-	virtual clockwork::concurrency::RenderTask* createRenderTask
-	(
-		const clockwork::physics::RigidBody& body,
-		const clockwork::scene::Viewer& viewer
+	const auto fragmentOperation =
+	std::bind(&clockwork::concurrency::PointRenderTask::fragmentProgram, this, std::placeholders::_1);
 
-	) const = 0;
-protected:
-	/**
-	 * Instantiate a renderer with a given type.
-	 */
-	Renderer(const Renderer::Type& type);
-private:
-	/**
-	 * This renderer's type.
-	 */
-	const Renderer::Type _type;
-};
-
-} // namespace graphics
-} // namespace clockwork
+	for (auto* const fragment : triangle)
+		plot(*fragment, fragmentOperation);
+}

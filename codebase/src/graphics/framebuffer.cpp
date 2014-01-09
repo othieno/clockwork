@@ -134,7 +134,7 @@ clockwork::graphics::Framebuffer::setAccumulationBufferClearValue(const uint32_t
 
 
 void
-clockwork::graphics::Framebuffer::write
+clockwork::graphics::Framebuffer::plot
 (
 	const clockwork::graphics::Fragment& fragment,
 	const std::function<uint32_t(const clockwork::graphics::Fragment&)>& fop
@@ -152,7 +152,7 @@ clockwork::graphics::Framebuffer::write
 
 
 void
-clockwork::graphics::Framebuffer::write
+clockwork::graphics::Framebuffer::plot
 (
 	const uint32_t& x,
 	const uint32_t& y,
