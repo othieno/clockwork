@@ -55,6 +55,7 @@ References
 - [__Event-Driven Programming: Introduction, Tutorial, History v0.2__][ferg] [PDF], Stephen Ferg.
 - [__FXAA white paper__][lottes] [PDF], Timothy Lottes.
 - [__The Inefficiency of C++ Fact or Fiction?__][lundgren-frimanson] [PDF], Anders Lundgren & Lotta Frimanson.
+- [__Data alignment: Straighten up and fly right__][rentzsch], Jonathan Rentzsch
 
 [abrash]: https://github.com/supranove/GPBB
 [intel]: /documentation/research/Designing%20the%20Framework%20of%20a%20Parallel%20Game%20Engine.pdf?raw=true
@@ -62,4 +63,5 @@ References
 [dalheimer]: /documentation/research/Qt%20vs.%20Java%20-%20A%20Comparison%20of%20Qt%20and%20Java%20for%20Large-scale%2C%20Industrial-strength%20GUI%20Development.pdf?raw=true
 [ferg]: /documentation/research/Event-Driven%20Programming.pdf?raw=true
 [lottes]: /documentation/research/FXAA%20white%20paper.pdf?raw=true
-[lundgren-frimanson]:  /documentation/research/The%20Inefficiency%20of%20C++%20Fact%20or%20Fiction?.pdf?raw=true
+[lundgren-frimanson]: /documentation/research/The%20Inefficiency%20of%20C++%20Fact%20or%20Fiction?.pdf?raw=true
+[rentzsch]: /documentation/research/
