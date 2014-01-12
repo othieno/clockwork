@@ -21,27 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#pragma once
-
-#include "fragment.hh"
-#include <vector>
-#include <array>
+#include "numerical.hh"
+#include <cmath>
+#include <limits>
 
 
-namespace clockwork {
-namespace graphics {
-namespace vsd {
-
-/**
- * This file contains functions that perform visible surface determination (VSD).
- */
-
-/**
- * TODO Explain me.
- */
-void clip(std::vector<clockwork::graphics::Fragment>& fragments);
-bool isBackface(std::array<const clockwork::graphics::Fragment*, 3>& fragments);
-
-} // namespace vsd
-} // namespace graphics
-} // namespace clockwork
+// TODO Study this and make sure its correct!
+bool
+clockwork::fequal(const double& a, const double& b)
+{
+	return std::fabs(a - b) < std::numeric_limits<double>::epsilon();
+}

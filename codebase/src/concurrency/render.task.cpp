@@ -27,7 +27,7 @@
 #include "services.hh"
 
 
-clockwork::graphics::Framebuffer& clockwork::concurrency::RenderTask::FRAMEBUFFER =
+clockwork::graphics::Framebuffer& clockwork::concurrency::RenderTask::_FRAMEBUFFER =
 clockwork::system::Services::Graphics.getFramebuffer();
 
 
@@ -38,8 +38,8 @@ clockwork::concurrency::RenderTask::RenderTask
 ) :
 Task(static_cast<int>(clockwork::concurrency::TaskPriority::GraphicsRenderTask)),
 _viewpoint(viewer.getPosition()),
-_VIEWPORTX((viewer.getViewport().width *  0.5) * FRAMEBUFFER.getWidth()),
-_VIEWPORTY((viewer.getViewport().height * 0.5) * FRAMEBUFFER.getHeight()),
+_VIEWPORTX((viewer.getViewport().width *  0.5) * _FRAMEBUFFER.getWidth()),
+_VIEWPORTY((viewer.getViewport().height * 0.5) * _FRAMEBUFFER.getHeight()),
 _MODEL(body.getModelMatrix()),
 _VIEW(viewer.getViewMatrix()),
 _PROJECTION(viewer.getProjectionMatrix()),
@@ -101,7 +101,15 @@ clockwork::concurrency::RenderTask::onRun()
 
 			// Rasterise triangular polygonal faces created from the fragment list.
 			for (unsigned int i = 0; i < fragments.size() - 2; ++i)
-				rasterise({&fragments[i], &fragments[i + 1], &fragments[i + 2]});
+			{
+				std::array<const clockwork::graphics::Fragment*, 3> triangle =
+				{
+					&fragments[i],
+					&fragments[i + 1],
+					&fragments[i + 2]
+				};
+				rasterise(triangle);
+			}
 		}
 	}
 }
@@ -130,27 +138,27 @@ clockwork::concurrency::RenderTask::vertexProgram
 
 
 void
-clockwork::concurrency::RenderTask::rasterise(const std::array<clockwork::graphics::Fragment*, 3>& fragments)
+clockwork::concurrency::RenderTask::rasterise(std::array<const clockwork::graphics::Fragment*, 3>& triangle)
 {
 	// Perform backface culling. If the polygon isn't discarded, convert its position
 	// from normalised device coordinate space to viewport space then pass it on to
 	// the primitive assembly step.
-	if (!clockwork::graphics::vsd::isBackface(fragments))
+	if (!clockwork::graphics::vsd::isBackface(triangle))
 	{
-		for (auto& immutableFragment : fragments)
+		for (auto* immutableFragment : triangle)
 		{
 			auto* fragment = const_cast<clockwork::graphics::Fragment*>(immutableFragment);
 
 			fragment->x = (fragment->x + 1.0) * _VIEWPORTX;
 			fragment->y = (fragment->y + 1.0) * _VIEWPORTY;
 		}
-		primitiveAssembly(fragments);
+		primitiveAssembly(triangle);
 	}
 }
 
 
 uint32_t
-clockwork::concurrency::RenderTask::fragmentProgram(const clockwork::graphics::Fragment&)
+clockwork::concurrency::RenderTask::fragmentProgram(const clockwork::graphics::Fragment& fragment)
 {
-	return 0xffffffff;
+	return fragment.color.merge();
 }

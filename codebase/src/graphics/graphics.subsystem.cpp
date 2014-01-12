@@ -94,5 +94,5 @@ clockwork::graphics::GraphicsSubsystem::isStencilTestEnabled() const
 bool
 clockwork::graphics::GraphicsSubsystem::isDepthTestEnabled() const
 {
-	return false;
+	return true;
 }

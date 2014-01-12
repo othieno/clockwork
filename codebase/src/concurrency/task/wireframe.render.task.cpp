@@ -38,9 +38,16 @@ _drawline(dl)
 void
 clockwork::concurrency::WireframeRenderTask::primitiveAssembly
 (
-	const std::array<clockwork::graphics::Fragment*, 3>& triangle
+	std::array<const clockwork::graphics::Fragment*, 3>& triangle
 )
 {
 	for (unsigned int i = 0; i < 3; ++i)
 		_drawline(*triangle[i], *triangle[(i + 1) % 3]);
+}
+
+
+std::function<uint32_t(const clockwork::graphics::Fragment&)>
+clockwork::concurrency::WireframeRenderTask::getFragmentOperation()
+{
+	return std::bind(&clockwork::concurrency::WireframeRenderTask::fragmentProgram, this, std::placeholders::_1);
 }

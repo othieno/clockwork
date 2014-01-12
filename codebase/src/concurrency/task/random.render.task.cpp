@@ -29,5 +29,35 @@ clockwork::concurrency::RandomRenderTask::RandomRenderTask
 	const clockwork::physics::RigidBody& body,
 	const clockwork::scene::Viewer& viewer
 ) :
-PolygonRenderTask(body, viewer)
+PolygonRenderTask(body, viewer),
+_generateColorCounter(3),
+_color(clockwork::graphics::ColorARGB::getRandom())
 {}
+
+
+void
+clockwork::concurrency::RandomRenderTask::vertexProgram
+(
+	const clockwork::graphics::Vertex& input,
+	clockwork::graphics::Fragment& output
+)
+{
+	// Call the masked implementation to perform matrix transformations.
+	clockwork::concurrency::PolygonRenderTask::vertexProgram(input, output);
+
+	output.color = _color;
+
+	// Generate a new color.
+	if (--_generateColorCounter == 0)
+	{
+		_color = clockwork::graphics::ColorARGB::getRandom();
+		_generateColorCounter = 3;
+	}
+}
+
+
+std::function<uint32_t(const clockwork::graphics::Fragment&)>
+clockwork::concurrency::RandomRenderTask::getFragmentOperation()
+{
+	return std::bind(&clockwork::concurrency::RandomRenderTask::fragmentProgram, this, std::placeholders::_1);
+}

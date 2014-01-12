@@ -31,3 +31,10 @@ clockwork::concurrency::TextureRenderTask::TextureRenderTask
 ) :
 PolygonRenderTask(body, viewer)
 {}
+
+
+std::function<uint32_t(const clockwork::graphics::Fragment&)>
+clockwork::concurrency::TextureRenderTask::getFragmentOperation()
+{
+	return std::bind(&clockwork::concurrency::TextureRenderTask::fragmentProgram, this, std::placeholders::_1);
+}

@@ -30,11 +30,11 @@ clockwork::graphics::vsd::clip(std::vector<clockwork::graphics::Fragment>&)
 
 
 bool
-clockwork::graphics::vsd::isBackface(const std::array<clockwork::graphics::Fragment*, 3>& fragments)
+clockwork::graphics::vsd::isBackface(std::array<const clockwork::graphics::Fragment*, 3>& triangle)
 {
-	const auto& f0 = *fragments[0];
-	const auto& f1 = *fragments[1];
-	const auto& f2 = *fragments[2];
+	const auto& f0 = *triangle[0];
+	const auto& f1 = *triangle[1];
+	const auto& f2 = *triangle[2];
 
 	const auto& p0 = clockwork::Point3(f0.x, f0.y, f0.z);
 	const auto& p1 = clockwork::Point3(f1.x, f1.y, f1.z);

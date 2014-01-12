@@ -23,25 +23,11 @@
  */
 #pragma once
 
-#include "fragment.hh"
-#include <vector>
-#include <array>
-
-
 namespace clockwork {
-namespace graphics {
-namespace vsd {
 
 /**
- * This file contains functions that perform visible surface determination (VSD).
+ * Returns true if two floating-point values are equal.
  */
+bool fequal(const double& a, const double& b);
 
-/**
- * TODO Explain me.
- */
-void clip(std::vector<clockwork::graphics::Fragment>& fragments);
-bool isBackface(std::array<const clockwork::graphics::Fragment*, 3>& fragments);
-
-} // namespace vsd
-} // namespace graphics
 } // namespace clockwork

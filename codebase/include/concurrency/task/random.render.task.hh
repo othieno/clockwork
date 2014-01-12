@@ -45,6 +45,27 @@ public:
 		const clockwork::physics::RigidBody& body,
 		const clockwork::scene::Viewer& viewer
 	);
+	/**
+	 * @see RenderTask::vertexProgram.
+	 */
+	virtual void vertexProgram
+	(
+		const clockwork::graphics::Vertex& input,
+		clockwork::graphics::Fragment& output
+	) override final;
+private:
+	/**
+	 * A counter to generate a new color after every 3 vertices.
+	 */
+	unsigned int _generateColorCounter;
+	/**
+	 * The current face's color.
+	 */
+	clockwork::graphics::ColorARGB _color;
+	/**
+	 * @see RenderTask::getFragmentOperation.
+	 */
+	virtual std::function<uint32_t(const clockwork::graphics::Fragment&)> getFragmentOperation() override final;
 };
 
 } // namespace concurrency

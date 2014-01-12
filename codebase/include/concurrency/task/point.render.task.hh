@@ -48,7 +48,12 @@ public:
 	/**
 	 * @see RenderTask::primitiveAssembly.
 	 */
-	virtual void primitiveAssembly(const std::array<clockwork::graphics::Fragment*, 3>& triangle) override final;
+	virtual void primitiveAssembly(std::array<const clockwork::graphics::Fragment*, 3>& triangle) override final;
+private:
+	/**
+	 * @see RenderTask::getFragmentOperation.
+	 */
+	virtual std::function<uint32_t(const clockwork::graphics::Fragment&)> getFragmentOperation() override final;
 };
 
 } // namespace concurrency

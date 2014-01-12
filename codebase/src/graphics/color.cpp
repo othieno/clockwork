@@ -62,3 +62,25 @@ clockwork::graphics::mergeColorChannels(const double& a, const double& r, const 
 
 	return output;
 }
+
+
+clockwork::graphics::ColorRGB
+clockwork::graphics::ColorRGB::getRandom()
+{
+	static std::random_device device;
+	static std::mt19937 gen(device());
+	static std::uniform_real_distribution<double> distribution(0, 1);
+
+	return ColorRGB(distribution(gen), distribution(gen), distribution(gen));
+}
+
+
+clockwork::graphics::ColorARGB
+clockwork::graphics::ColorARGB::getRandom()
+{
+	static std::random_device device;
+	static std::mt19937 gen(device());
+	static std::uniform_real_distribution<double> distribution(0, 1);
+
+	return ColorARGB(1.0, distribution(gen), distribution(gen), distribution(gen));
+}

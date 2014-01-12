@@ -68,7 +68,7 @@ protected:
 	 * a raster image (a rectangular grid of pixels).
 	 * @param triangle the triplet of fragments that make up the triangular polygonal face.
 	 */
-	virtual void rasterise(const std::array<clockwork::graphics::Fragment*, 3>& triangle);
+	void rasterise(std::array<const clockwork::graphics::Fragment*, 3>& triangle);
 	/**
 	 * The primitive assembly operation creates a point, line or polygon primitive from
 	 * fragments. In the case of polygon primitives, missing fragments in the hollows of
@@ -76,7 +76,7 @@ protected:
 	 * fragment program which determines their color.
 	 * @param triangle a set of 3 fragments that will create one or more primitives.
 	 */
-	virtual void primitiveAssembly(const std::array<clockwork::graphics::Fragment*, 3>& triangle) = 0;
+	virtual void primitiveAssembly(std::array<const clockwork::graphics::Fragment*, 3>& triangle) = 0;
 	/**
 	 * The fragment program calculates a color value from a given fragment's attributes.
 	 * @param fragment the fragment from which to calculate a color value.
@@ -91,20 +91,24 @@ protected:
 		const std::function<uint32_t(const clockwork::graphics::Fragment&)>& fragOP
 	)
 	{
-		FRAMEBUFFER.plot(fragment, fragOP);
+		RenderTask::_FRAMEBUFFER.plot(fragment, fragOP);
 	}
 	/**
 	 * @see Framebuffer::plot(3).
 	 */
 	inline void plot(const uint32_t& x, const uint32_t& y, const double& z, const uint32_t& pixel)
 	{
-		FRAMEBUFFER.plot(x, y, z, pixel);
+		RenderTask::_FRAMEBUFFER.plot(x, y, z, pixel);
 	}
+	/**
+	 * Return the fragment operation.
+	 */
+	virtual std::function<uint32_t(const clockwork::graphics::Fragment&)> getFragmentOperation() = 0;
 private:
 	/**
 	 * The framebuffer.
 	 */
-	static clockwork::graphics::Framebuffer& FRAMEBUFFER;
+	static clockwork::graphics::Framebuffer& _FRAMEBUFFER;
 	/**
 	 * The viewer's position. This is used for lighting calculations.
 	 */

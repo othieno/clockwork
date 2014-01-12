@@ -48,7 +48,20 @@ public:
 	/**
 	 * @see RenderTask::primitiveAssembly.
 	 */
-	virtual void primitiveAssembly(const std::array<clockwork::graphics::Fragment*, 3>& triangle) override final;
+	virtual void primitiveAssembly(std::array<const clockwork::graphics::Fragment*, 3>& triangle) override final;
+private:
+	/**
+	 * Perform scan conversion on a triangular polygonal face.
+	 * @param f0 the first fragment that will make one point of a triangle.
+	 * @param f1 the second fragment that will make one point of a triangle.
+	 * @param f2 the third fragment that will make one point of a triangle.
+	 */
+	void scanConversion
+	(
+		const clockwork::graphics::Fragment& f0,
+		const clockwork::graphics::Fragment& f1,
+		const clockwork::graphics::Fragment& f2
+	);
 };
 
 } // namespace concurrency

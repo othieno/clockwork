@@ -67,6 +67,10 @@ struct ColorRGB
 	{
 		return mergeColorChannels(1.0, red, green, blue);
 	}
+	/**
+	 * Return a random RGB color.
+	 */
+	static ColorRGB getRandom();
 };
 
 struct ColorARGB
@@ -103,6 +107,10 @@ struct ColorARGB
 	{
 		return mergeColorChannels(alpha, red, green, blue);
 	}
+	/**
+	 * Return a random ARGB color.
+	 */
+	static ColorARGB getRandom();
 };
 
 } // namespace graphics

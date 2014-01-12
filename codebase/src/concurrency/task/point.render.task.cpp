@@ -34,14 +34,16 @@ RenderTask(body, viewer)
 
 
 void
-clockwork::concurrency::PointRenderTask::primitiveAssembly
-(
-	const std::array<clockwork::graphics::Fragment*, 3>& triangle
-)
+clockwork::concurrency::PointRenderTask::primitiveAssembly(std::array<const clockwork::graphics::Fragment*, 3>& triangle)
 {
-	const auto fragmentOperation =
-	std::bind(&clockwork::concurrency::PointRenderTask::fragmentProgram, this, std::placeholders::_1);
-
+	const auto fragmentOperation = getFragmentOperation();
 	for (auto* const fragment : triangle)
 		plot(*fragment, fragmentOperation);
+}
+
+
+std::function<uint32_t(const clockwork::graphics::Fragment&)>
+clockwork::concurrency::PointRenderTask::getFragmentOperation()
+{
+	return std::bind(&clockwork::concurrency::PointRenderTask::fragmentProgram, this, std::placeholders::_1);
 }

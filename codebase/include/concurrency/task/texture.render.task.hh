@@ -45,6 +45,11 @@ public:
 		const clockwork::physics::RigidBody& body,
 		const clockwork::scene::Viewer& viewer
 	);
+private:
+	/**
+	 * @see RenderTask::getFragmentOperation.
+	 */
+	virtual std::function<uint32_t(const clockwork::graphics::Fragment&)> getFragmentOperation() override final;
 };
 
 } // namespace concurrency
