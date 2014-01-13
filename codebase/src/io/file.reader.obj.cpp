@@ -25,6 +25,15 @@
 #include <QTextStream>
 #include <QStringList>
 #include <iostream>
+#include <QFileInfo>
+#include "io.output.hh"
+
+
+/**
+ * Load the material with the given name, from a given text stream and store it in a
+ * Material object. If any errors occur, an appropriate error value is returned.
+ */
+clockwork::Error loadMaterial(const QString& name, QTextStream& from, clockwork::graphics::Material& to);
 
 
 clockwork::Error
@@ -36,6 +45,7 @@ clockwork::io::loadOBJ(QFile& file, clockwork::graphics::Model3D& model)
 		auto& vertices = const_cast<std::vector<clockwork::graphics::Vertex>&>(model.getVertices());
 		std::vector<clockwork::Vector3> normals;
 		std::vector<clockwork::graphics::Face::TextureCoordinates> texcoords;
+		QString materialFilename;
 
 		QTextStream stream(&file);
 		stream.skipWhiteSpace();
@@ -147,11 +157,30 @@ clockwork::io::loadOBJ(QFile& file, clockwork::graphics::Model3D& model)
 					}
 					else if (command == "mtllib")
 					{
-						//TODO
+						// TODO See QDir::separator() and QDir::toNativeSeparators.
+						materialFilename =
+						QFileInfo(file).canonicalPath().append("/").append(tokens.takeFirst());
 					}
 					else if (command == "usemtl")
 					{
-						//TODO
+						if (!materialFilename.isEmpty())
+						{
+							QFileInfo info(materialFilename);
+							if (info.exists() && info.isFile() && info.isReadable() && info.size())
+							{
+								QFile materialFile(info.canonicalFilePath());
+								if (materialFile.open(QIODevice::ReadOnly))
+								{
+									const QString materialName(tokens.takeFirst());
+									QTextStream materialFileStream(&materialFile);
+									auto& material(const_cast<clockwork::graphics::Material&>(model.getMaterial()));
+
+									auto error = loadMaterial(materialName, materialFileStream, material);
+									if (error != clockwork::Error::None)
+										std::cout << "Warning! Could not load the material data." << error << std::endl;
+								}
+							}
+						}
 					}
 					else
 						std::cout
@@ -167,3 +196,66 @@ clockwork::io::loadOBJ(QFile& file, clockwork::graphics::Model3D& model)
 	return error;
 }
 
+
+clockwork::Error
+loadMaterial(const QString& name, QTextStream& stream, clockwork::graphics::Material& material)
+{
+	auto error = clockwork::Error::None;
+	auto processingMaterial = false;
+
+	stream.skipWhiteSpace();
+	while (!stream.atEnd())
+	{
+		// Read a line and remove any leading and trailing spaces.
+		const auto& line = stream.readLine().simplified();
+
+		// Skip comments and empty lines.
+		if (!line.isEmpty() && line[0] != '#')
+		{
+			auto tokens = line.split(" ");
+			if (!tokens.isEmpty())
+			{
+				const auto& command = tokens.takeFirst();
+
+				// We've reached a material section. Process or ignore it.
+				if (command == "newmtl")
+				{
+					// If a material is currently being processed and a new section is
+					// reached, then we know we've reached the end of the target material.
+					if (processingMaterial)
+						break;
+					else if (!processingMaterial && name == tokens.takeFirst())
+						processingMaterial = true;
+				}
+				else if (processingMaterial)
+				{
+					if (!QString::compare(command, "Ka", Qt::CaseInsensitive))
+					{
+						material.Ka.red = tokens.takeFirst().toDouble();
+						material.Ka.green = tokens.takeFirst().toDouble();
+						material.Ka.blue = tokens.takeFirst().toDouble();
+					}
+					else if (!QString::compare(command, "Kd", Qt::CaseInsensitive))
+					{
+						material.Kd.red = tokens.takeFirst().toDouble();
+						material.Kd.green = tokens.takeFirst().toDouble();
+						material.Kd.blue = tokens.takeFirst().toDouble();
+					}
+					else if (!QString::compare(command, "Ks", Qt::CaseInsensitive))
+					{
+						material.Ks.red = tokens.takeFirst().toDouble();
+						material.Ks.green = tokens.takeFirst().toDouble();
+						material.Ks.blue = tokens.takeFirst().toDouble();
+					}
+					else if (!QString::compare(command, "Tr", Qt::CaseInsensitive))
+						material.transparency = tokens.takeFirst().toDouble();
+					else if (!QString::compare(command, "Ns", Qt::CaseInsensitive))
+						material.shininess = tokens.takeFirst().toDouble();
+
+					// TODO Load textures.
+				}
+			}
+		}
+	}
+	return error;
+}
