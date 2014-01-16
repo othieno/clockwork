@@ -25,13 +25,14 @@
 
 #include "scene.entity.hh"
 #include "point3.hh"
+#include "quaternion.hh"
 
 
 namespace clockwork {
 namespace scene {
 
 /**
- * Objects are entities that have a position, orientation and scale in the scene.
+ * Objects are entities that have a position, orientation (rotation) and scale in the scene.
  */
 class Object : public Entity
 {
@@ -43,7 +44,7 @@ public:
    /**
     * Return the object's rotation.
     */
-   const clockwork::Point3& getRotation() const;
+   const clockwork::Quaternion& getRotation() const;
    /**
     * Return the object's scaling vector.
     */
@@ -74,7 +75,7 @@ protected:
    /**
     * The object's rotation.
     */
-   clockwork::Point3 _rotation;
+   clockwork::Quaternion _rotation;
    /**
     * The object's scaling vector.
     */

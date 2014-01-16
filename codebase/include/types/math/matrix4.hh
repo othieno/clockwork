@@ -25,6 +25,7 @@
 
 #include "point3.hh"
 #include "point4.hh"
+#include "quaternion.hh"
 #include <array>
 
 
@@ -108,7 +109,12 @@ public:
       return Matrix4::translate(t.x, t.y, t.z);
    }
    /**
-    * Return the scaling matrix.
+    * Return the rotation matrix defined by the given quaternion.
+    * @param quaternion the quaternion that defines a given rotation.
+    */
+   static Matrix4 rotate(const clockwork::Quaternion& quaternion);
+   /**
+    * Return the scaling matrix defined by the given scaling factors.
     * @param Sx the scaling factor on the X plane.
     * @param Sy the scaling factor on the Y plane.
     * @param Sz the scaling factor on the Z plane.
@@ -133,12 +139,12 @@ public:
     */
    static Matrix4 inverse(const Matrix4& matrix);
    /**
-    * Return the model transformation matrix of a scene object.
-    * @param position the object's position in the scene.
-    * @param rotation the object's rotation in the scene.
-    * @param scaling the object's scaling factor.
+    * Return the model transformation matrix for a given translation, rotation and scaling.
+    * @param t a 3D translation.
+    * @param r a rotation.
+    * @param s a scaling vector.
     */
-   static Matrix4 model(const Point3& position, const Point3& rotation, const Vector3& scale);
+   static Matrix4 model(const clockwork::Point3& t, const clockwork::Quaternion& r, const clockwork::Vector3& s);
 private:
    /**
     * The raw matrix data.

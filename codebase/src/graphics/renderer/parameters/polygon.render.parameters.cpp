@@ -87,11 +87,9 @@ PolygonRenderParameters::primitiveAssembly(const std::array<const Fragment*, 3>&
       auto fi = Fragment::interpolate(f0, f2, (y1 - y0) / (y2 - y0));
       fi.position.y = y1;
 
-      // Tesselate! Create two new triangle primitives from the previous one.
-      const std::array<const Fragment*, 3> t0 = {&f0, &f1, &fi};
-      const std::array<const Fragment*, 3> t1 = {&f1, &fi, &f2};
-      primitiveAssembly(t0);
-      primitiveAssembly(t1);
+      // Tessellate! Create two new triangle primitives from the previous one.
+      primitiveAssembly({&f0, &f1, &fi});
+      primitiveAssembly({&f1, &fi, &f2});
    }
    else
       scanConversion(f0, f1, f2);

@@ -30,7 +30,10 @@ using clockwork::scene::Object;
 
 
 Object::Object(const std::string& name) :
-Entity(name)
+Entity(name),
+_position(0.0, 0.0, 0.0),
+_rotation(),
+_scaling(1.0, 1.0, 1.0)
 {}
 
 
@@ -63,7 +66,7 @@ Object::getPosition() const
 }
 
 
-const clockwork::Point3&
+const clockwork::Quaternion&
 Object::getRotation() const
 {
    return _rotation;

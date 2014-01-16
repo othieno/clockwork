@@ -23,33 +23,35 @@
  */
 #include "matrix4.hh"
 
+using clockwork::Matrix4;
 
-clockwork::Matrix4::Matrix4(const std::array<double, 16>& input) :
+
+Matrix4::Matrix4(const std::array<double, 16>& input) :
 _data(input)
 {}
 
 
-clockwork::Matrix4::Matrix4() :
+Matrix4::Matrix4() :
 clockwork::Matrix4({1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1})
 {}
 
 
 void
-clockwork::Matrix4::fill(const double& value)
+Matrix4::fill(const double& value)
 {
    _data.fill(value);
 }
 
 
 const std::array<double, 16>&
-clockwork::Matrix4::data() const
+Matrix4::data() const
 {
    return _data;
 }
 
 
 double
-clockwork::Matrix4::get(const unsigned int& i, const unsigned int& j) const
+Matrix4::get(const unsigned int& i, const unsigned int& j) const
 {
    // Since i and j are unsigned, they're guaranteed to be greater than or equal to zero.
    return (i < 4 && j < 4) ? _data[(i * 4) + j] : 0;
@@ -57,15 +59,15 @@ clockwork::Matrix4::get(const unsigned int& i, const unsigned int& j) const
 
 
 void
-clockwork::Matrix4::set(const unsigned int& i, const unsigned int& j, const double& value)
+Matrix4::set(const unsigned int& i, const unsigned int& j, const double& value)
 {
    if (i < 4 && j < 4)
       _data[(i * 4) + j] = value;
 }
 
 
-clockwork::Matrix4
-clockwork::Matrix4::operator*(const clockwork::Matrix4& that) const
+Matrix4
+Matrix4::operator*(const Matrix4& that) const
 {
    std::array<double, 16> newdata;
    for (unsigned int i = 0; i < 4; ++i)
@@ -85,7 +87,7 @@ clockwork::Matrix4::operator*(const clockwork::Matrix4& that) const
 
 
 clockwork::Point3
-clockwork::Matrix4::operator*(const clockwork::Point3& p) const
+Matrix4::operator*(const clockwork::Point3& p) const
 {
    clockwork::Point4 hp = *this * clockwork::Point4(p.x, p.y, p.z, 1);
    return clockwork::Point3
@@ -98,7 +100,7 @@ clockwork::Matrix4::operator*(const clockwork::Point3& p) const
 
 
 clockwork::Point4
-clockwork::Matrix4::operator*(const clockwork::Point4& p) const
+Matrix4::operator*(const clockwork::Point4& p) const
 {
    const std::array<double, 4> olddata = {p.x, p.y, p.z, p.w};
    std::array<double, 4> newdata = {0, 0, 0, 0};
@@ -113,48 +115,31 @@ clockwork::Matrix4::operator*(const clockwork::Point4& p) const
 
 
 clockwork::Vector3
-clockwork::Matrix4::operator*(const clockwork::Vector3& v) const
+Matrix4::operator*(const clockwork::Vector3& v) const
 {
-   clockwork::Point3 p = *this * clockwork::Point3(v.i, v.j, v.k);
-   return clockwork::Vector3
-   (
-      p.x,
-      p.y,
-      p.z
-   );
+   clockwork::Point3 p = (*this) * clockwork::Point3(v.i, v.j, v.k);
+   return clockwork::Vector3(p.x, p.y, p.z);
 }
 
 
-clockwork::Matrix4
-clockwork::Matrix4::zeros()
+Matrix4
+Matrix4::zeros()
 {
-   return clockwork::Matrix4
-   ({
-      0, 0, 0, 0,
-      0, 0, 0, 0,
-      0, 0, 0, 0,
-      0, 0, 0, 0
-   });
+   return Matrix4({0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
 }
 
 
-clockwork::Matrix4
-clockwork::Matrix4::ones()
+Matrix4
+Matrix4::ones()
 {
-   return clockwork::Matrix4
-   ({
-      1, 1, 1, 1,
-      1, 1, 1, 1,
-      1, 1, 1, 1,
-      1, 1, 1, 1
-   });
+   return Matrix4({1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0});
 }
 
 
-clockwork::Matrix4
-clockwork::Matrix4::translate(const double& x, const double& y, const double& z)
+Matrix4
+Matrix4::translate(const double& x, const double& y, const double& z)
 {
-   return clockwork::Matrix4
+   return Matrix4
    ({
       1, 0, 0, x,
       0, 1, 0, y,
@@ -164,10 +149,17 @@ clockwork::Matrix4::translate(const double& x, const double& y, const double& z)
 }
 
 
-clockwork::Matrix4
-clockwork::Matrix4::scale(const double& x, const double& y, const double& z)
+Matrix4
+Matrix4::rotate(const clockwork::Quaternion&)
 {
-   return clockwork::Matrix4
+   return Matrix4();
+}
+
+
+Matrix4
+Matrix4::scale(const double& x, const double& y, const double& z)
+{
+   return Matrix4
    ({
       x, 0, 0, 0,
       0, y, 0, 0,
@@ -177,8 +169,8 @@ clockwork::Matrix4::scale(const double& x, const double& y, const double& z)
 }
 
 
-clockwork::Matrix4
-clockwork::Matrix4::transpose(const clockwork::Matrix4& in)
+Matrix4
+Matrix4::transpose(const Matrix4& in)
 {
    const auto& olddata = in._data;
    std::array<double, 16> newdata;
@@ -197,8 +189,8 @@ clockwork::Matrix4::transpose(const clockwork::Matrix4& in)
 }
 
 
-clockwork::Matrix4
-clockwork::Matrix4::inverse(const clockwork::Matrix4& in)
+Matrix4
+Matrix4::inverse(const Matrix4& in)
 {
    //TODO This function can be optimised...
    const auto s0 = in.get(0, 0) * in.get(1, 1) - in.get(1, 0) * in.get(0, 1);
@@ -240,13 +232,12 @@ clockwork::Matrix4::inverse(const clockwork::Matrix4& in)
    newdata[14] = (-in.get(3, 0) * s3 + in.get(3, 1) * s1 - in.get(3, 2) * s0) * idet;
    newdata[15] = ( in.get(2, 0) * s3 - in.get(2, 1) * s1 + in.get(2, 2) * s0) * idet;
 
-   return clockwork::Matrix4(newdata);
+   return Matrix4(newdata);
 }
 
 
-clockwork::Matrix4
-clockwork::Matrix4::model(const clockwork::Point3&, const clockwork::Point3&, const clockwork::Vector3&)
+Matrix4
+Matrix4::model(const clockwork::Point3& t, const clockwork::Quaternion& r, const clockwork::Vector3& s)
 {
-   //FIXME The model matrix isn't the identity, obviously...
-   return clockwork::Matrix4();
+   return Matrix4::translate(t) * Matrix4::rotate(r) * Matrix4::scale(s);
 }

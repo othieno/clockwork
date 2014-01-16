@@ -60,7 +60,6 @@ RenderTask::onRun()
       // Calculate transformation matrices.
       const_cast<clockwork::Matrix4&>(_MODELVIEW) = _VIEW * _MODEL;
       const_cast<clockwork::Matrix4&>(_NORMAL) = clockwork::Matrix4::transpose(clockwork::Matrix4::inverse(_MODELVIEW));
-      const_cast<clockwork::Matrix4&>(_VIEWPROJECTION) = _PROJECTION * _VIEW;
       const_cast<clockwork::Matrix4&>(_MODELVIEWPROJECTION) = _VIEWPROJECTION * _MODEL;
 
       // Process the 3D model.
