@@ -26,9 +26,9 @@
 #include "scene.hh"
 #include "scene.viewer.hh"
 #include "texture.filter.factory.hh"
-#include "renderer.factory.hh"
-#include "renderer.implementation.texture.hh"
-
+#include "texture.render.parameters.hh"
+#include "render.parameters.factory.hh"
+#include "tostring.hh"
 
 clockwork::ui::GUITextureFilterComboBox::GUITextureFilterComboBox(UserInterface& ui) :
 GUIComboBox(ui, "Texture Filter")
@@ -51,8 +51,8 @@ clockwork::ui::GUITextureFilterComboBox::loadItemList()
 	{
 		using UserDataType = std::underlying_type<clockwork::graphics::TextureFilter::Type>::type;
 
-		const auto& text = QString(clockwork::toString(key).c_str());
-		const auto& userData = static_cast<UserDataType>(key);
+		const auto text = clockwork::toString(key);
+		const auto userData = static_cast<UserDataType>(key);
 
 		// Add the item to the combo box.
 		const auto& itemIndex = addItem(text, userData);
@@ -78,7 +78,7 @@ clockwork::ui::GUITextureFilterComboBox::onInterfaceUpdate(const clockwork::ui::
 		if (viewer != nullptr)
 		{
 			isEnabled = true;
-			isVisible = clockwork::graphics::Renderer::Type::Texture == viewer->getRendererType();
+			isVisible = clockwork::graphics::RenderParameters::Type::Texture == viewer->getRenderType();
 		}
 		setEnabled(isEnabled);
 		setVisible(isVisible);
@@ -89,8 +89,9 @@ clockwork::ui::GUITextureFilterComboBox::onInterfaceUpdate(const clockwork::ui::
 void
 clockwork::ui::GUITextureFilterComboBox::onItemSelected(const int& index)
 {
-	static auto* const renderer =	static_cast<clockwork::graphics::TextureRenderer*>
-	(clockwork::graphics::RendererFactory::getUniqueInstance().get(clockwork::graphics::Renderer::Type::Texture));
-
-	renderer->setTextureFilter(getItem<clockwork::graphics::TextureFilter::Type>(index));
+	auto& factory = clockwork::graphics::RenderParametersFactory::getUniqueInstance();
+	auto* params =
+	static_cast<clockwork::graphics::TextureRenderParameters*>(factory.get(clockwork::graphics::RenderParameters::Type::Texture));
+	if (params != nullptr)
+		params->setTextureFilter(getItem<clockwork::graphics::TextureFilter::Type>(index));
 }

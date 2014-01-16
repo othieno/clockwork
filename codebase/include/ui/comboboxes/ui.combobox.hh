@@ -30,7 +30,7 @@
 namespace clockwork {
 namespace ui {
 
-class GUIComboBox : public clockwork::ui::GUIComponent
+class GUIComboBox : public GUIComponent
 {
 Q_OBJECT
 public:
@@ -70,12 +70,7 @@ protected:
 	 * @param label the combo box's label.
 	 * @param items the combo box's item list.
 	 */
-	GUIComboBox
-	(
-		UserInterface& ui,
-		const std::string& label,
-		std::list<std::string> items
-	);
+	GUIComboBox(UserInterface& ui, const std::string& label, std::list<std::string> items);
 	/**
 	 * Load the combo box's items.
 	 */
@@ -89,7 +84,7 @@ protected:
 	/**
 	 * @see GUIComponent::onInterfaceUpdate.
 	 */
-	virtual void onInterfaceUpdate(const clockwork::ui::GUIComponent* const) override;
+	virtual void onInterfaceUpdate(const GUIComponent* const) override;
 	/**
 	 * The event handler for when a new item is selected.
 	 * @param index the index of the currently selected item.

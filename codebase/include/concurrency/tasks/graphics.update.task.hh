@@ -32,7 +32,7 @@
 namespace clockwork {
 namespace concurrency {
 
-class GraphicsUpdateTask : public clockwork::concurrency::Task
+class GraphicsUpdateTask : public Task
 {
 public:
 	/**
@@ -49,7 +49,7 @@ public:
  * A task to update the scene geometry. More specifically, it updates the
  * model transformation matrix for each scene object.
  */
-class GeometryUpdateTask : public clockwork::concurrency::Task
+class GeometryUpdateTask : public Task
 {
 public:
 	/**
@@ -79,7 +79,7 @@ private:
 /**
  * A task to apply an image filter to the framebuffer.
  */
-class PostProcessingTask : public clockwork::concurrency::Task
+class PostProcessingTask : public Task
 {
 public:
 	/**

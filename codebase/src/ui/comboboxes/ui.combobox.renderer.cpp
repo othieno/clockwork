@@ -23,9 +23,10 @@
  */
 #include "ui.hh"
 #include "ui.combobox.renderer.hh"
+#include "render.parameters.factory.hh"
 #include "scene.hh"
 #include "scene.viewer.hh"
-#include "renderer.factory.hh"
+#include "tostring.hh"
 
 
 clockwork::ui::GUIRendererComboBox::GUIRendererComboBox(UserInterface& ui) :
@@ -39,7 +40,7 @@ GUIComboBox(ui, "Renderer")
 void
 clockwork::ui::GUIRendererComboBox::loadItemList()
 {
-	const auto& factory = clockwork::graphics::RendererFactory::getUniqueInstance();
+	auto& factory = clockwork::graphics::RenderParametersFactory::getUniqueInstance();
 	const auto& keys = factory.getKeys();
 	const auto& defaultKey = factory.getDefaultKey();
 	int defaultIndex = 0;
@@ -47,9 +48,9 @@ clockwork::ui::GUIRendererComboBox::loadItemList()
 	// Add the keys as items to the combo box.
 	for (const auto& key : keys)
 	{
-		using UserDataType = std::underlying_type<clockwork::graphics::Renderer::Type>::type;
+		using UserDataType = std::underlying_type<clockwork::graphics::RenderParameters::Type>::type;
 
-		const auto& text = QString(clockwork::toString(key).c_str());
+		const auto& text = clockwork::toString(key);
 		const auto& userData = static_cast<UserDataType>(key);
 
 		// Add the item to the combo box.
@@ -69,5 +70,5 @@ clockwork::ui::GUIRendererComboBox::onItemSelected(const int& index)
 	// Set the current viewer's renderer.
 	auto* const viewer = clockwork::scene::Scene::getUniqueInstance().getViewer();
 	if (viewer != nullptr)
-		viewer->setRenderer(getItem<clockwork::graphics::Renderer::Type>(index));
+		viewer->setRenderType(getItem<clockwork::graphics::RenderParameters::Type>(index));
 }

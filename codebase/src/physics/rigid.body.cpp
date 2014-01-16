@@ -24,6 +24,7 @@
 #include "rigid.body.hh"
 #include "render.task.hh"
 #include "services.hh"
+#include "render.parameters.factory.hh"
 
 
 clockwork::physics::RigidBody::RigidBody
@@ -37,14 +38,18 @@ _model3D(model3D)
 
 
 void
-clockwork::physics::RigidBody::render
-(
-	const clockwork::graphics::Renderer& renderer,
-	const clockwork::scene::Viewer& viewer
-) const
+clockwork::physics::RigidBody::render(const clockwork::scene::Viewer& viewer) const
 {
 	if (!isPruned() && _model3D != nullptr)
-		clockwork::system::Services::Concurrency.submitTask(renderer.createRenderTask(*this, viewer));
+	{
+		const auto* const parameters =
+		clockwork::graphics::RenderParametersFactory::getUniqueInstance().get(viewer.getRenderType());
+		if (parameters != nullptr)
+		{
+			auto* task = new clockwork::concurrency::RenderTask(*parameters, viewer, *this);
+			clockwork::system::Services::Concurrency.submitTask(task);
+		}
+	}
 }
 
 

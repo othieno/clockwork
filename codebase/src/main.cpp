@@ -22,7 +22,6 @@
  * THE SOFTWARE.
  */
 #include "ui.window.hh"
-#include "io.output.hh"
 #include "services.hh"
 #include <QApplication>
 

@@ -61,7 +61,7 @@ public:
 	 */
 	Face
 	(
-		const clockwork::graphics::Model3D& model3D,
+		const Model3D& model3D,
 		const std::array<const uint32_t, 3>& indices,
 		const std::array<const Face::TextureCoordinates, 3>& textureCoordinates
 	);
@@ -70,11 +70,11 @@ public:
 	 * @param model3D the 3D model that owns this polygonal face.
 	 * @param indices the face's vertices.
 	 */
-	Face(const clockwork::graphics::Model3D& model3D, const std::array<const uint32_t, 3>& indices);
+	Face(const Model3D& model3D, const std::array<const uint32_t, 3>& indices);
 	/**
 	 * Return the vertices that belong to this polygonal face.
 	 */
-	std::array<const clockwork::graphics::Vertex*, 3> getVertices() const;
+	std::array<const Vertex*, 3> getVertices() const;
 	/**
 	 * Return the face's texture coordinates.
 	 */

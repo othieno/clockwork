@@ -47,7 +47,7 @@ public:
 	 * Submit a task to be processed.
 	 * @param task a pointer to the task to process.
 	 */
-	void submitTask(clockwork::concurrency::Task* const task);
+	void submitTask(Task* const task);
 	/**
 	 * Wait for all current tasks to complete.
 	 */

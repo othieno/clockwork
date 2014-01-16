@@ -23,26 +23,43 @@
  */
 #pragma once
 
-#include "renderer.hh"
+#include "render.parameters.hh"
 
 
 namespace clockwork {
 namespace graphics {
 
-class PolygonRenderer : public clockwork::graphics::Renderer
+/**
+ * A polygon renderer's parameter set.
+ */
+class PolygonRenderParameters : public RenderParameters
 {
+public:
+	/**
+	 * @see RenderParameters::primitiveAssembly.
+	 */
+	virtual void primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const override final;
 protected:
 	/**
-	 * Instantiate a polygon renderer with the given type.
-	 * @param type the polygon renderer's type.
+	 * Instantiate a PolygonRenderParameters object with a given render type.
+	 * @param type the render type.
 	 */
-	PolygonRenderer(const clockwork::graphics::Renderer::Type& type);
+	PolygonRenderParameters(const RenderParameters::Type& type);
 private:
 	/**
-	 * A renderer cannot be copied.
+	 * A PolygonRenderParameters object are not copyable.
 	 */
-	PolygonRenderer(const PolygonRenderer&) = delete;
-	PolygonRenderer& operator=(const PolygonRenderer&) = delete;
+	PolygonRenderParameters(const PolygonRenderParameters&) = delete;
+	PolygonRenderParameters& operator=(const PolygonRenderParameters&) = delete;
+	/**
+	 * Perform scan conversion on a triangular polygonal face. The fragments must be
+	 * arranged in a such a way that f0 has the smallest y value, f2 has the largest
+	 * and f1's y value is between the two.
+	 * @param f0 the first fragment that will make one point of a triangle.
+	 * @param f1 the second fragment that will make one point of a triangle.
+	 * @param f2 the third fragment that will make one point of a triangle.
+	 */
+	void scanConversion(const Fragment& f0, const Fragment& f1, const Fragment& f2) const;
 };
 
 } // namespace graphics

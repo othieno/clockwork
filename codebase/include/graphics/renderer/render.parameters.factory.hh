@@ -21,21 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "renderer.implementation.random.hh"
-#include "random.render.task.hh"
+#pragma once
+
+#include "factory.hh"
+#include "render.parameters.hh"
 
 
-clockwork::graphics::RandomRenderer::RandomRenderer() :
-PolygonRenderer(clockwork::graphics::Renderer::Type::Random)
-{}
+namespace clockwork {
+namespace graphics {
 
-
-clockwork::concurrency::RenderTask*
-clockwork::graphics::RandomRenderer::createRenderTask
-(
-	const clockwork::physics::RigidBody& body,
-	const clockwork::scene::Viewer& viewer
-) const
+class RenderParametersFactory :
+public clockwork::Factory<RenderParameters::Type, RenderParameters>
 {
-	return new clockwork::concurrency::RandomRenderTask(body, viewer);
-}
+public:
+	/**
+	 * Return the factory's unique instance.
+	 */
+	static RenderParametersFactory& getUniqueInstance();
+private:
+	/**
+	 * The RenderParametersFactory is a singleton.
+	 */
+	RenderParametersFactory();
+	RenderParametersFactory(const RenderParametersFactory&) = delete;
+	RenderParametersFactory& operator=(const RenderParametersFactory&) = delete;
+};
+
+} // namespace graphics
+} // namespace clockwork

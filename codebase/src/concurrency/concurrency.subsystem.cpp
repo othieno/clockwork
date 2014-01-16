@@ -50,7 +50,7 @@ void
 clockwork::concurrency::ConcurrencySubsystem::submitTask(clockwork::concurrency::Task* const task)
 {
 	if (task != nullptr)
-//		_threadPool->start(task, task->getPriority());
+		//_threadPool->start(task, task->getPriority());
 	{
 		task->run();
 		delete task;

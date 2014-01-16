@@ -23,6 +23,8 @@
  */
 #pragma once
 
+#include <iostream>
+
 
 namespace clockwork {
 
@@ -33,3 +35,5 @@ enum class Error : int
 };
 
 } // namespace clockwork
+
+std::ostream& operator<<(std::ostream&, const clockwork::Error&);

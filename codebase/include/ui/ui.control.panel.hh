@@ -40,23 +40,23 @@ class GUISceneView;
 class GUISceneEntityView;
 
 
-class GUIControlPanel : public clockwork::ui::GUIComponent
+class GUIControlPanel : public GUIComponent
 {
 public:
 	/**
 	 * Instantiate a GUIControlPanel attached to the user interface.
 	 * @param ui the user interface that this component is attached to.
 	 */
-	GUIControlPanel(clockwork::ui::UserInterface& ui);
+	GUIControlPanel(UserInterface& ui);
 private:
 	/**
 	 * The scene view.
 	 */
-	clockwork::ui::GUISceneView* _sceneView;
+	GUISceneView* _sceneView;
 	/**
 	 * The scene entity view.
 	 */
-	clockwork::ui::GUISceneEntityView* _sceneEntityView;
+	GUISceneEntityView* _sceneEntityView;
 };
 
 } // namespace ui

@@ -21,9 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "renderer.implementation.polygon.hh"
+#pragma once
+
+#include "polygon.render.parameters.hh"
 
 
-clockwork::graphics::PolygonRenderer::PolygonRenderer(const clockwork::graphics::Renderer::Type& type) :
-Renderer(type)
-{}
+namespace clockwork {
+namespace graphics {
+
+/**
+ * @see render.parameters.factory.hh.
+ */
+class RenderParametersFactory;
+
+/**
+ * A random renderer's parameter set.
+ */
+class RandomRenderParameters : public PolygonRenderParameters
+{
+friend class RenderParametersFactory;
+public:
+	/**
+	 * @see RenderParameters::postVertexProgram.
+	 */
+	virtual void postVertexProgram(const Face& face, const Vertex& vertex, Fragment& fragment) const override final;
+private:
+	/**
+	 * The RandomRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.
+	 */
+	RandomRenderParameters();
+	RandomRenderParameters(const RandomRenderParameters&) = delete;
+	RandomRenderParameters& operator=(const RandomRenderParameters&) = delete;
+};
+
+} // namespace graphics
+} // namespace clockwork

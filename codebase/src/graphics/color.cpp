@@ -24,35 +24,30 @@
 #include "color.hh"
 #include <algorithm>
 
+using clockwork::graphics::ColorRGBA;
 
-clockwork::graphics::ColorRGB::ColorRGB(const double& r, const double& g, const double& b) :
+
+ColorRGBA::ColorRGBA(const float& r, const float& g, const float& b, const float& a) :
 red(r),
 green(g),
-blue(b)
-{}
-
-
-clockwork::graphics::ColorARGB::ColorARGB(const double& a, const double& r, const double& g, const double& b) :
-alpha(a),
-red(r),
-green(g),
-blue(b)
+blue(b),
+alpha(a)
 {}
 
 
 uint32_t
-clockwork::graphics::mergeColorChannels(const double& a, const double& r, const double& g, const double& b)
+ColorRGBA::merge() const
 {
 	uint32_t output = 0;
 
 	// Convert the channels to integer values.
-	const auto A = static_cast<uint32_t>(std::round(std::max(0.0, a) * 255.0));
-	const auto R = static_cast<uint32_t>(std::round(std::max(0.0, r) * 255.0));
-	const auto G = static_cast<uint32_t>(std::round(std::max(0.0, g) * 255.0));
-	const auto B = static_cast<uint32_t>(std::round(std::max(0.0, b) * 255.0));
+	const auto R = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, red)));
+	const auto G = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, green)));
+	const auto B = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, blue)));
+	const auto A = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, alpha)));
 
 	if (A > 0)
-		output = std::min(255U, A) << 24;
+		output  = std::min(255U, A) << 24;
 	if (R > 0)
 		output |= std::min(255U, R) << 16;
 	if (G > 0)
@@ -64,23 +59,30 @@ clockwork::graphics::mergeColorChannels(const double& a, const double& r, const 
 }
 
 
-clockwork::graphics::ColorRGB
-clockwork::graphics::ColorRGB::getRandom()
+ColorRGBA
+ColorRGBA::getRandom()
 {
 	static std::random_device device;
 	static std::mt19937 gen(device());
 	static std::uniform_real_distribution<double> distribution(0, 1);
 
-	return ColorRGB(distribution(gen), distribution(gen), distribution(gen));
+	return ColorRGBA(distribution(gen), distribution(gen), distribution(gen));
 }
 
 
-clockwork::graphics::ColorARGB
-clockwork::graphics::ColorARGB::getRandom()
+ColorRGBA
+ColorRGBA::split(const uint32_t& ARGB)
 {
-	static std::random_device device;
-	static std::mt19937 gen(device());
-	static std::uniform_real_distribution<double> distribution(0, 1);
-
-	return ColorARGB(1.0, distribution(gen), distribution(gen), distribution(gen));
+	if (ARGB == 0)
+		return ColorRGBA(0, 0, 0, 0);
+	else
+	{
+		return ColorRGBA
+		(
+			((ARGB >> 16) & 0xff) * 0.00392156862, // 0.00392156862 == (1/255).
+			((ARGB >>  8) & 0xff) * 0.00392156862,
+			(ARGB         & 0xff) * 0.00392156862,
+			((ARGB >> 24) & 0xff) * 0.00392156862
+		);
+	}
 }

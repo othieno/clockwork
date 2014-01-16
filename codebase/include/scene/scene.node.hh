@@ -28,7 +28,6 @@
 #include <string>
 #include <QString>
 #include "matrix4.hh"
-#include "renderer.hh"
 
 
 namespace clockwork {
@@ -96,15 +95,9 @@ public:
 	virtual void updateGeometry(const clockwork::Matrix4& CMTM);
 	/**
 	 * Render the node.
-	 * @param renderer the renderer containing the render function that will be applied
-	 *        during the render task.
-	 * @param viewer the viewer containing the scene's point of view.
+	 * @param viewer the current scene viewer.
 	 */
-	virtual void render
-	(
-		const clockwork::graphics::Renderer& renderer,
-		const clockwork::scene::Viewer& viewer
-	) const;
+	virtual void render(const Viewer& viewer) const;
 protected:
 	/**
 	 * Instantiate a node with a given name.

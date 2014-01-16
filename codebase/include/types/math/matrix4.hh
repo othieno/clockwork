@@ -103,9 +103,9 @@ public:
 	 * Return the translation matrix.
 	 * @param T a 3D point containing translation factors for the X, Y and Z planes.
 	 */
-	inline static Matrix4 translate(const clockwork::Point3& T)
+	inline static Matrix4 translate(const clockwork::Point3& t)
 	{
-		return Matrix4::translate(T.x, T.y, T.z);
+		return Matrix4::translate(t.x, t.y, t.z);
 	}
 	/**
 	 * Return the scaling matrix.
@@ -116,14 +116,12 @@ public:
 	static Matrix4 scale(const double& Sx, const double& Sy, const double& Sz);
 	/**
 	 * Return the scaling matrix.
-	 * @param S a 3D vector containing scaling factors for the X, Y and Z planes.
+	 * @param S a scaling vector.
 	 */
-/*
-	inline static Matrix4 scale(const clockwork::Vector3& S)
+	inline static Matrix4 scale(const clockwork::Vector3& s)
 	{
-		return Matrix4::scale(S.i, S.j, S.k);
+		return Matrix4::scale(s.i, s.j, s.k);
 	}
-*/
 	/**
 	 * Return the transpose of a given matrix.
 	 * @param matrix the matrix to transpose.
@@ -140,7 +138,7 @@ public:
 	 * @param rotation the object's rotation in the scene.
 	 * @param scaling the object's scaling factor.
 	 */
-	static Matrix4 model(const Point3& position, const Point3& rotation, const Point3& scale);
+	static Matrix4 model(const Point3& position, const Point3& rotation, const Vector3& scale);
 private:
 	/**
 	 * The raw matrix data.

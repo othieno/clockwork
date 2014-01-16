@@ -99,13 +99,9 @@ public:
 	/**
 	 * Write a fragment to the framebuffer.
 	 * @param fragment the fragment to write to the framebuffer.
-	 * @param fragmentOperation the operation that converts the fragment into a pixel.
+	 * @param fop the fragment operation that converts a fragment into a pixel value.
 	 */
-	void plot
-	(
-		const clockwork::graphics::Fragment& fragment,
-		const std::function<uint32_t(const clockwork::graphics::Fragment&)>& fragmentOperation
-	);
+	void plot(const Fragment& fragment, const std::function<uint32_t(const Fragment&)>& fop);
 	/**
 	 * Write a pixel and its depth value to the framebuffer at the given coordinate.
 	 * @param x the framebuffer element's row position.
@@ -203,7 +199,7 @@ private:
 	 * fragment's buffer offset if the fragment passes all tests, otherwise -1.
 	 * @param fragment the fragment to test.
 	 */
-	int fragmentPasses(const clockwork::graphics::Fragment& fragment) const;
+	int fragmentPasses(const Fragment& fragment) const;
 	/**
 	 * Free the memory used by the internal buffers.
 	 */

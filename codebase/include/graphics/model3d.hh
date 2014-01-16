@@ -46,20 +46,15 @@ public:
 	 * @param faces the model's polygonal face data.
 	 * @param material the model's material data.
 	 */
-	Model3D
-	(
-		const std::vector<clockwork::graphics::Vertex>& vertices,
-		const std::vector<clockwork::graphics::Face>& faces,
-		const clockwork::graphics::Material& material
-	);
+	Model3D(const std::vector<Vertex>& vertices, const std::vector<Face>& faces, const Material& material);
 	/**
 	 * Return the model's vertex data.
 	 */
-	const std::vector<clockwork::graphics::Vertex>& getVertices() const;
+	const std::vector<Vertex>& getVertices() const;
 	/**
 	 * Return the model's polygonal face data.
 	 */
-	const std::vector<clockwork::graphics::Face>& getFaces() const;
+	const std::vector<Face>& getFaces() const;
 	/**
 	 * Add a polygonal face.
 	 * @param indices the face's index list.
@@ -68,25 +63,29 @@ public:
 	void addFace
 	(
 		const std::array<const uint32_t, 3>& indices,
-		const std::array<const clockwork::graphics::Face::TextureCoordinates, 3>& textureCoordinates
+		const std::array<const Face::TextureCoordinates, 3>& textureCoordinates
 	);
 	/**
 	 * Return the model's material data.
 	 */
-	const clockwork::graphics::Material& getMaterial() const;
+	const Material& getMaterial() const;
+	/**
+	 * Return true if this container does not have any vertices or faces, false otherwise.
+	 */
+	bool empty() const;
 private:
 	/**
 	 * The 3D model's vertex data.
 	 */
-	std::vector<clockwork::graphics::Vertex> _vertices;
+	std::vector<Vertex> _vertices;
 	/**
 	 * The 3D model's polygonal face data.
 	 */
-	std::vector<clockwork::graphics::Face> _faces;
+	std::vector<Face> _faces;
 	/**
 	 * The 3D model's material data.
 	 */
-	clockwork::graphics::Material _material;
+	Material _material;
 };
 
 } // namespace graphics

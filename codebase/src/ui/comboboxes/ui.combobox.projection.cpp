@@ -26,6 +26,7 @@
 #include "scene.hh"
 #include "scene.viewer.hh"
 #include "projection.factory.hh"
+#include "tostring.hh"
 
 
 clockwork::ui::GUIProjectionComboBox::GUIProjectionComboBox(UserInterface& ui) :
@@ -47,9 +48,9 @@ clockwork::ui::GUIProjectionComboBox::loadItemList()
 	// Add the keys as items to the combo box.
 	for (const auto& key : keys)
 	{
-		using UserDataType = std::underlying_type<clockwork::graphics::Renderer::Type>::type;
+		using UserDataType = std::underlying_type<clockwork::graphics::Projection::Type>::type;
 
-		const auto& text = QString(clockwork::toString(key).c_str());
+		const auto& text = clockwork::toString(key);
 		const auto& userData = static_cast<UserDataType>(key);
 
 		// Add the item to the combo box.

@@ -29,14 +29,14 @@
 namespace clockwork {
 namespace ui {
 
-class GUISceneView : public clockwork::ui::GUIView
+class GUISceneView : public GUIView
 {
 public:
 	/**
 	 * Instantiate a GUISceneView that is attached to the user interface.
 	 * @param ui the user interface that this component is attached to.
 	 */
-	GUISceneView(clockwork::ui::UserInterface& ui);
+	GUISceneView(UserInterface& ui);
 private:
 	/**
 	 * The tree view used to present the scene graph.

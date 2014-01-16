@@ -33,7 +33,7 @@ namespace physics {
 /**
  * A rigid body is a scene object that has a visual property, i.e. a 3D model.
  */
-class RigidBody : public scene::Object
+class RigidBody : public clockwork::scene::Object
 {
 public:
 	/**
@@ -45,11 +45,7 @@ public:
 	/**
 	 * @see clockwork::scene::Node::render.
 	 */
-	virtual void render
-	(
-		const clockwork::graphics::Renderer& renderer,
-		const clockwork::scene::Viewer& viewer
-	) const override final;
+	virtual void render(const clockwork::scene::Viewer& viewer) const override final;
 	/**
 	 * Return the rigid body's 3D model.
 	 */
@@ -74,7 +70,7 @@ private:
 /**
  * The Suzanne rigid body used for debugging.
  */
-class SuzanneRigidBody : public clockwork::physics::RigidBody
+class SuzanneRigidBody : public RigidBody
 {
 public:
 	/**

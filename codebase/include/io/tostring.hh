@@ -23,30 +23,24 @@
  */
 #pragma once
 
-#include <iostream>
+#include <QString>
 #include "error.hh"
-#include "renderer.hh"
 #include "projection.hh"
+#include "wireframe.render.parameters.hh"
+#include "texture.filter.factory.hh"
 #include "image.filter.hh"
 #include "texture.filter.hh"
-#include "renderer.implementation.wireframe.hh"
-#include <QString>
+#include "fragment.hh"
+
 
 namespace clockwork {
 
-std::string toString(const clockwork::Error&);
-std::string toString(const clockwork::graphics::Renderer::Type&);
-std::string toString(const clockwork::graphics::Projection::Type&);
-std::string toString(const clockwork::graphics::ImageFilter::Type&);
-std::string toString(const clockwork::graphics::TextureFilter::Type&);
-std::string toString(const clockwork::graphics::WireframeRenderer::LineAlgorithm&);
+QString toString(const clockwork::Error&);
+QString toString(const clockwork::graphics::Fragment&);
+QString toString(const clockwork::graphics::Projection::Type&);
+QString toString(const clockwork::graphics::ImageFilter::Type&);
+QString toString(const clockwork::graphics::TextureFilter::Type&);
+QString toString(const clockwork::graphics::RenderParameters::Type&);
+QString toString(const clockwork::graphics::WireframeRenderParameters::LineAlgorithm&);
 
 } // namespace clockwork
-
-std::ostream& operator<<(std::ostream&, const QString&);
-std::ostream& operator<<(std::ostream&, const clockwork::Error&);
-std::ostream& operator<<(std::ostream&, const clockwork::graphics::Renderer::Type&);
-std::ostream& operator<<(std::ostream&, const clockwork::graphics::Projection::Type&);
-std::ostream& operator<<(std::ostream&, const clockwork::graphics::ImageFilter::Type&);
-std::ostream& operator<<(std::ostream&, const clockwork::graphics::TextureFilter::Type&);
-std::ostream& operator<<(std::ostream&, const clockwork::graphics::WireframeRenderer::LineAlgorithm&);

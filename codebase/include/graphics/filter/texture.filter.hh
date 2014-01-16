@@ -43,17 +43,17 @@ public:
 	/**
 	 * Return the filter's type.
 	 */
-	const TextureFilter::Type& getType() const;
+	const Type& getType() const;
 protected:
 	/**
 	 * Instantiate a filter with a given type.
 	 */
-	TextureFilter(const TextureFilter::Type type);
+	TextureFilter(const Type type);
 private:
 	/**
 	 * This filter's type.
 	 */
-	const TextureFilter::Type _type;
+	const Type _type;
 };
 
 } // namespace graphics

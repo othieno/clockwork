@@ -40,7 +40,7 @@ public:
 	/**
 	 * The application's execution context.
 	 */
-	 static clockwork::system::ExecutionContext Context;
+	 static ExecutionContext Context;
 	/**
 	 * The concurrency subsystem.
 	 */
@@ -52,7 +52,7 @@ public:
 	/**
 	 * The asset manager.
 	 */
-	static clockwork::system::AssetManager Assets;
+	static AssetManager Assets;
 	/**
 	 * Initialise the services.
 	 * @param context the execution context that the application will be executed in.

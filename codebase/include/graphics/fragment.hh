@@ -26,6 +26,8 @@
 #include <string>
 #include "vertex.hh"
 #include "color.hh"
+#include "point4.hh"
+#include "vector3.hh"
 
 
 namespace clockwork {
@@ -43,11 +45,11 @@ public:
 	/**
 	 * The fragment's position.
 	 */
-	double x, y, z, w;
+	clockwork::Point4 position;
 	/**
-	 * The fragment's normal vector components.
+	 * The fragment's normal vector.
 	 */
-	double i, j, k;
+	clockwork::Vector3 normal;
 	/**
 	 * The fragment's texture mapping coordinates.
 	 */
@@ -55,7 +57,7 @@ public:
 	/**
 	 * The fragment's normalised color.
 	 */
-	clockwork::graphics::ColorARGB color;
+	ColorRGBA color;
 	/**
 	 * The fragment's stencil value.
 	 */
@@ -73,12 +75,9 @@ public:
 	 * @param p the interpolant.
 	 */
 	static Fragment interpolate(const Fragment& start, const Fragment& end, const double& p);
-	/**
-	 * Convert the fragment data into string format.
-	 * @param fragment the fragment to convert.
-	 */
-	static std::string toString(const Fragment& fragment);
 };
 
 } // namespace graphics
 } // namespace clockwork
+
+std::ostream& operator<<(std::ostream&, const clockwork::graphics::Fragment&);

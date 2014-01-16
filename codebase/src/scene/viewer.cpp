@@ -22,28 +22,28 @@
  * THE SOFTWARE.
  */
 #include "scene.viewer.hh"
-#include "renderer.factory.hh"
 #include "projection.factory.hh"
+#include "render.parameters.factory.hh"
 
 
 clockwork::scene::Viewer::Viewer(const std::string& name) :
 RigidBody(name),
-_rendererType(clockwork::graphics::RendererFactory::getUniqueInstance().getDefaultKey()),
+_renderType(clockwork::graphics::RenderParametersFactory::getUniqueInstance().getDefaultKey()),
 _projectionType(clockwork::graphics::ProjectionFactory::getUniqueInstance().getDefaultKey())
 {}
 
 
-const clockwork::graphics::Renderer::Type&
-clockwork::scene::Viewer::getRendererType() const
+const clockwork::graphics::RenderParameters::Type&
+clockwork::scene::Viewer::getRenderType() const
 {
-	return _rendererType;
+	return _renderType;
 }
 
 
 void
-clockwork::scene::Viewer::setRenderer(const clockwork::graphics::Renderer::Type& type)
+clockwork::scene::Viewer::setRenderType(const clockwork::graphics::RenderParameters::Type& type)
 {
-	_rendererType = type;
+	_renderType = type;
 }
 
 
@@ -86,6 +86,13 @@ void
 clockwork::scene::Viewer::updateProjectionMatrix()
 {
 	std::cerr << "Implement clockwork::scene::Viewer::updateProjectionMatrix" << std::endl;
+}
+
+
+const clockwork::Matrix4&
+clockwork::scene::Viewer::getViewProjectionMatrix() const
+{
+	return _viewProjectionMatrix;
 }
 
 

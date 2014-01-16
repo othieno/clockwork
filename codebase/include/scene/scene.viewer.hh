@@ -24,7 +24,7 @@
 #pragma once
 
 #include "rigid.body.hh"
-#include "renderer.hh"
+#include "render.parameters.hh"
 #include "projection.hh"
 #include "viewport.hh"
 #include "frustum.hh"
@@ -46,14 +46,18 @@ public:
 	 */
 	const clockwork::Matrix4& getProjectionMatrix() const;
 	/**
+	 * Return the viewer's view-projection transformation matrix.
+	 */
+	const clockwork::Matrix4& getViewProjectionMatrix() const;
+	/**
 	 * Return the viewer's renderer type.
 	 */
-	const clockwork::graphics::Renderer::Type& getRendererType() const;
+	const clockwork::graphics::RenderParameters::Type& getRenderType() const;
 	/**
 	 * Set the viewer's renderer type.
 	 * @param type the renderer type to set.
 	 */
-	void setRenderer(const clockwork::graphics::Renderer::Type& type);
+	void setRenderType(const clockwork::graphics::RenderParameters::Type& type);
 	/**
 	 * Return the viewer's projection type.
 	 */
@@ -95,11 +99,15 @@ protected:
 	 * The projection transformation matrix.
 	 */
 	clockwork::Matrix4 _projectionMatrix;
+	/**
+	 * The view-projection transformation matrix.
+	 */
+	clockwork::Matrix4 _viewProjectionMatrix;
 private:
 	/**
 	 * The viewer's renderer type.
 	 */
-	clockwork::graphics::Renderer::Type _rendererType;
+	clockwork::graphics::RenderParameters::Type _renderType;
 	/**
 	 * The viewer's projection type.
 	 */

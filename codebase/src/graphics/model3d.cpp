@@ -69,3 +69,10 @@ clockwork::graphics::Model3D::getMaterial() const
 {
 	return _material;
 }
+
+
+bool
+clockwork::graphics::Model3D::empty() const
+{
+	return _vertices.empty() || _faces.empty();
+}

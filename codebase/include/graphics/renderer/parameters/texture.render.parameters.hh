@@ -21,33 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "renderer.implementation.texture.hh"
-#include "texture.filter.factory.hh"
-#include "texture.render.task.hh"
+#pragma once
+
+#include "polygon.render.parameters.hh"
+#include "texture.filter.hh"
 
 
-clockwork::graphics::TextureRenderer::TextureRenderer() :
-PolygonRenderer(clockwork::graphics::Renderer::Type::Texture),
-_textureFilter(clockwork::graphics::TextureFilterFactory::getUniqueInstance().getDefaultValue())
-{}
+namespace clockwork {
+namespace graphics {
 
+/**
+ * @see render.parameters.factory.hh.
+ */
+class RenderParametersFactory;
 
-void
-clockwork::graphics::TextureRenderer::setTextureFilter(const clockwork::graphics::TextureFilter::Type& type)
+/**
+ * A texture renderer's parameter set.
+ */
+class TextureRenderParameters : public PolygonRenderParameters
 {
-	if (_textureFilter != nullptr && _textureFilter->getType() == type)
-		return;
+friend class RenderParametersFactory;
+public:
+	/**
+	 * Set the texture filter.
+	 * @param type the type of texture filter to use.
+	 */
+	void setTextureFilter(const TextureFilter::Type& type);
+private:
+	/**
+	 * The TextureRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.
+	 */
+	TextureRenderParameters();
+	TextureRenderParameters(const TextureRenderParameters&) = delete;
+	TextureRenderParameters& operator=(const TextureRenderParameters&) = delete;
+	/**
+	 * The current texture filter.
+	 */
+	const TextureFilter* _filter;
+};
 
-	_textureFilter = clockwork::graphics::TextureFilterFactory::getUniqueInstance().get(type);
-}
-
-
-clockwork::concurrency::RenderTask*
-clockwork::graphics::TextureRenderer::createRenderTask
-(
-	const clockwork::physics::RigidBody& body,
-	const clockwork::scene::Viewer& viewer
-) const
-{
-	return new clockwork::concurrency::TextureRenderTask(body, viewer);
-}
+} // namespace graphics
+} // namespace clockwork

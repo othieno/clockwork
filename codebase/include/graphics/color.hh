@@ -29,88 +29,45 @@
 namespace clockwork {
 namespace graphics {
 
-/**
- * Merge normalised alpha, red, green and blue color channels into one 32-bit integer.
- * @param alpha the color's alpha channel.
- * @param red the color's red channel.
- * @param green the color's green channel.
- * @param blue the color's blue channel.
- */
-uint32_t mergeColorChannels(const double& alpha, const double& red, const double& green, const double& blue);
-
-struct ColorRGB
+struct ColorRGBA
 {
 	/**
 	 * The color's normalised red channel.
 	 */
-	double red;
+	float red;
 	/**
 	 * The color's normalised green channel.
 	 */
-	double green;
+	float green;
 	/**
 	 * The color's normalised blue channel.
 	 */
-	double blue;
-	/**
-	 * Instantiate an RGB color with normalised red,
-	 * green and blue channels.
-	 * @param red the red channel.
-	 * @param green the green channel.
-	 * @param blue the blue channel.
-	 */
-	ColorRGB(const double& red = 1, const double& green = 1, const double& blue = 1);
-	/**
-	 * Merge the red, green and blue channels into one 32-bit integer.
-	 */
-	inline uint32_t merge() const
-	{
-		return mergeColorChannels(1.0, red, green, blue);
-	}
-	/**
-	 * Return a random RGB color.
-	 */
-	static ColorRGB getRandom();
-};
-
-struct ColorARGB
-{
+	float blue;
 	/**
 	 * The color's normalised alpha channel.
 	 */
-	double alpha;
+	float alpha;
 	/**
-	 * The color's normalised red channel.
-	 */
-	double red;
-	/**
-	 * The color's normalised green channel.
-	 */
-	double green;
-	/**
-	 * The color's normalised blue channel.
-	 */
-	double blue;
-	/**
-	 * Instantiate an ARGB color with normalised red,
-	 * green and blue channels.
-	 * @param alpha the alpha channel.
+	 * Instantiate an RGBa color with normalised red, green and blue channels.
 	 * @param red the red channel.
 	 * @param green the green channel.
 	 * @param blue the blue channel.
+	 * @param alpha the alpha channel.
 	 */
-	ColorARGB(const double& alpha = 1, const double& red = 1, const double& green = 1, const double& blue = 1);
+	ColorRGBA(const float& red = 0.0f, const float& green = 0.0f, const float& blue = 0.0f, const float& alpha = 1.0f);
 	/**
-	 * Merge the alpha, red, green and blue channels into one 32-bit integer.
+	 * Merge the normalised red, green, blue and alpha channels into one 32-bit integer.
 	 */
-	inline uint32_t merge() const
-	{
-		return mergeColorChannels(alpha, red, green, blue);
-	}
+	uint32_t merge() const;
 	/**
-	 * Return a random ARGB color.
+	 * Split a 32-bit integer value into an RGBA color.
+	 * @param ARGB the 32-bit integer that represents an A8R8G8B8 color.
 	 */
-	static ColorARGB getRandom();
+	static ColorRGBA split(const uint32_t& ARGB);
+	/**
+	 * Return a random RGBA color.
+	 */
+	static ColorRGBA getRandom();
 };
 
 } // namespace graphics

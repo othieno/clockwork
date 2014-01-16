@@ -41,16 +41,30 @@ public:
 	/**
 	 * Return the framebuffer.
 	 */
-	clockwork::graphics::Framebuffer& getFramebuffer();
+	Framebuffer& getFramebuffer();
 	/**
 	 * Set the image filter to apply to the framebuffer during post-processing.
 	 * @param type the type of the image filter to set.
 	 */
-	void setImageFilter(const clockwork::graphics::ImageFilter::Type& type);
+	void setImageFilter(const ImageFilter::Type& type);
 	/**
 	 * Return the type of the current image filter.
 	 */
-	const clockwork::graphics::ImageFilter::Type& getImageFilterType() const;
+	const ImageFilter::Type& getImageFilterType() const;
+	/**
+	 * @see Framebuffer::plot(2).
+	 */
+	inline void plot(const Fragment& fragment, const std::function<uint32_t(const Fragment&)>& fop)
+	{
+		_framebuffer.plot(fragment, fop);
+	}
+	/**
+	 * @see Framebuffer::plot(3).
+	 */
+	inline void plot(const uint32_t& x, const uint32_t& y, const double& z, const uint32_t& pixel)
+	{
+		_framebuffer.plot(x, y, z, pixel);
+	}
 	/**
 	 * Raise the 'updateComplete' signal.
 	 */
@@ -82,11 +96,11 @@ private:
 	/**
 	 * The framebuffer.
 	 */
-	clockwork::graphics::Framebuffer _framebuffer;
+	Framebuffer _framebuffer;
 	/**
 	 * The image filter that is applied to the framebuffer during post-processing.
 	 */
-	clockwork::graphics::ImageFilter::Type _imageFilterType;
+	ImageFilter::Type _imageFilterType;
 private slots:
 	/**
 	 * Update the subsystem.

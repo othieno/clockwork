@@ -144,7 +144,7 @@ clockwork::graphics::Framebuffer::plot
 	if (offset >= 0)
 	{
 		_pixelBuffer[offset] = fop(fragment);
-		_depthBuffer[offset] = fragment.z;
+		_depthBuffer[offset] = fragment.position.z;
 		_accumulationBuffer[offset] = _accumulationBufferClearValue;
 		_stencilBuffer[offset] = fragment.stencil;
 	}
@@ -269,8 +269,8 @@ clockwork::graphics::Framebuffer::getOffset(const double& x, const double& y) co
 int
 clockwork::graphics::Framebuffer::fragmentPasses(const clockwork::graphics::Fragment& fragment) const
 {
-	const uint32_t xw = static_cast<uint32_t>(std::lround(fragment.x));
-	const uint32_t yw = static_cast<uint32_t>(std::lround(fragment.y));
+	const uint32_t xw = static_cast<uint32_t>(std::lround(fragment.position.x));
+	const uint32_t yw = static_cast<uint32_t>(std::lround(fragment.position.y));
 
 	const auto offset = getOffset(xw, yw);
 	if (offset >= 0)
@@ -286,7 +286,7 @@ clockwork::graphics::Framebuffer::fragmentPasses(const clockwork::graphics::Frag
 		if (Services::Graphics.isStencilTestEnabled())
 			return -1;
 
-		if (Services::Graphics.isDepthTestEnabled() && !(fragment.z < _depthBuffer[offset]))
+		if (Services::Graphics.isDepthTestEnabled() && !(fragment.position.z < _depthBuffer[offset]))
 			return -1;
 	}
 	return offset;

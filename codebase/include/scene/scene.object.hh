@@ -33,7 +33,7 @@ namespace scene {
 /**
  * Objects are entities that have a position, orientation and scale in the scene.
  */
-class Object : public clockwork::scene::Entity
+class Object : public Entity
 {
 public:
 	/**
@@ -45,9 +45,9 @@ public:
 	 */
 	const clockwork::Point3& getRotation() const;
 	/**
-	 * Return the object's scale.
+	 * Return the object's scaling vector.
 	 */
-	const clockwork::Point3& getScale() const;
+	const clockwork::Vector3& getScalingVector() const;
 	/**
 	 * @see clockwork::scene::Node::updateGeometry.
 	 */
@@ -76,9 +76,9 @@ protected:
 	 */
 	clockwork::Point3 _rotation;
 	/**
-	 * The object's scale.
+	 * The object's scaling vector.
 	 */
-	clockwork::Point3 _scale;
+	clockwork::Vector3 _scaling;
 private:
 	/**
 	 * The object's model transformation matrix.

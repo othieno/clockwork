@@ -114,15 +114,11 @@ clockwork::scene::Node::updateGeometry(const clockwork::Matrix4& CMTM)
 
 
 void
-clockwork::scene::Node::render
-(
-	const clockwork::graphics::Renderer& renderer,
-	const clockwork::scene::Viewer& viewer
-) const
+clockwork::scene::Node::render(const clockwork::scene::Viewer& viewer) const
 {
 	if (!_isPruned)
 	{
 		for (auto* child : _children)
-			child->render(renderer, viewer);
+			child->render(viewer);
 	}
 }

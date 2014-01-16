@@ -42,17 +42,17 @@ public:
 	/**
 	 * Return the filter's type.
 	 */
-	const ImageFilter::Type& getType() const;
+	const Type& getType() const;
 protected:
 	/**
 	 * Instantiate a filter with a given type.
 	 */
-	ImageFilter(const ImageFilter::Type type);
+	ImageFilter(const Type type);
 private:
 	/**
 	 * This filter's type.
 	 */
-	const ImageFilter::Type _type;
+	const Type _type;
 };
 
 } // namespace graphics

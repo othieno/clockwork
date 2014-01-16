@@ -33,7 +33,7 @@ namespace scene {
  * A Property defines the behaviors and characteristics of a given scene entity.
  */
 template<typename EntityType>
-class Property : public clockwork::scene::Entity
+class Property : public Entity
 {
 public:
 	/**

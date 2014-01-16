@@ -26,6 +26,7 @@
 #include "scene.hh"
 #include "services.hh"
 #include "image.filter.factory.hh"
+#include "tostring.hh"
 
 
 clockwork::ui::GUIImageFilterComboBox::GUIImageFilterComboBox(UserInterface& ui) :
@@ -49,7 +50,7 @@ clockwork::ui::GUIImageFilterComboBox::loadItemList()
 	{
 		using UserDataType = std::underlying_type<clockwork::graphics::ImageFilter::Type>::type;
 
-		const auto& text = QString(clockwork::toString(key).c_str());
+		const auto& text = clockwork::toString(key);
 		const auto& userData = static_cast<UserDataType>(key);
 
 		// Add the item to the combo box.

@@ -58,24 +58,24 @@ public:
 	/**
 	 * Return the window that this user interface is attached to.
 	 */
-	clockwork::ui::Window& getWindow();
+	Window& getWindow();
 private:
 	/**
 	 * A reference to the window where this user interface is rendered.
 	 */
-	clockwork::ui::Window& _window;
+	Window& _window;
 	/**
 	 * The display device.
 	 */
-	clockwork::ui::GUIDisplay* const _display;
+	GUIDisplay* const _display;
 	/**
 	 * The control panel.
 	 */
-	clockwork::ui::GUIControlPanel* const _controlPanel;
+	GUIControlPanel* const _controlPanel;
 	/**
 	 * The busy indicator.
 	 */
-	clockwork::ui::GUIBusyIndicator* const _busyIndicator;
+	GUIBusyIndicator* const _busyIndicator;
 	/**
 	 * The menu bar.
 	 */
@@ -89,14 +89,14 @@ private slots:
 	 * Update the user interface and the components that are attached to it.
 	 * @param source the component that triggered the update.
 	 */
-	void update(const clockwork::ui::GUIComponent* const source);
+	void update(const GUIComponent* const source);
 signals:
 	/**
 	 * This signal is raised when the user interface's components need to
 	 * be updated, which usually happens after any sort of interaction
 	 * with the user interface.
 	 */
-	void updateComponents(const clockwork::ui::GUIComponent* const source);
+	void updateComponents(const GUIComponent* const source);
 };
 
 } // namespace ui

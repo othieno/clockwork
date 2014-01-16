@@ -46,7 +46,7 @@ public:
 	 * Instantiate a GUIDisplay.
 	 * @param ui the user interface that this component is attached to.
 	 */
-	GUIDisplay(clockwork::ui::UserInterface& ui);
+	GUIDisplay(UserInterface& ui);
 private:
 	/**
 	 * The custom paint event loads data from a framebuffer and displays it.

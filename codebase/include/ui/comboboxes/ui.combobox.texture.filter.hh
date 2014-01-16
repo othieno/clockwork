@@ -40,7 +40,7 @@ public:
 	/**
 	 * @see GUIComponent::onInterfaceUpdate.
 	 */
-	virtual void onInterfaceUpdate(const clockwork::ui::GUIComponent* const) override final;
+	virtual void onInterfaceUpdate(const GUIComponent* const) override final;
 private:
 	/**
 	 * @see GUIComboBox::onItemSelected.

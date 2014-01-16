@@ -66,7 +66,7 @@ public:
 	 * Set the current viewer.
 	 * @param viewer the scene viewer to set.
 	 */
-	void setViewer(clockwork::scene::Viewer& viewer);
+	void setViewer(Viewer& viewer);
 	/**
 	 * Remove the viewer that is currently set.
 	 */
@@ -79,11 +79,11 @@ public:
 	 * Add an object to the scene.
 	 * @param object the object to add.
 	 */
-	void addObject(clockwork::scene::Object* const object);
+	void addObject(Object* const object);
 	/**
 	 * Return the root nodes.
 	 */
-	std::set<clockwork::scene::Node*>& getRootNodes();
+	std::set<Node*>& getRootNodes();
 	/**
 	 * Remove all entities from the scene.
 	 */
@@ -136,11 +136,11 @@ private:
 	/**
 	 * The current scene viewer.
 	 */
-	clockwork::scene::Viewer* _currentViewer;
+	Viewer* _currentViewer;
 	/**
 	 * The root nodes.
 	 */
-	std::set<clockwork::scene::Node*> _rootNodes;
+	std::set<Node*> _rootNodes;
 };
 
 } // namespace scene

@@ -43,7 +43,7 @@ public:
 	/**
 	 * Return the projection's type.
 	 */
-	const Projection::Type& getType() const;
+	const Type& getType() const;
 	/**
 	 * TODO Explain me better.
 	 * Return this projection's transformation matrix in a given frustum.
@@ -59,7 +59,7 @@ private:
 	/**
 	 * This projection's type.
 	 */
-	const Projection::Type _type;
+	const Type _type;
 };
 
 } // namespace graphics

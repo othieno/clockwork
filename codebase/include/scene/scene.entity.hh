@@ -35,7 +35,7 @@ namespace scene {
  * Think of entities as abstract existences, in that we know they exist but we
  * may or may not be able to interact with them.
  */
-class Entity : public clockwork::scene::Node
+class Entity : public Node
 {
 public:
 	/**

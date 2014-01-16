@@ -26,28 +26,30 @@
 #include "graphics.update.task.hh"
 #include "services.hh"
 
+using clockwork::scene::Object;
 
-clockwork::scene::Object::Object(const std::string& name) :
+
+Object::Object(const std::string& name) :
 Entity(name)
 {}
 
 
 const clockwork::Matrix4&
-clockwork::scene::Object::getModelMatrix() const
+Object::getModelMatrix() const
 {
 	return _modelMatrix;
 }
 
 
 void
-clockwork::scene::Object::setModelMatrix(const clockwork::Matrix4& model)
+Object::setModelMatrix(const clockwork::Matrix4& model)
 {
 	_modelMatrix = model;
 }
 
 
 void
-clockwork::scene::Object::updateGeometry(const clockwork::Matrix4& CMTM)
+Object::updateGeometry(const clockwork::Matrix4& CMTM)
 {
 	if (!isPruned())
 		clockwork::system::Services::Concurrency.submitTask(new clockwork::concurrency::GeometryUpdateTask(*this, CMTM));
@@ -55,23 +57,21 @@ clockwork::scene::Object::updateGeometry(const clockwork::Matrix4& CMTM)
 
 
 const clockwork::Point3&
-clockwork::scene::Object::getPosition() const
+Object::getPosition() const
 {
 	return _position;
 }
 
 
 const clockwork::Point3&
-clockwork::scene::Object::getRotation() const
+Object::getRotation() const
 {
-	static Point3 rotation;
-	return rotation;
+	return _rotation;
 }
 
 
-const clockwork::Point3&
-clockwork::scene::Object::getScale() const
+const clockwork::Vector3&
+Object::getScalingVector() const
 {
-	static Point3 scale;
-	return scale;
+	return _scaling;
 }

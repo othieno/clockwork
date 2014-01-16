@@ -23,23 +23,25 @@
  */
 #include "ui.hh"
 
+using clockwork::ui::GUIComponent;
 
-clockwork::ui::GUIComponent::GUIComponent(clockwork::ui::UserInterface& ui) :
+
+GUIComponent::GUIComponent(UserInterface& ui) :
 QWidget(&ui)
 {
 	connect
 	(
-		this, SIGNAL(componentChanged(const clockwork::ui::GUIComponent* const)),
-		&ui, SLOT(update(const clockwork::ui::GUIComponent* const))
+		this, SIGNAL(componentChanged(const GUIComponent* const)),
+		&ui, SLOT(update(const GUIComponent* const))
 	);
 	connect
 	(
-		&ui, SIGNAL(updateComponents(const clockwork::ui::GUIComponent* const)),
-		this, SLOT(onInterfaceUpdate(const clockwork::ui::GUIComponent* const))
+		&ui, SIGNAL(updateComponents(const GUIComponent* const)),
+		this, SLOT(onInterfaceUpdate(const GUIComponent* const))
 	);
 }
 
 
 void
-clockwork::ui::GUIComponent::onInterfaceUpdate(const clockwork::ui::GUIComponent* const source)
+GUIComponent::onInterfaceUpdate(const GUIComponent* const source)
 {}

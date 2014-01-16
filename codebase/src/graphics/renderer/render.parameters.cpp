@@ -21,29 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "point.render.task.hh"
+#include "render.parameters.hh"
+#include "services.hh"
+
+using clockwork::graphics::RenderParameters;
 
 
-clockwork::concurrency::PointRenderTask::PointRenderTask
-(
-	const clockwork::physics::RigidBody& body,
-	const clockwork::scene::Viewer& viewer
-) :
-RenderTask(body, viewer)
+RenderParameters::RenderParameters(const RenderParameters::Type& type) :
+_type(type),
+_fragmentProgram(std::bind(&RenderParameters::defaultFragmentProgram, this, std::placeholders::_1))
+{}
+
+
+const RenderParameters::Type&
+RenderParameters::getType() const
+{
+	return _type;
+}
+
+
+void
+RenderParameters::preVertexProgram(const Face&, const Vertex&, Fragment&) const
 {}
 
 
 void
-clockwork::concurrency::PointRenderTask::primitiveAssembly(std::array<const clockwork::graphics::Fragment*, 3>& triangle)
+RenderParameters::postVertexProgram(const Face&, const Vertex&, Fragment&) const
+{}
+
+
+void
+RenderParameters::setFragmentProgram(const std::function<uint32_t(const Fragment&)>& program)
 {
-	const auto fragmentOperation = getFragmentOperation();
-	for (auto* const fragment : triangle)
-		plot(*fragment, fragmentOperation);
+	_fragmentProgram = program;
 }
 
 
-std::function<uint32_t(const clockwork::graphics::Fragment&)>
-clockwork::concurrency::PointRenderTask::getFragmentOperation()
+uint32_t
+RenderParameters::defaultFragmentProgram(const Fragment& f) const
 {
-	return std::bind(&clockwork::concurrency::PointRenderTask::fragmentProgram, this, std::placeholders::_1);
+	return f.color.merge();
 }

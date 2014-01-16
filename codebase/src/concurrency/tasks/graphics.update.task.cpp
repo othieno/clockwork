@@ -25,7 +25,6 @@
 #include "scene.viewer.hh"
 #include "scene.hh"
 #include "services.hh"
-#include "renderer.factory.hh"
 
 
 clockwork::concurrency::GraphicsUpdateTask::GraphicsUpdateTask() :
@@ -57,13 +56,9 @@ clockwork::concurrency::GraphicsUpdateTask::onRun()
 				node->updateGeometry(CMTM);
 
 			// Render the scene.
-			auto* const renderer =
-			clockwork::graphics::RendererFactory::getUniqueInstance().get(viewer->getRendererType());
-			if (renderer != nullptr)
-			{
-				for (auto* const node : rootNodes)
-					node->render(*renderer, *viewer);
-			}
+			for (auto* const node : rootNodes)
+				node->render(*viewer);
+
 
 			// Apply the post-processing filter to the framebuffer.
 			auto* const task = new clockwork::concurrency::PostProcessingTask(framebuffer, imageFilterType);
@@ -103,7 +98,7 @@ clockwork::concurrency::GeometryUpdateTask::onRun()
 {
 	const auto& position = _object.getPosition();
 	const auto& rotation = _object.getRotation();
-	const auto& scale = _object.getScale();
+	const auto& scale = _object.getScalingVector();
 
 	const auto& objectModelMatrix = _CMTM * clockwork::Matrix4::model(position, rotation, scale);
 

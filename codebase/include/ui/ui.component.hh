@@ -50,7 +50,7 @@ protected slots:
 	 * components in the user interface.
 	 * @param source a pointer to the component that triggered the GUI update.
 	 */
-	virtual void onInterfaceUpdate(const clockwork::ui::GUIComponent* const source);
+	virtual void onInterfaceUpdate(const GUIComponent* const source);
 signals:
 	/**
 	 * This signal is raised when the component changes its state. This will
@@ -58,7 +58,7 @@ signals:
 	 * that may depend on this one.
 	 * @param source a pointer to the component that changed, i.e. this component.
 	 */
-	void componentChanged(const clockwork::ui::GUIComponent* const source);
+	void componentChanged(const GUIComponent* const source);
 };
 
 } // namespace ui

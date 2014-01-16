@@ -24,9 +24,7 @@
 #include "file.reader.hh"
 #include <QTextStream>
 #include <QStringList>
-#include <iostream>
 #include <QFileInfo>
-#include "io.output.hh"
 
 
 /**

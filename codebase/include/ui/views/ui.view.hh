@@ -29,10 +29,10 @@
 namespace clockwork {
 namespace ui {
 
-class GUIView : public clockwork::ui::GUIComponent
+class GUIView : public GUIComponent
 {
 protected:
-	GUIView(clockwork::ui::UserInterface& ui);
+	GUIView(UserInterface& ui);
 };
 
 } // namespace ui

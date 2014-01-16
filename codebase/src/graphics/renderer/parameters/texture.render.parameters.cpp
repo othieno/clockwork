@@ -21,30 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#pragma once
-
-#include "factory.hh"
-#include "renderer.hh"
+#include "texture.render.parameters.hh"
+#include "texture.filter.factory.hh"
 
 
-namespace clockwork {
-namespace graphics {
+clockwork::graphics::TextureRenderParameters::TextureRenderParameters() :
+PolygonRenderParameters(clockwork::graphics::RenderParameters::Type::Texture),
+_filter(clockwork::graphics::TextureFilterFactory::getUniqueInstance().getDefaultValue())
+{}
 
-class RendererFactory : public Factory<clockwork::graphics::Renderer::Type, clockwork::graphics::Renderer>
+
+void
+clockwork::graphics::TextureRenderParameters::setTextureFilter(const clockwork::graphics::TextureFilter::Type& type)
 {
-public:
-	/**
-	 * Return the factory's unique instance.
-	 */
-	static RendererFactory& getUniqueInstance();
-private:
-	/**
-	 * The RendererFactory is a singleton.
-	 */
-	RendererFactory();
-	RendererFactory(const RendererFactory&) = delete;
-	RendererFactory& operator=(const RendererFactory&) = delete;
-};
+	// Is there a need to change the filter?
+	if (_filter != nullptr && type == _filter->getType())
+		return;
 
-} // namespace graphics
-} // namespace clockwork
+	_filter = clockwork::graphics::TextureFilterFactory::getUniqueInstance().get(type);
+}

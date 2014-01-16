@@ -23,51 +23,41 @@
  */
 #include "fragment.hh"
 
+using clockwork::graphics::Fragment;
 
-clockwork::graphics::Fragment::Fragment(const double& inu, const double& inv) :
-x(0), y(0), z(0), w(1),
-i(0), j(0), k(0),
-u(inu), v(inv),
-color(1, 1, 1, 1),
+
+Fragment::Fragment(const double& U, const double& V) :
+position(),
+normal(),
+u(U), v(V),
+color(1.0f, 1.0f, 1.0f),
 stencil(0)
 {}
 
 
-clockwork::graphics::Fragment
-clockwork::graphics::Fragment::interpolate
-(
-	const clockwork::graphics::Fragment& start,
-	const clockwork::graphics::Fragment& end,
-	const double& p
-)
+Fragment
+Fragment::interpolate(const Fragment& start, const Fragment& end, const double& p)
 {
-	const double pp = 1 - p;
-	clockwork::graphics::Fragment output;
+	const auto pp = 1.0 - p;
+	Fragment output;
 
-	output.x = (p * start.x) + (pp * end.x);
-	output.y = (p * start.y) + (pp * end.y);
-	output.z = (p * start.z) + (pp * end.z);
+	output.position.x = (pp * start.position.x) + (p * end.position.x);
+	output.position.y = (pp * start.position.y) + (p * end.position.y);
+	output.position.z = (pp * start.position.z) + (p * end.position.z);
 
-	output.u = (p * start.u) + (pp * end.u);
-	output.v = (p * start.v) + (pp * end.v);
+	output.u = (pp * start.u) + (p * end.u);
+	output.v = (pp * start.v) + (p * end.v);
 
-	output.i = (p * start.i) + (pp * end.i);
-	output.j = (p * start.j) + (pp * end.j);
-	output.k = (p * start.k) + (pp * end.k);
+	output.normal.i = (pp * start.normal.i) + (p * end.normal.i);
+	output.normal.j = (pp * start.normal.j) + (p * end.normal.j);
+	output.normal.k = (pp * start.normal.k) + (p * end.normal.k);
 
-	output.color.alpha = (p * start.color.alpha) + (pp * end.color.alpha);
-	output.color.red = (p * start.color.red) + (pp * end.color.red);
-	output.color.green = (p * start.color.green) + (pp * end.color.green);
-	output.color.blue = (p * start.color.blue) + (pp * end.color.blue);
+	output.color.alpha = (pp * start.color.alpha) + (p * end.color.alpha);
+	output.color.red = (pp * start.color.red) + (p * end.color.red);
+	output.color.green = (pp * start.color.green) + (p * end.color.green);
+	output.color.blue = (pp * start.color.blue) + (p * end.color.blue);
 
-	output.stencil = (p * start.stencil) + (pp * end.stencil);
+	output.stencil = (pp * start.stencil) + (p * end.stencil);
 
 	return output;
-}
-
-
-std::string
-clockwork::graphics::Fragment::toString(const clockwork::graphics::Fragment&)
-{
-	return "Implement clockwork::graphics::Fragment::toString";
 }

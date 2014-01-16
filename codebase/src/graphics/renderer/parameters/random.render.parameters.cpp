@@ -21,16 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "renderer.hh"
+#include "random.render.parameters.hh"
+
+using clockwork::graphics::RandomRenderParameters;
 
 
-clockwork::graphics::Renderer::Renderer(const clockwork::graphics::Renderer::Type& type) :
-_type(type)
+RandomRenderParameters::RandomRenderParameters() :
+PolygonRenderParameters(RenderParameters::Type::Random)
 {}
 
 
-const clockwork::graphics::Renderer::Type&
-clockwork::graphics::Renderer::getType() const
+void
+RandomRenderParameters::postVertexProgram(const Face& face, const Vertex&, Fragment& fragment) const
 {
-	return _type;
+	// Use the face's address as an ARGB value. This allows us to have a random color for
+	// each face, and all 3 fragments that belong to the face share the same color.
+	// Note that 0xff000000 is OR'd to make sure the alpha channel is equal to 1.0.
+	// The 8-bit left-shift is not an important step but it provides a color I like.
+	fragment.color = ColorRGBA::split(static_cast<uint32_t>(0xff000000 | ((uint32_t)((uintptr_t)&face) << 8)));
 }

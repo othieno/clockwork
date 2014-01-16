@@ -23,25 +23,36 @@
  */
 #pragma once
 
-#include "fragment.hh"
-#include <vector>
-#include <array>
+#include "render.parameters.hh"
 
 
 namespace clockwork {
 namespace graphics {
-namespace vsd {
 
 /**
- * This file contains functions that perform visible surface determination (VSD).
+ * @see render.parameters.factory.hh.
  */
+class RenderParametersFactory;
 
 /**
- * TODO Explain me.
+ * A point renderer's parameter set.
  */
-void clip(std::vector<clockwork::graphics::Fragment>& fragments);
-bool isBackface(std::array<const clockwork::graphics::Fragment*, 3>& fragments);
+class PointRenderParameters : public RenderParameters
+{
+friend class RenderParametersFactory;
+public:
+	/**
+	 * @see RenderParameters::primitiveAssembly.
+	 */
+	virtual void primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const override final;
+private:
+	/**
+	 * The PointRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.
+	 */
+	PointRenderParameters();
+	PointRenderParameters(const PointRenderParameters&) = delete;
+	PointRenderParameters& operator=(const PointRenderParameters&) = delete;
+};
 
-} // namespace vsd
 } // namespace graphics
 } // namespace clockwork

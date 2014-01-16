@@ -245,7 +245,7 @@ clockwork::Matrix4::inverse(const clockwork::Matrix4& in)
 
 
 clockwork::Matrix4
-clockwork::Matrix4::model(const Point3&, const Point3&, const Point3&)
+clockwork::Matrix4::model(const clockwork::Point3&, const clockwork::Point3&, const clockwork::Vector3&)
 {
 	//FIXME The model matrix isn't the identity, obviously...
 	return clockwork::Matrix4();

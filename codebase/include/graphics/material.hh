@@ -43,31 +43,31 @@ struct Material
 	/**
 	 * The material's coefficient of reflection for ambient light.
 	 */
-	clockwork::graphics::ColorRGB Ka;
+	ColorRGBA Ka;
 	/**
 	 * The material's coefficient of reflection for diffuse light.
 	 */
-	clockwork::graphics::ColorRGB Kd;
+	ColorRGBA Kd;
 	/**
 	 * The material's coefficient of reflection for specular light.
 	 */
-	clockwork::graphics::ColorRGB Ks;
+	ColorRGBA Ks;
 	/**
 	 * The ambient map.
 	 */
-	const clockwork::graphics::Texture* ambient;
+	const Texture* ambient;
 	/**
 	 * The diffuse map.
 	 */
-	const clockwork::graphics::Texture* diffuse;
+	const Texture* diffuse;
 	/**
 	 * The normal map.
 	 */
-	const clockwork::graphics::Texture* normal;
+	const Texture* normal;
 	/**
 	 * The specular map.
 	 */
-	const clockwork::graphics::Texture* specular;
+	const Texture* specular;
 	/**
 	 * Instantiate a material with given ambient, diffuse, normal and specular maps.
 	 * @param ambient the material's ambient map.
@@ -77,10 +77,10 @@ struct Material
 	 */
 	Material
 	(
-		const clockwork::graphics::Texture* ambient = nullptr,
-		const clockwork::graphics::Texture* diffuse = nullptr,
-		const clockwork::graphics::Texture* normal = nullptr,
-		const clockwork::graphics::Texture* specular = nullptr
+		const Texture* ambient = nullptr,
+		const Texture* diffuse = nullptr,
+		const Texture* normal = nullptr,
+		const Texture* specular = nullptr
 	);
 };
 

@@ -21,46 +21,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#pragma once
-
-#include "renderer.hh"
-
-
-namespace clockwork {
-namespace graphics {
-
-/**
- * @see renderer.factory.hh.
- */
-class RendererFactory;
-
-class PointRenderer : public clockwork::graphics::Renderer
-{
-public:
-	/**
-	 * @see Renderer::createRenderTask.
-	 */
-	virtual clockwork::concurrency::RenderTask* createRenderTask
-	(
-		const clockwork::physics::RigidBody&,
-		const clockwork::scene::Viewer&
-	) const override final;
-private:
-	/**
-	 * The default constructor. A renderer can only be instantiated by the renderer
-	 * factory, as such the default constructor is private.
-	 */
-	PointRenderer();
-	/**
-	 * A renderer cannot be copied.
-	 */
-	PointRenderer(const PointRenderer&) = delete;
-	PointRenderer& operator=(const PointRenderer&) = delete;
-	/**
-	 * Friendship between the renderer factory and this renderer.
-	 */
-	friend clockwork::graphics::RendererFactory;
-};
-
-} // namespace graphics
-} // namespace clockwork
+#include "asset.hh"
