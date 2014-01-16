@@ -28,39 +28,39 @@
 clockwork::concurrency::ConcurrencySubsystem::ConcurrencySubsystem() :
 _threadPool(QThreadPool::globalInstance())
 {
-	enableMultiThreadedExecution();
+   enableMultiThreadedExecution();
 }
 
 
 void
 clockwork::concurrency::ConcurrencySubsystem::enableMultiThreadedExecution(const bool& enable)
 {
-	_threadPool->setMaxThreadCount(enable ? QThread::idealThreadCount() : 1);
+   _threadPool->setMaxThreadCount(enable ? QThread::idealThreadCount() : 1);
 }
 
 
 bool
 clockwork::concurrency::ConcurrencySubsystem::isMultiThreadedExecutionEnabled() const
 {
-	return _threadPool->maxThreadCount() > 1;
+   return _threadPool->maxThreadCount() > 1;
 }
 
 
 void
 clockwork::concurrency::ConcurrencySubsystem::submitTask(clockwork::concurrency::Task* const task)
 {
-	if (task != nullptr)
-		//_threadPool->start(task, task->getPriority());
-	{
-		task->run();
-		delete task;
-	}
+   if (task != nullptr)
+      //_threadPool->start(task, task->getPriority());
+   {
+      task->run();
+      delete task;
+   }
 }
 
 
 void
 clockwork::concurrency::ConcurrencySubsystem::wait()
 {
-	if (_threadPool->activeThreadCount() > 0)
-		_threadPool->waitForDone();
+   if (_threadPool->activeThreadCount() > 0)
+      _threadPool->waitForDone();
 }

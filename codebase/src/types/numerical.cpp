@@ -30,5 +30,5 @@
 bool
 clockwork::fequal(const double& a, const double& b)
 {
-	return std::fabs(a - b) < std::numeric_limits<double>::epsilon();
+   return std::fabs(a - b) < std::numeric_limits<double>::epsilon();
 }

@@ -29,7 +29,7 @@ namespace system {
 
 struct ExecutionContext
 {
-	bool printDebugInformation;
+   bool printDebugInformation;
 };
 
 } // namespace system

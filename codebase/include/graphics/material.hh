@@ -32,56 +32,56 @@ namespace graphics {
 
 struct Material
 {
-	/**
-	 * The material's shininess.
-	 */
-	double shininess;
-	/**
-	 * The material's transparency.
-	 */
-	double transparency;
-	/**
-	 * The material's coefficient of reflection for ambient light.
-	 */
-	ColorRGBA Ka;
-	/**
-	 * The material's coefficient of reflection for diffuse light.
-	 */
-	ColorRGBA Kd;
-	/**
-	 * The material's coefficient of reflection for specular light.
-	 */
-	ColorRGBA Ks;
-	/**
-	 * The ambient map.
-	 */
-	const Texture* ambient;
-	/**
-	 * The diffuse map.
-	 */
-	const Texture* diffuse;
-	/**
-	 * The normal map.
-	 */
-	const Texture* normal;
-	/**
-	 * The specular map.
-	 */
-	const Texture* specular;
-	/**
-	 * Instantiate a material with given ambient, diffuse, normal and specular maps.
-	 * @param ambient the material's ambient map.
-	 * @param diffuse the material's diffuse map.
-	 * @param normal the material's normal map.
-	 * @param specular the material's specular map.
-	 */
-	Material
-	(
-		const Texture* ambient = nullptr,
-		const Texture* diffuse = nullptr,
-		const Texture* normal = nullptr,
-		const Texture* specular = nullptr
-	);
+   /**
+    * The material's shininess.
+    */
+   double shininess;
+   /**
+    * The material's transparency.
+    */
+   double transparency;
+   /**
+    * The material's coefficient of reflection for ambient light.
+    */
+   ColorRGBA Ka;
+   /**
+    * The material's coefficient of reflection for diffuse light.
+    */
+   ColorRGBA Kd;
+   /**
+    * The material's coefficient of reflection for specular light.
+    */
+   ColorRGBA Ks;
+   /**
+    * The ambient map.
+    */
+   const Texture* ambient;
+   /**
+    * The diffuse map.
+    */
+   const Texture* diffuse;
+   /**
+    * The normal map.
+    */
+   const Texture* normal;
+   /**
+    * The specular map.
+    */
+   const Texture* specular;
+   /**
+    * Instantiate a material with given ambient, diffuse, normal and specular maps.
+    * @param ambient the material's ambient map.
+    * @param diffuse the material's diffuse map.
+    * @param normal the material's normal map.
+    * @param specular the material's specular map.
+    */
+   Material
+   (
+      const Texture* ambient = nullptr,
+      const Texture* diffuse = nullptr,
+      const Texture* normal = nullptr,
+      const Texture* specular = nullptr
+   );
 };
 
 } // namespace graphics

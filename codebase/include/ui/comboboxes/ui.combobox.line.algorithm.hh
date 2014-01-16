@@ -33,28 +33,28 @@ namespace ui {
 class GUILineAlgorithmComboBox : public GUIComboBox
 {
 public:
-	/**
-	 * Instantiate a GUILineAlgorithmComboBox attached to a user interface.
-	 * @param ui the user interface that this component is attached to.
-	 */
-	GUILineAlgorithmComboBox(UserInterface& ui);
-	/**
-	 * @see GUIComponent::onInterfaceUpdate.
-	 */
-	virtual void onInterfaceUpdate(const GUIComponent* const) override final;
+   /**
+    * Instantiate a GUILineAlgorithmComboBox attached to a user interface.
+    * @param ui the user interface that this component is attached to.
+    */
+   GUILineAlgorithmComboBox(UserInterface& ui);
+   /**
+    * @see GUIComponent::onInterfaceUpdate.
+    */
+   virtual void onInterfaceUpdate(const GUIComponent* const) override final;
 private:
-	/**
-	 * An instance to the wireframe render parameters.
-	 */
-	clockwork::graphics::WireframeRenderParameters* const _renderParameters;
-	/**
-	 * @see GUIComboBox::onItemSelected.
-	 */
-	void onItemSelected(const int&) override final;
-	/**
-	 * @see GUIComboBox::loadItemList.
-	 */
-	void loadItemList() override final;
+   /**
+    * An instance to the wireframe render parameters.
+    */
+   clockwork::graphics::WireframeRenderParameters* const _renderParameters;
+   /**
+    * @see GUIComboBox::onItemSelected.
+    */
+   void onItemSelected(const int&) override final;
+   /**
+    * @see GUIComboBox::loadItemList.
+    */
+   void loadItemList() override final;
 };
 
 } // namespace ui

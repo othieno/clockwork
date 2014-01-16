@@ -27,126 +27,126 @@
 QString
 clockwork::toString(const clockwork::Error& error)
 {
-	QString output("Error: ");
-	switch (error)
-	{
-		case clockwork::Error::None:
-			output.append("None");
-			break;
-		case clockwork::Error::Unknown:
-		default:
-			output.append("???");
-			break;
-	}
-	return output;
+   QString output("Error: ");
+   switch (error)
+   {
+      case clockwork::Error::None:
+         output.append("None");
+         break;
+      case clockwork::Error::Unknown:
+      default:
+         output.append("???");
+         break;
+   }
+   return output;
 }
 
 
 QString
 clockwork::toString(const clockwork::graphics::Projection::Type& type)
 {
-	switch (type)
-	{
-		case clockwork::graphics::Projection::Type::Orthographic:
-			return "Orthographic";
-		case clockwork::graphics::Projection::Type::Cabinet:
-			return "Cabinet";
-		case clockwork::graphics::Projection::Type::Cavalier:
-			return "Cavalier";
-		case clockwork::graphics::Projection::Type::Perspective:
-			return "Perspective";
-		default:
-			return "Unknown projection";
-	}
+   switch (type)
+   {
+      case clockwork::graphics::Projection::Type::Orthographic:
+         return "Orthographic";
+      case clockwork::graphics::Projection::Type::Cabinet:
+         return "Cabinet";
+      case clockwork::graphics::Projection::Type::Cavalier:
+         return "Cavalier";
+      case clockwork::graphics::Projection::Type::Perspective:
+         return "Perspective";
+      default:
+         return "Unknown projection";
+   }
 }
 
 
 QString
 clockwork::toString(const clockwork::graphics::ImageFilter::Type& type)
 {
-	switch (type)
-	{
-		case clockwork::graphics::ImageFilter::Type::None:
-			return "None";
-		case clockwork::graphics::ImageFilter::Type::BlackAndWhite:
-			return "Black & White";
-		case clockwork::graphics::ImageFilter::Type::Grayscale:
-			return "Grayscale";
-		default:
-			return "Unknown image filter";
-	}
+   switch (type)
+   {
+      case clockwork::graphics::ImageFilter::Type::None:
+         return "None";
+      case clockwork::graphics::ImageFilter::Type::BlackAndWhite:
+         return "Black & White";
+      case clockwork::graphics::ImageFilter::Type::Grayscale:
+         return "Grayscale";
+      default:
+         return "Unknown image filter";
+   }
 }
 
 
 QString
 clockwork::toString(const clockwork::graphics::TextureFilter::Type& type)
 {
-	switch (type)
-	{
-		case clockwork::graphics::TextureFilter::Type::None:
-			return "None";
-		case clockwork::graphics::TextureFilter::Type::Bilinear:
-			return "Bilinear";
-		case clockwork::graphics::TextureFilter::Type::Trilinear:
-			return "Trilinear";
-		case clockwork::graphics::TextureFilter::Type::Anisotropic:
-			return "Anisotropic";
-		default:
-			return "Unknown texture filter";
-	}
+   switch (type)
+   {
+      case clockwork::graphics::TextureFilter::Type::None:
+         return "None";
+      case clockwork::graphics::TextureFilter::Type::Bilinear:
+         return "Bilinear";
+      case clockwork::graphics::TextureFilter::Type::Trilinear:
+         return "Trilinear";
+      case clockwork::graphics::TextureFilter::Type::Anisotropic:
+         return "Anisotropic";
+      default:
+         return "Unknown texture filter";
+   }
 }
 
 
 QString
 clockwork::toString(const clockwork::graphics::WireframeRenderParameters::LineAlgorithm& algorithm)
 {
-	switch (algorithm)
-	{
-		case clockwork::graphics::WireframeRenderParameters::LineAlgorithm::Bresenham:
-			return "Bresenham";
-		case clockwork::graphics::WireframeRenderParameters::LineAlgorithm::XiaolinWu:
-			return "Xiaolin Wu";
-		default:
-			return "Unknown line algorithm";
-	}
+   switch (algorithm)
+   {
+      case clockwork::graphics::WireframeRenderParameters::LineAlgorithm::Bresenham:
+         return "Bresenham";
+      case clockwork::graphics::WireframeRenderParameters::LineAlgorithm::XiaolinWu:
+         return "Xiaolin Wu";
+      default:
+         return "Unknown line algorithm";
+   }
 }
 
 
 QString
 clockwork::toString(const clockwork::graphics::RenderParameters::Type& type)
 {
-	switch (type)
-	{
-		case clockwork::graphics::RenderParameters::Type::Point:
-			return "Points";
-		case clockwork::graphics::RenderParameters::Type::Wireframe:
-			return "Wireframe";
-		case clockwork::graphics::RenderParameters::Type::Random:
-			return "Random shading";
-		case clockwork::graphics::RenderParameters::Type::Depth:
-			return "Depth shading";
-		case clockwork::graphics::RenderParameters::Type::Normals:
-			return "Normals shading";
-		case clockwork::graphics::RenderParameters::Type::Texture:
-			return "Texture mapping";
-		case clockwork::graphics::RenderParameters::Type::Constant:
-			return "Constant shading";
-		case clockwork::graphics::RenderParameters::Type::Phong:
-			return "Phong shading";
-		case clockwork::graphics::RenderParameters::Type::Cel:
-			return "Cel shading";
-		case clockwork::graphics::RenderParameters::Type::Bump:
-			return "Bump mapping";
-		case clockwork::graphics::RenderParameters::Type::Deferred:
-			return "Deferred shading";
-		default:
-			return "Unknown render type";
-	}
+   switch (type)
+   {
+      case clockwork::graphics::RenderParameters::Type::Point:
+         return "Points";
+      case clockwork::graphics::RenderParameters::Type::Wireframe:
+         return "Wireframe";
+      case clockwork::graphics::RenderParameters::Type::Random:
+         return "Random shading";
+      case clockwork::graphics::RenderParameters::Type::Depth:
+         return "Depth shading";
+      case clockwork::graphics::RenderParameters::Type::Normals:
+         return "Normals shading";
+      case clockwork::graphics::RenderParameters::Type::Texture:
+         return "Texture mapping";
+      case clockwork::graphics::RenderParameters::Type::Constant:
+         return "Constant shading";
+      case clockwork::graphics::RenderParameters::Type::Phong:
+         return "Phong shading";
+      case clockwork::graphics::RenderParameters::Type::Cel:
+         return "Cel shading";
+      case clockwork::graphics::RenderParameters::Type::Bump:
+         return "Bump mapping";
+      case clockwork::graphics::RenderParameters::Type::Deferred:
+         return "Deferred shading";
+      default:
+         return "Unknown render type";
+   }
 }
 
 
 QString
 clockwork::toString(const clockwork::graphics::Fragment&)
 {
-	return "Implement clockwork::toString(const clockwork::graphics::Fragment&)";
+   return "Implement clockwork::toString(const clockwork::graphics::Fragment&)";
 }

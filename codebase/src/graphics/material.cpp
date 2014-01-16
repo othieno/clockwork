@@ -26,10 +26,10 @@
 
 clockwork::graphics::Material::Material
 (
-	const clockwork::graphics::Texture* a,
-	const clockwork::graphics::Texture* d,
-	const clockwork::graphics::Texture* n,
-	const clockwork::graphics::Texture* s
+   const clockwork::graphics::Texture* a,
+   const clockwork::graphics::Texture* d,
+   const clockwork::graphics::Texture* n,
+   const clockwork::graphics::Texture* s
 ) :
 shininess(1),
 transparency(0),

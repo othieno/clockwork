@@ -35,14 +35,14 @@ namespace concurrency {
 class GraphicsUpdateTask : public Task
 {
 public:
-	/**
-	 * The default constructor.
-	 */
-	GraphicsUpdateTask();
-	/**
-	 * @see clockwork::concurrency::Task::onRun.
-	 */
-	virtual void onRun() override final;
+   /**
+    * The default constructor.
+    */
+   GraphicsUpdateTask();
+   /**
+    * @see clockwork::concurrency::Task::onRun.
+    */
+   virtual void onRun() override final;
 };
 
 /**
@@ -52,27 +52,27 @@ public:
 class GeometryUpdateTask : public Task
 {
 public:
-	/**
-	 * Instantiate an update task that will update a given node's model
-	 * transformation matrix.
-	 * @param object the scene object to update.
-	 * @param CMTM the current model transformation matrix.
-	 */
-	GeometryUpdateTask(clockwork::scene::Object& object, const clockwork::Matrix4& CMTM);
-	/**
-	 * @see clockwork::concurrency::Task::onRun.
-	 */
-	virtual void onRun() override final;
+   /**
+    * Instantiate an update task that will update a given node's model
+    * transformation matrix.
+    * @param object the scene object to update.
+    * @param CMTM the current model transformation matrix.
+    */
+   GeometryUpdateTask(clockwork::scene::Object& object, const clockwork::Matrix4& CMTM);
+   /**
+    * @see clockwork::concurrency::Task::onRun.
+    */
+   virtual void onRun() override final;
 private:
-	/**
-	 * The node that will be updated by this task.
-	 */
-	clockwork::scene::Object& _object;
-	/**
-	 * The current model transformation matrix that will be concatenated to the node's
-	 * model transformation matrix.
-	 */
-	const clockwork::Matrix4& _CMTM;
+   /**
+    * The node that will be updated by this task.
+    */
+   clockwork::scene::Object& _object;
+   /**
+    * The current model transformation matrix that will be concatenated to the node's
+    * model transformation matrix.
+    */
+   const clockwork::Matrix4& _CMTM;
 };
 
 
@@ -82,30 +82,30 @@ private:
 class PostProcessingTask : public Task
 {
 public:
-	/**
-	 * Instantiate a post-processing task that applies a given image filter to
-	 * the framebuffer.
-	 * @param framebuffer the framebuffer to process.
-	 * @param type the type of image filter to apply to the framebuffer.
-	 */
-	PostProcessingTask
-	(
-		clockwork::graphics::Framebuffer& framebuffer,
-		const clockwork::graphics::ImageFilter::Type& type
-	);
-	/**
-	 * @see clockwork::concurrency::Task::onRun.
-	 */
-	virtual void onRun() override final;
+   /**
+    * Instantiate a post-processing task that applies a given image filter to
+    * the framebuffer.
+    * @param framebuffer the framebuffer to process.
+    * @param type the type of image filter to apply to the framebuffer.
+    */
+   PostProcessingTask
+   (
+      clockwork::graphics::Framebuffer& framebuffer,
+      const clockwork::graphics::ImageFilter::Type& type
+   );
+   /**
+    * @see clockwork::concurrency::Task::onRun.
+    */
+   virtual void onRun() override final;
 private:
-	/**
-	 * The framebuffer to modify.
-	 */
-	clockwork::graphics::Framebuffer& _framebuffer;
-	/**
-	 * The image filter to apply to the framebuffer.
-	 */
-	clockwork::graphics::ImageFilter* const _imageFilter;
+   /**
+    * The framebuffer to modify.
+    */
+   clockwork::graphics::Framebuffer& _framebuffer;
+   /**
+    * The image filter to apply to the framebuffer.
+    */
+   clockwork::graphics::ImageFilter* const _imageFilter;
 };
 
 } // namespace concurrency

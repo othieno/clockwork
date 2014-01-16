@@ -27,15 +27,15 @@
 clockwork::graphics::ImageFilterFactory::ImageFilterFactory() :
 Factory(clockwork::graphics::ImageFilter::Type::None)
 {
-	put(clockwork::graphics::ImageFilter::Type::None, nullptr);
-	put(clockwork::graphics::ImageFilter::Type::BlackAndWhite, nullptr);
-	put(clockwork::graphics::ImageFilter::Type::Grayscale, nullptr);
+   put(clockwork::graphics::ImageFilter::Type::None, nullptr);
+   put(clockwork::graphics::ImageFilter::Type::BlackAndWhite, nullptr);
+   put(clockwork::graphics::ImageFilter::Type::Grayscale, nullptr);
 }
 
 
 clockwork::graphics::ImageFilterFactory&
 clockwork::graphics::ImageFilterFactory::getUniqueInstance()
 {
-	static clockwork::graphics::ImageFilterFactory UNIQUE_INSTANCE;
-	return UNIQUE_INSTANCE;
+   static clockwork::graphics::ImageFilterFactory UNIQUE_INSTANCE;
+   return UNIQUE_INSTANCE;
 }

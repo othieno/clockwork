@@ -35,57 +35,57 @@ namespace graphics {
 class Model3D : public clockwork::io::Asset
 {
 public:
-	/**
-	 * The default constructor.
-	 */
-	Model3D();
-	/**
-	 * Instantiate a 3D model with a given set of vertices, polygonal faces
-	 * and a material.
-	 * @param vertices the model's vertex data.
-	 * @param faces the model's polygonal face data.
-	 * @param material the model's material data.
-	 */
-	Model3D(const std::vector<Vertex>& vertices, const std::vector<Face>& faces, const Material& material);
-	/**
-	 * Return the model's vertex data.
-	 */
-	const std::vector<Vertex>& getVertices() const;
-	/**
-	 * Return the model's polygonal face data.
-	 */
-	const std::vector<Face>& getFaces() const;
-	/**
-	 * Add a polygonal face.
-	 * @param indices the face's index list.
-	 * @param textureCoordinates the face's texture mapping coordinates.
-	 */
-	void addFace
-	(
-		const std::array<const uint32_t, 3>& indices,
-		const std::array<const Face::TextureCoordinates, 3>& textureCoordinates
-	);
-	/**
-	 * Return the model's material data.
-	 */
-	const Material& getMaterial() const;
-	/**
-	 * Return true if this container does not have any vertices or faces, false otherwise.
-	 */
-	bool empty() const;
+   /**
+    * The default constructor.
+    */
+   Model3D();
+   /**
+    * Instantiate a 3D model with a given set of vertices, polygonal faces
+    * and a material.
+    * @param vertices the model's vertex data.
+    * @param faces the model's polygonal face data.
+    * @param material the model's material data.
+    */
+   Model3D(const std::vector<Vertex>& vertices, const std::vector<Face>& faces, const Material& material);
+   /**
+    * Return the model's vertex data.
+    */
+   const std::vector<Vertex>& getVertices() const;
+   /**
+    * Return the model's polygonal face data.
+    */
+   const std::vector<Face>& getFaces() const;
+   /**
+    * Add a polygonal face.
+    * @param indices the face's index list.
+    * @param textureCoordinates the face's texture mapping coordinates.
+    */
+   void addFace
+   (
+      const std::array<const uint32_t, 3>& indices,
+      const std::array<const Face::TextureCoordinates, 3>& textureCoordinates
+   );
+   /**
+    * Return the model's material data.
+    */
+   const Material& getMaterial() const;
+   /**
+    * Return true if this container does not have any vertices or faces, false otherwise.
+    */
+   bool empty() const;
 private:
-	/**
-	 * The 3D model's vertex data.
-	 */
-	std::vector<Vertex> _vertices;
-	/**
-	 * The 3D model's polygonal face data.
-	 */
-	std::vector<Face> _faces;
-	/**
-	 * The 3D model's material data.
-	 */
-	Material _material;
+   /**
+    * The 3D model's vertex data.
+    */
+   std::vector<Vertex> _vertices;
+   /**
+    * The 3D model's polygonal face data.
+    */
+   std::vector<Face> _faces;
+   /**
+    * The 3D model's material data.
+    */
+   Material _material;
 };
 
 } // namespace graphics

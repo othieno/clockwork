@@ -29,11 +29,11 @@ clockwork::ui::GUISceneView::GUISceneView(clockwork::ui::UserInterface& ui) :
 GUIView(ui),
 _treeView(new QTreeView(this))
 {
-	QAbstractItemModel& model = clockwork::scene::Scene::getUniqueInstance();
+   QAbstractItemModel& model = clockwork::scene::Scene::getUniqueInstance();
 
-	_treeView->setModel(&model);
-	_treeView->setCurrentIndex(model.index(0, 0));
-	_treeView->blockSignals(true);
-	_treeView->setMinimumSize(400, 400);
-	_treeView->blockSignals(false);
+   _treeView->setModel(&model);
+   _treeView->setCurrentIndex(model.index(0, 0));
+   _treeView->blockSignals(true);
+   _treeView->setMinimumSize(400, 400);
+   _treeView->blockSignals(false);
 }

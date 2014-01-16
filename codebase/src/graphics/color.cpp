@@ -38,51 +38,51 @@ alpha(a)
 uint32_t
 ColorRGBA::merge() const
 {
-	uint32_t output = 0;
+   uint32_t output = 0;
 
-	// Convert the channels to integer values.
-	const auto R = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, red)));
-	const auto G = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, green)));
-	const auto B = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, blue)));
-	const auto A = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, alpha)));
+   // Convert the channels to integer values.
+   const auto R = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, red)));
+   const auto G = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, green)));
+   const auto B = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, blue)));
+   const auto A = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, alpha)));
 
-	if (A > 0)
-		output  = std::min(255U, A) << 24;
-	if (R > 0)
-		output |= std::min(255U, R) << 16;
-	if (G > 0)
-		output |= std::min(255U, G) <<  8;
-	if (B > 0)
-		output |= std::min(255U, B);
+   if (A > 0)
+      output  = std::min(255U, A) << 24;
+   if (R > 0)
+      output |= std::min(255U, R) << 16;
+   if (G > 0)
+      output |= std::min(255U, G) <<  8;
+   if (B > 0)
+      output |= std::min(255U, B);
 
-	return output;
+   return output;
 }
 
 
 ColorRGBA
 ColorRGBA::getRandom()
 {
-	static std::random_device device;
-	static std::mt19937 gen(device());
-	static std::uniform_real_distribution<double> distribution(0, 1);
+   static std::random_device device;
+   static std::mt19937 gen(device());
+   static std::uniform_real_distribution<double> distribution(0, 1);
 
-	return ColorRGBA(distribution(gen), distribution(gen), distribution(gen));
+   return ColorRGBA(distribution(gen), distribution(gen), distribution(gen));
 }
 
 
 ColorRGBA
 ColorRGBA::split(const uint32_t& ARGB)
 {
-	if (ARGB == 0)
-		return ColorRGBA(0, 0, 0, 0);
-	else
-	{
-		return ColorRGBA
-		(
-			((ARGB >> 16) & 0xff) * 0.00392156862, // 0.00392156862 == (1/255).
-			((ARGB >>  8) & 0xff) * 0.00392156862,
-			(ARGB         & 0xff) * 0.00392156862,
-			((ARGB >> 24) & 0xff) * 0.00392156862
-		);
-	}
+   if (ARGB == 0)
+      return ColorRGBA(0, 0, 0, 0);
+   else
+   {
+      return ColorRGBA
+      (
+         ((ARGB >> 16) & 0xff) * 0.00392156862, // 0.00392156862 == (1/255).
+         ((ARGB >>  8) & 0xff) * 0.00392156862,
+         (ARGB         & 0xff) * 0.00392156862,
+         ((ARGB >> 24) & 0xff) * 0.00392156862
+      );
+   }
 }

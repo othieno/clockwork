@@ -29,9 +29,9 @@ using clockwork::concurrency::RenderTask;
 
 RenderTask::RenderTask
 (
-	const clockwork::graphics::RenderParameters& parameters,
-	const clockwork::scene::Viewer& viewer,
-	const clockwork::physics::RigidBody& body
+   const clockwork::graphics::RenderParameters& parameters,
+   const clockwork::scene::Viewer& viewer,
+   const clockwork::physics::RigidBody& body
 ) :
 _parameters(parameters),
 _viewpoint(viewer.getPosition()),
@@ -49,103 +49,103 @@ _VIEWPORTY(0)
 void
 RenderTask::onRun()
 {
-	if (_model3D != nullptr && !_model3D->empty())
-	{
-		auto& framebuffer = clockwork::system::Services::Graphics.getFramebuffer();
+   if (_model3D != nullptr && !_model3D->empty())
+   {
+      auto& framebuffer = clockwork::system::Services::Graphics.getFramebuffer();
 
-		// Calculate the VIEWPORT transformation.
-		const_cast<double&>(_VIEWPORTX) = 0.5 * _viewport.width  * framebuffer.getWidth();
-		const_cast<double&>(_VIEWPORTY) = 0.5 * _viewport.height * framebuffer.getHeight();
+      // Calculate the VIEWPORT transformation.
+      const_cast<double&>(_VIEWPORTX) = 0.5 * _viewport.width  * framebuffer.getWidth();
+      const_cast<double&>(_VIEWPORTY) = 0.5 * _viewport.height * framebuffer.getHeight();
 
-		// Calculate transformation matrices.
-		const_cast<clockwork::Matrix4&>(_MODELVIEW) = _VIEW * _MODEL;
-		const_cast<clockwork::Matrix4&>(_NORMAL) = clockwork::Matrix4::transpose(clockwork::Matrix4::inverse(_MODELVIEW));
-		const_cast<clockwork::Matrix4&>(_VIEWPROJECTION) = _PROJECTION * _VIEW;
-		const_cast<clockwork::Matrix4&>(_MODELVIEWPROJECTION) = _VIEWPROJECTION * _MODEL;
+      // Calculate transformation matrices.
+      const_cast<clockwork::Matrix4&>(_MODELVIEW) = _VIEW * _MODEL;
+      const_cast<clockwork::Matrix4&>(_NORMAL) = clockwork::Matrix4::transpose(clockwork::Matrix4::inverse(_MODELVIEW));
+      const_cast<clockwork::Matrix4&>(_VIEWPROJECTION) = _PROJECTION * _VIEW;
+      const_cast<clockwork::Matrix4&>(_MODELVIEWPROJECTION) = _VIEWPROJECTION * _MODEL;
 
-		// Process the 3D model.
-		for (const auto& face : _model3D->getFaces())
-		{
-			// The face's vertices.
-			const auto& vertices = face.getVertices();
-			const auto& texcoords = face.getTextureCoordinates();
+      // Process the 3D model.
+      for (const auto& face : _model3D->getFaces())
+      {
+         // The face's vertices.
+         const auto& vertices = face.getVertices();
+         const auto& texcoords = face.getTextureCoordinates();
 
-			// A vector to store the face's vertices that have been transformed into fragments.
-			std::vector<clockwork::graphics::Fragment> fragments;
+         // A vector to store the face's vertices that have been transformed into fragments.
+         std::vector<clockwork::graphics::Fragment> fragments;
 
-			// Each face has a triplet of vertices and mapping coordinates.
-			// Convert each vertex into a fragment.
-			for (unsigned int i = 0; i < 3; ++i)
-			{
-				// Create a new fragment and set its mapping coordinates.
-				const auto& texcoord = texcoords[i];
-				clockwork::graphics::Fragment fragment(texcoord.u, texcoord.v);
+         // Each face has a triplet of vertices and mapping coordinates.
+         // Convert each vertex into a fragment.
+         for (unsigned int i = 0; i < 3; ++i)
+         {
+            // Create a new fragment and set its mapping coordinates.
+            const auto& texcoord = texcoords[i];
+            clockwork::graphics::Fragment fragment(texcoord.u, texcoord.v);
 
-				// Apply the vertex program and store its result to the newly created fragment.
-				const auto& vertex = *vertices[i];
-				_parameters.preVertexProgram(face, vertex, fragment);
-				vertexProgram(vertex, fragment);
-				_parameters.postVertexProgram(face, vertex, fragment);
+            // Apply the vertex program and store its result to the newly created fragment.
+            const auto& vertex = *vertices[i];
+            _parameters.preVertexProgram(face, vertex, fragment);
+            vertexProgram(vertex, fragment);
+            _parameters.postVertexProgram(face, vertex, fragment);
 
-				// Keep track of the new fragment.
-				fragments.push_back(fragment);
-			}
-			// Clip vertices that are not in the viewing window. Note that the
-			// fragment vector may have more than 3 elements after the clipping
-			// operation is performed. The fragments will need to be triangulated.
-			clip(fragments);
+            // Keep track of the new fragment.
+            fragments.push_back(fragment);
+         }
+         // Clip vertices that are not in the viewing window. Note that the
+         // fragment vector may have more than 3 elements after the clipping
+         // operation is performed. The fragments will need to be triangulated.
+         clip(fragments);
 
-			// Perform perspective-divide on the visible fragments to convert the
-			// fragments positions from clipping coordinate space to normalised
-			// device coordinate space.
-			for (auto& fragment : fragments)
-			{
-				auto& p = fragment.position;
+         // Perform perspective-divide on the visible fragments to convert the
+         // fragments positions from clipping coordinate space to normalised
+         // device coordinate space.
+         for (auto& fragment : fragments)
+         {
+            auto& p = fragment.position;
 
-				p.x /= p.w;
-				p.y /= p.w;
-				p.z /= p.w;
-				p.w  = 1;
-			}
-			// Rasterise triangular polygonal faces created from the fragment list.
-			for (unsigned int i = 0; i < fragments.size() - 2; ++i)
-			{
-				std::array<const clockwork::graphics::Fragment*, 3> triangle =
-				{
-					&fragments[i],
-					&fragments[i + 1],
-					&fragments[i + 2]
-				};
+            p.x /= p.w;
+            p.y /= p.w;
+            p.z /= p.w;
+            p.w  = 1;
+         }
+         // Rasterise triangular polygonal faces created from the fragment list.
+         for (unsigned int i = 0; i < fragments.size() - 2; ++i)
+         {
+            std::array<const clockwork::graphics::Fragment*, 3> triangle =
+            {
+               &fragments[i],
+               &fragments[i + 1],
+               &fragments[i + 2]
+            };
 
-				// Perform backface and occlusion culling to determine if the polygon is visible.
-				// If the polygon isn't discarded, convert its position from normalised device
-				// coordinate space to viewport space then pass it on to the primitive assembly step.
-				if (!isBackface(triangle) && !isOccluded(triangle))
-				{
-					for (auto* const fragment : triangle)
-					{
-						double& x = const_cast<double&>(fragment->position.x);
-						double& y = const_cast<double&>(fragment->position.y);
+            // Perform backface and occlusion culling to determine if the polygon is visible.
+            // If the polygon isn't discarded, convert its position from normalised device
+            // coordinate space to viewport space then pass it on to the primitive assembly step.
+            if (!isBackface(triangle) && !isOccluded(triangle))
+            {
+               for (auto* const fragment : triangle)
+               {
+                  double& x = const_cast<double&>(fragment->position.x);
+                  double& y = const_cast<double&>(fragment->position.y);
 
-						x = (x + 1.0) * _VIEWPORTX;
-						y = (y + 1.0) * _VIEWPORTY;
-					}
-					_parameters.primitiveAssembly(triangle);
-				}
-			}
-		}
-	}
+                  x = (x + 1.0) * _VIEWPORTX;
+                  y = (y + 1.0) * _VIEWPORTY;
+               }
+               _parameters.primitiveAssembly(triangle);
+            }
+         }
+      }
+   }
 }
 
 
 void
 RenderTask::vertexProgram(const clockwork::graphics::Vertex& vertex, clockwork::graphics::Fragment& fragment)
 {
-	// Calculate the fragment's position.
-	fragment.position = _MODELVIEWPROJECTION * vertex;
+   // Calculate the fragment's position.
+   fragment.position = _MODELVIEWPROJECTION * vertex;
 
-	// Calculate the fragment's normal vector.
-	fragment.normal = clockwork::Vector3::normalise(_NORMAL * vertex.getNormal());
+   // Calculate the fragment's normal vector.
+   fragment.normal = clockwork::Vector3::normalise(_NORMAL * vertex.getNormal());
 }
 
 
@@ -157,25 +157,25 @@ RenderTask::clip(std::vector<clockwork::graphics::Fragment>&) const
 bool
 RenderTask::isBackface(const std::array<const clockwork::graphics::Fragment*, 3>& triangle) const
 {
-	const auto* const f0 = triangle[0];
-	const auto* const f1 = triangle[1];
-	const auto* const f2 = triangle[2];
-	if (f0 != nullptr && f1 != nullptr && f2 != nullptr)
-	{
-		const clockwork::Point3& p0 = f0->position;
-		const clockwork::Point3& p1 = f1->position;
-		const clockwork::Point3& p2 = f2->position;
+   const auto* const f0 = triangle[0];
+   const auto* const f1 = triangle[1];
+   const auto* const f2 = triangle[2];
+   if (f0 != nullptr && f1 != nullptr && f2 != nullptr)
+   {
+      const clockwork::Point3& p0 = f0->position;
+      const clockwork::Point3& p1 = f1->position;
+      const clockwork::Point3& p2 = f2->position;
 
-		return clockwork::Vector3::cross(p1 - p0, p2 - p1).k > 0;
-	}
-	else
-		return true;
+      return clockwork::Vector3::cross(p1 - p0, p2 - p1).k > 0;
+   }
+   else
+      return true;
 }
 
 
 bool
 RenderTask::isOccluded(const std::array<const clockwork::graphics::Fragment*, 3>& triangle) const
 {
-	//TODO Implement me.
-	return false;
+   //TODO Implement me.
+   return false;
 }

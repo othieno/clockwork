@@ -35,31 +35,31 @@ namespace graphics {
 class PolygonRenderParameters : public RenderParameters
 {
 public:
-	/**
-	 * @see RenderParameters::primitiveAssembly.
-	 */
-	virtual void primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const override final;
+   /**
+    * @see RenderParameters::primitiveAssembly.
+    */
+   virtual void primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const override final;
 protected:
-	/**
-	 * Instantiate a PolygonRenderParameters object with a given render type.
-	 * @param type the render type.
-	 */
-	PolygonRenderParameters(const RenderParameters::Type& type);
+   /**
+    * Instantiate a PolygonRenderParameters object with a given render type.
+    * @param type the render type.
+    */
+   PolygonRenderParameters(const RenderParameters::Type& type);
 private:
-	/**
-	 * A PolygonRenderParameters object are not copyable.
-	 */
-	PolygonRenderParameters(const PolygonRenderParameters&) = delete;
-	PolygonRenderParameters& operator=(const PolygonRenderParameters&) = delete;
-	/**
-	 * Perform scan conversion on a triangular polygonal face. The fragments must be
-	 * arranged in a such a way that f0 has the smallest y value, f2 has the largest
-	 * and f1's y value is between the two.
-	 * @param f0 the first fragment that will make one point of a triangle.
-	 * @param f1 the second fragment that will make one point of a triangle.
-	 * @param f2 the third fragment that will make one point of a triangle.
-	 */
-	void scanConversion(const Fragment& f0, const Fragment& f1, const Fragment& f2) const;
+   /**
+    * A PolygonRenderParameters object are not copyable.
+    */
+   PolygonRenderParameters(const PolygonRenderParameters&) = delete;
+   PolygonRenderParameters& operator=(const PolygonRenderParameters&) = delete;
+   /**
+    * Perform scan conversion on a triangular polygonal face. The fragments must be
+    * arranged in a such a way that f0 has the smallest y value, f2 has the largest
+    * and f1's y value is between the two.
+    * @param f0 the first fragment that will make one point of a triangle.
+    * @param f1 the second fragment that will make one point of a triangle.
+    * @param f2 the third fragment that will make one point of a triangle.
+    */
+   void scanConversion(const Fragment& f0, const Fragment& f1, const Fragment& f2) const;
 };
 
 } // namespace graphics

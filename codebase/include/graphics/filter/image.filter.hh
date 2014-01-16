@@ -30,29 +30,29 @@ namespace graphics {
 class ImageFilter
 {
 public:
-	/**
-	 * Types of image filters.
-	 */
-	enum class Type
-	{
-		None,
-		BlackAndWhite,
-		Grayscale
-	};
-	/**
-	 * Return the filter's type.
-	 */
-	const Type& getType() const;
+   /**
+    * Types of image filters.
+    */
+   enum class Type
+   {
+      None,
+      BlackAndWhite,
+      Grayscale
+   };
+   /**
+    * Return the filter's type.
+    */
+   const Type& getType() const;
 protected:
-	/**
-	 * Instantiate a filter with a given type.
-	 */
-	ImageFilter(const Type type);
+   /**
+    * Instantiate a filter with a given type.
+    */
+   ImageFilter(const Type type);
 private:
-	/**
-	 * This filter's type.
-	 */
-	const Type _type;
+   /**
+    * This filter's type.
+    */
+   const Type _type;
 };
 
 } // namespace graphics

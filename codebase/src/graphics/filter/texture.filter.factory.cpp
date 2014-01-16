@@ -27,16 +27,16 @@
 clockwork::graphics::TextureFilterFactory::TextureFilterFactory() :
 Factory(clockwork::graphics::TextureFilter::Type::None)
 {
-	put(clockwork::graphics::TextureFilter::Type::None, nullptr);
-	put(clockwork::graphics::TextureFilter::Type::Bilinear, nullptr);
-	put(clockwork::graphics::TextureFilter::Type::Trilinear, nullptr);
-	put(clockwork::graphics::TextureFilter::Type::Anisotropic, nullptr);
+   put(clockwork::graphics::TextureFilter::Type::None, nullptr);
+   put(clockwork::graphics::TextureFilter::Type::Bilinear, nullptr);
+   put(clockwork::graphics::TextureFilter::Type::Trilinear, nullptr);
+   put(clockwork::graphics::TextureFilter::Type::Anisotropic, nullptr);
 }
 
 
 clockwork::graphics::TextureFilterFactory&
 clockwork::graphics::TextureFilterFactory::getUniqueInstance()
 {
-	static clockwork::graphics::TextureFilterFactory UNIQUE_INSTANCE;
-	return UNIQUE_INSTANCE;
+   static clockwork::graphics::TextureFilterFactory UNIQUE_INSTANCE;
+   return UNIQUE_INSTANCE;
 }

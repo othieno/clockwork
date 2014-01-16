@@ -39,10 +39,10 @@ class Subsystem : public QObject
 {
 Q_OBJECT
 signals:
-	/**
-	 * A signal that is emitted when the system update is complete.
-	 */
-	void updateComplete();
+   /**
+    * A signal that is emitted when the system update is complete.
+    */
+   void updateComplete();
 };
 
 } // namespace system

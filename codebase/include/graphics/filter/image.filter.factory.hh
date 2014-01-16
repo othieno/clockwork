@@ -33,17 +33,17 @@ namespace graphics {
 class ImageFilterFactory : public Factory<ImageFilter::Type, ImageFilter>
 {
 public:
-	/**
-	 * Return the factory's unique instance.
-	 */
-	static ImageFilterFactory& getUniqueInstance();
+   /**
+    * Return the factory's unique instance.
+    */
+   static ImageFilterFactory& getUniqueInstance();
 private:
-	/**
-	 * The ImageFilterFactory is a singleton.
-	 */
-	ImageFilterFactory();
-	ImageFilterFactory(const ImageFilterFactory&) = delete;
-	ImageFilterFactory& operator=(const ImageFilterFactory&) = delete;
+   /**
+    * The ImageFilterFactory is a singleton.
+    */
+   ImageFilterFactory();
+   ImageFilterFactory(const ImageFilterFactory&) = delete;
+   ImageFilterFactory& operator=(const ImageFilterFactory&) = delete;
 };
 
 } // namespace graphics

@@ -32,7 +32,7 @@ namespace ui {
 class GUIView : public GUIComponent
 {
 protected:
-	GUIView(UserInterface& ui);
+   GUIView(UserInterface& ui);
 };
 
 } // namespace ui

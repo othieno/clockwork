@@ -38,11 +38,11 @@ class GUIBusyIndicator : public QLabel
 {
 Q_OBJECT
 public:
-	/**
-	 * Instantiate a GUIBusyIndicator that is attached to a user interface.
-	 * @param ui the user interface that this component is attached to.
-	 */
-	GUIBusyIndicator(clockwork::ui::UserInterface& ui);
+   /**
+    * Instantiate a GUIBusyIndicator that is attached to a user interface.
+    * @param ui the user interface that this component is attached to.
+    */
+   GUIBusyIndicator(UserInterface& ui);
 };
 
 } // namespace ui

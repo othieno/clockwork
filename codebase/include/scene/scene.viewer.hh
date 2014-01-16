@@ -37,98 +37,98 @@ class Viewer : public clockwork::physics::RigidBody
 {
 Q_OBJECT
 public:
-	/**
-	 * Return the viewer's view transformation matrix.
-	 */
-	const clockwork::Matrix4& getViewMatrix() const;
-	/**
-	 * Return the viewer's projection transformation matrix.
-	 */
-	const clockwork::Matrix4& getProjectionMatrix() const;
-	/**
-	 * Return the viewer's view-projection transformation matrix.
-	 */
-	const clockwork::Matrix4& getViewProjectionMatrix() const;
-	/**
-	 * Return the viewer's renderer type.
-	 */
-	const clockwork::graphics::RenderParameters::Type& getRenderType() const;
-	/**
-	 * Set the viewer's renderer type.
-	 * @param type the renderer type to set.
-	 */
-	void setRenderType(const clockwork::graphics::RenderParameters::Type& type);
-	/**
-	 * Return the viewer's projection type.
-	 */
-	const clockwork::graphics::Projection::Type& getProjectionType() const;
-	/**
-	 * Set the viewer's projection type.
-	 * @param type the projection type to set.
-	 */
-	void setProjection(const clockwork::graphics::Projection::Type& type);
-	/**
-	 * Return the viewer's viewport.
-	 */
-	const clockwork::graphics::Viewport& getViewport() const;
-	/**
-	 * Set the viewer's viewport.
-	 * @param viewport the viewport to set.
-	 */
-	void setViewport(clockwork::graphics::Viewport& viewport);
-	/**
-	 * Return the viewer's view frustum.
-	 */
-	clockwork::graphics::Frustum& getFrustum();
-	/**
-	 * Set the viewer's view frustum.
-	 * @param frustum the view frustum to set.
-	 */
-	void setFrustum(clockwork::graphics::Frustum& frustum);
+   /**
+    * Return the viewer's view transformation matrix.
+    */
+   const clockwork::Matrix4& getViewMatrix() const;
+   /**
+    * Return the viewer's projection transformation matrix.
+    */
+   const clockwork::Matrix4& getProjectionMatrix() const;
+   /**
+    * Return the viewer's view-projection transformation matrix.
+    */
+   const clockwork::Matrix4& getViewProjectionMatrix() const;
+   /**
+    * Return the viewer's renderer type.
+    */
+   const clockwork::graphics::RenderParameters::Type& getRenderType() const;
+   /**
+    * Set the viewer's renderer type.
+    * @param type the renderer type to set.
+    */
+   void setRenderType(const clockwork::graphics::RenderParameters::Type& type);
+   /**
+    * Return the viewer's projection type.
+    */
+   const clockwork::graphics::Projection::Type& getProjectionType() const;
+   /**
+    * Set the viewer's projection type.
+    * @param type the projection type to set.
+    */
+   void setProjection(const clockwork::graphics::Projection::Type& type);
+   /**
+    * Return the viewer's viewport.
+    */
+   const clockwork::graphics::Viewport& getViewport() const;
+   /**
+    * Set the viewer's viewport.
+    * @param viewport the viewport to set.
+    */
+   void setViewport(clockwork::graphics::Viewport& viewport);
+   /**
+    * Return the viewer's view frustum.
+    */
+   clockwork::graphics::Frustum& getFrustum();
+   /**
+    * Set the viewer's view frustum.
+    * @param frustum the view frustum to set.
+    */
+   void setFrustum(clockwork::graphics::Frustum& frustum);
 protected:
-	/**
-	 * Instantiate a named viewer.
-	 * @param name the viewer's name.
-	 */
-	Viewer(const std::string& name);
-	/**
-	 * The view transformation matrix.
-	 */
-	clockwork::Matrix4 _viewMatrix;
-	/**
-	 * The projection transformation matrix.
-	 */
-	clockwork::Matrix4 _projectionMatrix;
-	/**
-	 * The view-projection transformation matrix.
-	 */
-	clockwork::Matrix4 _viewProjectionMatrix;
+   /**
+    * Instantiate a named viewer.
+    * @param name the viewer's name.
+    */
+   Viewer(const std::string& name);
+   /**
+    * The view transformation matrix.
+    */
+   clockwork::Matrix4 _viewMatrix;
+   /**
+    * The projection transformation matrix.
+    */
+   clockwork::Matrix4 _projectionMatrix;
+   /**
+    * The view-projection transformation matrix.
+    */
+   clockwork::Matrix4 _viewProjectionMatrix;
 private:
-	/**
-	 * The viewer's renderer type.
-	 */
-	clockwork::graphics::RenderParameters::Type _renderType;
-	/**
-	 * The viewer's projection type.
-	 */
-	clockwork::graphics::Projection::Type _projectionType;
-	/**
-	 * The viewer's view viewport.
-	 */
-	clockwork::graphics::Viewport _viewport;
-	/**
-	 * The viewer's view frustum.
-	 */
-	clockwork::graphics::Frustum _frustum;
+   /**
+    * The viewer's renderer type.
+    */
+   clockwork::graphics::RenderParameters::Type _renderType;
+   /**
+    * The viewer's projection type.
+    */
+   clockwork::graphics::Projection::Type _projectionType;
+   /**
+    * The viewer's view viewport.
+    */
+   clockwork::graphics::Viewport _viewport;
+   /**
+    * The viewer's view frustum.
+    */
+   clockwork::graphics::Frustum _frustum;
 private slots:
-	/**
-	 * Update the view transformation matrix.
-	 */
-	void updateViewMatrix();
-	/**
-	 * Update the projection transformation matrix.
-	 */
-	void updateProjectionMatrix();
+   /**
+    * Update the view transformation matrix.
+    */
+   void updateViewMatrix();
+   /**
+    * Update the projection transformation matrix.
+    */
+   void updateProjectionMatrix();
 };
 
 } // namespace scene

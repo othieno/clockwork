@@ -36,30 +36,30 @@ template<typename EntityType>
 class Property : public Entity
 {
 public:
-	/**
-	 * Return the entity that is characterised by this property.
-	 */
-	EntityType& getEntity()
-	{
-		return _entity;
-	}
+   /**
+    * Return the entity that is characterised by this property.
+    */
+   EntityType& getEntity()
+   {
+      return _entity;
+   }
 protected:
-	/**
-	 * Instantiate a named Property that is attached to a given entity.
-	 * @param entity the entity that is characterised by this property.
-	 * @param name the property's name.
-	 */
-	Property(const EntityType& entity, const std::string& name) :
-	Leaf(name),
-	_entity(entity)
-	{
-		//setNameEditable(false);
-	}
+   /**
+    * Instantiate a named Property that is attached to a given entity.
+    * @param entity the entity that is characterised by this property.
+    * @param name the property's name.
+    */
+   Property(const EntityType& entity, const std::string& name) :
+   Leaf(name),
+   _entity(entity)
+   {
+      //setNameEditable(false);
+   }
 private:
-	/**
-	 * The entity that is characterised by this property.
-	 */
-	const EntityType& _entity;
+   /**
+    * The entity that is characterised by this property.
+    */
+   const EntityType& _entity;
 };
 } // namespace scene
 } // namespace clockwork

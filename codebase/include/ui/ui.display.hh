@@ -42,28 +42,28 @@ class UserInterface;
 class GUIDisplay : public QWidget
 {
 public:
-	/**
-	 * Instantiate a GUIDisplay.
-	 * @param ui the user interface that this component is attached to.
-	 */
-	GUIDisplay(UserInterface& ui);
+   /**
+    * Instantiate a GUIDisplay.
+    * @param ui the user interface that this component is attached to.
+    */
+   GUIDisplay(UserInterface& ui);
 private:
-	/**
-	 * The custom paint event loads data from a framebuffer and displays it.
-	 */
-	virtual void paintEvent(QPaintEvent* event) override final;
-	/**
-	 * The painter.
-	 */
-	QPainter _qPainter;
-	/**
-	 * The pen used to write text to the display.
-	 */
-	QPen _qPen;
-	/**
-	 * A reference to the framebuffer containing the rendered scene.
-	 */
-	clockwork::graphics::Framebuffer& _framebuffer;
+   /**
+    * The custom paint event loads data from a framebuffer and displays it.
+    */
+   virtual void paintEvent(QPaintEvent* event) override final;
+   /**
+    * The painter.
+    */
+   QPainter _qPainter;
+   /**
+    * The pen used to write text to the display.
+    */
+   QPen _qPen;
+   /**
+    * A reference to the framebuffer containing the rendered scene.
+    */
+   clockwork::graphics::Framebuffer& _framebuffer;
 };
 } // namespace graphics
 } // namespace clockwork

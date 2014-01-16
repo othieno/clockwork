@@ -27,54 +27,54 @@
 std::ostream&
 operator<<(std::ostream& os, const QString& qString)
 {
-	os << qString.toStdString();
-	return os;
+   os << qString.toStdString();
+   return os;
 }
 
 
 std::ostream&
 operator<<(std::ostream& os, const clockwork::Error& error)
 {
-	os << clockwork::toString(error);
-	return os;
+   os << clockwork::toString(error);
+   return os;
 }
 
 
 std::ostream&
 operator<<(std::ostream& os, const clockwork::graphics::Projection::Type& type)
 {
-	os << clockwork::toString(type);
-	return os;
+   os << clockwork::toString(type);
+   return os;
 }
 
 
 std::ostream&
 operator<<(std::ostream& os, const clockwork::graphics::ImageFilter::Type& type)
 {
-	os << clockwork::toString(type);
-	return os;
+   os << clockwork::toString(type);
+   return os;
 }
 
 
 std::ostream&
 operator<<(std::ostream& os, const clockwork::graphics::TextureFilter::Type& type)
 {
-	os << clockwork::toString(type);
-	return os;
+   os << clockwork::toString(type);
+   return os;
 }
 
 
 std::ostream&
 operator<<(std::ostream& os, const clockwork::graphics::RenderParameters::Type& type)
 {
-	os << clockwork::toString(type);
-	return os;
+   os << clockwork::toString(type);
+   return os;
 }
 
 
 std::ostream&
 operator<<(std::ostream& os, const clockwork::graphics::Fragment& fragment)
 {
-	os << clockwork::toString(fragment);
-	return os;
+   os << clockwork::toString(fragment);
+   return os;
 }

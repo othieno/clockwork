@@ -35,23 +35,23 @@ class AssetManager : private QHash<QString, clockwork::io::Asset*>
 {
 friend class Services;
 public:
-	/**
-	 * Load, store and return a 3D model from a given file. The 3D model is stored
-	 * as an asset in the asset dictionary which makes sure only one instance of
-	 * it exists in memory.
-	 * @param filename the name of the file containing the 3D model.
-	 */
-	const clockwork::graphics::Model3D* loadModel3D(const std::string& filename);
+   /**
+    * Load, store and return a 3D model from a given file. The 3D model is stored
+    * as an asset in the asset dictionary which makes sure only one instance of
+    * it exists in memory.
+    * @param filename the name of the file containing the 3D model.
+    */
+   const clockwork::graphics::Model3D* loadModel3D(const std::string& filename);
 private:
-	/**
-	 * The AssetManager is a singleton object so only a single instance of this
-	 * class should be created. To prevent copying and accidental instantiation,
-	 * the constructor is hidden (accessible only by the Services class),
-	 * and its copy constructor and operator are deleted.
-	 */
-	AssetManager();
-	AssetManager(const AssetManager&) = delete;
-	AssetManager& operator=(const AssetManager&) = delete;
+   /**
+    * The AssetManager is a singleton object so only a single instance of this
+    * class should be created. To prevent copying and accidental instantiation,
+    * the constructor is hidden (accessible only by the Services class),
+    * and its copy constructor and operator are deleted.
+    */
+   AssetManager();
+   AssetManager(const AssetManager&) = delete;
+   AssetManager& operator=(const AssetManager&) = delete;
 };
 
 } // namespace system

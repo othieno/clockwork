@@ -36,54 +36,54 @@ namespace scene {
 class Object : public Entity
 {
 public:
-	/**
-	 * Return the object's position in the scene.
-	 */
-	const clockwork::Point3& getPosition() const;
-	/**
-	 * Return the object's rotation.
-	 */
-	const clockwork::Point3& getRotation() const;
-	/**
-	 * Return the object's scaling vector.
-	 */
-	const clockwork::Vector3& getScalingVector() const;
-	/**
-	 * @see clockwork::scene::Node::updateGeometry.
-	 */
-	virtual void updateGeometry(const clockwork::Matrix4&) override final;
-	/**
-	 * Return the node's model transformation matrix.
-	 */
-	const clockwork::Matrix4& getModelMatrix() const;
-	/**
-	 * Set the node's model transformation matrix.
-	 * @param model the model transformation matrix to set.
-	 */
-	void setModelMatrix(const clockwork::Matrix4& model);
+   /**
+    * Return the object's position in the scene.
+    */
+   const clockwork::Point3& getPosition() const;
+   /**
+    * Return the object's rotation.
+    */
+   const clockwork::Point3& getRotation() const;
+   /**
+    * Return the object's scaling vector.
+    */
+   const clockwork::Vector3& getScalingVector() const;
+   /**
+    * @see clockwork::scene::Node::updateGeometry.
+    */
+   virtual void updateGeometry(const clockwork::Matrix4&) override final;
+   /**
+    * Return the node's model transformation matrix.
+    */
+   const clockwork::Matrix4& getModelMatrix() const;
+   /**
+    * Set the node's model transformation matrix.
+    * @param model the model transformation matrix to set.
+    */
+   void setModelMatrix(const clockwork::Matrix4& model);
 protected:
-	/**
-	 * Instantiate a named object.
-	 * @param name the object's name.
-	 */
-	Object(const std::string& name);
-	/**
-	 * The object's position in the world.
-	 */
-	clockwork::Point3 _position;
-	/**
-	 * The object's rotation.
-	 */
-	clockwork::Point3 _rotation;
-	/**
-	 * The object's scaling vector.
-	 */
-	clockwork::Vector3 _scaling;
+   /**
+    * Instantiate a named object.
+    * @param name the object's name.
+    */
+   Object(const std::string& name);
+   /**
+    * The object's position in the world.
+    */
+   clockwork::Point3 _position;
+   /**
+    * The object's rotation.
+    */
+   clockwork::Point3 _rotation;
+   /**
+    * The object's scaling vector.
+    */
+   clockwork::Vector3 _scaling;
 private:
-	/**
-	 * The object's model transformation matrix.
-	 */
-	clockwork::Matrix4 _modelMatrix;
+   /**
+    * The object's model transformation matrix.
+    */
+   clockwork::Matrix4 _modelMatrix;
 };
 } // namespace scene
 } // namespace clockwork

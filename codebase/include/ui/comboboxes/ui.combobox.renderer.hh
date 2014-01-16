@@ -32,20 +32,20 @@ namespace ui {
 class GUIRendererComboBox : public GUIComboBox
 {
 public:
-	/**
-	 * Instantiate a GUIRendererComboBox attached to a user interface.
-	 * @param ui the user interface that this component is attached to.
-	 */
-	GUIRendererComboBox(UserInterface& ui);
+   /**
+    * Instantiate a GUIRendererComboBox attached to a user interface.
+    * @param ui the user interface that this component is attached to.
+    */
+   GUIRendererComboBox(UserInterface& ui);
 private:
-	/**
-	 * @see GUIComboBox::onItemSelected.
-	 */
-	void onItemSelected(const int&) override final;
-	/**
-	 * @see GUIComboBox::loadItemList.
-	 */
-	void loadItemList() override final;
+   /**
+    * @see GUIComboBox::onItemSelected.
+    */
+   void onItemSelected(const int&) override final;
+   /**
+    * @see GUIComboBox::loadItemList.
+    */
+   void loadItemList() override final;
 };
 
 } // namespace ui

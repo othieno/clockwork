@@ -41,17 +41,17 @@ class PointRenderParameters : public RenderParameters
 {
 friend class RenderParametersFactory;
 public:
-	/**
-	 * @see RenderParameters::primitiveAssembly.
-	 */
-	virtual void primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const override final;
+   /**
+    * @see RenderParameters::primitiveAssembly.
+    */
+   virtual void primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const override final;
 private:
-	/**
-	 * The PointRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.
-	 */
-	PointRenderParameters();
-	PointRenderParameters(const PointRenderParameters&) = delete;
-	PointRenderParameters& operator=(const PointRenderParameters&) = delete;
+   /**
+    * The PointRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.
+    */
+   PointRenderParameters();
+   PointRenderParameters(const PointRenderParameters&) = delete;
+   PointRenderParameters& operator=(const PointRenderParameters&) = delete;
 };
 
 } // namespace graphics

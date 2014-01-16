@@ -40,90 +40,90 @@ _busyIndicator(new clockwork::ui::GUIBusyIndicator(*this)),
 _qMenuBar(window.menuBar()),
 _qStatusBar(new QStatusBar(_display))
 {
-	// Make the GUI the window's central widget.
-	_window.setCentralWidget(this);
+   // Make the GUI the window's central widget.
+   _window.setCentralWidget(this);
 
-	// Make the display the GUI's background widget.
-	_display->setParent(this);
-	QHBoxLayout* const uiLayout = new QHBoxLayout(this);
-	uiLayout->setContentsMargins(0, 0, 0, 0);
-	uiLayout->addWidget(_display);
+   // Make the display the GUI's background widget.
+   _display->setParent(this);
+   QHBoxLayout* const uiLayout = new QHBoxLayout(this);
+   uiLayout->setContentsMargins(0, 0, 0, 0);
+   uiLayout->addWidget(_display);
 
-	// The Graphics is the last subsystem to be updated, which is why the
-	// busy indicator is hidden after the Graphics update task completes.
-	connect(&clockwork::system::Services::Graphics, SIGNAL(updateComplete()), _busyIndicator, SLOT(hide()));
+   // The Graphics is the last subsystem to be updated, which is why the
+   // busy indicator is hidden after the Graphics update task completes.
+   connect(&clockwork::system::Services::Graphics, SIGNAL(updateComplete()), _busyIndicator, SLOT(hide()));
 }
 
 
 clockwork::ui::Window&
 clockwork::ui::UserInterface::getWindow()
 {
-	return _window;
+   return _window;
 }
 
 
 void
 clockwork::ui::UserInterface::update(const clockwork::ui::GUIComponent* const source)
 {
-	// Show the busy indicator since the system's about to process tasks.
-	_busyIndicator->show();
+   // Show the busy indicator since the system's about to process tasks.
+   _busyIndicator->show();
 
-	// Update the user interface's components.
-	emit updateComponents(source);
+   // Update the user interface's components.
+   emit updateComponents(source);
 
-	// Update the system.
-	clockwork::system::Services::update();
+   // Update the system.
+   clockwork::system::Services::update();
 }
 
 
 clockwork::Error
 clockwork::ui::UserInterface::build()
 {
-	// Configure the display's layout.
-	if (_display != nullptr)
-	{
-		QVBoxLayout* const layout = new QVBoxLayout(_display);
-		if (layout != nullptr)
-		{
-			_display->setLayout(layout);
-			layout->setContentsMargins(0, 0, 0, 0);
+   // Configure the display's layout.
+   if (_display != nullptr)
+   {
+      QVBoxLayout* const layout = new QVBoxLayout(_display);
+      if (layout != nullptr)
+      {
+         _display->setLayout(layout);
+         layout->setContentsMargins(0, 0, 0, 0);
 
-			// Build the control panel.
-			if (_controlPanel != nullptr)
-			{
-				layout->addWidget(_controlPanel);
-			}
+         // Build the control panel.
+         if (_controlPanel != nullptr)
+         {
+            layout->addWidget(_controlPanel);
+         }
 
-			// Build the menu bar.
-			if (_qMenuBar != nullptr)
-			{
-				//_qMenuBar->addMenu("File");
-				//_qMenuBar->addMenu("Edit");
-				//_qMenuBar->addMenu("View");
-				//_qMenuBar->addMenu("Help");
-			}
+         // Build the menu bar.
+         if (_qMenuBar != nullptr)
+         {
+            //_qMenuBar->addMenu("File");
+            //_qMenuBar->addMenu("Edit");
+            //_qMenuBar->addMenu("View");
+            //_qMenuBar->addMenu("Help");
+         }
 
-			// Build the status bar.
-			if (_qStatusBar != nullptr)
-			{
-				layout->addWidget(_qStatusBar, 0, Qt::AlignBottom);
+         // Build the status bar.
+         if (_qStatusBar != nullptr)
+         {
+            layout->addWidget(_qStatusBar, 0, Qt::AlignBottom);
 
-				_qStatusBar->addWidget(new GUIRendererComboBox(*this));
-				_qStatusBar->addWidget(new GUIProjectionComboBox(*this));
-				_qStatusBar->addWidget(new GUIImageFilterComboBox(*this));
-				_qStatusBar->addWidget(new GUITextureFilterComboBox(*this));
-				_qStatusBar->addWidget(new GUILineAlgorithmComboBox(*this));
+            _qStatusBar->addWidget(new GUIRendererComboBox(*this));
+            _qStatusBar->addWidget(new GUIProjectionComboBox(*this));
+            _qStatusBar->addWidget(new GUIImageFilterComboBox(*this));
+            _qStatusBar->addWidget(new GUITextureFilterComboBox(*this));
+            _qStatusBar->addWidget(new GUILineAlgorithmComboBox(*this));
 
-				// Configure the busy indicator.
-				if (_busyIndicator != nullptr)
-				{
-					_busyIndicator->setVisible(false);
-					_qStatusBar->addPermanentWidget(_busyIndicator);
-				}
-			}
-		}
-		// Update the user interface to initialise its components.
-		update(nullptr);
-	}
-	return clockwork::Error::None;
+            // Configure the busy indicator.
+            if (_busyIndicator != nullptr)
+            {
+               _busyIndicator->setVisible(false);
+               _qStatusBar->addPermanentWidget(_busyIndicator);
+            }
+         }
+      }
+      // Update the user interface to initialise its components.
+      update(nullptr);
+   }
+   return clockwork::Error::None;
 }

@@ -30,5 +30,5 @@ bool clockwork::system::Debug::printToDisplay = true;
 std::string
 clockwork::system::Debug::toString()
 {
-	return "TODO::DEBUG INFORMATION";
+   return "TODO::DEBUG INFORMATION";
 }

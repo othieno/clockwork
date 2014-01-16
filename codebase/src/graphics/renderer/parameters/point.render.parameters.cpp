@@ -34,9 +34,9 @@ RenderParameters(RenderParameters::Type::Point)
 void
 PointRenderParameters::primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const
 {
-	for (const auto* const fragment : triangle)
-	{
-		if (fragment != nullptr)
-			plot(*fragment);
-	}
+   for (const auto* const fragment : triangle)
+   {
+      if (fragment != nullptr)
+         plot(*fragment);
+   }
 }

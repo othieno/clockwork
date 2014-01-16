@@ -32,12 +32,12 @@ Point4(x, y, z, w)
 const clockwork::Vector3&
 clockwork::graphics::Vertex::getNormal() const
 {
-	return _normal;
+   return _normal;
 }
 
 
 void
 clockwork::graphics::Vertex::setNormal(const clockwork::Vector3& normal)
 {
-	_normal = normal;
+   _normal = normal;
 }

@@ -34,9 +34,9 @@ _filter(clockwork::graphics::TextureFilterFactory::getUniqueInstance().getDefaul
 void
 clockwork::graphics::TextureRenderParameters::setTextureFilter(const clockwork::graphics::TextureFilter::Type& type)
 {
-	// Is there a need to change the filter?
-	if (_filter != nullptr && type == _filter->getType())
-		return;
+   // Is there a need to change the filter?
+   if (_filter != nullptr && type == _filter->getType())
+      return;
 
-	_filter = clockwork::graphics::TextureFilterFactory::getUniqueInstance().get(type);
+   _filter = clockwork::graphics::TextureFilterFactory::getUniqueInstance().get(type);
 }

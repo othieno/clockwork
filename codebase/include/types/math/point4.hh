@@ -30,34 +30,34 @@ namespace clockwork {
 
 struct Point4
 {
-	/**
-	 * The point's X coordinate.
-	 */
-	double x;
-	/**
-	 * The point's Y coordinate.
-	 */
-	double y;
-	/**
-	 * The point's Z coordinate.
-	 */
-	double z;
-	/**
-	 * The point's W coordinate.
-	 */
-	double w;
-	/**
-	 * Instantiate a 3D homogeneous point from a set of X, Y, Z, and W coordinates.
-	 * @param x the point's X coordinate.
-	 * @param y the point's Y coordinate.
-	 * @param z the point's Z coordinate.
-	 * @param w the point's W coordinate.
-	 */
-	Point4(const double& x = 0, const double& y = 0, const double& z = 0, const double& w = 1);
-	/**
-	 * Convert the homogeneous point into its affine representation, i.e. a Point3.
-	 */
-	operator clockwork::Point3() const;
+   /**
+    * The point's X coordinate.
+    */
+   double x;
+   /**
+    * The point's Y coordinate.
+    */
+   double y;
+   /**
+    * The point's Z coordinate.
+    */
+   double z;
+   /**
+    * The point's W coordinate.
+    */
+   double w;
+   /**
+    * Instantiate a 3D homogeneous point from a set of X, Y, Z, and W coordinates.
+    * @param x the point's X coordinate.
+    * @param y the point's Y coordinate.
+    * @param z the point's Z coordinate.
+    * @param w the point's W coordinate.
+    */
+   Point4(const double& x = 0, const double& y = 0, const double& z = 0, const double& w = 1);
+   /**
+    * Convert the homogeneous point into its affine representation, i.e. a Point3.
+    */
+   operator clockwork::Point3() const;
 };
 
 } // namespace clockwork

@@ -32,43 +32,43 @@
 clockwork::ui::GUIRendererComboBox::GUIRendererComboBox(UserInterface& ui) :
 GUIComboBox(ui, "Renderer")
 {
-	// Build the combo box.
-	build();
+   // Build the combo box.
+   build();
 }
 
 
 void
 clockwork::ui::GUIRendererComboBox::loadItemList()
 {
-	auto& factory = clockwork::graphics::RenderParametersFactory::getUniqueInstance();
-	const auto& keys = factory.getKeys();
-	const auto& defaultKey = factory.getDefaultKey();
-	int defaultIndex = 0;
+   auto& factory = clockwork::graphics::RenderParametersFactory::getUniqueInstance();
+   const auto& keys = factory.getKeys();
+   const auto& defaultKey = factory.getDefaultKey();
+   int defaultIndex = 0;
 
-	// Add the keys as items to the combo box.
-	for (const auto& key : keys)
-	{
-		using UserDataType = std::underlying_type<clockwork::graphics::RenderParameters::Type>::type;
+   // Add the keys as items to the combo box.
+   for (const auto& key : keys)
+   {
+      using UserDataType = std::underlying_type<clockwork::graphics::RenderParameters::Type>::type;
 
-		const auto& text = clockwork::toString(key);
-		const auto& userData = static_cast<UserDataType>(key);
+      const auto& text = clockwork::toString(key);
+      const auto& userData = static_cast<UserDataType>(key);
 
-		// Add the item to the combo box.
-		const auto& itemIndex = addItem(text, userData);
+      // Add the item to the combo box.
+      const auto& itemIndex = addItem(text, userData);
 
-		// Get the index of the current item.
-		if (key == defaultKey)
-			defaultIndex = itemIndex;
-	}
-	setSelectedItem(defaultIndex);
+      // Get the index of the current item.
+      if (key == defaultKey)
+         defaultIndex = itemIndex;
+   }
+   setSelectedItem(defaultIndex);
 }
 
 
 void
 clockwork::ui::GUIRendererComboBox::onItemSelected(const int& index)
 {
-	// Set the current viewer's renderer.
-	auto* const viewer = clockwork::scene::Scene::getUniqueInstance().getViewer();
-	if (viewer != nullptr)
-		viewer->setRenderType(getItem<clockwork::graphics::RenderParameters::Type>(index));
+   // Set the current viewer's renderer.
+   auto* const viewer = clockwork::scene::Scene::getUniqueInstance().getViewer();
+   if (viewer != nullptr)
+      viewer->setRenderType(getItem<clockwork::graphics::RenderParameters::Type>(index));
 }

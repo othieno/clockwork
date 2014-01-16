@@ -38,27 +38,27 @@ class GUIComponent : public QWidget
 {
 Q_OBJECT
 protected:
-	/**
-	 * Instantiate a GUIComponent that is attached to the user interface.
-	 * @param ui the user interface that this component is attached to.
-	 */
-	GUIComponent(UserInterface& ui);
+   /**
+    * Instantiate a GUIComponent that is attached to the user interface.
+    * @param ui the user interface that this component is attached to.
+    */
+   GUIComponent(UserInterface& ui);
 protected slots:
-	/**
-	 * This slot is called for each GUIComponent when the user interface is
-	 * updating itself. It updates this component based on the state of other
-	 * components in the user interface.
-	 * @param source a pointer to the component that triggered the GUI update.
-	 */
-	virtual void onInterfaceUpdate(const GUIComponent* const source);
+   /**
+    * This slot is called for each GUIComponent when the user interface is
+    * updating itself. It updates this component based on the state of other
+    * components in the user interface.
+    * @param source a pointer to the component that triggered the GUI update.
+    */
+   virtual void onInterfaceUpdate(const GUIComponent* const source);
 signals:
-	/**
-	 * This signal is raised when the component changes its state. This will
-	 * update the entire user interface, effectively updating any components
-	 * that may depend on this one.
-	 * @param source a pointer to the component that changed, i.e. this component.
-	 */
-	void componentChanged(const GUIComponent* const source);
+   /**
+    * This signal is raised when the component changes its state. This will
+    * update the entire user interface, effectively updating any components
+    * that may depend on this one.
+    * @param source a pointer to the component that changed, i.e. this component.
+    */
+   void componentChanged(const GUIComponent* const source);
 };
 
 } // namespace ui

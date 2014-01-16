@@ -33,5 +33,5 @@ _identifier(clockwork::generateUID())
 const clockwork::UID&
 clockwork::scene::Entity::getIdentifier() const
 {
-	return _identifier;
+   return _identifier;
 }

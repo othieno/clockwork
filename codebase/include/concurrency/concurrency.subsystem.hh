@@ -43,27 +43,27 @@ public:
     * Is multi-threading enabled?
     */
    bool isMultiThreadedExecutionEnabled() const;
-	/**
-	 * Submit a task to be processed.
-	 * @param task a pointer to the task to process.
-	 */
-	void submitTask(Task* const task);
-	/**
-	 * Wait for all current tasks to complete.
-	 */
-	void wait();
+   /**
+    * Submit a task to be processed.
+    * @param task a pointer to the task to process.
+    */
+   void submitTask(Task* const task);
+   /**
+    * Wait for all current tasks to complete.
+    */
+   void wait();
 private:
-	/**
-	 * All subsystems are singletons. As such the default constructor is hidden,
-	 * and the copy operator and constructor are deleted from the implementation.
-	 */
-	ConcurrencySubsystem();
-	ConcurrencySubsystem(const ConcurrencySubsystem&) = delete;
-	ConcurrencySubsystem& operator=(const ConcurrencySubsystem&) = delete;
-	/**
-	 * A reference to the thread pool.
-	 */
-	QThreadPool* const _threadPool;
+   /**
+    * All subsystems are singletons. As such the default constructor is hidden,
+    * and the copy operator and constructor are deleted from the implementation.
+    */
+   ConcurrencySubsystem();
+   ConcurrencySubsystem(const ConcurrencySubsystem&) = delete;
+   ConcurrencySubsystem& operator=(const ConcurrencySubsystem&) = delete;
+   /**
+    * A reference to the thread pool.
+    */
+   QThreadPool* const _threadPool;
 };
 
 } // namespace concurrency

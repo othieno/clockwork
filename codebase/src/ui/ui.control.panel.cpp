@@ -32,10 +32,10 @@ GUIComponent(ui),
 _sceneView(new GUISceneView(ui)),
 _sceneEntityView(new GUISceneEntityView(ui))
 {
-	// Build the widget's layout.
-	QVBoxLayout* const layout = new QVBoxLayout(this);
-	setLayout(layout);
+   // Build the widget's layout.
+   QVBoxLayout* const layout = new QVBoxLayout(this);
+   setLayout(layout);
 
-	layout->addWidget(_sceneView);
-	layout->addWidget(_sceneEntityView);
+   layout->addWidget(_sceneView);
+   layout->addWidget(_sceneEntityView);
 }

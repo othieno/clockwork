@@ -35,35 +35,35 @@ struct Debug
    /**
     * Show debug information.
     */
-	static bool printToDisplay;
-	/**
-	 * The current display's refresh rate.
-	 */
-	static int displayRefreshRate;
-	/**
-	 * The number of objects in the scene.
-	 */
-	static std::atomic_uint sceneObjectCount;
-	/**
-	 * The number of polygons in the scene.
-	 */
-	static std::atomic_uint scenePolygonCount;
-	/**
-	 * The number of rendered polygons in the scene.
-	 */
-	static std::atomic_uint renderedPolygonCount;
-	/**
-	 * The number of milliseconds it takes to draw a frame.
-	 */
-	static std::atomic_ulong millisecondsPerFrame;
-	/**
-	 * The name of the current viewer.
-	 */
-	static std::string sceneViewerName;
-	/**
-	 * Convert the debug data into string format.
-	 */
-	static std::string toString();
+   static bool printToDisplay;
+   /**
+    * The current display's refresh rate.
+    */
+   static int displayRefreshRate;
+   /**
+    * The number of objects in the scene.
+    */
+   static std::atomic_uint sceneObjectCount;
+   /**
+    * The number of polygons in the scene.
+    */
+   static std::atomic_uint scenePolygonCount;
+   /**
+    * The number of rendered polygons in the scene.
+    */
+   static std::atomic_uint renderedPolygonCount;
+   /**
+    * The number of milliseconds it takes to draw a frame.
+    */
+   static std::atomic_ulong millisecondsPerFrame;
+   /**
+    * The name of the current viewer.
+    */
+   static std::string sceneViewerName;
+   /**
+    * Convert the debug data into string format.
+    */
+   static std::string toString();
 };
 
 } // namespace system

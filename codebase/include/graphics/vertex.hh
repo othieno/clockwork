@@ -33,25 +33,25 @@ namespace graphics {
 class Vertex : public clockwork::Point4
 {
 public:
-	/**
-	 * TODO Explain me better.
-	 * Instantiate a Vertex at the given position.
-	 */
-	Vertex(const double& x = 0, const double& y = 0, const double& z = 0, const double& w = 1);
-	/**
-	 * Return the vertex normal.
-	 */
-	const clockwork::Vector3& getNormal() const;
-	/**
-	 * Set the vertex's normal.
-	 * @param normal the normal to set.
-	 */
-	void setNormal(const clockwork::Vector3& normal);
+   /**
+    * TODO Explain me better.
+    * Instantiate a Vertex at the given position.
+    */
+   Vertex(const double& x = 0, const double& y = 0, const double& z = 0, const double& w = 1);
+   /**
+    * Return the vertex normal.
+    */
+   const clockwork::Vector3& getNormal() const;
+   /**
+    * Set the vertex's normal.
+    * @param normal the normal to set.
+    */
+   void setNormal(const clockwork::Vector3& normal);
 private:
-	/**
-	 * The vertex's normal.
-	 */
-	clockwork::Vector3 _normal;
+   /**
+    * The vertex's normal.
+    */
+   clockwork::Vector3 _normal;
 };
 
 } // namespace graphics

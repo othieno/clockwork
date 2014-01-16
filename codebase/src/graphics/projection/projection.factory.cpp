@@ -27,15 +27,15 @@
 clockwork::graphics::ProjectionFactory::ProjectionFactory() :
 Factory(clockwork::graphics::Projection::Type::Perspective)
 {
-	put(clockwork::graphics::Projection::Type::Perspective, nullptr);
-	put(clockwork::graphics::Projection::Type::Cabinet, nullptr);
-	put(clockwork::graphics::Projection::Type::Cavalier, nullptr);
+   put(clockwork::graphics::Projection::Type::Perspective, nullptr);
+   put(clockwork::graphics::Projection::Type::Cabinet, nullptr);
+   put(clockwork::graphics::Projection::Type::Cavalier, nullptr);
 }
 
 
 clockwork::graphics::ProjectionFactory&
 clockwork::graphics::ProjectionFactory::getUniqueInstance()
 {
-	static clockwork::graphics::ProjectionFactory UNIQUE_INSTANCE;
-	return UNIQUE_INSTANCE;
+   static clockwork::graphics::ProjectionFactory UNIQUE_INSTANCE;
+   return UNIQUE_INSTANCE;
 }

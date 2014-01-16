@@ -32,5 +32,5 @@ _type(type)
 const clockwork::graphics::ImageFilter::Type&
 clockwork::graphics::ImageFilter::getType() const
 {
-	return _type;
+   return _type;
 }

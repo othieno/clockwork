@@ -30,8 +30,8 @@ namespace clockwork {
 
 enum class Error : int
 {
-	Unknown = -1,
-	None = 0,
+   Unknown = -1,
+   None = 0,
 };
 
 } // namespace clockwork

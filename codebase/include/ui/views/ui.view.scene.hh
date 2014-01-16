@@ -32,16 +32,16 @@ namespace ui {
 class GUISceneView : public GUIView
 {
 public:
-	/**
-	 * Instantiate a GUISceneView that is attached to the user interface.
-	 * @param ui the user interface that this component is attached to.
-	 */
-	GUISceneView(UserInterface& ui);
+   /**
+    * Instantiate a GUISceneView that is attached to the user interface.
+    * @param ui the user interface that this component is attached to.
+    */
+   GUISceneView(UserInterface& ui);
 private:
-	/**
-	 * The tree view used to present the scene graph.
-	 */
-	QTreeView* const _treeView;
+   /**
+    * The tree view used to present the scene graph.
+    */
+   QTreeView* const _treeView;
 };
 
 } // namespace ui

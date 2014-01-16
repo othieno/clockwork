@@ -36,7 +36,7 @@ _fragmentProgram(std::bind(&RenderParameters::defaultFragmentProgram, this, std:
 const RenderParameters::Type&
 RenderParameters::getType() const
 {
-	return _type;
+   return _type;
 }
 
 
@@ -53,12 +53,12 @@ RenderParameters::postVertexProgram(const Face&, const Vertex&, Fragment&) const
 void
 RenderParameters::setFragmentProgram(const std::function<uint32_t(const Fragment&)>& program)
 {
-	_fragmentProgram = program;
+   _fragmentProgram = program;
 }
 
 
 uint32_t
 RenderParameters::defaultFragmentProgram(const Fragment& f) const
 {
-	return f.color.merge();
+   return f.color.merge();
 }

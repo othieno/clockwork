@@ -31,94 +31,94 @@ QObject(&clockwork::scene::Scene::getUniqueInstance()),
 _isNameEditable(true),
 _isPruned(false)
 {
-	setObjectName(QString(name.c_str()));
+   setObjectName(QString(name.c_str()));
 }
 
 
 const QString
 clockwork::scene::Node::getName() const
 {
-	return objectName();
+   return objectName();
 }
 
 
 void
 clockwork::scene::Node::setName(const QString& name)
 {
-	setObjectName(name);
+   setObjectName(name);
 }
 
 
 void
 clockwork::scene::Node::addChild(clockwork::scene::Node* const node)
 {
-	if (node != nullptr)
-		_children.insert(node);
+   if (node != nullptr)
+      _children.insert(node);
 }
 
 
 void
 clockwork::scene::Node::removeChild(clockwork::scene::Node* const node)
 {
-	if (node != nullptr)
-	{
-		std::cerr << "Implement clockwork::scene::Node::removeChild" << std::endl;
-	}
+   if (node != nullptr)
+   {
+      std::cerr << "Implement clockwork::scene::Node::removeChild" << std::endl;
+   }
 }
 
 
 const std::set<clockwork::scene::Node*>&
 clockwork::scene::Node::getChildren() const
 {
-	return _children;
+   return _children;
 }
 
 
 bool
 clockwork::scene::Node::isPruned() const
 {
-	return _isPruned;
+   return _isPruned;
 }
 
 
 void
 clockwork::scene::Node::setPruned(const bool pruned)
 {
-	_isPruned = pruned;
+   _isPruned = pruned;
 }
 
 
 bool
 clockwork::scene::Node::isNameEditable() const
 {
-	return _isNameEditable;
+   return _isNameEditable;
 }
 
 
 void
 clockwork::scene::Node::setNameEditable(const bool editable)
 {
-	_isNameEditable = editable;
+   _isNameEditable = editable;
 }
 
 
 void
 clockwork::scene::Node::updateGeometry(const clockwork::Matrix4& CMTM)
 {
-	if (!_isPruned)
-	{
-		for (auto* child : _children)
-			child->updateGeometry(CMTM);
-	}
+   if (!_isPruned)
+   {
+      for (auto* child : _children)
+         child->updateGeometry(CMTM);
+   }
 }
 
 
 void
 clockwork::scene::Node::render(const clockwork::scene::Viewer& viewer) const
 {
-	if (!_isPruned)
-	{
-		for (auto* child : _children)
-			child->render(viewer);
-	}
+   if (!_isPruned)
+   {
+      for (auto* child : _children)
+         child->render(viewer);
+   }
 }

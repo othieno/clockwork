@@ -32,5 +32,5 @@ _type(type)
 const clockwork::graphics::TextureFilter::Type&
 clockwork::graphics::TextureFilter::getType() const
 {
-	return _type;
+   return _type;
 }

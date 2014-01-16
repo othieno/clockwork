@@ -33,17 +33,17 @@ namespace graphics {
 class ProjectionFactory : public Factory<Projection::Type, Projection>
 {
 public:
-	/**
-	 * Return the factory's unique instance.
-	 */
-	static ProjectionFactory& getUniqueInstance();
+   /**
+    * Return the factory's unique instance.
+    */
+   static ProjectionFactory& getUniqueInstance();
 private:
-	/**
-	 * The ProjectionFactory is a singleton.
-	 */
-	ProjectionFactory();
-	ProjectionFactory(const ProjectionFactory&) = delete;
-	ProjectionFactory& operator=(const ProjectionFactory&) = delete;
+   /**
+    * The ProjectionFactory is a singleton.
+    */
+   ProjectionFactory();
+   ProjectionFactory(const ProjectionFactory&) = delete;
+   ProjectionFactory& operator=(const ProjectionFactory&) = delete;
 };
 
 } // namespace graphics

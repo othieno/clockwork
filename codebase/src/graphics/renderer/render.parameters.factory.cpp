@@ -38,23 +38,23 @@
 clockwork::graphics::RenderParametersFactory::RenderParametersFactory() :
 Factory(clockwork::graphics::RenderParameters::Type::Wireframe)
 {
-	put(clockwork::graphics::RenderParameters::Type::Point, new clockwork::graphics::PointRenderParameters);
-	put(clockwork::graphics::RenderParameters::Type::Wireframe, new clockwork::graphics::WireframeRenderParameters);
-	put(clockwork::graphics::RenderParameters::Type::Random, new clockwork::graphics::RandomRenderParameters);
-	//put(clockwork::graphics::RenderParameters::Type::Depth, new clockwork::graphics::DepthRenderParameters);
-	//put(clockwork::graphics::RenderParameters::Type::Normals, new clockwork::graphics::NormalsRenderParameters);
-	put(clockwork::graphics::RenderParameters::Type::Texture, new clockwork::graphics::TextureRenderParameters);
-	//put(clockwork::graphics::RenderParameters::Type::Constant, new clockwork::graphics::ConstantRenderParameters);
-	//put(clockwork::graphics::RenderParameters::Type::Phong, new clockwork::graphics::PhongRenderParameters);
-	//put(clockwork::graphics::RenderParameters::Type::Cel, new clockwork::graphics::CelRenderParameters);
-	//put(clockwork::graphics::RenderParameters::Type::Bump, new clockwork::graphics::BumpRenderParameters);
-	//put(clockwork::graphics::RenderParameters::Type::Deferred, new clockwork::graphics::DeferredRenderParameters);
+   put(clockwork::graphics::RenderParameters::Type::Point, new clockwork::graphics::PointRenderParameters);
+   put(clockwork::graphics::RenderParameters::Type::Wireframe, new clockwork::graphics::WireframeRenderParameters);
+   put(clockwork::graphics::RenderParameters::Type::Random, new clockwork::graphics::RandomRenderParameters);
+   //put(clockwork::graphics::RenderParameters::Type::Depth, new clockwork::graphics::DepthRenderParameters);
+   //put(clockwork::graphics::RenderParameters::Type::Normals, new clockwork::graphics::NormalsRenderParameters);
+   put(clockwork::graphics::RenderParameters::Type::Texture, new clockwork::graphics::TextureRenderParameters);
+   //put(clockwork::graphics::RenderParameters::Type::Constant, new clockwork::graphics::ConstantRenderParameters);
+   //put(clockwork::graphics::RenderParameters::Type::Phong, new clockwork::graphics::PhongRenderParameters);
+   //put(clockwork::graphics::RenderParameters::Type::Cel, new clockwork::graphics::CelRenderParameters);
+   //put(clockwork::graphics::RenderParameters::Type::Bump, new clockwork::graphics::BumpRenderParameters);
+   //put(clockwork::graphics::RenderParameters::Type::Deferred, new clockwork::graphics::DeferredRenderParameters);
 }
 
 
 clockwork::graphics::RenderParametersFactory&
 clockwork::graphics::RenderParametersFactory::getUniqueInstance()
 {
-	static clockwork::graphics::RenderParametersFactory UNIQUE_INSTANCE;
-	return UNIQUE_INSTANCE;
+   static clockwork::graphics::RenderParametersFactory UNIQUE_INSTANCE;
+   return UNIQUE_INSTANCE;
 }

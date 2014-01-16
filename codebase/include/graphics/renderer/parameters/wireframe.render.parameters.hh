@@ -42,58 +42,58 @@ class WireframeRenderParameters: public RenderParameters
 {
 friend class RenderParametersFactory;
 public:
-	/**
-	 * Line algorithms.
-	 */
-	enum class LineAlgorithm
-	{
-		Bresenham,
-		XiaolinWu
-	};
-	/**
-	 * Return the list of available line algorithms.
-	 */
-	static QList<WireframeRenderParameters::LineAlgorithm> getLineAlgorithms();
-	/**
-	 * Return the current line algorithm.
-	 */
-	const WireframeRenderParameters::LineAlgorithm& getLineAlgorithm() const;
-	/**
-	 * Set the line algorithm.
-	 * @param algorithm the line algorithm to set.
-	 */
-	void setLineAlgorithm(const WireframeRenderParameters::LineAlgorithm& algorithm);
-	/**
-	 * @see RenderParameters::primitiveAssembly.
-	 */
-	virtual void primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const override final;
+   /**
+    * Line algorithms.
+    */
+   enum class LineAlgorithm
+   {
+      Bresenham,
+      XiaolinWu
+   };
+   /**
+    * Return the list of available line algorithms.
+    */
+   static QList<WireframeRenderParameters::LineAlgorithm> getLineAlgorithms();
+   /**
+    * Return the current line algorithm.
+    */
+   const WireframeRenderParameters::LineAlgorithm& getLineAlgorithm() const;
+   /**
+    * Set the line algorithm.
+    * @param algorithm the line algorithm to set.
+    */
+   void setLineAlgorithm(const WireframeRenderParameters::LineAlgorithm& algorithm);
+   /**
+    * @see RenderParameters::primitiveAssembly.
+    */
+   virtual void primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const override final;
 private:
-	/**
-	 * The WireframeRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.
-	 */
-	WireframeRenderParameters();
-	WireframeRenderParameters(const WireframeRenderParameters&) = delete;
-	WireframeRenderParameters& operator=(const WireframeRenderParameters&) = delete;
-	/**
-	 * The line algorithm.
-	 */
-	WireframeRenderParameters::LineAlgorithm _lineAlgorithm;
-	/**
-	 * The line drawing function.
-	 */
-	std::function<void(const Fragment&, const Fragment&)> drawline;
-	/**
-	 * Draw a line between two fragments using Bresenham's line algorithm.
-	 * @param f0 the line's origin.
-	 * @param f1 the line's endpoint.
-	 */
-	void drawlineBresenham(const Fragment& f0, const Fragment& f1) const;
-	/**
-	 * Draw a line between two fragments using Xiaolin Wu's line algorithm.
-	 * @param f0 the line's origin.
-	 * @param f1 the line's endpoint.
-	 */
-	void drawlineXiaolinWu(const Fragment& f0, const Fragment& f1) const;
+   /**
+    * The WireframeRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.
+    */
+   WireframeRenderParameters();
+   WireframeRenderParameters(const WireframeRenderParameters&) = delete;
+   WireframeRenderParameters& operator=(const WireframeRenderParameters&) = delete;
+   /**
+    * The line algorithm.
+    */
+   WireframeRenderParameters::LineAlgorithm _lineAlgorithm;
+   /**
+    * The line drawing function.
+    */
+   std::function<void(const Fragment&, const Fragment&)> drawline;
+   /**
+    * Draw a line between two fragments using Bresenham's line algorithm.
+    * @param f0 the line's origin.
+    * @param f1 the line's endpoint.
+    */
+   void drawlineBresenham(const Fragment& f0, const Fragment& f1) const;
+   /**
+    * Draw a line between two fragments using Xiaolin Wu's line algorithm.
+    * @param f0 the line's origin.
+    * @param f1 the line's endpoint.
+    */
+   void drawlineXiaolinWu(const Fragment& f0, const Fragment& f1) const;
 };
 
 } // namespace graphics

@@ -32,13 +32,13 @@ _priority(priority)
 const int&
 clockwork::concurrency::Task::getPriority() const
 {
-	return _priority;
+   return _priority;
 }
 
 
 void
 clockwork::concurrency::Task::run()
 {
-	onRun();
-	emit taskComplete();
+   onRun();
+   emit taskComplete();
 }

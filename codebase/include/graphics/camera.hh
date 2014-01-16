@@ -33,10 +33,10 @@ namespace graphics {
 class Camera : public clockwork::scene::Viewer
 {
 public:
-	/**
-	 * Instantiate a named camera.
-	 */
-	Camera(const std::string& name);
+   /**
+    * Instantiate a named camera.
+    */
+   Camera(const std::string& name);
 };
 
 } // namespace graphics

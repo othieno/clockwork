@@ -28,5 +28,5 @@ clockwork::ui::Window::Window() :
 QMainWindow(),
 _ui(*this)
 {
-	_ui.build();
+   _ui.build();
 }

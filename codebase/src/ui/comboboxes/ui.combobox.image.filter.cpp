@@ -32,42 +32,42 @@
 clockwork::ui::GUIImageFilterComboBox::GUIImageFilterComboBox(UserInterface& ui) :
 GUIComboBox(ui, "Image Filter")
 {
-	// Build the combo box.
-	build();
+   // Build the combo box.
+   build();
 }
 
 
 void
 clockwork::ui::GUIImageFilterComboBox::loadItemList()
 {
-	const auto& factory = clockwork::graphics::ImageFilterFactory::getUniqueInstance();
-	const auto& keys = factory.getKeys();
-	const auto& defaultKey = factory.getDefaultKey();
-	int defaultIndex = 0;
+   const auto& factory = clockwork::graphics::ImageFilterFactory::getUniqueInstance();
+   const auto& keys = factory.getKeys();
+   const auto& defaultKey = factory.getDefaultKey();
+   int defaultIndex = 0;
 
-	// Add the keys as items to the combo box.
-	for (const auto& key : keys)
-	{
-		using UserDataType = std::underlying_type<clockwork::graphics::ImageFilter::Type>::type;
+   // Add the keys as items to the combo box.
+   for (const auto& key : keys)
+   {
+      using UserDataType = std::underlying_type<clockwork::graphics::ImageFilter::Type>::type;
 
-		const auto& text = clockwork::toString(key);
-		const auto& userData = static_cast<UserDataType>(key);
+      const auto& text = clockwork::toString(key);
+      const auto& userData = static_cast<UserDataType>(key);
 
-		// Add the item to the combo box.
-		const auto& itemIndex = addItem(text, userData);
+      // Add the item to the combo box.
+      const auto& itemIndex = addItem(text, userData);
 
-		// Get the index of the current item.
-		if (key == defaultKey)
-			defaultIndex = itemIndex;
-	}
-	setSelectedItem(defaultIndex);
+      // Get the index of the current item.
+      if (key == defaultKey)
+         defaultIndex = itemIndex;
+   }
+   setSelectedItem(defaultIndex);
 }
 
 
 void
 clockwork::ui::GUIImageFilterComboBox::onItemSelected(const int& index)
 {
-	// Get the selected image filter type and update the framebuffer with it.
-	const auto& type = getItem<clockwork::graphics::ImageFilter::Type>(index);
-	clockwork::system::Services::Graphics.setImageFilter(type);
+   // Get the selected image filter type and update the framebuffer with it.
+   const auto& type = getItem<clockwork::graphics::ImageFilter::Type>(index);
+   clockwork::system::Services::Graphics.setImageFilter(type);
 }

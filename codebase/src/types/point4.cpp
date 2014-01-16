@@ -34,5 +34,5 @@ w(inw)
 
 clockwork::Point4::operator clockwork::Point3() const
 {
-	return clockwork::Point3(x / w, y / w, z / w);
+   return clockwork::Point3(x / w, y / w, z / w);
 }

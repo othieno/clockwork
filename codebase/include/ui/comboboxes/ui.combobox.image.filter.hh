@@ -32,20 +32,20 @@ namespace ui {
 class GUIImageFilterComboBox : public GUIComboBox
 {
 public:
-	/**
-	 * Instantiate a GUIImageFilterComboBox attached to a user interface.
-	 * @param ui the user interface that this component is attached to.
-	 */
-	GUIImageFilterComboBox(UserInterface& ui);
+   /**
+    * Instantiate a GUIImageFilterComboBox attached to a user interface.
+    * @param ui the user interface that this component is attached to.
+    */
+   GUIImageFilterComboBox(UserInterface& ui);
 private:
-	/**
-	 * @see GUIComboBox::onItemSelected.
-	 */
-	void onItemSelected(const int&) override final;
-	/**
-	 * @see GUIComboBox::loadItemList.
-	 */
-	void loadItemList() override final;
+   /**
+    * @see GUIComboBox::onItemSelected.
+    */
+   void onItemSelected(const int&) override final;
+   /**
+    * @see GUIComboBox::loadItemList.
+    */
+   void loadItemList() override final;
 };
 
 } // namespace ui

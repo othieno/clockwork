@@ -37,48 +37,48 @@ namespace system {
 class Services
 {
 public:
-	/**
-	 * The application's execution context.
-	 */
-	 static ExecutionContext Context;
-	/**
-	 * The concurrency subsystem.
-	 */
-	static clockwork::concurrency::ConcurrencySubsystem Concurrency;
-	/**
-	 * The graphics subsystem.
-	 */
-	static clockwork::graphics::GraphicsSubsystem Graphics;
-	/**
-	 * The asset manager.
-	 */
-	static AssetManager Assets;
-	/**
-	 * Initialise the services.
-	 * @param context the execution context that the application will be executed in.
-	 */
-	static clockwork::Error initialise(const int& argc, const char** const argv);
-	/**
-	 * Update all subsystems.
-	 */
-	static void update();
-	/**
-	 * Cleanup the services.
-	 * @param applicationExitError the error returned when the application exited.
-	 */
-	static clockwork::Error dispose(const clockwork::Error& applicationExitError);
-	/**
-	 * Block the current thread execution for a given duration.
-	 * @param milliseconds the number of milliseconds to block thread execution.
-	 */
-	static void sleep(const int64_t& milliseconds);
+   /**
+    * The application's execution context.
+    */
+    static ExecutionContext Context;
+   /**
+    * The concurrency subsystem.
+    */
+   static clockwork::concurrency::ConcurrencySubsystem Concurrency;
+   /**
+    * The graphics subsystem.
+    */
+   static clockwork::graphics::GraphicsSubsystem Graphics;
+   /**
+    * The asset manager.
+    */
+   static AssetManager Assets;
+   /**
+    * Initialise the services.
+    * @param context the execution context that the application will be executed in.
+    */
+   static clockwork::Error initialise(const int& argc, const char** const argv);
+   /**
+    * Update all subsystems.
+    */
+   static void update();
+   /**
+    * Cleanup the services.
+    * @param applicationExitError the error returned when the application exited.
+    */
+   static clockwork::Error dispose(const clockwork::Error& applicationExitError);
+   /**
+    * Block the current thread execution for a given duration.
+    * @param milliseconds the number of milliseconds to block thread execution.
+    */
+   static void sleep(const int64_t& milliseconds);
 private:
-	/**
-	 * Create an execution context from command line arguments.
-	 * @param argc the number of command line arguments.
-	 * @param argv the array containing command line arguments passed to the program.
-	 */
-	static void buildExecutionContext(const int& argc, const char** const argv);
+   /**
+    * Create an execution context from command line arguments.
+    * @param argc the number of command line arguments.
+    * @param argv the array containing command line arguments passed to the program.
+    */
+   static void buildExecutionContext(const int& argc, const char** const argv);
 };
 
 } // namespace system

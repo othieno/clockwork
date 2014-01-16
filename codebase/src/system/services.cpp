@@ -34,31 +34,31 @@ clockwork::system::AssetManager clockwork::system::Services::Assets;
 clockwork::Error
 clockwork::system::Services::initialise(const int& argc, const char** const argv)
 {
-	buildExecutionContext(argc, argv);
-	return Error::None;
+   buildExecutionContext(argc, argv);
+   return Error::None;
 }
 
 
 void
 clockwork::system::Services::update()
 {
-	// Make sure the previous update task is aborted before a new one is created.
-	//static volatile bool hasPreviousTaskCompleted = true;
-	//if (!hasPreviousTaskCompleted)
-	//{
-		//hasPreviousTaskCompleted = true;
-//TODO		Concurrency::stopAllTasks();
-	//}
+   // Make sure the previous update task is aborted before a new one is created.
+   //static volatile bool hasPreviousTaskCompleted = true;
+   //if (!hasPreviousTaskCompleted)
+   //{
+      //hasPreviousTaskCompleted = true;
+//TODO      Concurrency::stopAllTasks();
+   //}
 
-	// All previous update tasks have been aborted, start new ones.
-	Graphics.update();
+   // All previous update tasks have been aborted, start new ones.
+   Graphics.update();
 }
 
 
 clockwork::Error
 clockwork::system::Services::dispose(const clockwork::Error& applicationExitError)
 {
-	return clockwork::Error::None;
+   return clockwork::Error::None;
 }
 
 
@@ -70,5 +70,5 @@ clockwork::system::Services::buildExecutionContext(const int& argc, const char**
 void
 clockwork::system::Services::sleep(const int64_t& ms)
 {
-	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+   std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }

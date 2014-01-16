@@ -33,20 +33,20 @@ namespace ui {
 class GUIProjectionComboBox : public GUIComboBox
 {
 public:
-	/**
-	 * Instantiate a GUIProjectionComboBox attached to a user interface.
-	 * @param ui the user interface that this component is attached to.
-	 */
-	GUIProjectionComboBox(UserInterface& ui);
+   /**
+    * Instantiate a GUIProjectionComboBox attached to a user interface.
+    * @param ui the user interface that this component is attached to.
+    */
+   GUIProjectionComboBox(UserInterface& ui);
 private:
-	/**
-	 * @see GUIComboBox::onItemSelected.
-	 */
-	void onItemSelected(const int&) override final;
-	/**
-	 * @see GUIComboBox::loadItemList.
-	 */
-	void loadItemList() override final;
+   /**
+    * @see GUIComboBox::onItemSelected.
+    */
+   void onItemSelected(const int&) override final;
+   /**
+    * @see GUIComboBox::loadItemList.
+    */
+   void loadItemList() override final;
 };
 
 } // namespace ui

@@ -34,40 +34,40 @@ clockwork::system::AssetManager::AssetManager()
 const clockwork::graphics::Model3D*
 clockwork::system::AssetManager::loadModel3D(const std::string& filename)
 {
-	clockwork::graphics::Model3D* model = nullptr;
+   clockwork::graphics::Model3D* model = nullptr;
 
-	QFileInfo fileInfo(QString(filename.c_str()));
-	if (fileInfo.exists() && fileInfo.isFile() && fileInfo.isReadable() && fileInfo.size())
-	{
-		// If the model was already loaded, then return the instance in memory instead.
-		const auto& key = fileInfo.canonicalFilePath();
+   QFileInfo fileInfo(QString(filename.c_str()));
+   if (fileInfo.exists() && fileInfo.isFile() && fileInfo.isReadable() && fileInfo.size())
+   {
+      // If the model was already loaded, then return the instance in memory instead.
+      const auto& key = fileInfo.canonicalFilePath();
 #ifdef __ENABLE_ASSET_HASHTABLE
 //TODO Find out why using maps or hash tables causes segmentation faults or exceptions.
-		if (contains(key))
-			model = static_cast<clockwork::graphics::Model3D*>(value(key));
-		else
+      if (contains(key))
+         model = static_cast<clockwork::graphics::Model3D*>(value(key));
+      else
 #endif // __ENABLE_ASSET_HASHTABLE
-		{
-			model = new clockwork::graphics::Model3D;
-			if (model != nullptr)
-			{
-				// Load the OBJ file.
-				QFile file(key);
-				const auto& error = clockwork::io::loadOBJ(file, *model);
-				if (error == clockwork::Error::None)
-				{
+      {
+         model = new clockwork::graphics::Model3D;
+         if (model != nullptr)
+         {
+            // Load the OBJ file.
+            QFile file(key);
+            const auto& error = clockwork::io::loadOBJ(file, *model);
+            if (error == clockwork::Error::None)
+            {
 #ifdef __ENABLE_ASSET_HASHTABLE
-					insert(key, model);
+               insert(key, model);
 #endif // __ENABLE_ASSET_HASHTABLE
-				}
-				else
-				{
-					delete model;
-					model = nullptr;
-					std::cout << error << std::endl;
-				}
-			}
-		}
-	}
-	return model;
+            }
+            else
+            {
+               delete model;
+               model = nullptr;
+               std::cout << error << std::endl;
+            }
+         }
+      }
+   }
+   return model;
 }

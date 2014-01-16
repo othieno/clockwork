@@ -28,5 +28,5 @@
 clockwork::physics::SuzanneRigidBody::SuzanneRigidBody() :
 RigidBody("Suzanne")
 {
-	setModel3D(clockwork::system::Services::Assets.loadModel3D("../assets/models/suzanne.obj"));
+   setModel3D(clockwork::system::Services::Assets.loadModel3D("../assets/models/suzanne.obj"));
 }

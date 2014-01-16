@@ -32,95 +32,95 @@ clockwork::ui::GUIComboBox::GUIComboBox(clockwork::ui::UserInterface& ui, const 
 GUIComponent(ui),
 _qComboBox(new QComboBox(&ui))
 {
-	// Make the label bold.
-	QString boldLabel(label.c_str());
-	boldLabel.prepend("<b>");
-	boldLabel.append("</b>");
+   // Make the label bold.
+   QString boldLabel(label.c_str());
+   boldLabel.prepend("<b>");
+   boldLabel.append("</b>");
 
-	// Configure the label.
-	auto* const qLabel = new QLabel(boldLabel, this);
-	qLabel->setStyleSheet("QLabel { color:rgb(255, 255, 255); }");
-	qLabel->setTextFormat(Qt::RichText);
-	qLabel->setBuddy(_qComboBox);
+   // Configure the label.
+   auto* const qLabel = new QLabel(boldLabel, this);
+   qLabel->setStyleSheet("QLabel { color:rgb(255, 255, 255); }");
+   qLabel->setTextFormat(Qt::RichText);
+   qLabel->setBuddy(_qComboBox);
 
-	// Set the wrapper's layout.
-	auto* const layout = new QHBoxLayout(this);
-	setLayout(layout);
+   // Set the wrapper's layout.
+   auto* const layout = new QHBoxLayout(this);
+   setLayout(layout);
 
-	// Add the label and combo box to the wrapper.
-	layout->addWidget(qLabel);
-	layout->addWidget(_qComboBox);
+   // Add the label and combo box to the wrapper.
+   layout->addWidget(qLabel);
+   layout->addWidget(_qComboBox);
 
-	// Setup the signals.
-	connect(_qComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onCurrentIndexChanged(const int&)));
+   // Setup the signals.
+   connect(_qComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onCurrentIndexChanged(const int&)));
 }
 
 
 void
 clockwork::ui::GUIComboBox::build()
 {
-	// Block all signals while the combo box is being created. This prevents
-	// the componentChanged signal from being raised while elements are being
-	// inserted into the combo box.
-	_qComboBox->blockSignals(true);
+   // Block all signals while the combo box is being created. This prevents
+   // the componentChanged signal from being raised while elements are being
+   // inserted into the combo box.
+   _qComboBox->blockSignals(true);
 
-	// Add entries to the combo box.
-	loadItemList();
+   // Add entries to the combo box.
+   loadItemList();
 
-	// Re-activate all signals.
-	_qComboBox->blockSignals(false);
+   // Re-activate all signals.
+   _qComboBox->blockSignals(false);
 }
 
 
 clockwork::ui::GUIComboBox::GUIComboBox
 (
-	clockwork::ui::UserInterface& ui,
-	const std::string& label,
-	std::list<std::string> items
+   clockwork::ui::UserInterface& ui,
+   const std::string& label,
+   std::list<std::string> items
 ) :
 GUIComboBox(ui, label)
 {
-	// Add items to the combo box.
-	for (const auto& item : items)
-	{
-		const auto& entry = QObject::tr(item.c_str());
-		_qComboBox->addItem(entry, entry);
-	}
+   // Add items to the combo box.
+   for (const auto& item : items)
+   {
+      const auto& entry = QObject::tr(item.c_str());
+      _qComboBox->addItem(entry, entry);
+   }
 }
 
 
 void
 clockwork::ui::GUIComboBox::onCurrentIndexChanged(const int& index)
 {
-	onItemSelected(index);
-	emit componentChanged(this);
+   onItemSelected(index);
+   emit componentChanged(this);
 }
 
 
 void
 clockwork::ui::GUIComboBox::setSelectedItem(const int& index)
 {
-	// Make sure the index is valid.
-	const auto& maximumIndex = _qComboBox->count() - 1;
-	const auto& minimumIndex = maximumIndex >= 0 ? 0 : -1;
+   // Make sure the index is valid.
+   const auto& maximumIndex = _qComboBox->count() - 1;
+   const auto& minimumIndex = maximumIndex >= 0 ? 0 : -1;
 
-	_qComboBox->setCurrentIndex(std::min(maximumIndex, std::max(minimumIndex, index)));
+   _qComboBox->setCurrentIndex(std::min(maximumIndex, std::max(minimumIndex, index)));
 }
 
 
 int
 clockwork::ui::GUIComboBox::addItem(const QString& text, const QVariant& userData)
 {
-	const auto itemIndex = _qComboBox->count();
-	_qComboBox->addItem(text, userData);
+   const auto itemIndex = _qComboBox->count();
+   _qComboBox->addItem(text, userData);
 
-	return itemIndex;
+   return itemIndex;
 }
 
 
 void
 clockwork::ui::GUIComboBox::onInterfaceUpdate(const clockwork::ui::GUIComponent* const source)
 {
-	if (source != this)
-		setEnabled(clockwork::scene::Scene::getUniqueInstance().hasViewer());
+   if (source != this)
+      setEnabled(clockwork::scene::Scene::getUniqueInstance().hasViewer());
 }

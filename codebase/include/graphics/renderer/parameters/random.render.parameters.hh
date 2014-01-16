@@ -41,17 +41,17 @@ class RandomRenderParameters : public PolygonRenderParameters
 {
 friend class RenderParametersFactory;
 public:
-	/**
-	 * @see RenderParameters::postVertexProgram.
-	 */
-	virtual void postVertexProgram(const Face& face, const Vertex& vertex, Fragment& fragment) const override final;
+   /**
+    * @see RenderParameters::postVertexProgram.
+    */
+   virtual void postVertexProgram(const Face& face, const Vertex& vertex, Fragment& fragment) const override final;
 private:
-	/**
-	 * The RandomRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.
-	 */
-	RandomRenderParameters();
-	RandomRenderParameters(const RandomRenderParameters&) = delete;
-	RandomRenderParameters& operator=(const RandomRenderParameters&) = delete;
+   /**
+    * The RandomRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.
+    */
+   RandomRenderParameters();
+   RandomRenderParameters(const RandomRenderParameters&) = delete;
+   RandomRenderParameters& operator=(const RandomRenderParameters&) = delete;
 };
 
 } // namespace graphics

@@ -38,22 +38,22 @@ namespace scene {
 class Entity : public Node
 {
 public:
-	/**
-	 * Return the entity's unique identifier.
-	 */
-	const clockwork::UID& getIdentifier() const;
+   /**
+    * Return the entity's unique identifier.
+    */
+   const clockwork::UID& getIdentifier() const;
 protected:
-	/**
-	 * Instantiate a named entity.
-	 * @param name the entity's name.
-	 */
-	Entity(const std::string& name);
+   /**
+    * Instantiate a named entity.
+    * @param name the entity's name.
+    */
+   Entity(const std::string& name);
 private:
-	/**
-	 * The entity's universally unique identifier (UUID) which allows us to
-	 * distinguish between entities even when their names are changed.
-	 */
-	const clockwork::UID _identifier;
+   /**
+    * The entity's universally unique identifier (UUID) which allows us to
+    * distinguish between entities even when their names are changed.
+    */
+   const clockwork::UID _identifier;
 };
 
 } // namespace scene

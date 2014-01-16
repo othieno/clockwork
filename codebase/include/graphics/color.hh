@@ -31,43 +31,43 @@ namespace graphics {
 
 struct ColorRGBA
 {
-	/**
-	 * The color's normalised red channel.
-	 */
-	float red;
-	/**
-	 * The color's normalised green channel.
-	 */
-	float green;
-	/**
-	 * The color's normalised blue channel.
-	 */
-	float blue;
-	/**
-	 * The color's normalised alpha channel.
-	 */
-	float alpha;
-	/**
-	 * Instantiate an RGBa color with normalised red, green and blue channels.
-	 * @param red the red channel.
-	 * @param green the green channel.
-	 * @param blue the blue channel.
-	 * @param alpha the alpha channel.
-	 */
-	ColorRGBA(const float& red = 0.0f, const float& green = 0.0f, const float& blue = 0.0f, const float& alpha = 1.0f);
-	/**
-	 * Merge the normalised red, green, blue and alpha channels into one 32-bit integer.
-	 */
-	uint32_t merge() const;
-	/**
-	 * Split a 32-bit integer value into an RGBA color.
-	 * @param ARGB the 32-bit integer that represents an A8R8G8B8 color.
-	 */
-	static ColorRGBA split(const uint32_t& ARGB);
-	/**
-	 * Return a random RGBA color.
-	 */
-	static ColorRGBA getRandom();
+   /**
+    * The color's normalised red channel.
+    */
+   float red;
+   /**
+    * The color's normalised green channel.
+    */
+   float green;
+   /**
+    * The color's normalised blue channel.
+    */
+   float blue;
+   /**
+    * The color's normalised alpha channel.
+    */
+   float alpha;
+   /**
+    * Instantiate an RGBa color with normalised red, green and blue channels.
+    * @param red the red channel.
+    * @param green the green channel.
+    * @param blue the blue channel.
+    * @param alpha the alpha channel.
+    */
+   ColorRGBA(const float& red = 0.0f, const float& green = 0.0f, const float& blue = 0.0f, const float& alpha = 1.0f);
+   /**
+    * Merge the normalised red, green, blue and alpha channels into one 32-bit integer.
+    */
+   uint32_t merge() const;
+   /**
+    * Split a 32-bit integer value into an RGBA color.
+    * @param ARGB the 32-bit integer that represents an A8R8G8B8 color.
+    */
+   static ColorRGBA split(const uint32_t& ARGB);
+   /**
+    * Return a random RGBA color.
+    */
+   static ColorRGBA getRandom();
 };
 
 } // namespace graphics

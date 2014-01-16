@@ -35,47 +35,47 @@ _qPainter(),
 _qPen(Qt::yellow),
 _framebuffer(clockwork::system::Services::Graphics.getFramebuffer())
 {
-	// Match the display resolution with the framebuffer's resolution.
-//	const auto& framebufferResolution = _framebuffer.size();
-//	setMinimumSize(framebufferResolution);
-//	setMaximumSize(framebufferResolution);
+   // Match the display resolution with the framebuffer's resolution.
+// const auto& framebufferResolution = _framebuffer.size();
+// setMinimumSize(framebufferResolution);
+// setMaximumSize(framebufferResolution);
 
-	// Connect the GraphicsSubsystem::updateComplete signal to this widget's update
-	// slot so that the display is updated when the framebuffer contains a complete frame.
-	connect(&clockwork::system::Services::Graphics, SIGNAL(updateComplete()), this, SLOT(update()));
+   // Connect the GraphicsSubsystem::updateComplete signal to this widget's update
+   // slot so that the display is updated when the framebuffer contains a complete frame.
+   connect(&clockwork::system::Services::Graphics, SIGNAL(updateComplete()), this, SLOT(update()));
 }
 
 
 void
 clockwork::ui::GUIDisplay::paintEvent(QPaintEvent* const event)
 {
-	// Create a QImage from the framebuffer's data.
-	const QImage image
-	(
-		reinterpret_cast<const uchar*>(_framebuffer.getPixelBuffer()),
-		_framebuffer.getWidth(),
-		_framebuffer.getHeight(),
-		QImage::Format_ARGB32
-	);
+   // Create a QImage from the framebuffer's data.
+   const QImage image
+   (
+      reinterpret_cast<const uchar*>(_framebuffer.getPixelBuffer()),
+      _framebuffer.getWidth(),
+      _framebuffer.getHeight(),
+      QImage::Format_ARGB32
+   );
 
-	// Begin painting this device.
-	_qPainter.begin(this);
+   // Begin painting this device.
+   _qPainter.begin(this);
 
-	// Draw the framebuffer.
-	auto& rect = event->rect();
-	_qPainter.drawImage(rect, image);
+   // Draw the framebuffer.
+   auto& rect = event->rect();
+   _qPainter.drawImage(rect, image);
 
-	// Turn on text anti-aliasing and print debug information.
+   // Turn on text anti-aliasing and print debug information.
 /*
-	if (clockwork::system::Debug::printToDisplay)
-	{
-		const auto& debugInfo = QObject::tr(clockwork::system::Debug::toString().c_str());
+   if (clockwork::system::Debug::printToDisplay)
+   {
+      const auto& debugInfo = QObject::tr(clockwork::system::Debug::toString().c_str());
 
-		_qPainter.setRenderHint(QPainter::TextAntialiasing);
-		_qPainter.setPen(_qPen);
-		_qPainter.drawText(rect.adjusted(5, 5, 0, 0), debugInfo);
-	}
+      _qPainter.setRenderHint(QPainter::TextAntialiasing);
+      _qPainter.setPen(_qPen);
+      _qPainter.drawText(rect.adjusted(5, 5, 0, 0), debugInfo);
+   }
 */
-	// End painting.
-	_qPainter.end();
+   // End painting.
+   _qPainter.end();
 }

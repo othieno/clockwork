@@ -36,15 +36,15 @@ namespace ui {
 class Window : public QMainWindow
 {
 public:
-	/**
-	 * Instantiate a new window.
-	 */
-	Window();
+   /**
+    * Instantiate a new window.
+    */
+   Window();
 private:
-	/**
-	 * The user interface that will be drawn to this window.
-	 */
-	clockwork::ui::UserInterface _ui;
+   /**
+    * The user interface that will be drawn to this window.
+    */
+   UserInterface _ui;
 };
 
 } // namespace ui

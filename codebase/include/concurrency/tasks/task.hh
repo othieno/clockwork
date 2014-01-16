@@ -34,32 +34,32 @@ class Task : public QObject, public QRunnable
 {
 Q_OBJECT
 public:
-	/**
-	 * Instantiate a task with a given priority.
-	 */
-	explicit Task(const int& priority = 0);
-	/**
-	 * Return the task's priority.
-	 */
-	const int& getPriority() const;
-	/**
-	 * Return the task's priority.
-	 */
-	virtual void run() override final;
-	/**
-	 * The operation that is performed by this task.
-	 */
-	virtual void onRun() = 0;
+   /**
+    * Instantiate a task with a given priority.
+    */
+   explicit Task(const int& priority = 0);
+   /**
+    * Return the task's priority.
+    */
+   const int& getPriority() const;
+   /**
+    * Return the task's priority.
+    */
+   virtual void run() override final;
+   /**
+    * The operation that is performed by this task.
+    */
+   virtual void onRun() = 0;
 private:
-	/**
-	 * The task's priority.
-	 */
-	const int _priority;
+   /**
+    * The task's priority.
+    */
+   const int _priority;
 signals:
-	/**
-	 * A signal that is raised when the task completes.
-	 */
-	void taskComplete();
+   /**
+    * A signal that is raised when the task completes.
+    */
+   void taskComplete();
 };
 
 /**
@@ -67,10 +67,10 @@ signals:
  */
 enum class TaskPriority : int
 {
-	GraphicsPostProcessingTask = 0,
-	GraphicsGeometryUpdateTask = GraphicsPostProcessingTask + 1,
-	GraphicsRenderTask = GraphicsGeometryUpdateTask + 1,
-	GraphicsUpdateTask = GraphicsRenderTask + 1
+   GraphicsPostProcessingTask = 0,
+   GraphicsGeometryUpdateTask = GraphicsPostProcessingTask + 1,
+   GraphicsRenderTask = GraphicsGeometryUpdateTask + 1,
+   GraphicsUpdateTask = GraphicsRenderTask + 1
 };
 
 } // namespace concurrency

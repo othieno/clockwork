@@ -29,16 +29,16 @@ using clockwork::ui::GUIComponent;
 GUIComponent::GUIComponent(UserInterface& ui) :
 QWidget(&ui)
 {
-	connect
-	(
-		this, SIGNAL(componentChanged(const GUIComponent* const)),
-		&ui, SLOT(update(const GUIComponent* const))
-	);
-	connect
-	(
-		&ui, SIGNAL(updateComponents(const GUIComponent* const)),
-		this, SLOT(onInterfaceUpdate(const GUIComponent* const))
-	);
+   connect
+   (
+      this, SIGNAL(componentChanged(const GUIComponent* const)),
+      &ui, SLOT(update(const GUIComponent* const))
+   );
+   connect
+   (
+      &ui, SIGNAL(updateComponents(const GUIComponent* const)),
+      this, SLOT(onInterfaceUpdate(const GUIComponent* const))
+   );
 }
 
 

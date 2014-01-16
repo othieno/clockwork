@@ -37,41 +37,41 @@ Entity(name)
 const clockwork::Matrix4&
 Object::getModelMatrix() const
 {
-	return _modelMatrix;
+   return _modelMatrix;
 }
 
 
 void
 Object::setModelMatrix(const clockwork::Matrix4& model)
 {
-	_modelMatrix = model;
+   _modelMatrix = model;
 }
 
 
 void
 Object::updateGeometry(const clockwork::Matrix4& CMTM)
 {
-	if (!isPruned())
-		clockwork::system::Services::Concurrency.submitTask(new clockwork::concurrency::GeometryUpdateTask(*this, CMTM));
+   if (!isPruned())
+      clockwork::system::Services::Concurrency.submitTask(new clockwork::concurrency::GeometryUpdateTask(*this, CMTM));
 }
 
 
 const clockwork::Point3&
 Object::getPosition() const
 {
-	return _position;
+   return _position;
 }
 
 
 const clockwork::Point3&
 Object::getRotation() const
 {
-	return _rotation;
+   return _rotation;
 }
 
 
 const clockwork::Vector3&
 Object::getScalingVector() const
 {
-	return _scaling;
+   return _scaling;
 }

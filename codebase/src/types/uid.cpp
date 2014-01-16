@@ -28,9 +28,9 @@
 clockwork::UID
 clockwork::generateUID()
 {
-	static std::random_device seed;
-	static std::mt19937_64 generator(seed());
-	static std::uniform_int_distribution<std::uint64_t> distribution;
+   static std::random_device seed;
+   static std::mt19937_64 generator(seed());
+   static std::uniform_int_distribution<std::uint64_t> distribution;
 
-	return distribution(generator);
+   return distribution(generator);
 }

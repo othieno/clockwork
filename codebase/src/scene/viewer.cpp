@@ -36,68 +36,68 @@ _projectionType(clockwork::graphics::ProjectionFactory::getUniqueInstance().getD
 const clockwork::graphics::RenderParameters::Type&
 clockwork::scene::Viewer::getRenderType() const
 {
-	return _renderType;
+   return _renderType;
 }
 
 
 void
 clockwork::scene::Viewer::setRenderType(const clockwork::graphics::RenderParameters::Type& type)
 {
-	_renderType = type;
+   _renderType = type;
 }
 
 
 const clockwork::graphics::Projection::Type&
 clockwork::scene::Viewer::getProjectionType() const
 {
-	return _projectionType;
+   return _projectionType;
 }
 
 
 void
 clockwork::scene::Viewer::setProjection(const clockwork::graphics::Projection::Type& type)
 {
-	_projectionType = type;
+   _projectionType = type;
 }
 
 
 const clockwork::Matrix4&
 clockwork::scene::Viewer::getViewMatrix() const
 {
-	return _viewMatrix;
+   return _viewMatrix;
 }
 
 
 void
 clockwork::scene::Viewer::updateViewMatrix()
 {
-	std::cerr << "Implement clockwork::scene::Viewer::updateViewMatrix" << std::endl;
+   std::cerr << "Implement clockwork::scene::Viewer::updateViewMatrix" << std::endl;
 }
 
 
 const clockwork::Matrix4&
 clockwork::scene::Viewer::getProjectionMatrix() const
 {
-	return _projectionMatrix;
+   return _projectionMatrix;
 }
 
 
 void
 clockwork::scene::Viewer::updateProjectionMatrix()
 {
-	std::cerr << "Implement clockwork::scene::Viewer::updateProjectionMatrix" << std::endl;
+   std::cerr << "Implement clockwork::scene::Viewer::updateProjectionMatrix" << std::endl;
 }
 
 
 const clockwork::Matrix4&
 clockwork::scene::Viewer::getViewProjectionMatrix() const
 {
-	return _viewProjectionMatrix;
+   return _viewProjectionMatrix;
 }
 
 
 const clockwork::graphics::Viewport&
 clockwork::scene::Viewer::getViewport() const
 {
-	return _viewport;
+   return _viewport;
 }

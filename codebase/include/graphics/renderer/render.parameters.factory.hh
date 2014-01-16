@@ -34,17 +34,17 @@ class RenderParametersFactory :
 public clockwork::Factory<RenderParameters::Type, RenderParameters>
 {
 public:
-	/**
-	 * Return the factory's unique instance.
-	 */
-	static RenderParametersFactory& getUniqueInstance();
+   /**
+    * Return the factory's unique instance.
+    */
+   static RenderParametersFactory& getUniqueInstance();
 private:
-	/**
-	 * The RenderParametersFactory is a singleton.
-	 */
-	RenderParametersFactory();
-	RenderParametersFactory(const RenderParametersFactory&) = delete;
-	RenderParametersFactory& operator=(const RenderParametersFactory&) = delete;
+   /**
+    * The RenderParametersFactory is a singleton.
+    */
+   RenderParametersFactory();
+   RenderParametersFactory(const RenderParametersFactory&) = delete;
+   RenderParametersFactory& operator=(const RenderParametersFactory&) = delete;
 };
 
 } // namespace graphics

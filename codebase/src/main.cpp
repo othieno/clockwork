@@ -28,23 +28,23 @@
 
 int main(int argc, char** argv)
 {
-	QApplication application(argc, argv);
-	auto error = clockwork::system::Services::initialise(argc, (const char**)argv);
-	if (error == clockwork::Error::None)
-	{
-		clockwork::ui::Window window;
-		window.showMaximized();
+   QApplication application(argc, argv);
+   auto error = clockwork::system::Services::initialise(argc, (const char**)argv);
+   if (error == clockwork::Error::None)
+   {
+      clockwork::ui::Window window;
+      window.showMaximized();
 
-		// If the return value of the exec function is not zero, then execution failed.
-		if (application.exec())
-			error = clockwork::Error::Unknown;
+      // If the return value of the exec function is not zero, then execution failed.
+      if (application.exec())
+         error = clockwork::Error::Unknown;
 
-		// Cleanup the services when done.
-		error = clockwork::system::Services::dispose(error);
-	}
+      // Cleanup the services when done.
+      error = clockwork::system::Services::dispose(error);
+   }
 
-	// Print the error for debug purposes.
-	if (error != clockwork::Error::None)
-		std::cout << error << std::endl;
-	return static_cast<int>(error);
+   // Print the error for debug purposes.
+   if (error != clockwork::Error::None)
+      std::cout << error << std::endl;
+   return static_cast<int>(error);
 }

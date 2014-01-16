@@ -37,83 +37,83 @@ namespace graphics {
 class RenderParameters
 {
 public:
-	/**
-	 * Available types of renders.
-	 */
-	enum class Type
-	{
-		Point,
-		Wireframe,
-		Random,
-		Depth,
-		Normals,
-		Texture,
-		Constant,
-		Phong,
-		Cel,
-		Bump,
-		Deferred
-	};
-	/**
-	 * Return the type of render performed by these parameters.
-	 */
-	const Type& getType() const;
-	/**
-	 * TODO Explain me.
-	 */
-	virtual void preVertexProgram(const Face& face, const Vertex& vertex, Fragment& fragment) const;
-	/**
-	 * TODO Explain me.
-	 */
-	virtual void postVertexProgram(const Face& face, const Vertex& vertex, Fragment& fragment) const;
-	/**
-	 * The primitive assembly operation creates a point, line or polygon primitive from
-	 * fragments. In the case of polygon primitives, missing fragments in the hollows of
-	 * the polygon triangles are interpolated. These primitives are then passed to the
-	 * fragment program which determines their color.
-	 * @param triangle a set of 3 fragments that will create one or more primitives.
-	 */
-	virtual void primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const = 0;
+   /**
+    * Available types of renders.
+    */
+   enum class Type
+   {
+      Point,
+      Wireframe,
+      Random,
+      Depth,
+      Normals,
+      Texture,
+      Constant,
+      Phong,
+      Cel,
+      Bump,
+      Deferred
+   };
+   /**
+    * Return the type of render performed by these parameters.
+    */
+   const Type& getType() const;
+   /**
+    * TODO Explain me.
+    */
+   virtual void preVertexProgram(const Face& face, const Vertex& vertex, Fragment& fragment) const;
+   /**
+    * TODO Explain me.
+    */
+   virtual void postVertexProgram(const Face& face, const Vertex& vertex, Fragment& fragment) const;
+   /**
+    * The primitive assembly operation creates a point, line or polygon primitive from
+    * fragments. In the case of polygon primitives, missing fragments in the hollows of
+    * the polygon triangles are interpolated. These primitives are then passed to the
+    * fragment program which determines their color.
+    * @param triangle a set of 3 fragments that will create one or more primitives.
+    */
+   virtual void primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const = 0;
 protected:
-	/**
-	 * Instantiate a render parameter set.
-	 * @param type the type of render performed by this set of parameters.
-	 */
-	RenderParameters(const Type& type);
-	/**
-	 * @see Framebuffer::plot(2).
-	 */
-	inline void plot(const Fragment& fragment) const
-	{
-		clockwork::system::Services::Graphics.plot(fragment, _fragmentProgram);
-	}
-	/**
-	 * @see Framebuffer::plot(3).
-	 */
-	inline void plot(const uint32_t& x, const uint32_t& y, const double& z, const uint32_t color) const
-	{
-		clockwork::system::Services::Graphics.plot(x, y, z, color);
-	}
-	/**
-	 * Set the fragment program.
-	 * @param program a pointer to the fragment program.
-	 */
-	void setFragmentProgram(const std::function<uint32_t(const Fragment&)>& program);
+   /**
+    * Instantiate a render parameter set.
+    * @param type the type of render performed by this set of parameters.
+    */
+   RenderParameters(const Type& type);
+   /**
+    * @see Framebuffer::plot(2).
+    */
+   inline void plot(const Fragment& fragment) const
+   {
+      clockwork::system::Services::Graphics.plot(fragment, _fragmentProgram);
+   }
+   /**
+    * @see Framebuffer::plot(3).
+    */
+   inline void plot(const uint32_t& x, const uint32_t& y, const double& z, const uint32_t color) const
+   {
+      clockwork::system::Services::Graphics.plot(x, y, z, color);
+   }
+   /**
+    * Set the fragment program.
+    * @param program a pointer to the fragment program.
+    */
+   void setFragmentProgram(const std::function<uint32_t(const Fragment&)>& program);
 private:
-	/**
-	 * The type of render performed by these parameters.
-	 */
-	const Type _type;
-	/**
-	 * A pointer to the fragment program. By default, this will point to the default
-	 * fragment program.
-	 */
-	std::function<uint32_t(const Fragment&)> _fragmentProgram;
-	/**
-	 * The default fragment program.
-	 * @param fragment the fragment containing the attributes that will determine a color.
-	 */
-	uint32_t defaultFragmentProgram(const Fragment& fragment) const;
+   /**
+    * The type of render performed by these parameters.
+    */
+   const Type _type;
+   /**
+    * A pointer to the fragment program. By default, this will point to the default
+    * fragment program.
+    */
+   std::function<uint32_t(const Fragment&)> _fragmentProgram;
+   /**
+    * The default fragment program.
+    * @param fragment the fragment containing the attributes that will determine a color.
+    */
+   uint32_t defaultFragmentProgram(const Fragment& fragment) const;
 };
 
 } // namespace graphics

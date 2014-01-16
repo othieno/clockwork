@@ -43,20 +43,20 @@ class GUISceneEntityView;
 class GUIControlPanel : public GUIComponent
 {
 public:
-	/**
-	 * Instantiate a GUIControlPanel attached to the user interface.
-	 * @param ui the user interface that this component is attached to.
-	 */
-	GUIControlPanel(UserInterface& ui);
+   /**
+    * Instantiate a GUIControlPanel attached to the user interface.
+    * @param ui the user interface that this component is attached to.
+    */
+   GUIControlPanel(UserInterface& ui);
 private:
-	/**
-	 * The scene view.
-	 */
-	GUISceneView* _sceneView;
-	/**
-	 * The scene entity view.
-	 */
-	GUISceneEntityView* _sceneEntityView;
+   /**
+    * The scene view.
+    */
+   GUISceneView* _sceneView;
+   /**
+    * The scene entity view.
+    */
+   GUISceneEntityView* _sceneEntityView;
 };
 
 } // namespace ui

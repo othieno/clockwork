@@ -29,8 +29,8 @@
 
 clockwork::physics::RigidBody::RigidBody
 (
-	const std::string& name,
-	const clockwork::graphics::Model3D* model3D
+   const std::string& name,
+   const clockwork::graphics::Model3D* model3D
 ) :
 Object(name),
 _model3D(model3D)
@@ -40,35 +40,35 @@ _model3D(model3D)
 void
 clockwork::physics::RigidBody::render(const clockwork::scene::Viewer& viewer) const
 {
-	if (!isPruned() && _model3D != nullptr)
-	{
-		const auto* const parameters =
-		clockwork::graphics::RenderParametersFactory::getUniqueInstance().get(viewer.getRenderType());
-		if (parameters != nullptr)
-		{
-			auto* task = new clockwork::concurrency::RenderTask(*parameters, viewer, *this);
-			clockwork::system::Services::Concurrency.submitTask(task);
-		}
-	}
+   if (!isPruned() && _model3D != nullptr)
+   {
+      const auto* const parameters =
+      clockwork::graphics::RenderParametersFactory::getUniqueInstance().get(viewer.getRenderType());
+      if (parameters != nullptr)
+      {
+         auto* task = new clockwork::concurrency::RenderTask(*parameters, viewer, *this);
+         clockwork::system::Services::Concurrency.submitTask(task);
+      }
+   }
 }
 
 
 const clockwork::graphics::Model3D*
 clockwork::physics::RigidBody::getModel3D() const
 {
-	return _model3D;
+   return _model3D;
 }
 
 
 void
 clockwork::physics::RigidBody::setModel3D(const clockwork::graphics::Model3D* model3D)
 {
-	_model3D = model3D;
+   _model3D = model3D;
 }
 
 
 std::string
 clockwork::physics::RigidBody::toString(const clockwork::physics::RigidBody&)
 {
-	return "Implement clockwork::physics::RigidBody::toString";
+   return "Implement clockwork::physics::RigidBody::toString";
 }

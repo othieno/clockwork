@@ -32,24 +32,24 @@ namespace ui {
 class GUITextureFilterComboBox : public GUIComboBox
 {
 public:
-	/**
-	 * Instantiate a GUITextureFilterComboBox attached to a user interface.
-	 * @param ui the user interface that this component is attached to.
-	 */
-	GUITextureFilterComboBox(UserInterface& ui);
-	/**
-	 * @see GUIComponent::onInterfaceUpdate.
-	 */
-	virtual void onInterfaceUpdate(const GUIComponent* const) override final;
+   /**
+    * Instantiate a GUITextureFilterComboBox attached to a user interface.
+    * @param ui the user interface that this component is attached to.
+    */
+   GUITextureFilterComboBox(UserInterface& ui);
+   /**
+    * @see GUIComponent::onInterfaceUpdate.
+    */
+   virtual void onInterfaceUpdate(const GUIComponent* const) override final;
 private:
-	/**
-	 * @see GUIComboBox::onItemSelected.
-	 */
-	void onItemSelected(const int&) override final;
-	/**
-	 * @see GUIComboBox::loadItemList.
-	 */
-	void loadItemList() override final;
+   /**
+    * @see GUIComboBox::onItemSelected.
+    */
+   void onItemSelected(const int&) override final;
+   /**
+    * @see GUIComboBox::loadItemList.
+    */
+   void loadItemList() override final;
 };
 
 } // namespace ui

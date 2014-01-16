@@ -36,35 +36,35 @@ namespace physics {
 class RigidBody : public clockwork::scene::Object
 {
 public:
-	/**
-	 * Instantiate a named rigid body with a given 3D model.
-	 * @param name the rigid body's name.
-	 * @param model3D the rigid body's 3D model.
-	 */
-	RigidBody(const std::string& name, const clockwork::graphics::Model3D* model3D = nullptr);
-	/**
-	 * @see clockwork::scene::Node::render.
-	 */
-	virtual void render(const clockwork::scene::Viewer& viewer) const override final;
-	/**
-	 * Return the rigid body's 3D model.
-	 */
-	const clockwork::graphics::Model3D* getModel3D() const;
-	/**
-	 * Set the rigid body's 3D model.
-	 * @param model3D the 3D model to set.
-	 */
-	void setModel3D(const clockwork::graphics::Model3D* model3D);
-	/**
-	 * Convert RigidBody data into string format.
-	 * @param body the rigid body to convert.
-	 */
-	static std::string toString(const RigidBody& body);
+   /**
+    * Instantiate a named rigid body with a given 3D model.
+    * @param name the rigid body's name.
+    * @param model3D the rigid body's 3D model.
+    */
+   RigidBody(const std::string& name, const clockwork::graphics::Model3D* model3D = nullptr);
+   /**
+    * @see clockwork::scene::Node::render.
+    */
+   virtual void render(const clockwork::scene::Viewer& viewer) const override final;
+   /**
+    * Return the rigid body's 3D model.
+    */
+   const clockwork::graphics::Model3D* getModel3D() const;
+   /**
+    * Set the rigid body's 3D model.
+    * @param model3D the 3D model to set.
+    */
+   void setModel3D(const clockwork::graphics::Model3D* model3D);
+   /**
+    * Convert RigidBody data into string format.
+    * @param body the rigid body to convert.
+    */
+   static std::string toString(const RigidBody& body);
 private:
-	/**
-	 * The rigid body's 3D model.
-	 */
-	const clockwork::graphics::Model3D* _model3D;
+   /**
+    * The rigid body's 3D model.
+    */
+   const clockwork::graphics::Model3D* _model3D;
 };
 
 /**
@@ -73,10 +73,10 @@ private:
 class SuzanneRigidBody : public RigidBody
 {
 public:
-	/**
-	 * The default constructor.
-	 */
-	SuzanneRigidBody();
+   /**
+    * The default constructor.
+    */
+   SuzanneRigidBody();
 };
 
 } // namespace physics

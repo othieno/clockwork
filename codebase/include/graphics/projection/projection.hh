@@ -30,36 +30,36 @@ namespace graphics {
 class Projection
 {
 public:
-	/**
-	 * Types of projections.
-	 */
-	enum class Type
-	{
-		Orthographic,
-		Cabinet,
-		Cavalier,
-		Perspective
-	};
-	/**
-	 * Return the projection's type.
-	 */
-	const Type& getType() const;
-	/**
-	 * TODO Explain me better.
-	 * Return this projection's transformation matrix in a given frustum.
-	 * @param frustum the frustum that this projection is applied to.
-	 */
-	//virtual Matrix4 getTransformationMatrix(const Frustum& frustum) const = 0;
+   /**
+    * Types of projections.
+    */
+   enum class Type
+   {
+      Orthographic,
+      Cabinet,
+      Cavalier,
+      Perspective
+   };
+   /**
+    * Return the projection's type.
+    */
+   const Type& getType() const;
+   /**
+    * TODO Explain me better.
+    * Return this projection's transformation matrix in a given frustum.
+    * @param frustum the frustum that this projection is applied to.
+    */
+   //virtual Matrix4 getTransformationMatrix(const Frustum& frustum) const = 0;
 protected:
-	/**
-	 * Instantiate a projection with a given type.
-	 */
-	Projection(const Type type);
+   /**
+    * Instantiate a projection with a given type.
+    */
+   Projection(const Type type);
 private:
-	/**
-	 * This projection's type.
-	 */
-	const Type _type;
+   /**
+    * This projection's type.
+    */
+   const Type _type;
 };
 
 } // namespace graphics

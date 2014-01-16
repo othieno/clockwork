@@ -42,22 +42,22 @@ class TextureRenderParameters : public PolygonRenderParameters
 {
 friend class RenderParametersFactory;
 public:
-	/**
-	 * Set the texture filter.
-	 * @param type the type of texture filter to use.
-	 */
-	void setTextureFilter(const TextureFilter::Type& type);
+   /**
+    * Set the texture filter.
+    * @param type the type of texture filter to use.
+    */
+   void setTextureFilter(const TextureFilter::Type& type);
 private:
-	/**
-	 * The TextureRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.
-	 */
-	TextureRenderParameters();
-	TextureRenderParameters(const TextureRenderParameters&) = delete;
-	TextureRenderParameters& operator=(const TextureRenderParameters&) = delete;
-	/**
-	 * The current texture filter.
-	 */
-	const TextureFilter* _filter;
+   /**
+    * The TextureRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.
+    */
+   TextureRenderParameters();
+   TextureRenderParameters(const TextureRenderParameters&) = delete;
+   TextureRenderParameters& operator=(const TextureRenderParameters&) = delete;
+   /**
+    * The current texture filter.
+    */
+   const TextureFilter* _filter;
 };
 
 } // namespace graphics

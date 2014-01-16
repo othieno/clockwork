@@ -35,57 +35,57 @@ Task(static_cast<int>(clockwork::concurrency::TaskPriority::GraphicsUpdateTask))
 void
 clockwork::concurrency::GraphicsUpdateTask::onRun()
 {
-	//auto& Graphics = clockwork::system::Services::Graphics;
-	auto& scene = clockwork::scene::Scene::getUniqueInstance();
-	auto& framebuffer = clockwork::system::Services::Graphics.getFramebuffer();
-	const auto& imageFilterType = clockwork::system::Services::Graphics.getImageFilterType();
+   //auto& Graphics = clockwork::system::Services::Graphics;
+   auto& scene = clockwork::scene::Scene::getUniqueInstance();
+   auto& framebuffer = clockwork::system::Services::Graphics.getFramebuffer();
+   const auto& imageFilterType = clockwork::system::Services::Graphics.getImageFilterType();
 
-	// Clear the framebuffer before rendering a new frame.
-	framebuffer.clear();
+   // Clear the framebuffer before rendering a new frame.
+   framebuffer.clear();
 
-	// Render the scene based on the current viewer's context.
-	auto* const viewer = scene.getViewer();
-	if (viewer != nullptr)
-	{
-		auto& rootNodes = scene.getRootNodes();
-		if (!rootNodes.empty())
-		{
-			// Update scene geometry.
-			const auto CMTM = clockwork::Matrix4::translate(clockwork::Point3::negative(viewer->getPosition()));
-			for (auto* const node : rootNodes)
-				node->updateGeometry(CMTM);
+   // Render the scene based on the current viewer's context.
+   auto* const viewer = scene.getViewer();
+   if (viewer != nullptr)
+   {
+      auto& rootNodes = scene.getRootNodes();
+      if (!rootNodes.empty())
+      {
+         // Update scene geometry.
+         const auto CMTM = clockwork::Matrix4::translate(clockwork::Point3::negative(viewer->getPosition()));
+         for (auto* const node : rootNodes)
+            node->updateGeometry(CMTM);
 
-			// Render the scene.
-			for (auto* const node : rootNodes)
-				node->render(*viewer);
+         // Render the scene.
+         for (auto* const node : rootNodes)
+            node->render(*viewer);
 
 
-			// Apply the post-processing filter to the framebuffer.
-			auto* const task = new clockwork::concurrency::PostProcessingTask(framebuffer, imageFilterType);
-			if (task != nullptr)
-			{
-				// Connect the task's 'taskComplete' signal to this subsystem's 'updateComplete',
-				// since post-processing is the last operation in the graphics update phase.
-				connect
-				(
-					task, SIGNAL(taskComplete()),
-					&clockwork::system::Services::Graphics, SIGNAL(updateComplete())
-				);
+         // Apply the post-processing filter to the framebuffer.
+         auto* const task = new clockwork::concurrency::PostProcessingTask(framebuffer, imageFilterType);
+         if (task != nullptr)
+         {
+            // Connect the task's 'taskComplete' signal to this subsystem's 'updateComplete',
+            // since post-processing is the last operation in the graphics update phase.
+            connect
+            (
+               task, SIGNAL(taskComplete()),
+               &clockwork::system::Services::Graphics, SIGNAL(updateComplete())
+            );
 
-				// Submit the task.
-				clockwork::system::Services::Concurrency.submitTask(task);
-			}
-		}
-	}
-	else
-		clockwork::system::Services::Graphics.signalUpdateComplete();
+            // Submit the task.
+            clockwork::system::Services::Concurrency.submitTask(task);
+         }
+      }
+   }
+   else
+      clockwork::system::Services::Graphics.signalUpdateComplete();
 }
 
 
 clockwork::concurrency::GeometryUpdateTask::GeometryUpdateTask
 (
-	clockwork::scene::Object& object,
-	const clockwork::Matrix4& CMTM
+   clockwork::scene::Object& object,
+   const clockwork::Matrix4& CMTM
 ) :
 Task(static_cast<int>(clockwork::concurrency::TaskPriority::GraphicsGeometryUpdateTask)),
 _object(object),
@@ -96,25 +96,25 @@ _CMTM(CMTM)
 void
 clockwork::concurrency::GeometryUpdateTask::onRun()
 {
-	const auto& position = _object.getPosition();
-	const auto& rotation = _object.getRotation();
-	const auto& scale = _object.getScalingVector();
+   const auto& position = _object.getPosition();
+   const auto& rotation = _object.getRotation();
+   const auto& scale = _object.getScalingVector();
 
-	const auto& objectModelMatrix = _CMTM * clockwork::Matrix4::model(position, rotation, scale);
+   const auto& objectModelMatrix = _CMTM * clockwork::Matrix4::model(position, rotation, scale);
 
-	// Update the object's model matrix, then update the subgraph's geometry.
-	_object.setModelMatrix(objectModelMatrix);
+   // Update the object's model matrix, then update the subgraph's geometry.
+   _object.setModelMatrix(objectModelMatrix);
 
-	// Update the subgraph's geometry.
-	for (auto* const node : _object.getChildren())
-		node->updateGeometry(objectModelMatrix);
+   // Update the subgraph's geometry.
+   for (auto* const node : _object.getChildren())
+      node->updateGeometry(objectModelMatrix);
 }
 
 
 clockwork::concurrency::PostProcessingTask::PostProcessingTask
 (
-	clockwork::graphics::Framebuffer& framebuffer,
-	const clockwork::graphics::ImageFilter::Type& type
+   clockwork::graphics::Framebuffer& framebuffer,
+   const clockwork::graphics::ImageFilter::Type& type
 ) :
 Task(static_cast<int>(clockwork::concurrency::TaskPriority::GraphicsPostProcessingTask)),
 _framebuffer(framebuffer),
@@ -125,5 +125,5 @@ _imageFilter(clockwork::graphics::ImageFilterFactory::getUniqueInstance().get(ty
 void
 clockwork::concurrency::PostProcessingTask::onRun()
 {
-	// TODO
+   // TODO
 }

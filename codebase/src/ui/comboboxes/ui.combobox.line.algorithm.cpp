@@ -35,71 +35,71 @@ clockwork::ui::GUILineAlgorithmComboBox::GUILineAlgorithmComboBox(UserInterface&
 GUIComboBox(ui, "Line Algorithm"),
 _renderParameters
 (
-	static_cast<clockwork::graphics::WireframeRenderParameters*>
-	(
-		clockwork::graphics::RenderParametersFactory::getUniqueInstance().get(clockwork::graphics::RenderParameters::Type::Wireframe)
-	)
+   static_cast<clockwork::graphics::WireframeRenderParameters*>
+   (
+      clockwork::graphics::RenderParametersFactory::getUniqueInstance().get(clockwork::graphics::RenderParameters::Type::Wireframe)
+   )
 )
 {
-	// Build the combo box.
-	build();
+   // Build the combo box.
+   build();
 }
 
 
 void
 clockwork::ui::GUILineAlgorithmComboBox::loadItemList()
 {
-	if (_renderParameters != nullptr)
-	{
-		const auto& algorithms = clockwork::graphics::WireframeRenderParameters::getLineAlgorithms();
-		const auto& defaultAlgorithm = _renderParameters->getLineAlgorithm();
+   if (_renderParameters != nullptr)
+   {
+      const auto& algorithms = clockwork::graphics::WireframeRenderParameters::getLineAlgorithms();
+      const auto& defaultAlgorithm = _renderParameters->getLineAlgorithm();
 
-		int defaultIndex = 0;
+      int defaultIndex = 0;
 
-		// Add the keys as items to the combo box.
-		for (const auto& algorithm : algorithms)
-		{
-			using UserDataType = std::underlying_type<clockwork::graphics::WireframeRenderParameters::LineAlgorithm>::type;
+      // Add the keys as items to the combo box.
+      for (const auto& algorithm : algorithms)
+      {
+         using UserDataType = std::underlying_type<clockwork::graphics::WireframeRenderParameters::LineAlgorithm>::type;
 
-			const auto& text = clockwork::toString(algorithm);
-			const auto& userData = static_cast<UserDataType>(algorithm);
+         const auto& text = clockwork::toString(algorithm);
+         const auto& userData = static_cast<UserDataType>(algorithm);
 
-			// Add the item to the combo box.
-			const auto& itemIndex = addItem(text, userData);
+         // Add the item to the combo box.
+         const auto& itemIndex = addItem(text, userData);
 
-			// Get the index of the current item.
-			if (algorithm == defaultAlgorithm)
-				defaultIndex = itemIndex;
-		}
-		setSelectedItem(defaultIndex);
-	}
+         // Get the index of the current item.
+         if (algorithm == defaultAlgorithm)
+            defaultIndex = itemIndex;
+      }
+      setSelectedItem(defaultIndex);
+   }
 }
 
 
 void
 clockwork::ui::GUILineAlgorithmComboBox::onInterfaceUpdate(const clockwork::ui::GUIComponent* const source)
 {
-	if (source != this)
-	{
-		// The line algorithm combo box is only visible if the current renderer is
-		// set to Renderer::Type::Wireframe, and enabled if a scene viewer is set.
-		bool isEnabled = false;
-		bool isVisible = false;
-		auto* const viewer = clockwork::scene::Scene::getUniqueInstance().getViewer();
-		if (viewer != nullptr)
-		{
-			isEnabled = true;
-			isVisible = clockwork::graphics::RenderParameters::Type::Wireframe == viewer->getRenderType();
-		}
-		setEnabled(isEnabled);
-		setVisible(isVisible);
-	}
+   if (source != this)
+   {
+      // The line algorithm combo box is only visible if the current renderer is
+      // set to Renderer::Type::Wireframe, and enabled if a scene viewer is set.
+      bool isEnabled = false;
+      bool isVisible = false;
+      auto* const viewer = clockwork::scene::Scene::getUniqueInstance().getViewer();
+      if (viewer != nullptr)
+      {
+         isEnabled = true;
+         isVisible = clockwork::graphics::RenderParameters::Type::Wireframe == viewer->getRenderType();
+      }
+      setEnabled(isEnabled);
+      setVisible(isVisible);
+   }
 }
 
 
 void
 clockwork::ui::GUILineAlgorithmComboBox::onItemSelected(const int& index)
 {
-	if (_renderParameters != nullptr)
-		_renderParameters->setLineAlgorithm(getItem<clockwork::graphics::WireframeRenderParameters::LineAlgorithm>(index));
+   if (_renderParameters != nullptr)
+      _renderParameters->setLineAlgorithm(getItem<clockwork::graphics::WireframeRenderParameters::LineAlgorithm>(index));
 }

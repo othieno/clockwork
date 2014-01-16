@@ -30,30 +30,30 @@ namespace graphics {
 class TextureFilter
 {
 public:
-	/**
-	 * Types of texture filters.
-	 */
-	enum class Type
-	{
-		None,
-		Bilinear,
-		Trilinear,
-		Anisotropic
-	};
-	/**
-	 * Return the filter's type.
-	 */
-	const Type& getType() const;
+   /**
+    * Types of texture filters.
+    */
+   enum class Type
+   {
+      None,
+      Bilinear,
+      Trilinear,
+      Anisotropic
+   };
+   /**
+    * Return the filter's type.
+    */
+   const Type& getType() const;
 protected:
-	/**
-	 * Instantiate a filter with a given type.
-	 */
-	TextureFilter(const Type type);
+   /**
+    * Instantiate a filter with a given type.
+    */
+   TextureFilter(const Type type);
 private:
-	/**
-	 * This filter's type.
-	 */
-	const Type _type;
+   /**
+    * This filter's type.
+    */
+   const Type _type;
 };
 
 } // namespace graphics

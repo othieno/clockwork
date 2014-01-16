@@ -30,11 +30,11 @@
 clockwork::ui::GUIBusyIndicator::GUIBusyIndicator(clockwork::ui::UserInterface& ui) :
 QLabel(&ui)
 {
-	// TODO Make the file a QResource.
-	QMovie* const movie = new QMovie("../assets/busy.indicator.gif", QByteArray(), this);
-	if (movie->isValid())
-	{
-		setMovie(movie);
-		movie->start();
-	}
+   // TODO Make the file a QResource.
+   QMovie* const movie = new QMovie("../assets/busy.indicator.gif", QByteArray(), this);
+   if (movie->isValid())
+   {
+      setMovie(movie);
+      movie->start();
+   }
 }

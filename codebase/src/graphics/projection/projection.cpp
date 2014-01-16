@@ -32,5 +32,5 @@ _type(type)
 const clockwork::graphics::Projection::Type&
 clockwork::graphics::Projection::getType() const
 {
-	return _type;
+   return _type;
 }

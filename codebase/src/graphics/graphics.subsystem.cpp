@@ -38,61 +38,61 @@ _imageFilterType(clockwork::graphics::ImageFilterFactory::getUniqueInstance().ge
 clockwork::graphics::Framebuffer&
 clockwork::graphics::GraphicsSubsystem::getFramebuffer()
 {
-	return _framebuffer;
+   return _framebuffer;
 }
 
 
 const clockwork::graphics::ImageFilter::Type&
 clockwork::graphics::GraphicsSubsystem::getImageFilterType() const
 {
-	return _imageFilterType;
+   return _imageFilterType;
 }
 
 
 void
 clockwork::graphics::GraphicsSubsystem::setImageFilter(const clockwork::graphics::ImageFilter::Type& type)
 {
-	_imageFilterType = type;
+   _imageFilterType = type;
 }
 
 
 void
 clockwork::graphics::GraphicsSubsystem::update()
 {
-	clockwork::system::Services::Concurrency.submitTask(new clockwork::concurrency::GraphicsUpdateTask);
+   clockwork::system::Services::Concurrency.submitTask(new clockwork::concurrency::GraphicsUpdateTask);
 }
 
 
 void
 clockwork::graphics::GraphicsSubsystem::signalUpdateComplete()
 {
-	emit updateComplete();
+   emit updateComplete();
 }
 
 
 bool
 clockwork::graphics::GraphicsSubsystem::isScissorTestEnabled() const
 {
-	return false;
+   return false;
 }
 
 
 bool
 clockwork::graphics::GraphicsSubsystem::isAlphaTestEnabled() const
 {
-	return false;
+   return false;
 }
 
 
 bool
 clockwork::graphics::GraphicsSubsystem::isStencilTestEnabled() const
 {
-	return false;
+   return false;
 }
 
 
 bool
 clockwork::graphics::GraphicsSubsystem::isDepthTestEnabled() const
 {
-	return true;
+   return true;
 }

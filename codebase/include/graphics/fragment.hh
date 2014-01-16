@@ -42,39 +42,39 @@ namespace graphics {
 struct Fragment
 {
 public:
-	/**
-	 * The fragment's position.
-	 */
-	clockwork::Point4 position;
-	/**
-	 * The fragment's normal vector.
-	 */
-	clockwork::Vector3 normal;
-	/**
-	 * The fragment's texture mapping coordinates.
-	 */
-	double u, v;
-	/**
-	 * The fragment's normalised color.
-	 */
-	ColorRGBA color;
-	/**
-	 * The fragment's stencil value.
-	 */
-	uint8_t stencil;
-	/**
-	 * Instantiate a fragment with given texture mapping coordinates.
-	 * @param u the U texture mapping coordinate.
-	 * @param v the V texture mapping coordinate.
-	 */
-	Fragment(const double& u = 0, const double& v = 0);
-	/**
-	 * Interpolate the value of a fragment in between two other fragments.
-	 * @param start the first fragment.
-	 * @param end the second fragment.
-	 * @param p the interpolant.
-	 */
-	static Fragment interpolate(const Fragment& start, const Fragment& end, const double& p);
+   /**
+    * The fragment's position.
+    */
+   clockwork::Point4 position;
+   /**
+    * The fragment's normal vector.
+    */
+   clockwork::Vector3 normal;
+   /**
+    * The fragment's texture mapping coordinates.
+    */
+   double u, v;
+   /**
+    * The fragment's normalised color.
+    */
+   ColorRGBA color;
+   /**
+    * The fragment's stencil value.
+    */
+   uint8_t stencil;
+   /**
+    * Instantiate a fragment with given texture mapping coordinates.
+    * @param u the U texture mapping coordinate.
+    * @param v the V texture mapping coordinate.
+    */
+   Fragment(const double& u = 0, const double& v = 0);
+   /**
+    * Interpolate the value of a fragment in between two other fragments.
+    * @param start the first fragment.
+    * @param end the second fragment.
+    * @param p the interpolant.
+    */
+   static Fragment interpolate(const Fragment& start, const Fragment& end, const double& p);
 };
 
 } // namespace graphics
