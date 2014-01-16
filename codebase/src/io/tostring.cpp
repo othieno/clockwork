@@ -150,3 +150,33 @@ clockwork::toString(const clockwork::graphics::Fragment&)
 {
    return "Implement clockwork::toString(const clockwork::graphics::Fragment&)";
 }
+
+
+QString
+clockwork::toString(const clockwork::graphics::Framebuffer&)
+{
+   return "Implement clockwork::toString(const clockwork::graphics::Framebuffer&)";
+}
+
+
+QString
+clockwork::toString(const clockwork::graphics::Framebuffer::Resolution& resolution)
+{
+   switch (resolution)
+   {
+      case clockwork::graphics::Framebuffer::Resolution::VGA:
+         return "VGA (640x480)";
+      case clockwork::graphics::Framebuffer::Resolution::SVGA:
+         return "SVGA (800x600)";
+      case clockwork::graphics::Framebuffer::Resolution::XGA:
+         return "XGA (1024x768)";
+      case clockwork::graphics::Framebuffer::Resolution::SXGA:
+         return "SXGA (1280x1024)";
+      case clockwork::graphics::Framebuffer::Resolution::FHD:
+         return "FHD (1920x1080)";
+      case clockwork::graphics::Framebuffer::Resolution::QSXGA:
+         return "QSXGA (2560x2048)";
+      default:
+         return "Unknown resolution";
+   }
+}

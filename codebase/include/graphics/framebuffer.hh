@@ -25,6 +25,7 @@
 
 #include <QImage>
 #include <cstdint>
+#include <atomic>
 #include "fragment.hh"
 
 
@@ -35,11 +36,22 @@ class Framebuffer
 {
 public:
    /**
-    * Instantiate a framebuffer with a given width and height.
-    * @param width the framebuffer's width.
-    * @param height the framebuffer's height.
+    * Available framebuffer resolutions.
     */
-   Framebuffer(const uint32_t& width, const uint32_t& height);
+   enum class Resolution
+   {
+      VGA,     //  640 x 480
+      SVGA,    //  800 x 600
+      XGA,     // 1024 x 768
+      SXGA,    // 1280 x 1024
+      FHD,     // 1920 x 1080
+      QSXGA    // 2560 x 2048
+   };
+   /**
+    * Instantiate a framebuffer with a given resolution.
+    * @param resolution the framebuffer's resolution.
+    */
+   Framebuffer(const Framebuffer::Resolution& resolution = Framebuffer::Resolution::SVGA);
    /**
     * The destructor.
     */
@@ -124,10 +136,9 @@ public:
    void clear();
    /**
     * Resize the framebuffer.
-    * @param width the framebuffer's new width.
-    * @param height the framebuffer's new height.
+    * @param resolution the framebuffer's new resolution.
     */
-   void resize(const uint32_t& width, const uint32_t& height);
+   void resize(const Framebuffer::Resolution& resolution);
    /**
     * Discard the fragment at the given <x, y> coordinate.
     * @param x the framebuffer element's row position.
@@ -135,10 +146,9 @@ public:
     */
    void discard(const uint32_t& x, const uint32_t& y);
    /**
-    * Convert the framebuffer data into string format.
-    * @param framebuffer the framebuffer to convert.
+    * Return all possible framebuffer resolutions.
     */
-   static std::string toString(const Framebuffer& framebuffer);
+   static QList<Framebuffer::Resolution> getResolutions();
 private:
    /**
     * The framebuffer's width.
@@ -181,6 +191,10 @@ private:
     */
    uint32_t _accumulationBufferClearValue;
    /**
+    * A flag to make the framebuffer writable or readable-only.
+    */
+   std::atomic<bool> _ignoreWrites;
+   /**
     * Return the buffer offset for a given <x, y> coordinate. If the coordinate
     * is out of the framebuffer's bounds, then -1 is returned.
     * @param x the buffer element's row position.
@@ -208,3 +222,6 @@ private:
 
 } // namespace graphics
 } // namespace clockwork
+
+std::ostream& operator<<(std::ostream&, const clockwork::graphics::Framebuffer&);
+std::ostream& operator<<(std::ostream&, const clockwork::graphics::Framebuffer::Resolution&);

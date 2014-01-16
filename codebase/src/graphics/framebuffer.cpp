@@ -25,8 +25,10 @@
 #include "services.hh"
 #include <limits>
 
+using clockwork::graphics::Framebuffer;
 
-clockwork::graphics::Framebuffer::Framebuffer(const uint32_t& width, const uint32_t& height) :
+
+Framebuffer::Framebuffer(const Framebuffer::Resolution& resolution) :
 _width(0),
 _height(0),
 _pixelBuffer(nullptr),
@@ -36,110 +38,110 @@ _depthBufferClearValue(std::numeric_limits<double>::max()),
 _stencilBuffer(nullptr),
 _stencilBufferClearValue(0),
 _accumulationBuffer(nullptr),
-_accumulationBufferClearValue(0xff000000)
+_accumulationBufferClearValue(0xff000000),
+_ignoreWrites(true)
 {
    // Resize all buffers and initialise them for use.
-   resize(width, height);
+   resize(resolution);
 }
 
 
-clockwork::graphics::Framebuffer::~Framebuffer()
+Framebuffer::~Framebuffer()
 {
    free();
 }
 
 
 const uint32_t*
-clockwork::graphics::Framebuffer::getPixelBuffer() const
+Framebuffer::getPixelBuffer() const
 {
    return _pixelBuffer;
 }
 
 
 const uint32_t&
-clockwork::graphics::Framebuffer::getPixelBufferClearValue() const
+Framebuffer::getPixelBufferClearValue() const
 {
    return _pixelBufferClearValue;
 }
 
 
 void
-clockwork::graphics::Framebuffer::setPixelBufferClearValue(const uint32_t& value)
+Framebuffer::setPixelBufferClearValue(const uint32_t& value)
 {
    _pixelBufferClearValue = value;
 }
 
 
 const double*
-clockwork::graphics::Framebuffer::getDepthBuffer() const
+Framebuffer::getDepthBuffer() const
 {
    return _depthBuffer;
 }
 
 
 const double&
-clockwork::graphics::Framebuffer::getDepthBufferClearValue() const
+Framebuffer::getDepthBufferClearValue() const
 {
    return _depthBufferClearValue;
 }
 
 
 void
-clockwork::graphics::Framebuffer::setDepthBufferClearValue(const double& value)
+Framebuffer::setDepthBufferClearValue(const double& value)
 {
    _depthBufferClearValue = value;
 }
 
 
 const uint8_t*
-clockwork::graphics::Framebuffer::getStencilBuffer() const
+Framebuffer::getStencilBuffer() const
 {
    return _stencilBuffer;
 }
 
 
 const uint8_t&
-clockwork::graphics::Framebuffer::getStencilBufferClearValue() const
+Framebuffer::getStencilBufferClearValue() const
 {
    return _stencilBufferClearValue;
 }
 
 
 void
-clockwork::graphics::Framebuffer::setStencilBufferClearValue(const uint8_t& value)
+Framebuffer::setStencilBufferClearValue(const uint8_t& value)
 {
    _stencilBufferClearValue = value;
 }
 
 
 const uint32_t*
-clockwork::graphics::Framebuffer::getAccumulationBuffer() const
+Framebuffer::getAccumulationBuffer() const
 {
    return _accumulationBuffer;
 }
 
 
 const uint32_t&
-clockwork::graphics::Framebuffer::getAccumulationBufferClearValue() const
+Framebuffer::getAccumulationBufferClearValue() const
 {
    return _accumulationBufferClearValue;
 }
 
 
 void
-clockwork::graphics::Framebuffer::setAccumulationBufferClearValue(const uint32_t& value)
+Framebuffer::setAccumulationBufferClearValue(const uint32_t& value)
 {
    _accumulationBufferClearValue = value;
 }
 
 
 void
-clockwork::graphics::Framebuffer::plot
-(
-   const clockwork::graphics::Fragment& fragment,
-   const std::function<uint32_t(const clockwork::graphics::Fragment&)>& fop
-)
+Framebuffer::plot(const Fragment& fragment, const std::function<uint32_t(const Fragment&)>& fop)
 {
+   if (_ignoreWrites)
+      return;
+
    const auto offset = fragmentPasses(fragment);
    if (offset >= 0)
    {
@@ -152,14 +154,11 @@ clockwork::graphics::Framebuffer::plot
 
 
 void
-clockwork::graphics::Framebuffer::plot
-(
-   const uint32_t& x,
-   const uint32_t& y,
-   const double& z,
-   const uint32_t& pixel
-)
+Framebuffer::plot(const uint32_t& x, const uint32_t& y, const double& z, const uint32_t& pixel)
 {
+   if (_ignoreWrites)
+      return;
+
    const auto offset = getOffset(x, y);
    if (offset >= 0)
    {
@@ -172,21 +171,21 @@ clockwork::graphics::Framebuffer::plot
 
 
 const uint32_t&
-clockwork::graphics::Framebuffer::getWidth() const
+Framebuffer::getWidth() const
 {
    return _width;
 }
 
 
 const uint32_t&
-clockwork::graphics::Framebuffer::getHeight() const
+Framebuffer::getHeight() const
 {
    return _height;
 }
 
 
 void
-clockwork::graphics::Framebuffer::clear()
+Framebuffer::clear()
 {
    for (uint32_t i = 0; i < _width * _height; ++i)
    {
@@ -199,13 +198,51 @@ clockwork::graphics::Framebuffer::clear()
 
 
 void
-clockwork::graphics::Framebuffer::resize(const uint32_t& w, const uint32_t& h)
+Framebuffer::resize(const Framebuffer::Resolution& resolution)
 {
-   if (_width != w && _height != h)
+   uint32_t newWidth = 800;
+   uint32_t newHeight = 600;
+
+   switch (resolution)
    {
-      _width = w;
-      _height = h;
-      const auto length = w * h;
+      case Framebuffer::Resolution::VGA:
+         newWidth = 640;
+         newHeight = 480;
+         break;
+      case Framebuffer::Resolution::SVGA:
+         newWidth = 800;
+         newHeight = 600;
+         break;
+      case Framebuffer::Resolution::XGA:
+         newWidth = 1024;
+         newHeight = 768;
+         break;
+      case Framebuffer::Resolution::SXGA:
+         newWidth = 1280;
+         newHeight = 1024;
+         break;
+      case Framebuffer::Resolution::FHD:
+         newWidth = 1920;
+         newHeight = 1080;
+         break;
+      case Framebuffer::Resolution::QSXGA:
+         newWidth = 2560;
+         newHeight = 2048;
+         break;
+      default:
+         break;
+   }
+
+
+   if (newWidth > 0 && newHeight > 0 && (newWidth != _width || newHeight != _height))
+   {
+      // Make the framebuffer readable only.
+      _ignoreWrites = true;
+
+      // Set the new resolution.
+      _width = newWidth;
+      _height = newHeight;
+      const auto length = _width * _height;
 
       // Dispose of the previous buffers and create new ones.
       free();
@@ -219,12 +256,15 @@ clockwork::graphics::Framebuffer::resize(const uint32_t& w, const uint32_t& h)
 
       // Initialise the buffers.
       clear();
+
+      // Make the framebuffer writable.
+      _ignoreWrites = false;
    }
 }
 
 
 void
-clockwork::graphics::Framebuffer::discard(const uint32_t& x, const uint32_t& y)
+Framebuffer::discard(const uint32_t& x, const uint32_t& y)
 {
    const auto offset = getOffset(x, y);
    if (offset >= 0)
@@ -237,22 +277,15 @@ clockwork::graphics::Framebuffer::discard(const uint32_t& x, const uint32_t& y)
 }
 
 
-std::string
-clockwork::graphics::Framebuffer::toString(const clockwork::graphics::Framebuffer&)
-{
-   return "Implement clockwork::graphics::Framebuffer::toString";
-}
-
-
 int
-clockwork::graphics::Framebuffer::getOffset(const uint32_t& x, const uint32_t& y) const
+Framebuffer::getOffset(const uint32_t& x, const uint32_t& y) const
 {
    return (x < _width && y < _height) ? x + (y * _width) : -1;
 }
 
 
 int
-clockwork::graphics::Framebuffer::getOffset(const double& x, const double& y) const
+Framebuffer::getOffset(const double& x, const double& y) const
 {
    if (x > 0 && y > 0)
    {
@@ -267,7 +300,7 @@ clockwork::graphics::Framebuffer::getOffset(const double& x, const double& y) co
 
 
 int
-clockwork::graphics::Framebuffer::fragmentPasses(const clockwork::graphics::Fragment& fragment) const
+Framebuffer::fragmentPasses(const Fragment& fragment) const
 {
    const uint32_t xw = static_cast<uint32_t>(std::lround(fragment.position.x));
    const uint32_t yw = static_cast<uint32_t>(std::lround(fragment.position.y));
@@ -294,8 +327,11 @@ clockwork::graphics::Framebuffer::fragmentPasses(const clockwork::graphics::Frag
 
 
 void
-clockwork::graphics::Framebuffer::free()
+Framebuffer::free()
 {
+   // There're no buffers to write to.
+   _ignoreWrites = true;
+
    if (_pixelBuffer != nullptr)
    {
       delete _pixelBuffer;
@@ -319,4 +355,20 @@ clockwork::graphics::Framebuffer::free()
       delete _accumulationBuffer;
       _accumulationBuffer = nullptr;
    }
+}
+
+
+
+QList<Framebuffer::Resolution>
+Framebuffer::getResolutions()
+{
+   return
+   {
+      Framebuffer::Resolution::VGA,
+      Framebuffer::Resolution::SVGA,
+      Framebuffer::Resolution::XGA,
+      Framebuffer::Resolution::SXGA,
+      Framebuffer::Resolution::FHD,
+      Framebuffer::Resolution::QSXGA
+   };
 }

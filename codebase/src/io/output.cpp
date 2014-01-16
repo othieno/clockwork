@@ -78,3 +78,19 @@ operator<<(std::ostream& os, const clockwork::graphics::Fragment& fragment)
    os << clockwork::toString(fragment);
    return os;
 }
+
+
+std::ostream&
+operator<<(std::ostream& os, const clockwork::graphics::Framebuffer& framebuffer)
+{
+   os << clockwork::toString(framebuffer);
+   return os;
+}
+
+
+std::ostream&
+operator<<(std::ostream& os, const clockwork::graphics::Framebuffer::Resolution& resolution)
+{
+   os << clockwork::toString(resolution);
+   return os;
+}

@@ -30,7 +30,7 @@
 
 
 clockwork::graphics::GraphicsSubsystem::GraphicsSubsystem() :
-_framebuffer(800, 600),
+_framebuffer(),
 _imageFilterType(clockwork::graphics::ImageFilterFactory::getUniqueInstance().getDefaultKey())
 {}
 

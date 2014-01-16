@@ -31,12 +31,15 @@
 #include "image.filter.hh"
 #include "texture.filter.hh"
 #include "fragment.hh"
+#include "framebuffer.hh"
 
 
 namespace clockwork {
 
 QString toString(const clockwork::Error&);
 QString toString(const clockwork::graphics::Fragment&);
+QString toString(const clockwork::graphics::Framebuffer&);
+QString toString(const clockwork::graphics::Framebuffer::Resolution&);
 QString toString(const clockwork::graphics::Projection::Type&);
 QString toString(const clockwork::graphics::ImageFilter::Type&);
 QString toString(const clockwork::graphics::TextureFilter::Type&);
