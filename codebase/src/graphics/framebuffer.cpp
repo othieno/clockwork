@@ -42,7 +42,7 @@ _accumulationBufferClearValue(0xff000000),
 _ignoreWrites(true)
 {
    // Resize all buffers and initialise them for use.
-   resize(resolution);
+   resize(resolution, true);
 }
 
 
@@ -170,6 +170,13 @@ Framebuffer::plot(const uint32_t& x, const uint32_t& y, const double& z, const u
 }
 
 
+const Framebuffer::Resolution&
+Framebuffer::getResolution() const
+{
+   return _resolution;
+}
+
+
 const uint32_t&
 Framebuffer::getWidth() const
 {
@@ -198,68 +205,67 @@ Framebuffer::clear()
 
 
 void
-Framebuffer::resize(const Framebuffer::Resolution& resolution)
+Framebuffer::resize(const Framebuffer::Resolution& resolution, const bool& force)
 {
-   uint32_t newWidth = 800;
-   uint32_t newHeight = 600;
+   if (_resolution == resolution && !force)
+      return;
 
-   switch (resolution)
+   _resolution = resolution;
+
+   switch (_resolution)
    {
       case Framebuffer::Resolution::VGA:
-         newWidth = 640;
-         newHeight = 480;
-         break;
-      case Framebuffer::Resolution::SVGA:
-         newWidth = 800;
-         newHeight = 600;
+         _width = 640;
+         _height = 480;
          break;
       case Framebuffer::Resolution::XGA:
-         newWidth = 1024;
-         newHeight = 768;
+         _width = 1024;
+         _height = 768;
          break;
       case Framebuffer::Resolution::SXGA:
-         newWidth = 1280;
-         newHeight = 1024;
+         _width = 1280;
+         _height = 1024;
          break;
       case Framebuffer::Resolution::FHD:
-         newWidth = 1920;
-         newHeight = 1080;
+         _width = 1920;
+         _height = 1080;
          break;
       case Framebuffer::Resolution::QSXGA:
-         newWidth = 2560;
-         newHeight = 2048;
+         _width = 2560;
+         _height = 2048;
          break;
+      case Framebuffer::Resolution::UHD8K:
+         _width = 7680;
+         _height = 4320;
+         break;
+      case Framebuffer::Resolution::SVGA:
       default:
+         _width = 800;
+         _height = 600;
+         _resolution = Framebuffer::Resolution::SVGA;
          break;
    }
 
+   // Resize the arrays with the new height. First make sure the framebuffer is readable only.
+   _ignoreWrites = true;
 
-   if (newWidth > 0 && newHeight > 0 && (newWidth != _width || newHeight != _height))
+   const auto length = _width * _height;
+
+   // Dispose of the previous buffers and create new ones.
+   free();
+   if (length > 0)
    {
-      // Make the framebuffer readable only.
-      _ignoreWrites = true;
-
-      // Set the new resolution.
-      _width = newWidth;
-      _height = newHeight;
-      const auto length = _width * _height;
-
-      // Dispose of the previous buffers and create new ones.
-      free();
-      if (length > 0)
-      {
-         _pixelBuffer = new uint32_t[length];
-         _depthBuffer = new double[length];
-         _stencilBuffer = new uint8_t[length];
-         _accumulationBuffer = new uint32_t[length];
-      }
-
-      // Initialise the buffers.
-      clear();
-
-      // Make the framebuffer writable.
-      _ignoreWrites = false;
+      _pixelBuffer = new uint32_t[length];
+      _depthBuffer = new double[length];
+      _stencilBuffer = new uint8_t[length];
+      _accumulationBuffer = new uint32_t[length];
    }
+
+   // Initialise the buffers.
+   clear();
+
+   // Make the framebuffer writable.
+   _ignoreWrites = false;
 }
 
 
@@ -369,6 +375,7 @@ Framebuffer::getResolutions()
       Framebuffer::Resolution::XGA,
       Framebuffer::Resolution::SXGA,
       Framebuffer::Resolution::FHD,
-      Framebuffer::Resolution::QSXGA
+      Framebuffer::Resolution::QSXGA,
+      Framebuffer::Resolution::UHD8K
    };
 }

@@ -25,10 +25,12 @@
 
 #include "ui.component.hh"
 #include <QComboBox>
+#include "tostring.hh"
 
 
 namespace clockwork {
 namespace ui {
+
 
 class GUIComboBox : public GUIComponent
 {
@@ -62,7 +64,7 @@ protected:
     * @param ui the user interface that this component is attached to.
     * @param label the combo box's label.
     */
-   GUIComboBox(UserInterface& ui, const std::string& label);
+   GUIComboBox(UserInterface& ui, const QString& label);
    /**
     * Instantiate a labeled GUIComboBox with a given list of items,
     * that is attached to a user interface.
@@ -70,11 +72,43 @@ protected:
     * @param label the combo box's label.
     * @param items the combo box's item list.
     */
-   GUIComboBox(UserInterface& ui, const std::string& label, std::list<std::string> items);
+   GUIComboBox(UserInterface& ui, const QString& label, const QStringList& items);
    /**
-    * Load the combo box's items.
+    * Build the combo box.
+    * @param items the combo box's items.
+    * @param defaultItem the item that will be selected by default.
     */
-   virtual void loadItemList() = 0;
+   template<typename ItemType, typename UserDataType>
+   void build(const QList<ItemType>& items, const ItemType& defaultItem)
+   {
+      if (!items.isEmpty())
+      {
+         // Block all signals while the combo box is being created. This prevents
+         // the componentChanged signal from being raised while elements are being
+         // inserted into the combo box.
+         _qComboBox->blockSignals(true);
+
+         int selectedIndex = 0;
+
+         // Add the items to the combo box.
+         for (const auto& item : items)
+         {
+            const auto& itemText = clockwork::toString(item);
+            const auto& itemUserData = static_cast<UserDataType>(item);
+
+            // Add the item to the combo box.
+            const auto& itemIndex = addItem(itemText, itemUserData);
+
+            // Get the index of the current item.
+            if (item == defaultItem)
+               selectedIndex = itemIndex;
+         }
+         setSelectedItem(selectedIndex);
+
+         // Re-activate all signals.
+         _qComboBox->blockSignals(false);
+      }
+   };
    /**
     * Add an item to the combo box and return its index.
     * @param text the item's text.
@@ -90,10 +124,6 @@ protected:
     * @param index the index of the currently selected item.
     */
    virtual void onItemSelected(const int& index) = 0;
-   /**
-    * Build the combo box.
-    */
-   void build();
 private:
    /**
     * The actual combobox.

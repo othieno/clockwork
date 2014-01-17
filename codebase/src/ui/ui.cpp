@@ -28,6 +28,7 @@
 #include "ui.combobox.image.filter.hh"
 #include "ui.combobox.texture.filter.hh"
 #include "ui.combobox.line.algorithm.hh"
+#include "ui.combobox.framebuffer.resolution.hh"
 #include <QHBoxLayout>
 
 
@@ -108,6 +109,7 @@ clockwork::ui::UserInterface::build()
          {
             layout->addWidget(_qStatusBar, 0, Qt::AlignBottom);
 
+            _qStatusBar->addWidget(new GUIFramebufferResolutionComboBox(*this));
             _qStatusBar->addWidget(new GUIRendererComboBox(*this));
             _qStatusBar->addWidget(new GUIProjectionComboBox(*this));
             _qStatusBar->addWidget(new GUIImageFilterComboBox(*this));

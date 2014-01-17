@@ -26,49 +26,29 @@
 #include "scene.hh"
 #include "scene.viewer.hh"
 #include "projection.factory.hh"
-#include "tostring.hh"
+
+using clockwork::ui::GUIProjectionComboBox;
+using ItemType = clockwork::graphics::Projection::Type;
+using UserDataType = std::underlying_type<ItemType>::type;
 
 
-clockwork::ui::GUIProjectionComboBox::GUIProjectionComboBox(UserInterface& ui) :
+GUIProjectionComboBox::GUIProjectionComboBox(UserInterface& ui) :
 GUIComboBox(ui, "Projection")
 {
-   // Build the combo box.
-   build();
-}
-
-
-void
-clockwork::ui::GUIProjectionComboBox::loadItemList()
-{
    const auto& factory = clockwork::graphics::ProjectionFactory::getUniqueInstance();
-   const auto& keys = factory.getKeys();
-   const auto& defaultKey = factory.getDefaultKey();
-   int defaultIndex = 0;
+   const auto& items = factory.getKeys();
+   const auto& defaultItem = factory.getDefaultKey();
 
-   // Add the keys as items to the combo box.
-   for (const auto& key : keys)
-   {
-      using UserDataType = std::underlying_type<clockwork::graphics::Projection::Type>::type;
-
-      const auto& text = clockwork::toString(key);
-      const auto& userData = static_cast<UserDataType>(key);
-
-      // Add the item to the combo box.
-      const auto& itemIndex = addItem(text, userData);
-
-      // Get the index of the current item.
-      if (key == defaultKey)
-         defaultIndex = itemIndex;
-   }
-   setSelectedItem(defaultIndex);
+   // Build the combo box.
+   build<ItemType, UserDataType>(items, defaultItem);
 }
 
 
 void
-clockwork::ui::GUIProjectionComboBox::onItemSelected(const int& index)
+GUIProjectionComboBox::onItemSelected(const int& index)
 {
    // Set the current viewer's projection.
    auto* const viewer = clockwork::scene::Scene::getUniqueInstance().getViewer();
    if (viewer != nullptr)
-      viewer->setProjection(getItem<clockwork::graphics::Projection::Type>(index));
+      viewer->setProjection(getItem<ItemType>(index));
 }

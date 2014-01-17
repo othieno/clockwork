@@ -43,10 +43,6 @@ private:
     * @see GUIComboBox::onItemSelected.
     */
    void onItemSelected(const int&) override final;
-   /**
-    * @see GUIComboBox::loadItemList.
-    */
-   void loadItemList() override final;
 };
 
 } // namespace ui

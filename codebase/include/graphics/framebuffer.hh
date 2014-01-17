@@ -45,7 +45,8 @@ public:
       XGA,     // 1024 x 768
       SXGA,    // 1280 x 1024
       FHD,     // 1920 x 1080
-      QSXGA    // 2560 x 2048
+      QSXGA,   // 2560 x 2048
+      UHD8K    // 7680 x 4320
    };
    /**
     * Instantiate a framebuffer with a given resolution.
@@ -123,6 +124,10 @@ public:
     */
    void plot(const uint32_t& x, const uint32_t& y, const double& depth, const uint32_t& pixel);
    /**
+    * Return the framebuffer's resolution.
+    */
+   const Framebuffer::Resolution& getResolution() const;
+   /**
     * Return the framebuffer's width.
     */
    const uint32_t& getWidth() const;
@@ -137,8 +142,9 @@ public:
    /**
     * Resize the framebuffer.
     * @param resolution the framebuffer's new resolution.
+    * @param force true to force the framebuffer resize, false otherwise.
     */
-   void resize(const Framebuffer::Resolution& resolution);
+   void resize(const Framebuffer::Resolution& resolution, const bool& force = false);
    /**
     * Discard the fragment at the given <x, y> coordinate.
     * @param x the framebuffer element's row position.
@@ -150,6 +156,10 @@ public:
     */
    static QList<Framebuffer::Resolution> getResolutions();
 private:
+   /**
+    * The framebuffer's resolution.
+    */
+   Framebuffer::Resolution _resolution;
    /**
     * The framebuffer's width.
     */

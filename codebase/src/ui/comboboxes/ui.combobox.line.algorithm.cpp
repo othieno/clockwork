@@ -27,57 +27,34 @@
 #include "render.parameters.factory.hh"
 #include "scene.hh"
 #include "scene.viewer.hh"
-#include "tostring.hh"
 #include "services.hh"
 
+using clockwork::ui::GUILineAlgorithmComboBox;
+using clockwork::graphics::RenderParameters;
+using clockwork::graphics::RenderParametersFactory;
+using clockwork::graphics::WireframeRenderParameters;
+using ItemType = clockwork::graphics::WireframeRenderParameters::LineAlgorithm;
+using UserDataType = std::underlying_type<ItemType>::type;
 
-clockwork::ui::GUILineAlgorithmComboBox::GUILineAlgorithmComboBox(UserInterface& ui) :
+
+GUILineAlgorithmComboBox::GUILineAlgorithmComboBox(UserInterface& ui) :
 GUIComboBox(ui, "Line Algorithm"),
-_renderParameters
-(
-   static_cast<clockwork::graphics::WireframeRenderParameters*>
-   (
-      clockwork::graphics::RenderParametersFactory::getUniqueInstance().get(clockwork::graphics::RenderParameters::Type::Wireframe)
-   )
-)
+_renderParameters(static_cast<WireframeRenderParameters*>(RenderParametersFactory::getUniqueInstance().get(RenderParameters::Type::Wireframe)))
 {
    // Build the combo box.
-   build();
-}
-
-
-void
-clockwork::ui::GUILineAlgorithmComboBox::loadItemList()
-{
    if (_renderParameters != nullptr)
    {
-      const auto& algorithms = clockwork::graphics::WireframeRenderParameters::getLineAlgorithms();
-      const auto& defaultAlgorithm = _renderParameters->getLineAlgorithm();
+      const auto& items = _renderParameters->getLineAlgorithms();
+      const auto& defaultItem = _renderParameters->getLineAlgorithm();
 
-      int defaultIndex = 0;
-
-      // Add the keys as items to the combo box.
-      for (const auto& algorithm : algorithms)
-      {
-         using UserDataType = std::underlying_type<clockwork::graphics::WireframeRenderParameters::LineAlgorithm>::type;
-
-         const auto& text = clockwork::toString(algorithm);
-         const auto& userData = static_cast<UserDataType>(algorithm);
-
-         // Add the item to the combo box.
-         const auto& itemIndex = addItem(text, userData);
-
-         // Get the index of the current item.
-         if (algorithm == defaultAlgorithm)
-            defaultIndex = itemIndex;
-      }
-      setSelectedItem(defaultIndex);
+      // Build the combo box.
+      build<ItemType, UserDataType>(items, defaultItem);
    }
 }
 
 
 void
-clockwork::ui::GUILineAlgorithmComboBox::onInterfaceUpdate(const clockwork::ui::GUIComponent* const source)
+GUILineAlgorithmComboBox::onInterfaceUpdate(const clockwork::ui::GUIComponent* const source)
 {
    if (source != this)
    {
@@ -98,8 +75,8 @@ clockwork::ui::GUILineAlgorithmComboBox::onInterfaceUpdate(const clockwork::ui::
 
 
 void
-clockwork::ui::GUILineAlgorithmComboBox::onItemSelected(const int& index)
+GUILineAlgorithmComboBox::onItemSelected(const int& index)
 {
    if (_renderParameters != nullptr)
-      _renderParameters->setLineAlgorithm(getItem<clockwork::graphics::WireframeRenderParameters::LineAlgorithm>(index));
+      _renderParameters->setLineAlgorithm(getItem<ItemType>(index));
 }

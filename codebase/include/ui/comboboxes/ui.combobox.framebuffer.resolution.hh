@@ -21,32 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "ui.hh"
-#include "ui.combobox.image.filter.hh"
-#include "scene.hh"
-#include "services.hh"
-#include "image.filter.factory.hh"
+#pragma once
 
-using clockwork::ui::GUIImageFilterComboBox;
-using ItemType = clockwork::graphics::ImageFilter::Type;
-using UserDataType = std::underlying_type<ItemType>::type;
+#include "ui.combobox.hh"
+#include "framebuffer.hh"
 
 
-GUIImageFilterComboBox::GUIImageFilterComboBox(UserInterface& ui) :
-GUIComboBox(ui, "Image Filter")
+namespace clockwork {
+namespace ui {
+
+class GUIFramebufferResolutionComboBox : public GUIComboBox
 {
-   const auto& factory = clockwork::graphics::ImageFilterFactory::getUniqueInstance();
-   const auto& items = factory.getKeys();
-   const auto& defaultItem = factory.getDefaultKey();
+public:
+   /**
+    * Instantiate a GUIFramebufferResolutionComboBox attached to a user interface.
+    * @param ui the user interface that this component is attached to.
+    */
+   GUIFramebufferResolutionComboBox(UserInterface& ui);
+private:
+   /**
+    * @see GUIComboBox::onItemSelected.
+    */
+   void onItemSelected(const int&) override final;
+   /**
+    * A reference to the framebuffer.
+    */
+   clockwork::graphics::Framebuffer& _framebuffer;
+};
 
-   // Build the combo box.
-   build<ItemType, UserDataType>(items, defaultItem);
-}
-
-
-void
-GUIImageFilterComboBox::onItemSelected(const int& index)
-{
-   // Get the selected image filter type and update the framebuffer with it.
-   clockwork::system::Services::Graphics.setImageFilter(getItem<ItemType>(index));
-}
+} // namespace ui
+} // namespace clockwork

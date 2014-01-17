@@ -24,7 +24,8 @@
 #pragma once
 
 #include <map>
-#include <list>
+#include <QList>
+#include <QStringList>
 #include <sstream>
 
 
@@ -58,31 +59,31 @@ public:
    /**
     * Return a list of keys in the factory.
     */
-   std::list<KeyType> getKeys() const
+   QList<KeyType> getKeys() const
    {
-      std::list<KeyType> keys;
+      QList<KeyType> output;
       for (const auto& entry : _map)
-         keys.push_back(entry.first);
+         output << entry.first;
 
-      return keys;
+      return output;
    }
    /**
     * Return the keys in the form of a list of strings.
     */
-   std::list<std::string> getKeysAsStrings() const
+   QStringList getKeysAsStrings() const
    {
-      std::list<std::string> keys;
+      QStringList output;
       std::stringstream sstream;
 
       for (const auto& entry : _map)
       {
          sstream << entry.first;
-         keys.push_back(sstream.str());
+         output << QString(sstream.str());
 
          // Clear the string stream.
          sstream.str(std::string());
       }
-      return keys;
+      return output;
    }
    /**
     * Return the default value, i.e. the value associated to the default key.

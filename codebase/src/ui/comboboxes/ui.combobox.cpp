@@ -27,19 +27,20 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
+using clockwork::ui::GUIComboBox;
 
-clockwork::ui::GUIComboBox::GUIComboBox(clockwork::ui::UserInterface& ui, const std::string& label) :
+GUIComboBox::GUIComboBox(UserInterface& ui, const QString& label) :
 GUIComponent(ui),
 _qComboBox(new QComboBox(&ui))
 {
    // Make the label bold.
-   QString boldLabel(label.c_str());
+   QString boldLabel(label);
    boldLabel.prepend("<b>");
    boldLabel.append("</b>");
 
    // Configure the label.
    auto* const qLabel = new QLabel(boldLabel, this);
-   qLabel->setStyleSheet("QLabel { color:rgb(255, 255, 255); }");
+   qLabel->setStyleSheet("QLabel { color:rgb(255, 255, 0); }");
    qLabel->setTextFormat(Qt::RichText);
    qLabel->setBuddy(_qComboBox);
 
@@ -56,41 +57,15 @@ _qComboBox(new QComboBox(&ui))
 }
 
 
-void
-clockwork::ui::GUIComboBox::build()
-{
-   // Block all signals while the combo box is being created. This prevents
-   // the componentChanged signal from being raised while elements are being
-   // inserted into the combo box.
-   _qComboBox->blockSignals(true);
-
-   // Add entries to the combo box.
-   loadItemList();
-
-   // Re-activate all signals.
-   _qComboBox->blockSignals(false);
-}
-
-
-clockwork::ui::GUIComboBox::GUIComboBox
-(
-   clockwork::ui::UserInterface& ui,
-   const std::string& label,
-   std::list<std::string> items
-) :
+GUIComboBox::GUIComboBox(UserInterface& ui, const QString& label, const QStringList& items) :
 GUIComboBox(ui, label)
 {
-   // Add items to the combo box.
-   for (const auto& item : items)
-   {
-      const auto& entry = QObject::tr(item.c_str());
-      _qComboBox->addItem(entry, entry);
-   }
+   _qComboBox->addItems(items);
 }
 
 
 void
-clockwork::ui::GUIComboBox::onCurrentIndexChanged(const int& index)
+GUIComboBox::onCurrentIndexChanged(const int& index)
 {
    onItemSelected(index);
    emit componentChanged(this);
@@ -98,7 +73,7 @@ clockwork::ui::GUIComboBox::onCurrentIndexChanged(const int& index)
 
 
 void
-clockwork::ui::GUIComboBox::setSelectedItem(const int& index)
+GUIComboBox::setSelectedItem(const int& index)
 {
    // Make sure the index is valid.
    const auto& maximumIndex = _qComboBox->count() - 1;
@@ -109,7 +84,7 @@ clockwork::ui::GUIComboBox::setSelectedItem(const int& index)
 
 
 int
-clockwork::ui::GUIComboBox::addItem(const QString& text, const QVariant& userData)
+GUIComboBox::addItem(const QString& text, const QVariant& userData)
 {
    const auto itemIndex = _qComboBox->count();
    _qComboBox->addItem(text, userData);
@@ -119,7 +94,7 @@ clockwork::ui::GUIComboBox::addItem(const QString& text, const QVariant& userDat
 
 
 void
-clockwork::ui::GUIComboBox::onInterfaceUpdate(const clockwork::ui::GUIComponent* const source)
+GUIComboBox::onInterfaceUpdate(const clockwork::ui::GUIComponent* const source)
 {
    if (source != this)
       setEnabled(clockwork::scene::Scene::getUniqueInstance().hasViewer());

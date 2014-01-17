@@ -176,6 +176,8 @@ clockwork::toString(const clockwork::graphics::Framebuffer::Resolution& resoluti
          return "FHD (1920x1080)";
       case clockwork::graphics::Framebuffer::Resolution::QSXGA:
          return "QSXGA (2560x2048)";
+      case clockwork::graphics::Framebuffer::Resolution::UHD8K:
+         return "8K UHD (7680x4320)";
       default:
          return "Unknown resolution";
    }

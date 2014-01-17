@@ -24,6 +24,7 @@
 #pragma once
 
 #include "ui.combobox.hh"
+#include "texture.render.parameters.hh"
 
 
 namespace clockwork {
@@ -47,9 +48,9 @@ private:
     */
    void onItemSelected(const int&) override final;
    /**
-    * @see GUIComboBox::loadItemList.
+    * A pointer to the texture render parameters object.
     */
-   void loadItemList() override final;
+   clockwork::graphics::TextureRenderParameters* const _renderParameters;
 };
 
 } // namespace ui

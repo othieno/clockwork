@@ -22,22 +22,20 @@
  * THE SOFTWARE.
  */
 #include "ui.hh"
-#include "ui.combobox.image.filter.hh"
-#include "scene.hh"
+#include "ui.combobox.framebuffer.resolution.hh"
 #include "services.hh"
-#include "image.filter.factory.hh"
 
-using clockwork::ui::GUIImageFilterComboBox;
-using ItemType = clockwork::graphics::ImageFilter::Type;
+using clockwork::ui::GUIFramebufferResolutionComboBox;
+using ItemType = clockwork::graphics::Framebuffer::Resolution;
 using UserDataType = std::underlying_type<ItemType>::type;
 
 
-GUIImageFilterComboBox::GUIImageFilterComboBox(UserInterface& ui) :
-GUIComboBox(ui, "Image Filter")
+GUIFramebufferResolutionComboBox::GUIFramebufferResolutionComboBox(UserInterface& ui) :
+GUIComboBox(ui, "Resolution"),
+_framebuffer(clockwork::system::Services::Graphics.getFramebuffer())
 {
-   const auto& factory = clockwork::graphics::ImageFilterFactory::getUniqueInstance();
-   const auto& items = factory.getKeys();
-   const auto& defaultItem = factory.getDefaultKey();
+   const auto& items = _framebuffer.getResolutions();
+   const auto& defaultItem = _framebuffer.getResolution();
 
    // Build the combo box.
    build<ItemType, UserDataType>(items, defaultItem);
@@ -45,8 +43,8 @@ GUIComboBox(ui, "Image Filter")
 
 
 void
-GUIImageFilterComboBox::onItemSelected(const int& index)
+GUIFramebufferResolutionComboBox::onItemSelected(const int& index)
 {
-   // Get the selected image filter type and update the framebuffer with it.
-   clockwork::system::Services::Graphics.setImageFilter(getItem<ItemType>(index));
+   // Get the selected framebuffer resolution and resize the framebuffer.
+   _framebuffer.resize(getItem<ItemType>(index));
 }

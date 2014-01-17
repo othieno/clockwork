@@ -28,45 +28,30 @@
 #include "texture.filter.factory.hh"
 #include "texture.render.parameters.hh"
 #include "render.parameters.factory.hh"
-#include "tostring.hh"
 
-clockwork::ui::GUITextureFilterComboBox::GUITextureFilterComboBox(UserInterface& ui) :
-GUIComboBox(ui, "Texture Filter")
-{
-   // Build the combo box.
-   build();
-}
+using clockwork::ui::GUITextureFilterComboBox;
+using clockwork::graphics::RenderParameters;
+using clockwork::graphics::RenderParametersFactory;
+using clockwork::graphics::TextureRenderParameters;
+using ItemType = clockwork::graphics::TextureFilter::Type;
+using UserDataType = std::underlying_type<ItemType>::type;
 
 
-void
-clockwork::ui::GUITextureFilterComboBox::loadItemList()
+GUITextureFilterComboBox::GUITextureFilterComboBox(UserInterface& ui) :
+GUIComboBox(ui, "Texture Filter"),
+_renderParameters(static_cast<TextureRenderParameters*>(RenderParametersFactory::getUniqueInstance().get(RenderParameters::Type::Texture)))
 {
    const auto& factory = clockwork::graphics::TextureFilterFactory::getUniqueInstance();
-   const auto& keys = factory.getKeys();
-   const auto& defaultKey = factory.getDefaultKey();
-   int defaultIndex = 0;
+   const auto& items = factory.getKeys();
+   const auto& defaultItem = factory.getDefaultKey();
 
-   // Add the keys as items to the combo box.
-   for (const auto& key : keys)
-   {
-      using UserDataType = std::underlying_type<clockwork::graphics::TextureFilter::Type>::type;
-
-      const auto text = clockwork::toString(key);
-      const auto userData = static_cast<UserDataType>(key);
-
-      // Add the item to the combo box.
-      const auto& itemIndex = addItem(text, userData);
-
-      // Get the index of the current item.
-      if (key == defaultKey)
-         defaultIndex = itemIndex;
-   }
-   setSelectedItem(defaultIndex);
+   // Build the combo box.
+   build<ItemType, UserDataType>(items, defaultItem);
 }
 
 
 void
-clockwork::ui::GUITextureFilterComboBox::onInterfaceUpdate(const clockwork::ui::GUIComponent* const source)
+GUITextureFilterComboBox::onInterfaceUpdate(const clockwork::ui::GUIComponent* const source)
 {
    if (source != this)
    {
@@ -87,11 +72,8 @@ clockwork::ui::GUITextureFilterComboBox::onInterfaceUpdate(const clockwork::ui::
 
 
 void
-clockwork::ui::GUITextureFilterComboBox::onItemSelected(const int& index)
+GUITextureFilterComboBox::onItemSelected(const int& index)
 {
-   auto& factory = clockwork::graphics::RenderParametersFactory::getUniqueInstance();
-   auto* params =
-   static_cast<clockwork::graphics::TextureRenderParameters*>(factory.get(clockwork::graphics::RenderParameters::Type::Texture));
-   if (params != nullptr)
-      params->setTextureFilter(getItem<clockwork::graphics::TextureFilter::Type>(index));
+   if (_renderParameters != nullptr)
+      _renderParameters->setTextureFilter(getItem<ItemType>(index));
 }
