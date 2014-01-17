@@ -21,44 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "render.parameters.hh"
-#include "services.hh"
+#pragma once
 
-using clockwork::graphics::RenderParameters;
-
-
-RenderParameters::RenderParameters(const RenderParameters::Type& type) :
-_type(type),
-_fragmentProgram(std::bind(&RenderParameters::defaultFragmentProgram, this, std::placeholders::_1))
-{}
+#include "polygon.render.parameters.hh"
 
 
-const RenderParameters::Type&
-RenderParameters::getType() const
+namespace clockwork {
+namespace graphics {
+
+/**
+ * @see render.parameters.factory.hh.
+ */
+class RenderParametersFactory;
+
+/**
+ * A normals renderer's parameter set.
+ */
+class NormalsRenderParameters : public PolygonRenderParameters
 {
-   return _type;
-}
+friend class RenderParametersFactory;
+public:
+private:
+   /**
+    * The NormalsRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.
+    */
+   NormalsRenderParameters();
+   NormalsRenderParameters(const NormalsRenderParameters&) = delete;
+   NormalsRenderParameters& operator=(const NormalsRenderParameters&) = delete;
+   /**
+    * The program that converts a fragment's normal vector into a pixel value.
+    * @param fragment the fragment containing the normal vector to convert.
+    */
+   uint32_t fragmentProgram(const Fragment& fragment);
+};
 
-
-void
-RenderParameters::preVertexProgram(const Face&, const Vertex&, Fragment&) const
-{}
-
-
-void
-RenderParameters::postVertexProgram(const Face&, const Vertex&, Fragment&) const
-{}
-
-
-void
-RenderParameters::setFragmentProgram(const std::function<uint32_t(const Fragment&)>& program)
-{
-   _fragmentProgram = program;
-}
-
-
-uint32_t
-RenderParameters::defaultFragmentProgram(const Fragment& f) const
-{
-   return f.color;
-}
+} // namespace graphics
+} // namespace clockwork

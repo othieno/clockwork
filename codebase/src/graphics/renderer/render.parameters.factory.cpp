@@ -25,14 +25,14 @@
 #include "point.render.parameters.hh"
 #include "wireframe.render.parameters.hh"
 #include "random.render.parameters.hh"
-//#include "depth.render.parameters.hh"
-//#include "normals.render.parameters.hh"
+#include "depth.render.parameters.hh"
+#include "normals.render.parameters.hh"
 #include "texture.render.parameters.hh"
-//#include "constant.render.parameters.hh"
-//#include "phong.render.parameters.hh"
-//#include "cel.render.parameters.hh"
-//#include "bump.render.parameters.hh"
-//#include "deferred.render.parameters.hh"
+#include "constant.render.parameters.hh"
+#include "phong.render.parameters.hh"
+#include "cel.render.parameters.hh"
+#include "bump.render.parameters.hh"
+#include "deferred.render.parameters.hh"
 
 
 clockwork::graphics::RenderParametersFactory::RenderParametersFactory() :
@@ -42,7 +42,7 @@ Factory(clockwork::graphics::RenderParameters::Type::Wireframe)
    put(clockwork::graphics::RenderParameters::Type::Wireframe, new clockwork::graphics::WireframeRenderParameters);
    put(clockwork::graphics::RenderParameters::Type::Random, new clockwork::graphics::RandomRenderParameters);
    //put(clockwork::graphics::RenderParameters::Type::Depth, new clockwork::graphics::DepthRenderParameters);
-   //put(clockwork::graphics::RenderParameters::Type::Normals, new clockwork::graphics::NormalsRenderParameters);
+   put(clockwork::graphics::RenderParameters::Type::Normals, new clockwork::graphics::NormalsRenderParameters);
    put(clockwork::graphics::RenderParameters::Type::Texture, new clockwork::graphics::TextureRenderParameters);
    //put(clockwork::graphics::RenderParameters::Type::Constant, new clockwork::graphics::ConstantRenderParameters);
    //put(clockwork::graphics::RenderParameters::Type::Phong, new clockwork::graphics::PhongRenderParameters);

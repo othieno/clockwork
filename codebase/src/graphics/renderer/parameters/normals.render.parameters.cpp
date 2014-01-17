@@ -21,44 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "render.parameters.hh"
-#include "services.hh"
+#include "normals.render.parameters.hh"
 
-using clockwork::graphics::RenderParameters;
-
-
-RenderParameters::RenderParameters(const RenderParameters::Type& type) :
-_type(type),
-_fragmentProgram(std::bind(&RenderParameters::defaultFragmentProgram, this, std::placeholders::_1))
-{}
+using clockwork::graphics::NormalsRenderParameters;
 
 
-const RenderParameters::Type&
-RenderParameters::getType() const
+NormalsRenderParameters::NormalsRenderParameters() :
+PolygonRenderParameters(RenderParameters::Type::Random)
 {
-   return _type;
-}
-
-
-void
-RenderParameters::preVertexProgram(const Face&, const Vertex&, Fragment&) const
-{}
-
-
-void
-RenderParameters::postVertexProgram(const Face&, const Vertex&, Fragment&) const
-{}
-
-
-void
-RenderParameters::setFragmentProgram(const std::function<uint32_t(const Fragment&)>& program)
-{
-   _fragmentProgram = program;
+   setFragmentProgram(std::bind(&NormalsRenderParameters::fragmentProgram, this, std::placeholders::_1));
 }
 
 
 uint32_t
-RenderParameters::defaultFragmentProgram(const Fragment& f) const
+NormalsRenderParameters::fragmentProgram(const Fragment& fragment)
 {
-   return f.color;
+   return ColorRGBA
+   (
+      (fragment.normal.i + 1.0) * 0.5,
+      (fragment.normal.j + 1.0) * 0.5,
+      (fragment.normal.k + 1.0) * 0.5
+   );
 }

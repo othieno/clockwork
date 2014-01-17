@@ -172,7 +172,7 @@ WireframeRenderParameters::drawlineXiaolinWu(const Fragment& f0, const Fragment&
 {
    const auto _plot = [this](const uint32_t& x, const uint32_t& y, const double& intensity)
    {
-      plot(x, y, 0.0, ColorRGBA(intensity, intensity, intensity).merge());
+      plot(x, y, 0.0, ColorRGBA(intensity, intensity, intensity));
    };
 
    // fpart returns the fractional part of a floating point number.

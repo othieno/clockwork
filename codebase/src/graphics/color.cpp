@@ -35,16 +35,22 @@ alpha(a)
 {}
 
 
+ColorRGBA::operator uint32_t() const
+{
+   return ColorRGBA::merge(*this);
+}
+
+
 uint32_t
-ColorRGBA::merge() const
+ColorRGBA::merge(const ColorRGBA& color)
 {
    uint32_t output = 0;
 
    // Convert the channels to integer values.
-   const auto R = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, red)));
-   const auto G = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, green)));
-   const auto B = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, blue)));
-   const auto A = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, alpha)));
+   const auto R = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, color.red)));
+   const auto G = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, color.green)));
+   const auto B = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, color.blue)));
+   const auto A = static_cast<uint32_t>(std::round(255.0f * std::max(0.0f, color.alpha)));
 
    if (A > 0)
       output  = std::min(255U, A) << 24;

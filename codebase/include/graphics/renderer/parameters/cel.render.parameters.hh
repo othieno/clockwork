@@ -21,44 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "render.parameters.hh"
-#include "services.hh"
+#pragma once
 
-using clockwork::graphics::RenderParameters;
-
-
-RenderParameters::RenderParameters(const RenderParameters::Type& type) :
-_type(type),
-_fragmentProgram(std::bind(&RenderParameters::defaultFragmentProgram, this, std::placeholders::_1))
-{}
+#include "polygon.render.parameters.hh"
 
 
-const RenderParameters::Type&
-RenderParameters::getType() const
+namespace clockwork {
+namespace graphics {
+
+/**
+ * @see render.parameters.factory.hh.
+ */
+class RenderParametersFactory;
+
+/**
+ * A Cel renderer's parameter set.
+ */
+class CelRenderParameters : public PolygonRenderParameters
 {
-   return _type;
-}
+friend class RenderParametersFactory;
+public:
+private:
+   /**
+    * The CelRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.
+    */
+   CelRenderParameters();
+   CelRenderParameters(const CelRenderParameters&) = delete;
+   CelRenderParameters& operator=(const CelRenderParameters&) = delete;
+};
 
-
-void
-RenderParameters::preVertexProgram(const Face&, const Vertex&, Fragment&) const
-{}
-
-
-void
-RenderParameters::postVertexProgram(const Face&, const Vertex&, Fragment&) const
-{}
-
-
-void
-RenderParameters::setFragmentProgram(const std::function<uint32_t(const Fragment&)>& program)
-{
-   _fragmentProgram = program;
-}
-
-
-uint32_t
-RenderParameters::defaultFragmentProgram(const Fragment& f) const
-{
-   return f.color;
-}
+} // namespace graphics
+} // namespace clockwork

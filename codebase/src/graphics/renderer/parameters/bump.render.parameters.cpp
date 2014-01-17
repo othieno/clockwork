@@ -21,44 +21,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "render.parameters.hh"
-#include "services.hh"
-
-using clockwork::graphics::RenderParameters;
-
-
-RenderParameters::RenderParameters(const RenderParameters::Type& type) :
-_type(type),
-_fragmentProgram(std::bind(&RenderParameters::defaultFragmentProgram, this, std::placeholders::_1))
-{}
-
-
-const RenderParameters::Type&
-RenderParameters::getType() const
-{
-   return _type;
-}
-
-
-void
-RenderParameters::preVertexProgram(const Face&, const Vertex&, Fragment&) const
-{}
-
-
-void
-RenderParameters::postVertexProgram(const Face&, const Vertex&, Fragment&) const
-{}
-
-
-void
-RenderParameters::setFragmentProgram(const std::function<uint32_t(const Fragment&)>& program)
-{
-   _fragmentProgram = program;
-}
-
-
-uint32_t
-RenderParameters::defaultFragmentProgram(const Fragment& f) const
-{
-   return f.color;
-}
+#include "bump.render.parameters.hh"
