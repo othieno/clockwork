@@ -32,189 +32,125 @@ RenderParameters(type)
 {}
 
 
-void
-PolygonRenderParameters::primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const
+clockwork::graphics::VertexArray&
+PolygonRenderParameters::primitiveAssembly(VertexArray& input) const
 {
-   // Sort the fragments based on their positions.
-   std::array<const Fragment*, 3> sortedFragments = {triangle[0], triangle[1], triangle[2]};
-   std::sort
-   (
-      sortedFragments.begin(),
-      sortedFragments.end(),
-      [](const Fragment* const f0, const Fragment* const f1)
-      {
-         const double& y0 = f0->position.y;
-         const double& y1 = f1->position.y;
-
-         if (y0 > y1)
-            return false;
-         else if (clockwork::fequal(y0, y1))
-         {
-            const double& x0 = f0->position.x;
-            const double& x1 = f1->position.x;
-
-            if (x0 > x1)
-               return false;
-            else if (clockwork::fequal(x0, x1))
-            {
-               const double& z0 = f0->position.z;
-               const double& z1 = f1->position.z;
-
-               return (z0 > z1) ? false : true;
-            }
-            else
-               return true;
-         }
-         else
-            return true;
-      }
-   );
-   // The three fragments will make up our triangle.
-   const auto& f0 = *sortedFragments[0];
-   const auto& f1 = *sortedFragments[1];
-   const auto& f2 = *sortedFragments[2];
-
-   // If the triangle primitive is not correctly formed for this algorithm, tessellate two
-   // new triangle primitives. If it is, proceed with the scan conversion.
-   const double& y0 = f0.position.y;
-   const double& y1 = f1.position.y;
-   const double& y2 = f2.position.y;
-
-   const auto shouldTessellate = !clockwork::fequal(y0, y1) && !clockwork::fequal(y1, y2);
-   if (shouldTessellate)
+   // If the triangle primitive is not correctly formed for the scanline algorithm,
+   // then tessellate two triangle primitives that fit our needs.
+   for (auto it = input.begin(); it != input.end();)
    {
-      // Interpolate the new fragment.
-      auto fi = Fragment::interpolate(f0, f2, (y1 - y0) / (y2 - y0));
-      fi.position.y = y1;
+      // Sort the subarray of vertices (from top to bottom, left to right, and nearest
+      // to farthest) that make up the primitive.
+      // Remember, std::sort processes the range [first, last).
+      const auto& subArrayBegin = it;
+      const auto& nextSubArrayBegin = it + 3;
+      std::sort(subArrayBegin, nextSubArrayBegin);
 
-      // Tessellate! Create two new triangle primitives from the previous one.
-      primitiveAssembly({&f0, &f1, &fi});
-      primitiveAssembly({&f1, &fi, &f2});
+      // Tessellate the primitive, if need be.
+      const auto& V0 = it[0];
+      const auto& V1 = it[1];
+      const auto& V2 = it[2];
+
+      const auto shouldTessellate = !clockwork::fequal(V0.y, V1.y) && !clockwork::fequal(V1.y, V2.y);
+      if (shouldTessellate)
+      {
+         // Interpolate a new vertex.
+         auto Vi = Vertex::interpolate(V0, V2, (V1.y - V0.y) / (V2.y - V0.y));
+         Vi.y = V1.y;
+
+         // Create two new primitives from four vertices. The vertices {V0, V1, V2}
+         // become {V0, V1, Vi, V1, Vi, V2} and since the list is considered a triangle
+         // primitive, this means we have the triangles {V0, V1, Vi} and {V1, Vi, V2}.
+         it = input.insert(it + 2, Vi);
+         it = input.insert(it + 1, V1);
+         it = input.insert(it + 1, Vi);
+         it = std::next(it, 2);
+      }
+      else
+         it = nextSubArrayBegin;
    }
-   else
-      scanConversion(f0, f1, f2);
+   return input;
+}
+
+
+clockwork::graphics::VertexArray&
+PolygonRenderParameters::backfaceCulling(VertexArray& vertices) const
+{
+/* FIXME
+   for (auto it = vertices.begin(); it != vertices.end();)
+   {
+      const auto erase_from = it;
+      const clockwork::Point3& P0 = *it++;
+      const clockwork::Point3& P1 = *it++;
+      const clockwork::Point3& P2 = *it++;
+      const auto erase_to = it;
+
+      // If the face is not facing the viewer, remove the vertices in the range
+      // [erase_from, erase_to) from the list.
+      if (clockwork::Vector3::cross(P1 - P0, P2 - P1).k > 0)
+         it = vertices.erase(erase_from, erase_to);
+   }
+*/
+   return vertices;
+}
+
+
+clockwork::graphics::VertexArray&
+PolygonRenderParameters::clip(VertexArray& vertices) const
+{
+   //TODO Implement me.
+   return vertices;
 }
 
 
 void
-PolygonRenderParameters::scanConversion
-(
-   const clockwork::graphics::Fragment& f0,
-   const clockwork::graphics::Fragment& f1,
-   const clockwork::graphics::Fragment& f2
-) const
+PolygonRenderParameters::rasterise(const RenderParameters::Uniforms& uniforms, const VertexArray& vertices) const
 {
-   const clockwork::graphics::Fragment *A, *B, *C;
-
-   if (clockwork::fequal(f0.position.y, f1.position.y))
+   const auto& fop = std::bind(&PolygonRenderParameters::fragmentProgram, this, uniforms, std::placeholders::_1);
+   for (auto it = vertices.begin(); it != vertices.end();)
    {
-      // Triangle type A:
-      A = &f0;
-      B = &f2;
-      C = &f1;
-   }
-   else
-   {
-      // Triangle type B:
-      A = &f1;
-      B = &f0;
-      C = &f2;
-   }
+      // Make sure we have at least 3 vertices.
+      const auto& V0 = *it++;
+      const auto& V1 = *it++;
+      const auto& V2 = *it++;
 
-   const double &xss = A->position.x,  &xse = B->position.x,   &xes = C->position.x,   &xee = xse;
-   const double &yss = A->position.y,  &yse = B->position.y,   &yes = C->position.y,   &yee = yse;
-   const double &zss = A->position.z,  &zse = B->position.z,   &zes = C->position.z,   &zee = zse;
-   const double &rss = A->color.red,   &rse = B->color.red,    &res = C->color.red,    &ree = rse;
-   const double &gss = A->color.green, &gse = B->color.green,  &ges = C->color.green,  &gee = gse;
-   const double &bss = A->color.blue,  &bse = B->color.blue,   &bes = C->color.blue,   &bee = bse;
-   const double &ass = A->color.alpha, &ase = B->color.alpha,  &aes = C->color.alpha,  &aee = ase;
-   const double &uss = A->u,           &use = B->u,            &ues = C->u,            &uee = use;
-   const double &vss = A->v,           &vse = B->v,            &ves = C->v,            &vee = vse;
-   const double &iss = A->normal.i,    &ise = B->normal.i,     &ies = C->normal.i,     &iee = ise;
-   const double &jss = A->normal.j,    &jse = B->normal.j,     &jes = C->normal.j,     &jee = jse;
-   const double &kss = A->normal.k,    &kse = B->normal.k,     &kes = C->normal.k,     &kee = kse;
-
-   const double &dys = yse - yss;
-   const double &dye = yee - yes;
-
-   // No divisions-by-zero!
-   if (clockwork::fequal(dys, 0.0) || clockwork::fequal(dye, 0.0))
-      return;
-
-   // The interpolated fragment.
-   clockwork::graphics::Fragment fi;
-
-   // Remember that the fragments are arranged in such a way that f0 has the smallest
-   // y value and f2 has the largest.
-   for (long y = std::round(f0.position.y); y <= std::round(f2.position.y); ++y)
-   {
-      const double ps = (y - yss) / dys;
-      const auto  pps = 1.0 - ps;
-
-      const double pe = (y - yes) / dye;
-      const auto  ppe = 1.0 - pe;
-
-      // The scan-line's starting (xs) and ending (xe) horizontal position.
-      const double xs = (pps * xss) + (ps * xse);
-      const double xe = (ppe * xes) + (pe * xee);
-      const double dx = xe - xs;
-
-      // Once again, no divisions-by-zero!
-      if (clockwork::fequal(dx, 0.0))
-         continue;
-
-      const double zs = (pps * zss) + (ps * zse);
-      const double us = (pps * uss) + (ps * use);
-      const double vs = (pps * vss) + (ps * vse);
-      const double rs = (pps * rss) + (ps * rse);
-      const double gs = (pps * gss) + (ps * gse);
-      const double bs = (pps * bss) + (ps * bse);
-      const double as = (pps * ass) + (ps * ase);
-      const double is = (pps * iss) + (ps * ise);
-      const double js = (pps * jss) + (ps * jse);
-      const double ks = (pps * kss) + (ps * kse);
-
-      const double ze = (ppe * zes) + (pe * zee);
-      const double ue = (ppe * ues) + (pe * uee);
-      const double ve = (ppe * ves) + (pe * vee);
-      const double re = (ppe * res) + (pe * ree);
-      const double ge = (ppe * ges) + (pe * gee);
-      const double be = (ppe * bes) + (pe * bee);
-      const double ae = (ppe * aes) + (pe * aee);
-      const double ie = (ppe * ies) + (pe * iee);
-      const double je = (ppe * jes) + (pe * jee);
-      const double ke = (ppe * kes) + (pe * kee);
-
-      for (long x = std::round(std::min(xs, xe)) ; x <= std::round(std::max(xs, xe)); ++x)
+      const Vertex *A, *B, *C;
+      if (clockwork::fequal(V0.y, V1.y))
       {
-         const double p = (x - xs) / dx;
-         const double pp = 1.0 - p;
+         // Triangle type A:
+         A = &V0;
+         B = &V2;
+         C = &V1;
+      }
+      else
+      {
+         // Triangle type B:
+         A = &V1;
+         B = &V0;
+         C = &V2;
+      }
 
-         // Initialise the interpolated fragment.
-         fi.position = clockwork::Point4
-         (
-            x,
-            y,
-            (pp * zs) + (p * ze)
-         );
-         fi.color = clockwork::graphics::ColorRGBA
-         (
-            (pp * rs) + (p * re),
-            (pp * gs) + (p * ge),
-            (pp * bs) + (p * be),
-            (pp * as) + (p * ae)
-         );
-         fi.normal = clockwork::Vector3
-         (
-            (pp * is) + (p * ie),
-            (pp * js) + (p * je),
-            (pp * ks) + (p * ke)
-         );
-         fi.u = (pp * us) + (p * ue);
-         fi.v = (pp * vs) + (p * ve);
+      // Remember that the vertices are arranged in such a way that V0 has the smallest
+      // y value and V2 has the largest.
+      const auto ymin = static_cast<uint32_t>(V0.y);
+      const auto ymax = static_cast<uint32_t>(V2.y);
 
-         // Draw the interpolated fragment.
-         plot(fi);
+      for (auto y = ymin; y <= ymax; ++y)
+      {
+         // The scan-line's origin (vs) and endpoint (ve) vertices.
+         auto vs = Vertex::interpolate(*A, *B, (y - A->y) / (B->y - A->y));
+         auto ve = Vertex::interpolate(*C, *B, (y - C->y) / (B->y - C->y));
+
+         // Fill the scanline.
+         const auto xmin = static_cast<uint32_t>(std::round(std::min(vs.x, ve.x)));
+         const auto xmax = static_cast<uint32_t>(std::round(std::max(vs.x, ve.x)));
+         for (auto x = xmin; x <= xmax; ++x)
+         {
+            auto vi = Vertex::interpolate(vs, ve, (x - vs.x) / (ve.x - vs.x));
+            vi.x = x;
+            vi.y = y;
+            plot(Fragment(vi), fop);
+         }
       }
    }
 }

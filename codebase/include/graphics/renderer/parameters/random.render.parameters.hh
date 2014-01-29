@@ -42,9 +42,9 @@ class RandomRenderParameters : public PolygonRenderParameters
 friend class RenderParametersFactory;
 public:
    /**
-    * @see RenderParameters::postVertexProgram.
+    * @see RenderParameters::geometryProgram.
     */
-   virtual void postVertexProgram(const Face& face, const Vertex& vertex, Fragment& fragment) const override final;
+   VertexArray& geometryProgram(const RenderParameters::Uniforms&, VertexArray&) const override final;
 private:
    /**
     * The RandomRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.

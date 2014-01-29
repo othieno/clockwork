@@ -23,6 +23,8 @@
  */
 #pragma once
 
+#include <iostream>
+
 
 namespace clockwork {
 namespace graphics {
@@ -33,3 +35,5 @@ class Frustum
 
 } // namespace graphics
 } // namespace clockwork
+
+std::ostream& operator<<(std::ostream&, const clockwork::graphics::Frustum&);

@@ -40,30 +40,32 @@ public:
     */
    Model3D();
    /**
-    * Instantiate a 3D model with a given set of vertices, polygonal faces
+    * Instantiate a 3D model with a given set of vertex positions, triangular polygonal faces,
     * and a material.
-    * @param vertices the model's vertex data.
+    * @param positions the model's vertex position data.
     * @param faces the model's polygonal face data.
     * @param material the model's material data.
     */
-   Model3D(const std::vector<Vertex>& vertices, const std::vector<Face>& faces, const Material& material);
+   Model3D(const std::vector<clockwork::Point3>& positions, const std::vector<Face>& faces, const Material& material);
    /**
-    * Return the model's vertex data.
+    * Return the model's vertex position data.
     */
-   const std::vector<Vertex>& getVertices() const;
+   const std::vector<clockwork::Point3>& getVertexPositions() const;
    /**
-    * Return the model's polygonal face data.
+    * Return the model's triangular polygonal face data.
     */
    const std::vector<Face>& getFaces() const;
    /**
     * Add a polygonal face.
     * @param indices the face's index list.
-    * @param textureCoordinates the face's texture mapping coordinates.
+    * @param indices the face's vertex normals.
+    * @param textureMappingCoordinates the face's texture mapping coordinates.
     */
    void addFace
    (
       const std::array<const uint32_t, 3>& indices,
-      const std::array<const Face::TextureCoordinates, 3>& textureCoordinates
+      const std::array<const clockwork::Vector3, 3>& normals,
+      const std::array<const Texture::Coordinates, 3>& textureMappingCoordinates
    );
    /**
     * Return the model's material data.
@@ -72,12 +74,12 @@ public:
    /**
     * Return true if this container does not have any vertices or faces, false otherwise.
     */
-   bool empty() const;
+   bool isEmpty() const;
 private:
    /**
-    * The 3D model's vertex data.
+    * The 3D model's vertex positions.
     */
-   std::vector<Vertex> _vertices;
+   std::vector<clockwork::Point3> _positions;
    /**
     * The 3D model's polygonal face data.
     */

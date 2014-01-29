@@ -40,9 +40,9 @@ clockwork::io::loadOBJ(QFile& file, clockwork::graphics::Model3D& model)
    clockwork::Error error = clockwork::Error::None;
    if (file.open(QIODevice::ReadOnly))
    {
-      auto& vertices = const_cast<std::vector<clockwork::graphics::Vertex>&>(model.getVertices());
+      auto& positions = const_cast<std::vector<clockwork::Point3>&>(model.getVertexPositions());
       std::vector<clockwork::Vector3> normals;
-      std::vector<clockwork::graphics::Face::TextureCoordinates> texcoords;
+      std::vector<clockwork::graphics::Texture::Coordinates> texcoords;
       QString materialFilename;
 
       QTextStream stream(&file);
@@ -65,14 +65,14 @@ clockwork::io::loadOBJ(QFile& file, clockwork::graphics::Model3D& model)
                   const auto& y = tokens.takeFirst().toDouble();
                   const auto& z = tokens.takeFirst().toDouble();
 
-                  vertices.push_back(clockwork::graphics::Vertex(x, y, z));
+                  positions.push_back(clockwork::Point3(x, y, z));
                }
                else if (command == "vt")
                {
                   const auto& u = tokens.takeFirst().toDouble();
                   const auto& v = 1.0 - tokens.takeFirst().toDouble();
 
-                  texcoords.push_back(clockwork::graphics::Face::TextureCoordinates(u, v));
+                  texcoords.push_back(clockwork::graphics::Texture::Coordinates(u, v));
                }
                else if (command == "vn")
                {
@@ -85,15 +85,13 @@ clockwork::io::loadOBJ(QFile& file, clockwork::graphics::Model3D& model)
                }
                else if (command == "f")
                {
-                  // Keep track of the current vertex so a normal can be assigned to it.
-                  clockwork::graphics::Vertex* currentVertex = nullptr;
-
-                  const auto& vertexCount = vertices.size();
-                  const auto& texcoordCount = texcoords.size();
-                  const auto& normalCount = normals.size();
+                  const auto& positionCount = positions.size();
+                  const auto& texcoordsCount = texcoords.size();
+                  const auto& normalsCount = normals.size();
 
                   std::vector<uint32_t> faceIndices;
-                  std::vector<clockwork::graphics::Face::TextureCoordinates*> faceTexcoords;
+                  std::vector<const clockwork::Vector3*> faceNormals;
+                  std::vector<const clockwork::graphics::Texture::Coordinates*> faceTexcoords;
 
                   while (!tokens.empty())
                   {
@@ -103,11 +101,8 @@ clockwork::io::loadOBJ(QFile& file, clockwork::graphics::Model3D& model)
                      // Get the vertex from its index.
                      int index = tokenisedIndices.takeFirst().toInt() - 1;
                      if (index < 0)
-                        index += vertexCount + 1;
+                        index += positionCount + 1;
                      faceIndices.push_back(index);
-
-                     // Store the current vertex.
-                     currentVertex = &vertices[index];
 
                      // Get the texture coordinate if it's given.
                      if (!tokenisedIndices.empty())
@@ -119,31 +114,57 @@ clockwork::io::loadOBJ(QFile& file, clockwork::graphics::Model3D& model)
                         {
                            index = tokenisedIndex.toInt() - 1;
                            if (index < 0)
-                              index += texcoordCount + 1;
+                              index += texcoordsCount + 1;
 
                            faceTexcoords.push_back(&texcoords[index]);
                         }
                      }
                      // Set the vertex normal if it's specified.
-                     if (!tokenisedIndices.empty() && currentVertex != nullptr)
+                     if (!tokenisedIndices.empty())
                      {
                         index = tokenisedIndices.takeFirst().toInt() - 1;
                         if (index < 0)
-                           index += normalCount + 1;
+                           index += normalsCount + 1;
 
-                        currentVertex->setNormal(normals[index]);
+                        faceNormals.push_back(&normals[index]);
                      }
                   }
+
+                  // Fill the normal and texture coordinate buffers with dummy data to match
+                  // the size of the index buffer.
+                  const auto* const dummyNormal = new clockwork::Vector3;
+                  const auto* const dummyCoordinates = new clockwork::graphics::Texture::Coordinates;
+
+                  const auto& N = faceIndices.size();
+                  const auto& M = faceNormals.size();
+                  if (N != M)
+                  {
+                     for (unsigned int i = 0; i < std::abs(N - M); ++i)
+                        faceNormals.push_back(dummyNormal);
+                  }
+                  const auto& K = faceTexcoords.size();
+                  if (N != K)
+                  {
+                     for (unsigned int i = 0; i < std::abs(N - K); ++i)
+                        faceTexcoords.push_back(dummyCoordinates);
+                  }
+
                   // Create polygonal faces from the vertices and mapping coordinates we obtained.
                   // If there're more than three vertices, triangulate.
-                  for (unsigned int i = 0; i < faceIndices.size() - 2; ++i)
+                  for (unsigned int i = 0; i < N - 2; ++i)
                   {
+                     // FIXME This will break if there're no normals or mapping coordinates.
                      model.addFace
                      (
                         {
                            faceIndices[0],
                            faceIndices[i + 1],
                            faceIndices[i + 2]
+                        },
+                        {
+                           *faceNormals[0],
+                           *faceNormals[i + 1],
+                           *faceNormals[i + 2]
                         },
                         {
                            *faceTexcoords[0],

@@ -23,21 +23,60 @@
  */
 #include "vertex.hh"
 
+using clockwork::graphics::Vertex;
 
-clockwork::graphics::Vertex::Vertex(const double& x, const double& y, const double& z, const double& w) :
-Point4(x, y, z, w)
+
+Vertex::Vertex(const double& x, const double& y, const double& z, const double& w) :
+Point4(x, y, z, w),
+color(1.0, 1.0, 1.0)
 {}
 
 
-const clockwork::Vector3&
-clockwork::graphics::Vertex::getNormal() const
+Vertex::Vertex(const clockwork::Point4& p) :
+Vertex(p.x, p.y, p.z, p.w)
+{}
+
+
+Vertex
+Vertex::interpolate(const Vertex& start, const Vertex& end, const double& p)
 {
-   return _normal;
+   const double pp = 1.0 - p;
+   Vertex output;
+
+   output.x = (pp * start.x) + (p * end.x);
+   output.y = (pp * start.y) + (p * end.y);
+   output.z = (pp * start.z) + (p * end.z);
+
+   output.normal.i = (pp * start.normal.i) + (p * end.normal.i);
+   output.normal.j = (pp * start.normal.j) + (p * end.normal.j);
+   output.normal.k = (pp * start.normal.k) + (p * end.normal.k);
+
+   output.color.red   = (pp * start.color.red)   + (p * end.color.red);
+   output.color.green = (pp * start.color.green) + (p * end.color.green);
+   output.color.blue  = (pp * start.color.blue)  + (p * end.color.blue);
+   output.color.alpha = (pp * start.color.alpha) + (p * end.color.alpha);
+
+   output.uvmap.u = (pp * start.uvmap.u) + (p * end.uvmap.u);
+   output.uvmap.v = (pp * start.uvmap.v) + (p * end.uvmap.v);
+
+   return output;
 }
 
 
-void
-clockwork::graphics::Vertex::setNormal(const clockwork::Vector3& normal)
+bool
+Vertex::operator<(const Vertex& V) const
 {
-   _normal = normal;
-}
+   if (y < V.y)
+      return true;
+   else if (y > V.y)
+      return false;
+   else
+   {
+      if (x < V.x)
+         return true;
+      else if (x > V.x)
+         return false;
+      else
+         return (z < V.z);
+   }
+};

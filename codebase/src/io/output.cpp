@@ -81,6 +81,14 @@ operator<<(std::ostream& os, const clockwork::graphics::Fragment& fragment)
 
 
 std::ostream&
+operator<<(std::ostream& os, const clockwork::graphics::Vertex& vertex)
+{
+   os << clockwork::toString(vertex);
+   return os;
+}
+
+
+std::ostream&
 operator<<(std::ostream& os, const clockwork::graphics::Framebuffer& framebuffer)
 {
    os << clockwork::toString(framebuffer);
@@ -92,5 +100,21 @@ std::ostream&
 operator<<(std::ostream& os, const clockwork::graphics::Framebuffer::Resolution& resolution)
 {
    os << clockwork::toString(resolution);
+   return os;
+}
+
+
+std::ostream&
+operator<<(std::ostream& os, const clockwork::graphics::LineRenderParameters::LineAlgorithm& algorithm)
+{
+   os << clockwork::toString(algorithm);
+   return os;
+}
+
+
+std::ostream&
+operator<<(std::ostream& os, const clockwork::graphics::LineRenderParameters::LinePrimitive& primitive)
+{
+   os << clockwork::toString(primitive);
    return os;
 }

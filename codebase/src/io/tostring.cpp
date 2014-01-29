@@ -98,16 +98,33 @@ clockwork::toString(const clockwork::graphics::TextureFilter::Type& type)
 
 
 QString
-clockwork::toString(const clockwork::graphics::WireframeRenderParameters::LineAlgorithm& algorithm)
+clockwork::toString(const clockwork::graphics::LineRenderParameters::LineAlgorithm& algorithm)
 {
    switch (algorithm)
    {
-      case clockwork::graphics::WireframeRenderParameters::LineAlgorithm::Bresenham:
+      case clockwork::graphics::LineRenderParameters::LineAlgorithm::Bresenham:
          return "Bresenham";
-      case clockwork::graphics::WireframeRenderParameters::LineAlgorithm::XiaolinWu:
+      case clockwork::graphics::LineRenderParameters::LineAlgorithm::XiaolinWu:
          return "Xiaolin Wu";
       default:
          return "Unknown line algorithm";
+   }
+}
+
+
+QString
+clockwork::toString(const clockwork::graphics::LineRenderParameters::LinePrimitive& primitive)
+{
+   switch (primitive)
+   {
+      case clockwork::graphics::LineRenderParameters::LinePrimitive::Line:
+         return "Line";
+      case clockwork::graphics::LineRenderParameters::LinePrimitive::LineStrip:
+         return "Line strip";
+      case clockwork::graphics::LineRenderParameters::LinePrimitive::LineLoop:
+         return "Line loop";
+      default:
+         return "Unknown line primitive";
    }
 }
 
@@ -119,6 +136,8 @@ clockwork::toString(const clockwork::graphics::RenderParameters::Type& type)
    {
       case clockwork::graphics::RenderParameters::Type::Point:
          return "Points";
+      case clockwork::graphics::RenderParameters::Type::Line:
+         return "Lines";
       case clockwork::graphics::RenderParameters::Type::Wireframe:
          return "Wireframe";
       case clockwork::graphics::RenderParameters::Type::Random:
@@ -146,9 +165,24 @@ clockwork::toString(const clockwork::graphics::RenderParameters::Type& type)
 
 
 QString
-clockwork::toString(const clockwork::graphics::Fragment&)
+clockwork::toString(const clockwork::graphics::Fragment& f)
 {
-   return "Implement clockwork::toString(const clockwork::graphics::Fragment&)";
+   std::stringstream stream;
+   stream.precision(3);
+   stream << "fragment: <" << f.x << ", " << f.y << ", " << f.z << ">";
+
+   return QString(stream.str().c_str());
+}
+
+
+QString
+clockwork::toString(const clockwork::graphics::Vertex& v)
+{
+   std::stringstream stream;
+   stream.precision(3);
+   stream << "vertex: <" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ">";
+
+   return QString(stream.str().c_str());
 }
 
 

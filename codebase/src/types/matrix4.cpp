@@ -44,7 +44,7 @@ Matrix4::fill(const double& value)
 
 
 const std::array<double, 16>&
-Matrix4::data() const
+Matrix4::getData() const
 {
    return _data;
 }

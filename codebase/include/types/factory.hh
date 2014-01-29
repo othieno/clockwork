@@ -39,7 +39,7 @@ public:
     * Instantiate a Factory with a default key.
     * @param key the factory's default key.
     */
-   Factory(const KeyType& key) :
+   explicit Factory(const KeyType& key) :
    _defaultKey(key)
    {}
    /**

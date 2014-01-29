@@ -23,10 +23,14 @@
  */
 #include "viewport.hh"
 
+using clockwork::graphics::Viewport;
 
-clockwork::graphics::Viewport::Viewport(const double& inx, const double& iny, const double& inw, const double& inh) :
-x(inx),
-y(iny),
-width(inw),
-height(inh)
+
+Viewport::Viewport(const double& X, const double& Y, const double& W, const double& H, const double& N, const double& F) :
+x(X),
+y(Y),
+width(W),
+height(H),
+near(N),
+far(F)
 {}

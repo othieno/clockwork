@@ -27,14 +27,28 @@ using clockwork::graphics::NormalsRenderParameters;
 
 
 NormalsRenderParameters::NormalsRenderParameters() :
-PolygonRenderParameters(RenderParameters::Type::Random)
+PolygonRenderParameters(RenderParameters::Type::Normals)
+{}
+
+
+clockwork::graphics::Vertex
+NormalsRenderParameters::vertexProgram
+(
+   const RenderParameters::Uniforms& uniforms,
+   const clockwork::Point3& position,
+   const clockwork::Vector3& normal,
+   const Texture::Coordinates& uvmap
+) const
 {
-   setFragmentProgram(std::bind(&NormalsRenderParameters::fragmentProgram, this, std::placeholders::_1));
+   Vertex output = RenderParameters::vertexProgram(uniforms, position, normal, uvmap);
+   output.normal = clockwork::Vector3::normalise(uniforms.NORMAL * normal);
+
+   return output;
 }
 
 
 uint32_t
-NormalsRenderParameters::fragmentProgram(const Fragment& fragment)
+NormalsRenderParameters::fragmentProgram(const RenderParameters::Uniforms&, const Fragment& fragment) const
 {
    return ColorRGBA
    (

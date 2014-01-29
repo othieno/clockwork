@@ -32,7 +32,7 @@ namespace clockwork {
 namespace scene {
 
 /**
- * Objects are entities that have a position, orientation (rotation) and scale in the scene.
+ * Objects are scene entities that have a position, orientation (rotation) and scaling.
  */
 class Object : public Entity
 {
@@ -42,13 +42,35 @@ public:
     */
    const clockwork::Point3& getPosition() const;
    /**
+    * Set the object's position.
+    * @param position the position to set.
+    */
+   void setPosition(const clockwork::Point3& position);
+   /**
     * Return the object's rotation.
     */
    const clockwork::Quaternion& getRotation() const;
    /**
+    * Set the object's rotation.
+    * @param rotation the rotation to set.
+    */
+   void setRotation(const clockwork::Quaternion& rotation);
+   /**
+    * Set the object's rotation angles (in degrees).
+    * @param roll the roll angle to set.
+    * @param yaw the yaw angle to set.
+    * @param pitch the pitch angle to set.
+    */
+   void setRotation(const double roll, const double yaw, const double pitch);
+   /**
     * Return the object's scaling vector.
     */
    const clockwork::Vector3& getScalingVector() const;
+   /**
+    * Set the object's scaling vector.
+    * @param scaling the scaling vector to set.
+    */
+   void setScalingVector(const clockwork::Vector3& scaling);
    /**
     * @see clockwork::scene::Node::updateGeometry.
     */

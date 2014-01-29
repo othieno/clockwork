@@ -22,3 +22,10 @@
  * THE SOFTWARE.
  */
 #include "texture.hh"
+
+using clockwork::graphics::Texture;
+
+
+Texture::Coordinates::Coordinates(const double& U, const double& V) :
+u(U), v(V)
+{}

@@ -31,21 +31,9 @@ namespace clockwork {
 struct Point4
 {
    /**
-    * The point's X coordinate.
+    * The point's X, Y, Z and W coordinates.
     */
-   double x;
-   /**
-    * The point's Y coordinate.
-    */
-   double y;
-   /**
-    * The point's Z coordinate.
-    */
-   double z;
-   /**
-    * The point's W coordinate.
-    */
-   double w;
+   double x, y, z, w;
    /**
     * Instantiate a 3D homogeneous point from a set of X, Y, Z, and W coordinates.
     * @param x the point's X coordinate.
@@ -55,9 +43,16 @@ struct Point4
     */
    Point4(const double& x = 0, const double& y = 0, const double& z = 0, const double& w = 1);
    /**
-    * Convert the homogeneous point into its affine representation, i.e. a Point3.
+    * Instantiate a 3D homogeneous point from a 3D affine point.
+    * @param p the affine point.
+    */
+   explicit Point4(const clockwork::Point3& p);
+   /**
+    * Convert the homogeneous point into its affine representation.
     */
    operator clockwork::Point3() const;
 };
 
 } // namespace clockwork
+
+std::ostream& operator<<(std::ostream&, const clockwork::Point4&);

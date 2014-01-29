@@ -28,6 +28,7 @@
 #include "ui.combobox.image.filter.hh"
 #include "ui.combobox.texture.filter.hh"
 #include "ui.combobox.line.algorithm.hh"
+#include "ui.combobox.line.primitive.hh"
 #include "ui.combobox.framebuffer.resolution.hh"
 #include <QHBoxLayout>
 
@@ -36,7 +37,8 @@ clockwork::ui::UserInterface::UserInterface(clockwork::ui::Window& window) :
 QWidget(&window),
 _window(window),
 _display(new clockwork::ui::GUIDisplay(*this)),
-_controlPanel(new clockwork::ui::GUIControlPanel(*this)),
+//_controlPanel(new clockwork::ui::GUIControlPanel(*this)),
+_controlPanel(nullptr),
 _busyIndicator(new clockwork::ui::GUIBusyIndicator(*this)),
 _qMenuBar(window.menuBar()),
 _qStatusBar(new QStatusBar(_display))
@@ -95,26 +97,57 @@ clockwork::ui::UserInterface::build()
             layout->addWidget(_controlPanel);
          }
 
+#ifdef __ENABLE_PROTOTYPES
          // Build the menu bar.
          if (_qMenuBar != nullptr)
          {
-            //_qMenuBar->addMenu("File");
-            //_qMenuBar->addMenu("Edit");
-            //_qMenuBar->addMenu("View");
-            //_qMenuBar->addMenu("Help");
+            auto* const fileMenu = _qMenuBar->addMenu("File");
+            if (fileMenu != nullptr)
+            {
+               fileMenu->addAction("New");
+               fileMenu->addMenu("Load");
+               fileMenu->addSeparator();
+               fileMenu->addMenu("Save");
+               fileMenu->addSeparator();
+               fileMenu->addAction("Reload");
+               fileMenu->addSeparator();
+               fileMenu->addAction("Quit");
+            }
+            auto* const preferencesMenu = _qMenuBar->addMenu("Preferences");
+            if (preferencesMenu != nullptr)
+            {
+               auto* const fbResolutionMenu = preferencesMenu->addMenu("Resolution");
+               fbResolutionMenu->addAction("VGA");
+               fbResolutionMenu->addAction("SVGA");
+               fbResolutionMenu->addAction("XGA");
+            }
+            auto* const viewMenu = _qMenuBar->addMenu("View");
+            if (viewMenu != nullptr)
+            {
+               viewMenu->addAction("Show User Interface");
+            }
+            auto* const helpMenu = _qMenuBar->addMenu("Help");
+            if (helpMenu != nullptr)
+            {
+               helpMenu->addAction("Get Source Code");
+               helpMenu->addAction("Report a Bug");
+               fileMenu->addSeparator();
+               helpMenu->addAction("About");
+            }
          }
+#endif
 
          // Build the status bar.
          if (_qStatusBar != nullptr)
          {
             layout->addWidget(_qStatusBar, 0, Qt::AlignBottom);
 
-            _qStatusBar->addWidget(new GUIFramebufferResolutionComboBox(*this));
             _qStatusBar->addWidget(new GUIRendererComboBox(*this));
             _qStatusBar->addWidget(new GUIProjectionComboBox(*this));
             _qStatusBar->addWidget(new GUIImageFilterComboBox(*this));
-            _qStatusBar->addWidget(new GUITextureFilterComboBox(*this));
             _qStatusBar->addWidget(new GUILineAlgorithmComboBox(*this));
+            _qStatusBar->addWidget(new GUILinePrimitiveComboBox(*this));
+            _qStatusBar->addWidget(new GUITextureFilterComboBox(*this));
 
             // Configure the busy indicator.
             if (_busyIndicator != nullptr)

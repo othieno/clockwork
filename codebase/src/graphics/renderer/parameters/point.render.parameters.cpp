@@ -31,12 +31,38 @@ RenderParameters(RenderParameters::Type::Point)
 {}
 
 
-void
-PointRenderParameters::primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const
+clockwork::graphics::VertexArray&
+PointRenderParameters::clip(VertexArray& vertices) const
 {
-   for (const auto* const fragment : triangle)
+   // Use a normalised 2D viewing volume: [-1, 1] x [-1, 1].
+   const double xmax =  1.0;
+   const double xmin = -xmax;
+   const double ymax =  1.0;
+   const double ymin = -ymax;
+
+   const auto& begin = vertices.begin();
+   const auto& end   = vertices.end();
+   const auto& out   = [&xmin, &xmax, &ymin, &ymax](const clockwork::graphics::Vertex& v)
    {
-      if (fragment != nullptr)
-         plot(*fragment);
+      return v.x < xmin || v.x > xmax || v.y < ymin || v.y > ymax;
+   };
+
+   // Remove vertices that are out of the clipping window.
+   vertices.erase(std::remove_if(begin, end, out), end);
+   return vertices;
+}
+
+
+void
+PointRenderParameters::rasterise(const RenderParameters::Uniforms& uniforms, const VertexArray& vertices) const
+{
+   const auto& fop = std::bind(&PointRenderParameters::fragmentProgram, this, uniforms, std::placeholders::_1);
+   for (const auto& vertex : vertices)
+   {
+      // Create a fragment from the vertex.
+      Fragment fragment(vertex);
+
+      // Write the fragment to the framebuffer.
+      plot(fragment, fop);
    }
 }

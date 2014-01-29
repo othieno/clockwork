@@ -23,61 +23,53 @@
  */
 #pragma once
 
-#include <cstdint>
-#include <iostream>
+#include "task.hh"
+#include "render.parameters.hh"
+#include "scene.viewer.hh"
+#include "rigid.body.hh"
 
 
 namespace clockwork {
 namespace graphics {
 
-struct ColorRGBA
+/**
+ * A task to render a 3D model.
+ */
+class RenderTask : public clockwork::concurrency::Task
 {
-   /**
-    * The color's normalised red channel.
-    */
-   float red;
-   /**
-    * The color's normalised green channel.
-    */
-   float green;
-   /**
-    * The color's normalised blue channel.
-    */
-   float blue;
-   /**
-    * The color's normalised alpha channel.
-    */
-   float alpha;
-   /**
-    * Instantiate an RGBa color with normalised red, green and blue channels.
-    * @param red the red channel.
-    * @param green the green channel.
-    * @param blue the blue channel.
-    * @param alpha the alpha channel.
-    */
-   ColorRGBA(const float& red = 0.0f, const float& green = 0.0f, const float& blue = 0.0f, const float& alpha = 1.0f);
-   /**
-    * Convert the RGBA color into a 32-bit integer value. Consider this a shortcut for the merge method.
-    */
-   operator uint32_t() const;
 public:
    /**
-    * Merge a ColorRGBA object into one 32-bit integer.
-    * @param color the ColorRGBA object to merge.
+    * Instantiate a render task with given parameters, the current scene viewer,
+    * and a body containing a 3D model to render as well as transformation matrices.
+    * @param parameters the parameters that will be passed to the render function.
+    * @param viewer the current scene viewer.
+    * @param body the rigid body containing the 3D model to render.
     */
-   static uint32_t merge(const ColorRGBA& color);
+   RenderTask
+   (
+      const RenderParameters& parameters,
+      const clockwork::scene::Viewer& viewer,
+      const clockwork::physics::RigidBody& body
+   );
    /**
-    * Split a 32-bit integer value into an RGBA color.
-    * @param ARGB the 32-bit integer that represents an A8R8G8B8 color.
+    * @see clockwork::concurrency::Task::onRun.
     */
-   static ColorRGBA split(const uint32_t& ARGB);
+   virtual void onRun() override final;
+private:
    /**
-    * Return a random RGBA color.
+    * The render function's parameters.
     */
-   static ColorRGBA getRandom();
+   const RenderParameters& _parameters;
+   /**
+    * The rigid body containing the 3D model to render. It also contains
+    * matrix transformations that will be applied to the 3D model's vertices.
+    */
+   const clockwork::physics::RigidBody& _body;
+   /**
+    * The scene viewer.
+    */
+   const clockwork::scene::Viewer& _viewer;
 };
 
 } // namespace graphics
 } // namespace clockwork
-
-std::ostream& operator<<(std::ostream&, const clockwork::graphics::ColorRGBA&);

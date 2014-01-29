@@ -22,259 +22,96 @@
  * THE SOFTWARE.
  */
 #include "wireframe.render.parameters.hh"
+#include "line.render.parameters.hh"
+#include "render.parameters.factory.hh"
 #include "numerical.hh"
 
 using clockwork::graphics::WireframeRenderParameters;
+using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
 
 
 WireframeRenderParameters::WireframeRenderParameters() :
-RenderParameters(RenderParameters::Type::Wireframe),
-_lineAlgorithm(WireframeRenderParameters::LineAlgorithm::Bresenham),
-drawline(std::bind(&WireframeRenderParameters::drawlineBresenham, this, std::placeholders::_1, std::placeholders::_2))
-{
-   setLineAlgorithm(WireframeRenderParameters::LineAlgorithm::XiaolinWu);
-}
-
-
-QList<WireframeRenderParameters::LineAlgorithm>
-WireframeRenderParameters::getLineAlgorithms()
-{
-   QList<WireframeRenderParameters::LineAlgorithm> output =
-   {
-      WireframeRenderParameters::LineAlgorithm::Bresenham,
-      WireframeRenderParameters::LineAlgorithm::XiaolinWu
-   };
-   return output;
-}
-
-
-const WireframeRenderParameters::LineAlgorithm&
-WireframeRenderParameters::getLineAlgorithm() const
-{
-   return _lineAlgorithm;
-}
+PolygonRenderParameters(RenderParameters::Type::Wireframe)
+{}
 
 
 void
-WireframeRenderParameters::setLineAlgorithm(const WireframeRenderParameters::LineAlgorithm& algorithm)
+WireframeRenderParameters::rasterise(const RenderParameters::Uniforms& uniforms, const VertexArray& vertices) const
 {
-   if (_lineAlgorithm != algorithm)
+   // TODO Implement depth interpolation in Xiaolin Wu so it can be used instead of Bresenham
+   static const auto drawline =
+   std::bind
+   (
+      &LineRenderParameters::drawlineBresenham,
+      static_cast<LineRenderParameters*>(RenderParametersFactory::getUniqueInstance().get(RenderParameters::Type::Line)),
+      std::placeholders::_1,
+      std::placeholders::_2,
+      std::placeholders::_3
+   );
+   const auto& fop = std::bind(&WireframeRenderParameters::fragmentProgram, this, uniforms, std::placeholders::_1);
+   for (auto it = vertices.begin(); it != vertices.end(); it += 3)
    {
-      _lineAlgorithm = algorithm;
-      switch (_lineAlgorithm)
+      // Make sure we have at least 3 vertices.
+      const auto& V0 = it[0];
+      const auto& V1 = it[1];
+      const auto& V2 = it[2];
+
+      const Vertex *A, *B, *C;
+      if (clockwork::fequal(V0.y, V1.y))
       {
-         using namespace std::placeholders;
-
-         case WireframeRenderParameters::LineAlgorithm::Bresenham:
-            drawline = std::bind(&WireframeRenderParameters::drawlineBresenham, this, _1, _2);
-            break;
-         case WireframeRenderParameters::LineAlgorithm::XiaolinWu:
-            drawline = std::bind(&WireframeRenderParameters::drawlineXiaolinWu, this, _1, _2);
-            break;
-         default:
-            break;
-      }
-   }
-}
-
-
-void
-WireframeRenderParameters::primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const
-{
-   for (unsigned int i = 0; i < 3; ++i)
-   {
-      auto* const f0 = triangle[i];
-      auto* const f1 = triangle[(i + 1) % 3];
-
-      if (f0 != nullptr && f1 != nullptr)
-         drawline(*f0, *f1);
-   }
-}
-
-
-void
-WireframeRenderParameters::drawlineBresenham(const Fragment& f0, const Fragment& f1) const
-{
-   const double& x0 = f0.position.x;
-   const double& y0 = f0.position.y;
-   const double& x1 = f1.position.x;
-   const double& y1 = f1.position.y;
-
-   const double dx = x1 - x0;
-   const double dy = y1 - y0;
-
-   // Plot the origin.
-   plot(f0);
-
-   if (dx == 0.0 && dy > 0.0)
-   {
-      const auto ymin = std::round(std::min(y0, y1));
-      const auto ymax = std::round(std::max(y0, y1));
-
-      for (auto y = ymin; y <= ymax; ++y)
-      {
-         // Interpolate a new fragment.
-         const double p = (static_cast<double>(y) - y0) / dy;
-         auto fi = clockwork::graphics::Fragment::interpolate(f0, f1, p);
-         fi.position.x = x0;
-         fi.position.y = y;
-
-         // Plot the interpolated fragment.
-         plot(fi);
-      }
-   }
-   else if (dx != 0.0)
-   {
-      // Base method.
-      const double slope = dy / dx;
-      const double b = y0 - (slope * x0);
-
-      if (std::abs(slope) < 1)
-      {
-         const auto xmin = std::round(std::min(x0, x1));
-         const auto xmax = std::round(std::max(x0, x1));
-
-         for (auto x = xmin; x <= xmax; ++x)
-         {
-            // Interpolate a new fragment.
-            const double p = (static_cast<double>(x) - x0) / dx;
-            auto fi = clockwork::graphics::Fragment::interpolate(f0, f1, p);
-            fi.position.x = x;
-            fi.position.y = (slope * x) + b;
-
-            // Plot the interpolated fragment.
-            plot(fi);
-         }
+         // Triangle type A:
+         A = &V0;
+         B = &V2;
+         C = &V1;
       }
       else
       {
-         const auto ymin = std::round(std::min(y0, y1));
-         const auto ymax = std::round(std::max(y0, y1));
+         // Triangle type B:
+         A = &V1;
+         B = &V0;
+         C = &V2;
+      }
 
-         for (auto y = ymin; y <= ymax; ++y)
+      // Draw triangle outlines.
+      drawline(uniforms, V0, V1);
+      drawline(uniforms, V1, V2);
+      drawline(uniforms, V2, V0);
+
+      // Remember that the vertices are arranged in such a way that V0 has the smallest
+      // y value and V2 has the largest.
+      const auto ymin = static_cast<uint32_t>(V0.y);
+      const auto ymax = static_cast<uint32_t>(V2.y);
+
+      // Draw only the pixels inside the triangle primitive.
+      for (auto y = ymin + 1; y < ymax; ++y)
+      {
+         // The scan-line's origin (vs) and endpoint (ve) vertices.
+         auto vs = Vertex::interpolate(*A, *B, (y - A->y) / (B->y - A->y));
+         vs.x    = std::round(vs.x);
+         auto ve = Vertex::interpolate(*C, *B, (y - C->y) / (B->y - C->y));
+         ve.x    = std::round(ve.x);
+
+         // The color mask changes the vertex's color from its original value
+         // to the background's color. This value is then applied to fragments
+         // inside the triangle, leaving only the outlines visible.
+         const double colorMask = 0.05;
+
+         // Fill the scanline.
+         const auto xmin = static_cast<uint32_t>(std::min(vs.x, ve.x));
+         const auto xmax = static_cast<uint32_t>(std::max(vs.x, ve.x));
+         const double dx = ve.x - vs.x;
+         for (auto x = xmin + 1; x < xmax; ++x)
          {
-            // Interpolate a new fragment.
-            const double p = (static_cast<double>(y) - y0) / dy;
-            auto fi = clockwork::graphics::Fragment::interpolate(f0, f1, p);
-            fi.position.x = (y - b) / slope;
-            fi.position.y = y;
-
-            // Plot the interpolated fragment.
-            plot(fi);
+            auto vi = Vertex::interpolate(vs, ve, (x - vs.x) / dx);
+            vi.x = x;
+            vi.y = y;
+            vi.color.red   *= colorMask;
+            vi.color.green *= colorMask;
+            vi.color.blue  *= colorMask;
+            plot(Fragment(vi), fop);
          }
-      }
-   }
-}
-
-
-void
-WireframeRenderParameters::drawlineXiaolinWu(const Fragment& f0, const Fragment& f1) const
-{
-   const auto _plot = [this](const uint32_t& x, const uint32_t& y, const double& intensity)
-   {
-      plot(x, y, 0.0, ColorRGBA(intensity, intensity, intensity));
-   };
-
-   // fpart returns the fractional part of a floating point number.
-   const auto fpart = [](const double& x) -> double
-   {
-      return std::fmod(x, 1.0);
-   };
-
-   // ipart returns the integer part of a floating-point number.
-   // Taken from http://stackoverflow.com/a/343602.
-   const auto ipart = [&fpart](const double& x) -> int
-   {
-      return static_cast<int>(x - fpart(x));
-   };
-
-   // rfpart returns the reverse of fpart.
-   const auto rfpart = [&fpart](const double& x) -> double
-   {
-      return 1.0 - fpart(x);
-   };
-
-   // round rounds off a floating-point value.
-   const auto round = [&ipart](const double& x) -> int
-   {
-      return ipart(x + 0.5);
-   };
-
-   double x1 = f0.position.x;
-   double y1 = f0.position.y;
-   double x2 = f1.position.x;
-   double y2 = f1.position.y;
-
-   double dx = x2 - x1;
-   double dy = y2 - y1;
-
-   if (std::abs(dx) > std::abs(dy))
-   {
-      if (x2 < x1)
-      {
-         std::swap(x1, x2);
-         std::swap(y1, y2);
-      }
-
-      const double gradient = dy / dx;
-      int xend = round(x1);
-      double yend = y1 + (gradient * (xend - x1));
-      double xgap = rfpart(x1 + 0.5);
-
-
-      const int xpxl1 = xend;
-      const int ypxl1 = ipart(yend);
-      _plot(xpxl1, ypxl1, rfpart(yend) * xgap);
-      _plot(xpxl1, ypxl1 + 1, fpart(yend) * xgap);
-      double intery = yend + gradient;
-
-      xend = round(x2);
-      yend = y2 + (gradient * (xend - x2));
-      xgap = fpart(x2 + 0.5);
-      const int xpxl2 = xend;
-      const int ypxl2 = ipart(yend);
-      _plot(xpxl2, ypxl2, rfpart(yend) * xgap);
-      _plot(xpxl2, ypxl2 + 1, fpart(yend) * xgap);
-
-      for(auto x = xpxl1 + 1; x <= (xpxl2 - 1); ++x)
-      {
-         _plot(x, ipart(intery), rfpart(intery));
-         _plot(x, ipart(intery) + 1, fpart(intery));
-         intery += gradient;
-      }
-   }
-   else
-   {
-      if (y2 < y1)
-      {
-         std::swap(x1, x2);
-         std::swap(y1, y2);
-      }
-
-      double gradient = dx / dy;
-      int yend = round(y1);
-      double xend = x1 + (gradient * (yend - y1));
-      double ygap = rfpart(y1 + 0.5);
-
-      int ypxl1 = yend;
-      int xpxl1 = ipart(xend);
-      _plot(xpxl1, ypxl1, rfpart(xend) * ygap);
-      _plot(xpxl1, ypxl1 + 1, fpart(xend) * ygap);
-      double interx = xend + gradient;
-
-      yend = round(y2);
-      xend = x2 + (gradient * (yend - y2));
-      ygap = fpart(y2 + 0.5);
-      int ypxl2 = yend;
-      int xpxl2 = ipart(xend);
-      _plot(xpxl2, ypxl2, rfpart(xend) * ygap);
-      _plot(xpxl2, ypxl2 + 1, fpart(xend) * ygap);
-
-      for(int y=ypxl1+1; y <= (ypxl2-1); y++)
-      {
-         _plot(ipart(interx), y, rfpart(interx));
-         _plot(ipart(interx) + 1, y, fpart(interx));
-         interx += gradient;
       }
    }
 }

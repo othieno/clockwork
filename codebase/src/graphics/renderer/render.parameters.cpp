@@ -23,13 +23,27 @@
  */
 #include "render.parameters.hh"
 #include "services.hh"
+#include "scene.viewer.hh"
+#include "rigid.body.hh"
 
 using clockwork::graphics::RenderParameters;
 
 
+RenderParameters::Uniforms::Uniforms(const clockwork::physics::RigidBody& body, const clockwork::scene::Viewer& viewer) :
+MODEL(body.getModelMatrix()),
+INVERSE_MODEL(clockwork::Matrix4::inverse(MODEL)),
+VIEW(viewer.getViewMatrix()),
+MODELVIEW(VIEW * MODEL),
+PROJECTION(viewer.getProjectionMatrix()),
+VIEWPROJECTION(viewer.getViewProjectionMatrix()),
+MODELVIEWPROJECTION(VIEWPROJECTION * MODEL),
+NORMAL(clockwork::Matrix4::transpose(clockwork::Matrix4::inverse(MODELVIEW))),
+viewpoint(viewer.getPosition())
+{}
+
+
 RenderParameters::RenderParameters(const RenderParameters::Type& type) :
-_type(type),
-_fragmentProgram(std::bind(&RenderParameters::defaultFragmentProgram, this, std::placeholders::_1))
+_type(type)
 {}
 
 
@@ -40,25 +54,54 @@ RenderParameters::getType() const
 }
 
 
-void
-RenderParameters::preVertexProgram(const Face&, const Vertex&, Fragment&) const
-{}
-
-
-void
-RenderParameters::postVertexProgram(const Face&, const Vertex&, Fragment&) const
-{}
-
-
-void
-RenderParameters::setFragmentProgram(const std::function<uint32_t(const Fragment&)>& program)
+clockwork::graphics::Vertex
+RenderParameters::vertexProgram
+(
+   const RenderParameters::Uniforms& uniforms,
+   const clockwork::Point3& position,
+   const clockwork::Vector3&,
+   const Texture::Coordinates& uvmap
+) const
 {
-   _fragmentProgram = program;
+   // Set the vertex's position in clip space, as well as its texture mapping coordinates.
+   Vertex output(uniforms.MODELVIEWPROJECTION * clockwork::Point4(position));
+   output.uvmap = uvmap;
+
+   return output;
+}
+
+
+clockwork::graphics::VertexArray&
+RenderParameters::primitiveAssembly(VertexArray& vertices) const
+{
+   return vertices;
+}
+
+
+clockwork::graphics::VertexArray&
+RenderParameters::backfaceCulling(VertexArray& vertices) const
+{
+   return vertices;
+}
+
+
+clockwork::graphics::VertexArray&
+RenderParameters::occlusionCulling(VertexArray& vertices) const
+{
+   //TODO Implement me.
+   return vertices;
+}
+
+
+clockwork::graphics::VertexArray&
+RenderParameters::geometryProgram(const RenderParameters::Uniforms&, VertexArray& vertices) const
+{
+   return vertices;
 }
 
 
 uint32_t
-RenderParameters::defaultFragmentProgram(const Fragment& f) const
+RenderParameters::fragmentProgram(const RenderParameters::Uniforms&, const Fragment& f) const
 {
    return f.color;
 }

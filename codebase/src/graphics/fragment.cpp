@@ -22,15 +22,28 @@
  * THE SOFTWARE.
  */
 #include "fragment.hh"
+#include <cmath>
 
 using clockwork::graphics::Fragment;
 
 
-Fragment::Fragment(const double& U, const double& V) :
-position(),
+Fragment::Fragment() :
+x(0), y(0), z(0.0),
 normal(),
-u(U), v(V),
-color(1.0f, 1.0f, 1.0f),
+u(0.0), v(0.0),
+color(1.0, 1.0, 1.0),
+stencil(0)
+{}
+
+
+Fragment::Fragment(const Vertex& vertex) :
+x(static_cast<uint32_t>(vertex.x)),
+y(static_cast<uint32_t>(vertex.y)),
+z(vertex.z),
+normal(vertex.normal),
+u(vertex.uvmap.u),
+v(vertex.uvmap.v),
+color(vertex.color),
 stencil(0)
 {}
 
@@ -41,9 +54,9 @@ Fragment::interpolate(const Fragment& start, const Fragment& end, const double& 
    const auto pp = 1.0 - p;
    Fragment output;
 
-   output.position.x = (pp * start.position.x) + (p * end.position.x);
-   output.position.y = (pp * start.position.y) + (p * end.position.y);
-   output.position.z = (pp * start.position.z) + (p * end.position.z);
+   output.x = static_cast<uint32_t>(std::round((pp * start.x) + (p * end.x)));
+   output.y = static_cast<uint32_t>(std::round((pp * start.y) + (p * end.y)));
+   output.z = (pp * start.z) + (p * end.z);
 
    output.u = (pp * start.u) + (p * end.u);
    output.v = (pp * start.v) + (p * end.v);

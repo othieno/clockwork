@@ -23,16 +23,23 @@
  */
 #include "point4.hh"
 
+using clockwork::Point4;
 
-clockwork::Point4::Point4(const double& inx, const double& iny, const double& inz, const double& inw) :
-x(inx),
-y(iny),
-z(inz),
-w(inw)
+
+Point4::Point4(const double& X, const double& Y, const double& Z, const double& W) :
+x(X), y(Y), z(Z), w(W)
 {}
 
 
-clockwork::Point4::operator clockwork::Point3() const
+Point4::Point4(const clockwork::Point3& p) :
+x(p.x), y(p.y), z(p.z), w(1.0)
+{}
+
+
+Point4::operator clockwork::Point3() const
 {
-   return clockwork::Point3(x / w, y / w, z / w);
+   if (w > 0)
+      return clockwork::Point3(x / w, y / w, z / w);
+   else
+      return clockwork::Point3(0, 0, 0);
 }

@@ -25,9 +25,6 @@
 
 #include <string>
 #include "vertex.hh"
-#include "color.hh"
-#include "point4.hh"
-#include "vector3.hh"
 
 
 namespace clockwork {
@@ -35,17 +32,21 @@ namespace graphics {
 
 /**
  * A fragment is the result of a renderer's per-vertex operation applied to a vertex.
- * Primarily, a fragment should contain a vertex's 2D normalised device coordinates (or
- * viewport coordinates), its depth value, its surface normal and a base color that will all
- * be used to determine a color that will be written to the framebuffer.
+ * Primarily, a fragment should contain a vertex's 2D screen space coordinates its depth
+ * value, its surface normal and a base color that will all be used to determine a color
+ * that will be written to the framebuffer.
  */
 struct Fragment
 {
 public:
    /**
-    * The fragment's position.
+    * The fragment's screen space position.
     */
-   clockwork::Point4 position;
+   uint32_t x, y;
+   /**
+    * The fragment's depth value.
+    */
+   double z;
    /**
     * The fragment's normal vector.
     */
@@ -63,11 +64,18 @@ public:
     */
    uint8_t stencil;
    /**
-    * Instantiate a fragment with given texture mapping coordinates.
-    * @param u the U texture mapping coordinate.
-    * @param v the V texture mapping coordinate.
+    * The default constructor.
     */
-   Fragment(const double& u = 0, const double& v = 0);
+   Fragment();
+   /**
+    * Instantiate a fragment from a given vertex attribute. Note that the vertex's
+    * position must be in window space coordinates. To make sure that no precision is
+    * lost, make sure that the vertex's X and Y coordinates are positive and rounded-off
+    * to the nearest integer because this constructor truncates the aforementioned
+    * coordinates to unsigned integers.
+    * @param vertex the vertex attribute that will initialise this fragment.
+    */
+   explicit Fragment(const Vertex& vertex);
    /**
     * Interpolate the value of a fragment in between two other fragments.
     * @param start the first fragment.

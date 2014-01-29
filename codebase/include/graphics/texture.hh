@@ -24,6 +24,7 @@
 #pragma once
 
 #include "asset.hh"
+#include <iostream>
 
 
 namespace clockwork {
@@ -31,7 +32,21 @@ namespace graphics {
 
 class Texture : public clockwork::io::Asset
 {
+public:
+   /**
+    * Texture mapping coordinates.
+    */
+   struct Coordinates
+   {
+      double u, v;
+      /**
+       * Instantiate texture mapping coordinates with a given U and V.
+       */
+      Coordinates(const double& u = 0, const double& v = 0);
+   };
 };
 
 } // namespace graphics
 } // namespace clockwork
+
+std::ostream& operator<<(std::ostream&, const clockwork::graphics::Texture&);

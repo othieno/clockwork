@@ -52,7 +52,7 @@ public:
     * Instantiate a framebuffer with a given resolution.
     * @param resolution the framebuffer's resolution.
     */
-   Framebuffer(const Framebuffer::Resolution& resolution = Framebuffer::Resolution::SVGA);
+   explicit Framebuffer(const Framebuffer::Resolution& resolution = Framebuffer::Resolution::SVGA);
    /**
     * The destructor.
     */
@@ -155,6 +155,13 @@ public:
     * Return all possible framebuffer resolutions.
     */
    static QList<Framebuffer::Resolution> getResolutions();
+   /**
+    * Return the buffer offset for a given <x, y> coordinate. If the coordinate
+    * is out of the framebuffer's bounds, then -1 is returned.
+    * @param x the buffer element's row position.
+    * @param y the buffer element's column position.
+    */
+   int getOffset(const uint32_t& x, const uint32_t& y) const;
 private:
    /**
     * The framebuffer's resolution.
@@ -204,20 +211,6 @@ private:
     * A flag to make the framebuffer writable or readable-only.
     */
    std::atomic<bool> _ignoreWrites;
-   /**
-    * Return the buffer offset for a given <x, y> coordinate. If the coordinate
-    * is out of the framebuffer's bounds, then -1 is returned.
-    * @param x the buffer element's row position.
-    * @param y the buffer element's column position.
-    */
-   int getOffset(const double& x, const double& y) const;
-   /**
-    * Return the buffer offset for a given <x, y> coordinate. If the coordinate
-    * is out of the framebuffer's bounds, then -1 is returned.
-    * @param x the buffer element's row position.
-    * @param y the buffer element's column position.
-    */
-   int getOffset(const uint32_t& x, const uint32_t& y) const;
    /**
     * Test if a given fragment passes all fragment tests. It will return the
     * fragment's buffer offset if the fragment passes all tests, otherwise -1.

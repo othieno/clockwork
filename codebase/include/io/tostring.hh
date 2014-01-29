@@ -26,7 +26,7 @@
 #include <QString>
 #include "error.hh"
 #include "projection.hh"
-#include "wireframe.render.parameters.hh"
+#include "line.render.parameters.hh"
 #include "texture.filter.factory.hh"
 #include "image.filter.hh"
 #include "texture.filter.hh"
@@ -38,12 +38,14 @@ namespace clockwork {
 
 QString toString(const clockwork::Error&);
 QString toString(const clockwork::graphics::Fragment&);
+QString toString(const clockwork::graphics::Vertex&);
 QString toString(const clockwork::graphics::Framebuffer&);
 QString toString(const clockwork::graphics::Framebuffer::Resolution&);
 QString toString(const clockwork::graphics::Projection::Type&);
 QString toString(const clockwork::graphics::ImageFilter::Type&);
 QString toString(const clockwork::graphics::TextureFilter::Type&);
 QString toString(const clockwork::graphics::RenderParameters::Type&);
-QString toString(const clockwork::graphics::WireframeRenderParameters::LineAlgorithm&);
+QString toString(const clockwork::graphics::LineRenderParameters::LineAlgorithm&);
+QString toString(const clockwork::graphics::LineRenderParameters::LinePrimitive&);
 
 } // namespace clockwork

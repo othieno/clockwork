@@ -42,9 +42,16 @@ class PointRenderParameters : public RenderParameters
 friend class RenderParametersFactory;
 public:
    /**
-    * @see RenderParameters::primitiveAssembly.
+    * Perform point clipping on a collection of vertices.
+    * @param vertices the vertices to clip.
     */
-   virtual void primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const override final;
+   VertexArray& clip(VertexArray& vertices) const override final;
+   /**
+    * Rasterise point primitives.
+    * @param uniforms uniform values.
+    * @param vertices the vertices that will form the point primitives to rasterise.
+    */
+   void rasterise(const RenderParameters::Uniforms& uniforms, const VertexArray& vertices) const override final;
 private:
    /**
     * The PointRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.

@@ -23,6 +23,8 @@
  */
 #pragma once
 
+#include <iostream>
+
 
 namespace clockwork {
 namespace graphics {
@@ -49,14 +51,36 @@ struct Viewport
     */
    double height;
    /**
+    * TODO Explain me.
+    * @see glDepthRange documentation.
+    */
+   double near;
+   /**
+    * TODO Explain me.
+    * @see glDepthRange documentation
+    */
+   double far;
+   /**
     * Instantiate a viewport with a given origin, width and height.
     * @param x the viewport's origin on the horizontal plane.
     * @param y the viewport's origin on the vertical plane.
     * @param width the viewport's width.
     * @param height the viewport's height.
+    * @param near the mapping of the near clipping plane to the window coordinates.
+    * @param far the mapping of the far clipping plane to the window coordinates.
     */
-   Viewport(const double& x = 0, const double& y = 0, const double& width = 1, const double& height = 1);
+   Viewport
+   (
+      const double& x = 0,
+      const double& y = 0,
+      const double& width = 1.0,
+      const double& height = 1.0,
+      const double& near = 0.0,
+      const double& far = 1.0
+   );
 };
 
 } // namespace graphics
 } // namespace clockwork
+
+std::ostream& operator<<(std::ostream&, const clockwork::graphics::Viewport&);

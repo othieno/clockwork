@@ -36,8 +36,10 @@ public:
    /**
     * Instantiate a named camera.
     */
-   Camera(const std::string& name);
+   explicit Camera(const std::string& name);
 };
 
 } // namespace graphics
 } // namespace clockwork
+
+std::ostream& operator<<(std::ostream&, const clockwork::graphics::Camera&);

@@ -31,17 +31,9 @@ namespace clockwork {
 struct Point3
 {
    /**
-    * The point's X coordinate.
+    * The point's X, Y and Z coordinates.
     */
-   double x;
-   /**
-    * The point's Y coordinate.
-    */
-   double y;
-   /**
-    * The point's Z coordinate.
-    */
-   double z;
+   double x, y, z;
    /**
     * Instantiate a point from a set of X, Y and Z coordinates.
     * @param x the point's X coordinate.

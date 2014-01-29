@@ -31,84 +31,56 @@ namespace clockwork {
 namespace graphics {
 
 /**
- * @see model3d.hh
- */
-class Model3D;
-
-/**
  * TODO Explain me.
  */
 class Face
 {
 public:
    /**
-    * Texture mapping coordinates.
-    */
-   struct TextureCoordinates
-   {
-      double u, v;
-      /**
-       * Instantiate texture mapping coordinates with the given U and V pair.
-       */
-      TextureCoordinates(const double& u = 0, const double& v = 0);
-   };
-   /**
-    * Instantiate a face with given list of vertex indices and texture mapping coordinates,
-    * that is bound to a 3D model.
-    * @param model3D the 3D model that owns this polygonal face.
+    * Instantiate a face with a given list of vertex indices, normals and texture mapping coordinates.
     * @param indices the list of vertices that make up this face.
+    * @param normals the face's vertex normals.
     * @param texcoords the face's texture mapping coordinates.
     */
    Face
    (
-      const Model3D& model3D,
       const std::array<const uint32_t, 3>& indices,
-      const std::array<const Face::TextureCoordinates, 3>& textureCoordinates
+      const std::array<const clockwork::Vector3, 3>& normals,
+      const std::array<const Texture::Coordinates, 3>& textureCoordinates
    );
    /**
-    * Instantiate a face with a given list of vertex indices, that is bound to a 3D model.
-    * @param model3D the 3D model that owns this polygonal face.
+    * Instantiate a face with a given list of vertex indices.
     * @param indices the face's vertices.
     */
-   Face(const Model3D& model3D, const std::array<const uint32_t, 3>& indices);
+   explicit Face(const std::array<const uint32_t, 3>& indices);
    /**
-    * Return the vertices that belong to this polygonal face.
+    * Return the face's vertex indices.
     */
-   std::array<const Vertex*, 3> getVertices() const;
+   const std::array<const uint32_t, 3>& getIndices() const;
    /**
     * Return the face's texture coordinates.
     */
-   const std::array<const Face::TextureCoordinates, 3>& getTextureCoordinates() const;
+   const std::array<const clockwork::Vector3, 3>& getNormals() const;
    /**
-    * Return the face's surface normal.
+    * Return the face's texture coordinates.
     */
-   const clockwork::Vector3& getNormal() const;
-   /**
-    * Return the face's center.
-    */
-   const clockwork::Point3& getCenter() const;
+   const std::array<const Texture::Coordinates, 3>& getTextureMappingCoordinates() const;
 private:
-   /**
-    * The 3D model that owns this polygonal face.
-    */
-   const clockwork::graphics::Model3D& _model3D;
    /**
     * The face's vertex indices.
     */
    const std::array<const uint32_t, 3> _indices;
    /**
-    * The face's mapping coordinates.
+    * The vertex normals.
     */
-   const std::array<const Face::TextureCoordinates, 3> _textureCoordinates;
+   const std::array<const clockwork::Vector3, 3> _normals;
    /**
-    * The face's surface normal.
+    * The texture mapping coordinates.
     */
-   const clockwork::Vector3 _normal;
-   /**
-    * The face's center.
-    */
-   const clockwork::Point3 _center;
+   const std::array<const Texture::Coordinates, 3> _textureMappingCoordinates;
 };
 
 } // namespace graphics
 } // namespace clockwork
+
+std::ostream& operator<<(std::ostream&, const clockwork::graphics::Face&);

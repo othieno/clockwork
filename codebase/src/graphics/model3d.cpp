@@ -23,56 +23,55 @@
  */
 #include "model3d.hh"
 
-clockwork::graphics::Model3D::Model3D()
+using clockwork::graphics::Model3D;
+
+
+Model3D::Model3D()
 {}
 
 
-clockwork::graphics::Model3D::Model3D
-(
-   const std::vector<clockwork::graphics::Vertex>& vertices,
-   const std::vector<clockwork::graphics::Face>& faces,
-   const clockwork::graphics::Material& material
-) :
-_vertices(vertices),
+Model3D::Model3D(const std::vector<clockwork::Point3>& positions, const std::vector<Face>& faces, const Material& material) :
+_positions(positions),
 _faces(faces),
 _material(material)
 {}
 
 
-const std::vector<clockwork::graphics::Vertex>&
-clockwork::graphics::Model3D::getVertices() const
+const std::vector<clockwork::Point3>&
+Model3D::getVertexPositions() const
 {
-   return _vertices;
+   return _positions;
 }
 
 
 const std::vector<clockwork::graphics::Face>&
-clockwork::graphics::Model3D::getFaces() const
+Model3D::getFaces() const
 {
    return _faces;
 }
 
 
 void
-clockwork::graphics::Model3D::addFace
+Model3D::addFace
 (
    const std::array<const uint32_t, 3>& indices,
-   const std::array<const clockwork::graphics::Face::TextureCoordinates, 3>& textureCoordinates
+   const std::array<const clockwork::Vector3, 3>& normals,
+   const std::array<const Texture::Coordinates, 3>& texcoords
 )
 {
-   _faces.push_back(clockwork::graphics::Face(*this, indices, textureCoordinates));
+   _faces.push_back(Face(indices, normals, texcoords));
 }
 
 
 const clockwork::graphics::Material&
-clockwork::graphics::Model3D::getMaterial() const
+Model3D::getMaterial() const
 {
    return _material;
 }
 
 
 bool
-clockwork::graphics::Model3D::empty() const
+Model3D::isEmpty() const
 {
-   return _vertices.empty() || _faces.empty();
+   return _positions.empty() || _faces.empty();
 }

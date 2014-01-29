@@ -66,6 +66,13 @@ Object::getPosition() const
 }
 
 
+void
+Object::setPosition(const clockwork::Point3& position)
+{
+   _position = position;
+}
+
+
 const clockwork::Quaternion&
 Object::getRotation() const
 {
@@ -73,8 +80,22 @@ Object::getRotation() const
 }
 
 
+void
+Object::setRotation(const clockwork::Quaternion& rotation)
+{
+   _rotation = rotation;
+}
+
+
 const clockwork::Vector3&
 Object::getScalingVector() const
 {
    return _scaling;
+}
+
+
+void
+Object::setScalingVector(const clockwork::Vector3& scaling)
+{
+   _scaling = scaling;
 }

@@ -36,9 +36,26 @@ class PolygonRenderParameters : public RenderParameters
 {
 public:
    /**
-    * @see RenderParameters::primitiveAssembly.
+    * This primitive assembly operation creates triangle primitives from a collection
+    * of vertices in clip space.
+    * @param vertices the collection of vertices that will create a set of primitives.
     */
-   virtual void primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const override final;
+   VertexArray& primitiveAssembly(VertexArray& vertices) const override final;
+   /**
+    * Perform polygon clipping (Sutherland-Hodgman) on a collection of vertices.
+    * @param vertices the vertices to clip.
+    */
+   VertexArray& clip(VertexArray& vertices) const override final;
+   /**
+    * @see RenderParameters::backfaceCulling.
+    */
+   VertexArray& backfaceCulling(VertexArray&) const override final;
+   /**
+    * Rasterise triangle primitives using polygon scan conversion.
+    * @param uniforms uniform values.
+    * @param vertices the vertices that will form the triangle primitives to rasterise.
+    */
+   void rasterise(const RenderParameters::Uniforms& uniforms, const VertexArray& vertices) const override;
 protected:
    /**
     * Instantiate a PolygonRenderParameters object with a given render type.

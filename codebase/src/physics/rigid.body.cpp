@@ -46,7 +46,7 @@ clockwork::physics::RigidBody::render(const clockwork::scene::Viewer& viewer) co
       clockwork::graphics::RenderParametersFactory::getUniqueInstance().get(viewer.getRenderType());
       if (parameters != nullptr)
       {
-         auto* task = new clockwork::concurrency::RenderTask(*parameters, viewer, *this);
+         auto* task = new clockwork::graphics::RenderTask(*parameters, viewer, *this);
          clockwork::system::Services::Concurrency.submitTask(task);
       }
    }

@@ -23,49 +23,35 @@
  */
 #pragma once
 
-#include <iostream>
+#include "ui.combobox.hh"
+#include "line.render.parameters.hh"
 
 
 namespace clockwork {
+namespace ui {
 
-struct Vector3
+class GUILinePrimitiveComboBox : public GUIComboBox
 {
+public:
    /**
-    * The point's I component.
+    * Instantiate a GUILinePrimitiveComboBox attached to a user interface.
+    * @param ui the user interface that this component is attached to.
     */
-   double i;
+   GUILinePrimitiveComboBox(UserInterface& ui);
    /**
-    * The point's J component.
+    * @see GUIComponent::onInterfaceUpdate.
     */
-   double j;
+   virtual void onInterfaceUpdate(const GUIComponent* const) override final;
+private:
    /**
-    * The point's K component.
+    * An instance to the line render parameters.
     */
-   double k;
+   clockwork::graphics::LineRenderParameters* const _renderParameters;
    /**
-    * Instantiate a vector from a set of I, J and K components.
-    * @param i the point's I component.
-    * @param j the point's J component.
-    * @param k the point's K component.
+    * @see GUIComboBox::onItemSelected.
     */
-   Vector3(const double& i = 0, const double& j = 0, const double& k = 0);
-   /**
-    * Return the vector's magnitude.
-    */
-   double getMagnitude() const;
-   /**
-    * Normalise a vector.
-    * @param v the vector to normalise.
-    */
-   static Vector3 normalise(const Vector3& v);
-   /**
-    * Return the cross product of two vectors.
-    * @param v1 the first vector.
-    * @param v2 the second vector.
-    */
-   static Vector3 cross(const Vector3& v1, const Vector3& v2);
+   void onItemSelected(const int&) override final;
 };
 
+} // namespace ui
 } // namespace clockwork
-
-std::ostream& operator<<(std::ostream&, const clockwork::Vector3&);

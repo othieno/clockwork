@@ -26,12 +26,23 @@
 #include <iostream>
 #include <array>
 #include <functional>
-#include "face.hh"
 #include "fragment.hh"
 #include "services.hh"
+#include "model3d.hh"
 
 
 namespace clockwork {
+
+/**
+ * @see scene.viewer.hh.
+ */
+namespace scene { class Viewer; }
+
+/**
+ * @see rigid.body.hh.
+ */
+namespace physics { class RigidBody; }
+
 namespace graphics {
 
 class RenderParameters
@@ -43,6 +54,7 @@ public:
    enum class Type
    {
       Point,
+      Line,
       Wireframe,
       Random,
       Depth,
@@ -55,25 +67,108 @@ public:
       Deferred
    };
    /**
+    * TODO Explain me.
+    */
+   struct Uniforms
+   {
+      /**
+       * TODO Explain me.
+       */
+      Uniforms(const clockwork::physics::RigidBody& body, const clockwork::scene::Viewer& viewer);
+      /**
+       * The rigid body's model transformation matrix.
+       */
+      const clockwork::Matrix4& MODEL;
+      /**
+       * The inverse MODEL matrix.
+       */
+      const clockwork::Matrix4 INVERSE_MODEL;
+      /**
+       * The viewer's view transformation matrix.
+       */
+      const clockwork::Matrix4& VIEW;
+      /**
+       * The MODEL-VIEW transformation matrix.
+       */
+      const clockwork::Matrix4 MODELVIEW;
+      /**
+       * The viewer's projection transformation matrix.
+       */
+      const clockwork::Matrix4& PROJECTION;
+      /**
+       * The view-projection transformation matrix.
+       */
+      const clockwork::Matrix4& VIEWPROJECTION;
+      /**
+       * The MODEL-VIEW-PROJECTION transformation matrix.
+       */
+      const clockwork::Matrix4 MODELVIEWPROJECTION;
+      /**
+       * The normals transformation matrix.
+       */
+      const clockwork::Matrix4 NORMAL;
+      /**
+       * The viewer's position in world space.
+       */
+      const clockwork::Point3& viewpoint;
+   };
+   /**
     * Return the type of render performed by these parameters.
     */
    const Type& getType() const;
    /**
-    * TODO Explain me.
+    * The vertex program is responsible for primarily transforming a vertex position from
+    * object (model) to clip space.
+    * @param uniform uniform values.
+    * @param position the vertex's position in object space.
+    * @param normal the vertex's normal in object space.
+    * @param uvmap the vertex's texture mapping coordinates.
     */
-   virtual void preVertexProgram(const Face& face, const Vertex& vertex, Fragment& fragment) const;
+   virtual Vertex vertexProgram
+   (
+      const RenderParameters::Uniforms& uniforms,
+      const clockwork::Point3& position,
+      const clockwork::Vector3& normal,
+      const Texture::Coordinates& uvmap
+   ) const;
+   /**
+    * The primitive assembly operation creates point, line or polygon primitives from a
+    * collection of vertices in clip space.
+    * @param vertices the collection of vertices that will be considered primitives.
+    */
+   virtual VertexArray& primitiveAssembly(VertexArray& vertices) const;
+   /**
+    * Perform backface culling to remove triangular primitives that are not facing the viewer,
+    * i.e. surfaces that are not visible to the viewer.
+    * @param vertices the vertices to cull.
+    */
+   virtual VertexArray& backfaceCulling(VertexArray& vertices) const;
+   /**
+    * Perform occlusion culling to remove primitives that are occluded from the viewer by other primitives.
+    * @param vertices the vertices to cull.
+    */
+   VertexArray& occlusionCulling(VertexArray& vertices) const;
    /**
     * TODO Explain me.
     */
-   virtual void postVertexProgram(const Face& face, const Vertex& vertex, Fragment& fragment) const;
+   virtual VertexArray& geometryProgram(const RenderParameters::Uniforms& uniforms, VertexArray& vertices) const;
    /**
-    * The primitive assembly operation creates a point, line or polygon primitive from
-    * fragments. In the case of polygon primitives, missing fragments in the hollows of
-    * the polygon triangles are interpolated. These primitives are then passed to the
-    * fragment program which determines their color.
-    * @param triangle a set of 3 fragments that will create one or more primitives.
+    * Perform point, line or polygon clipping on a collection of primitives.
+    * @param primitives the primitives to clip.
     */
-   virtual void primitiveAssembly(const std::array<const Fragment*, 3>& triangle) const = 0;
+   virtual VertexArray& clip(VertexArray& vertices) const = 0;
+   /**
+    * Rasterise primitives.
+    * @param uniforms uniform values.
+    * @param vertices the vertices that form the primitives to rasterise.
+    */
+   virtual void rasterise(const RenderParameters::Uniforms& uniforms, const VertexArray& vertices) const = 0;
+   /**
+    * The fragment program calculates a color from given fragment attributes.
+    * @param uniforms uniform values.
+    * @param fragment the fragment used to calculate a color.
+    */
+   virtual uint32_t fragmentProgram(const RenderParameters::Uniforms& uniforms, const Fragment& fragment) const;
 protected:
    /**
     * Instantiate a render parameter set.
@@ -83,9 +178,9 @@ protected:
    /**
     * @see Framebuffer::plot(2).
     */
-   inline void plot(const Fragment& fragment) const
+   inline void plot(const Fragment& f, const std::function<uint32_t(const Fragment&)> fop) const
    {
-      clockwork::system::Services::Graphics.plot(fragment, _fragmentProgram);
+      clockwork::system::Services::Graphics.plot(f, fop);
    }
    /**
     * @see Framebuffer::plot(3).
@@ -94,26 +189,11 @@ protected:
    {
       clockwork::system::Services::Graphics.plot(x, y, z, color);
    }
-   /**
-    * Set the fragment program.
-    * @param program a pointer to the fragment program.
-    */
-   void setFragmentProgram(const std::function<uint32_t(const Fragment&)>& program);
 private:
    /**
     * The type of render performed by these parameters.
     */
    const Type _type;
-   /**
-    * A pointer to the fragment program. By default, this will point to the default
-    * fragment program.
-    */
-   std::function<uint32_t(const Fragment&)> _fragmentProgram;
-   /**
-    * The default fragment program.
-    * @param fragment the fragment containing the attributes that will determine a color.
-    */
-   uint32_t defaultFragmentProgram(const Fragment& fragment) const;
 };
 
 } // namespace graphics

@@ -86,3 +86,5 @@ struct Material
 
 } // namespace graphics
 } // namespace clockwork
+
+std::ostream& operator<<(std::ostream&, const clockwork::graphics::Material&);

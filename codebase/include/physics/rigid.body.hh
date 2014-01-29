@@ -68,7 +68,7 @@ private:
 };
 
 /**
- * The Suzanne rigid body used for debugging.
+ * Sample rigid bodies used for debugging.
  */
 class SuzanneRigidBody : public RigidBody
 {

@@ -23,6 +23,7 @@
  */
 #include "render.parameters.factory.hh"
 #include "point.render.parameters.hh"
+#include "line.render.parameters.hh"
 #include "wireframe.render.parameters.hh"
 #include "random.render.parameters.hh"
 #include "depth.render.parameters.hh"
@@ -36,9 +37,10 @@
 
 
 clockwork::graphics::RenderParametersFactory::RenderParametersFactory() :
-Factory(clockwork::graphics::RenderParameters::Type::Wireframe)
+Factory(clockwork::graphics::RenderParameters::Type::Random)
 {
    put(clockwork::graphics::RenderParameters::Type::Point, new clockwork::graphics::PointRenderParameters);
+   put(clockwork::graphics::RenderParameters::Type::Line, new clockwork::graphics::LineRenderParameters);
    put(clockwork::graphics::RenderParameters::Type::Wireframe, new clockwork::graphics::WireframeRenderParameters);
    put(clockwork::graphics::RenderParameters::Type::Random, new clockwork::graphics::RandomRenderParameters);
    //put(clockwork::graphics::RenderParameters::Type::Depth, new clockwork::graphics::DepthRenderParameters);

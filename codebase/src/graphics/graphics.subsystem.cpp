@@ -30,7 +30,7 @@
 
 
 clockwork::graphics::GraphicsSubsystem::GraphicsSubsystem() :
-_framebuffer(),
+_framebuffer(Framebuffer::Resolution::XGA),
 _imageFilterType(clockwork::graphics::ImageFilterFactory::getUniqueInstance().getDefaultKey())
 {}
 

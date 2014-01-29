@@ -22,29 +22,29 @@
  * THE SOFTWARE.
  */
 #include "ui.hh"
-#include "ui.combobox.line.algorithm.hh"
+#include "ui.combobox.line.primitive.hh"
 #include "render.parameters.factory.hh"
 #include "scene.hh"
 #include "scene.viewer.hh"
 #include "services.hh"
 
-using clockwork::ui::GUILineAlgorithmComboBox;
+using clockwork::ui::GUILinePrimitiveComboBox;
 using clockwork::graphics::RenderParameters;
 using clockwork::graphics::RenderParametersFactory;
 using clockwork::graphics::LineRenderParameters;
-using ItemType = LineRenderParameters::LineAlgorithm;
+using ItemType = LineRenderParameters::LinePrimitive;
 using UserDataType = std::underlying_type<ItemType>::type;
 
 
-GUILineAlgorithmComboBox::GUILineAlgorithmComboBox(UserInterface& ui) :
-GUIComboBox(ui, "Algorithm"),
+GUILinePrimitiveComboBox::GUILinePrimitiveComboBox(UserInterface& ui) :
+GUIComboBox(ui, "Primitive"),
 _renderParameters(static_cast<LineRenderParameters*>(RenderParametersFactory::getUniqueInstance().get(RenderParameters::Type::Line)))
 {
    // Build the combo box.
    if (_renderParameters != nullptr)
    {
-      const auto& items = _renderParameters->getLineAlgorithms();
-      const auto& defaultItem = _renderParameters->getLineAlgorithm();
+      const auto& items = _renderParameters->getLinePrimitives();
+      const auto& defaultItem = _renderParameters->getLinePrimitive();
 
       // Build the combo box.
       build<ItemType, UserDataType>(items, defaultItem);
@@ -53,7 +53,7 @@ _renderParameters(static_cast<LineRenderParameters*>(RenderParametersFactory::ge
 
 
 void
-GUILineAlgorithmComboBox::onInterfaceUpdate(const clockwork::ui::GUIComponent* const source)
+GUILinePrimitiveComboBox::onInterfaceUpdate(const clockwork::ui::GUIComponent* const source)
 {
    if (source != this)
    {
@@ -74,8 +74,8 @@ GUILineAlgorithmComboBox::onInterfaceUpdate(const clockwork::ui::GUIComponent* c
 
 
 void
-GUILineAlgorithmComboBox::onItemSelected(const int& index)
+GUILinePrimitiveComboBox::onItemSelected(const int& index)
 {
    if (_renderParameters != nullptr)
-      _renderParameters->setLineAlgorithm(getItem<ItemType>(index));
+      _renderParameters->setLinePrimitive(getItem<ItemType>(index));
 }

@@ -24,7 +24,7 @@
 #pragma once
 
 #include "ui.combobox.hh"
-#include "wireframe.render.parameters.hh"
+#include "line.render.parameters.hh"
 
 
 namespace clockwork {
@@ -44,9 +44,9 @@ public:
    virtual void onInterfaceUpdate(const GUIComponent* const) override final;
 private:
    /**
-    * An instance to the wireframe render parameters.
+    * An instance to the line render parameters.
     */
-   clockwork::graphics::WireframeRenderParameters* const _renderParameters;
+   clockwork::graphics::LineRenderParameters* const _renderParameters;
    /**
     * @see GUIComboBox::onItemSelected.
     */

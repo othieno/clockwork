@@ -51,7 +51,7 @@ public:
    /**
     * Return the matrix's raw data.
     */
-   const std::array<double, 16>& data() const;
+   const std::array<double, 16>& getData() const;
    /**
     * Return the element at the given coordinate.
     * @param i the matrix's ith row.
@@ -153,3 +153,5 @@ private:
 };
 
 } // namespace clockwork
+
+std::ostream& operator<<(std::ostream&, const clockwork::Matrix4&);

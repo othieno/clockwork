@@ -41,6 +41,21 @@ class NormalsRenderParameters : public PolygonRenderParameters
 {
 friend class RenderParametersFactory;
 public:
+   /**
+    * @see RenderParameters::vertexProgram.
+    */
+   virtual Vertex vertexProgram
+   (
+      const RenderParameters::Uniforms& uniforms,
+      const clockwork::Point3& position,
+      const clockwork::Vector3& normal,
+      const Texture::Coordinates& uvmap
+   ) const;
+   /**
+    * @see RenderParameters::fragmentProgram.
+    * This implementation of the fragment program converts a fragment's surface normal into a color.
+    */
+   uint32_t fragmentProgram(const RenderParameters::Uniforms& uniforms, const Fragment& fragment) const override final;
 private:
    /**
     * The NormalsRenderParameters is a singleton, and only instantiable by the RenderParametersFactory.
@@ -48,11 +63,6 @@ private:
    NormalsRenderParameters();
    NormalsRenderParameters(const NormalsRenderParameters&) = delete;
    NormalsRenderParameters& operator=(const NormalsRenderParameters&) = delete;
-   /**
-    * The program that converts a fragment's normal vector into a pixel value.
-    * @param fragment the fragment containing the normal vector to convert.
-    */
-   uint32_t fragmentProgram(const Fragment& fragment);
 };
 
 } // namespace graphics
