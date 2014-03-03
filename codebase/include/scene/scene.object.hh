@@ -48,30 +48,40 @@ public:
     */
    void setPosition(const clockwork::Point3& position);
    /**
-    * Return the object's rotation.
+    * Return the object's rotation vector.
     */
-   const clockwork::Quaternion& getRotation() const;
+   const clockwork::Vector3& getRotation() const;
    /**
-    * Set the object's rotation.
-    * @param rotation the rotation to set.
+    * Set the object's rotation vector. The vector should contain
+    * angles (in degrees) for rotations around the X axis (pitch),
+    * Y axis (yaw) and Z axis (roll).
+    * @param rotation the rotation vector to set.
     */
-   void setRotation(const clockwork::Quaternion& rotation);
+   void setRotation(const clockwork::Vector3& rotation);
    /**
     * Set the object's rotation angles (in degrees).
-    * @param roll the roll angle to set.
-    * @param yaw the yaw angle to set.
-    * @param pitch the pitch angle to set.
+    * @param pitch the object's pitch angle (rotation around the X axis).
+    * @param yaw the object's yaw angle  (rotation around the Y axis).
+    * @param roll the object's roll angle  (rotation around the Z axis).
     */
    void setRotation(const double roll, const double yaw, const double pitch);
    /**
     * Return the object's scaling vector.
     */
-   const clockwork::Vector3& getScalingVector() const;
+   const clockwork::Vector3& getScale() const;
    /**
-    * Set the object's scaling vector.
-    * @param scaling the scaling vector to set.
+    * Set the object's scale defined by a given scaling vector.
+    * The vector should contain scale factors for the X, Y and Z axes.
+    * @param scaling the vector containing the scaling factors to set.
     */
-   void setScalingVector(const clockwork::Vector3& scaling);
+   void setScale(const clockwork::Vector3& scaling);
+   /**
+    * Set the object's scale.
+    * @param sx the object's scale factor on the X axis.
+    * @param sy the object's scale factor on the Y axis.
+    * @param sz the object's scale factor on the Z axis.
+    */
+   void setScale(const double Sx, const double Sy, const double Sz);
    /**
     * @see clockwork::scene::Node::updateGeometry.
     */
@@ -96,9 +106,10 @@ protected:
     */
    clockwork::Point3 _position;
    /**
-    * The object's rotation.
+    * The object's rotation vector holds rotation angles (in degrees)
+    * for the X, Y and Z axes.
     */
-   clockwork::Quaternion _rotation;
+   clockwork::Vector3 _rotation;
    /**
     * The object's scaling vector.
     */

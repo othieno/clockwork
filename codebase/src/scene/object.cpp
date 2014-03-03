@@ -48,7 +48,7 @@ Object::UpdateGeometryTask::onRun()
 {
    const auto& position = _object.getPosition();
    const auto& rotation = _object.getRotation();
-   const auto& scale = _object.getScalingVector();
+   const auto& scale = _object.getScale();
 
    const auto& newCMTM = _CMTM * clockwork::Matrix4::model(position, rotation, scale);
    _object.setModelMatrix(newCMTM);
@@ -94,7 +94,7 @@ Object::setPosition(const clockwork::Point3& position)
 }
 
 
-const clockwork::Quaternion&
+const clockwork::Vector3&
 Object::getRotation() const
 {
    return _rotation;
@@ -102,21 +102,39 @@ Object::getRotation() const
 
 
 void
-Object::setRotation(const clockwork::Quaternion& rotation)
+Object::setRotation(const clockwork::Vector3& rotation)
 {
    _rotation = rotation;
 }
 
 
+void
+Object::setRotation(const double roll, const double yaw, const double pitch)
+{
+   _rotation.i = roll;
+   _rotation.j = yaw;
+   _rotation.k = pitch;
+}
+
+
 const clockwork::Vector3&
-Object::getScalingVector() const
+Object::getScale() const
 {
    return _scaling;
 }
 
 
 void
-Object::setScalingVector(const clockwork::Vector3& scaling)
+Object::setScale(const clockwork::Vector3& scaling)
 {
    _scaling = scaling;
+}
+
+
+void
+Object::setScale(const double x, const double y, const double z)
+{
+   _scaling.i = x;
+   _scaling.j = y;
+   _scaling.k = z;
 }

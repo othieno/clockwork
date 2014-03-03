@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ namespace clockwork {
 namespace graphics {
 
 /**
- * A normalised viewport. Its values are independent of the display resolution.
+ * A normalised viewport with values that range from 0.0 (minimum) to 1.0 (maximum).
  */
 struct Viewport
 {
@@ -51,12 +51,12 @@ struct Viewport
     */
    double height;
    /**
-    * TODO Explain me.
-    * @see glDepthRange documentation.
+    * The linear mapping of the near clipping plane to the window coordinates.
+    * @see glDepthRange documentation
     */
    double near;
    /**
-    * TODO Explain me.
+    * The linear mapping of the far clipping plane to the window coordinates.
     * @see glDepthRange documentation
     */
    double far;
@@ -66,13 +66,13 @@ struct Viewport
     * @param y the viewport's origin on the vertical plane.
     * @param width the viewport's width.
     * @param height the viewport's height.
-    * @param near the mapping of the near clipping plane to the window coordinates.
-    * @param far the mapping of the far clipping plane to the window coordinates.
+    * @param near the linear mapping of the near clipping plane to the window coordinates.
+    * @param far the linear mapping of the far clipping plane to the window coordinates.
     */
    Viewport
    (
-      const double& x = 0,
-      const double& y = 0,
+      const double& x = 0.0,
+      const double& y = 0.0,
       const double& width = 1.0,
       const double& height = 1.0,
       const double& near = 0.0,

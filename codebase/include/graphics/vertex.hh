@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,8 +37,11 @@ struct Vertex : public clockwork::Point4
 {
 public:
    /**
-    * TODO Explain me better.
     * Instantiate a Vertex at the given position.
+    * @param x the vertex's X coordinate.
+    * @param y the vertex's Y coordinate.
+    * @param z the vertex's Z coordinate.
+    * @param w the vertex's W coordinate.
     */
    Vertex(const double& x = 0, const double& y = 0, const double& z = 0, const double& w = 1);
    /**

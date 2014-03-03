@@ -1,9 +1,13 @@
-# Ignore prototypes and build files.
+# Ignore prototypes and generated build files.
 prototype
 build
+Makefile
 
 # Ignore Eclipse configuration files.
 .project
+
+# Ignore Qt Creator configuration files.
+codebase.pro.user
 
 # Ignore design documentation.
 documentation/design

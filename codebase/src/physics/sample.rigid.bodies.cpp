@@ -31,5 +31,6 @@ SuzanneRigidBody::SuzanneRigidBody() :
 RigidBody("Suzanne")
 {
    setModel3D(clockwork::system::Services::Assets.loadModel3D("../assets/models/suzanne/suzanne.obj"));
-   setScalingVector(Vector3(0.7, 0.7, 0.7));
+   setScale(0.7, 0.7, 0.7);
+   setRotation(-180, 0, 0);
 }

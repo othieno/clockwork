@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,7 @@
  * THE SOFTWARE.
  */
 #include "matrix4.hh"
+#include <cmath>
 
 using clockwork::Matrix4;
 
@@ -149,10 +150,48 @@ Matrix4::translate(const double& x, const double& y, const double& z)
 }
 
 
+// TODO Use quaternions.
 Matrix4
-Matrix4::rotate(const clockwork::Quaternion&)
+Matrix4::rotate(const double& x, const double& y, const double& z)
 {
-   return Matrix4();
+   const auto radians = [](const double degrees)
+   {
+      return degrees * 0.01745329251;
+   };
+
+   const double alpha = radians(x);
+   const double gamma = radians(y);
+   const double theta = radians(z);
+
+   const double cx = cos(alpha);
+   const double cy = cos(gamma);
+   const double cz = cos(theta);
+   const double sx = sin(alpha);
+   const double sy = sin(gamma);
+   const double sz = sin(theta);
+
+   const auto Rx = Matrix4
+   ({
+      1.0, 0.0, 0.0, 0.0,
+      0.0,  cx, -sx, 0.0,
+      0.0,  sx,  cx, 0.0,
+      0.0, 0.0, 0.0, 1.0
+   });
+   const auto Ry = Matrix4
+   ({
+       cy, 0.0,  sy, 0.0,
+      0.0, 1.0, 0.0, 0.0,
+      -sy, 0.0,  cy, 0.0,
+      0.0, 0.0, 0.0, 1.0
+   });
+   const auto Rz = Matrix4
+   ({
+       cz, -sz, 0.0, 0.0,
+       sz,  cz, 0.0, 0.0,
+      0.0, 0.0, 1.0, 0.0,
+      0.0, 0.0, 0.0, 1.0
+   });
+   return Rx * Rz * Ry;
 }
 
 
@@ -190,54 +229,61 @@ Matrix4::transpose(const Matrix4& in)
 
 
 Matrix4
-Matrix4::inverse(const Matrix4& in)
+Matrix4::inverse(const Matrix4& m)
 {
-   //TODO This function can be optimised...
-   const auto s0 = in.get(0, 0) * in.get(1, 1) - in.get(1, 0) * in.get(0, 1);
-   const auto s1 = in.get(0, 0) * in.get(1, 2) - in.get(1, 0) * in.get(0, 2);
-   const auto s2 = in.get(0, 0) * in.get(1, 3) - in.get(1, 0) * in.get(0, 3);
-   const auto s3 = in.get(0, 1) * in.get(1, 2) - in.get(1, 1) * in.get(0, 2);
-   const auto s4 = in.get(0, 1) * in.get(1, 3) - in.get(1, 1) * in.get(0, 3);
-   const auto s5 = in.get(0, 2) * in.get(1, 3) - in.get(1, 2) * in.get(0, 3);
+   const double
+   &m00 = m.get(0, 0), &m01 = m.get(0, 1), &m02 = m.get(0, 2), &m03 = m.get(0, 3),
+   &m10 = m.get(1, 0), &m11 = m.get(1, 1), &m12 = m.get(1, 2), &m13 = m.get(1, 3),
+   &m20 = m.get(2, 0), &m21 = m.get(2, 1), &m22 = m.get(2, 2), &m23 = m.get(2, 3),
+   &m30 = m.get(3, 0), &m31 = m.get(3, 1), &m32 = m.get(3, 2), &m33 = m.get(3, 3);
 
-   const auto c5 = in.get(2, 2) * in.get(3, 3) - in.get(3, 2) * in.get(2, 3);
-   const auto c4 = in.get(2, 1) * in.get(3, 3) - in.get(3, 1) * in.get(2, 3);
-   const auto c3 = in.get(2, 1) * in.get(3, 2) - in.get(3, 1) * in.get(2, 2);
-   const auto c2 = in.get(2, 0) * in.get(3, 3) - in.get(3, 0) * in.get(2, 3);
-   const auto c1 = in.get(2, 0) * in.get(3, 2) - in.get(3, 0) * in.get(2, 2);
-   const auto c0 = in.get(2, 0) * in.get(3, 1) - in.get(3, 0) * in.get(2, 1);
+   // TODO Use SSE intrinsics.
+   const auto s0 = m00 * m11 - m10 * m01;
+   const auto s1 = m00 * m12 - m10 * m02;
+   const auto s2 = m00 * m13 - m10 * m03;
+   const auto s3 = m01 * m12 - m11 * m02;
+   const auto s4 = m01 * m13 - m11 * m03;
+   const auto s5 = m02 * m13 - m12 * m03;
+
+   const auto c5 = m22 * m33 - m32 * m23;
+   const auto c4 = m21 * m33 - m31 * m23;
+   const auto c3 = m21 * m32 - m31 * m22;
+   const auto c2 = m20 * m33 - m30 * m23;
+   const auto c1 = m20 * m32 - m30 * m22;
+   const auto c0 = m20 * m31 - m30 * m21;
 
    // Calculate the inverse determinant.
    const auto idet = 1.0 / (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
 
+   // ... and finally the inverse matrix.
    std::array<double, 16> newdata;
 
-   newdata[0]  = ( in.get(1, 1) * c5 - in.get(1, 2) * c4 + in.get(1, 3) * c3) * idet;
-   newdata[1]  = (-in.get(0, 1) * c5 + in.get(0, 2) * c4 - in.get(0, 3) * c3) * idet;
-   newdata[2]  = ( in.get(3, 1) * s5 - in.get(3, 2) * s4 + in.get(3, 3) * s3) * idet;
-   newdata[3]  = (-in.get(2, 1) * s5 + in.get(2, 2) * s4 - in.get(2, 3) * s3) * idet;
+   newdata[0]  = ( m11 * c5 - m12 * c4 + m13 * c3) * idet;
+   newdata[1]  = (-m01 * c5 + m02 * c4 - m03 * c3) * idet;
+   newdata[2]  = ( m31 * s5 - m32 * s4 + m33 * s3) * idet;
+   newdata[3]  = (-m21 * s5 + m22 * s4 - m23 * s3) * idet;
 
-   newdata[4]  = (-in.get(1, 0) * c5 + in.get(1, 2) * c2 - in.get(1, 3) * c1) * idet;
-   newdata[5]  = ( in.get(0, 0) * c5 - in.get(0, 2) * c2 + in.get(0, 3) * c1) * idet;
-   newdata[6]  = (-in.get(3, 0) * s5 + in.get(3, 2) * s2 - in.get(3, 3) * s1) * idet;
-   newdata[7]  = ( in.get(2, 0) * s5 - in.get(2, 2) * s2 + in.get(2, 3) * s1) * idet;
+   newdata[4]  = (-m10 * c5 + m12 * c2 - m13 * c1) * idet;
+   newdata[5]  = ( m00 * c5 - m02 * c2 + m03 * c1) * idet;
+   newdata[6]  = (-m30 * s5 + m32 * s2 - m33 * s1) * idet;
+   newdata[7]  = ( m20 * s5 - m22 * s2 + m23 * s1) * idet;
 
-   newdata[8]  = ( in.get(1, 0) * c4 - in.get(1, 1) * c2 + in.get(1, 3) * c0) * idet;
-   newdata[9]  = (-in.get(0, 0) * c4 + in.get(0, 1) * c2 - in.get(0, 3) * c0) * idet;
-   newdata[10] = ( in.get(3, 0) * s4 - in.get(3, 1) * s2 + in.get(3, 3) * s0) * idet;
-   newdata[11] = (-in.get(2, 0) * s4 + in.get(2, 1) * s2 - in.get(2, 3) * s0) * idet;
+   newdata[8]  = ( m10 * c4 - m11 * c2 + m13 * c0) * idet;
+   newdata[9]  = (-m00 * c4 + m01 * c2 - m03 * c0) * idet;
+   newdata[10] = ( m30 * s4 - m31 * s2 + m33 * s0) * idet;
+   newdata[11] = (-m20 * s4 + m21 * s2 - m23 * s0) * idet;
 
-   newdata[12] = (-in.get(1, 0) * c3 + in.get(1, 1) * c1 - in.get(1, 2) * c0) * idet;
-   newdata[13] = ( in.get(0, 0) * c3 - in.get(0, 1) * c1 + in.get(0, 2) * c0) * idet;
-   newdata[14] = (-in.get(3, 0) * s3 + in.get(3, 1) * s1 - in.get(3, 2) * s0) * idet;
-   newdata[15] = ( in.get(2, 0) * s3 - in.get(2, 1) * s1 + in.get(2, 2) * s0) * idet;
+   newdata[12] = (-m10 * c3 + m11 * c1 - m12 * c0) * idet;
+   newdata[13] = ( m00 * c3 - m01 * c1 + m02 * c0) * idet;
+   newdata[14] = (-m30 * s3 + m31 * s1 - m32 * s0) * idet;
+   newdata[15] = ( m20 * s3 - m21 * s1 + m22 * s0) * idet;
 
    return Matrix4(newdata);
 }
 
 
 Matrix4
-Matrix4::model(const clockwork::Point3& t, const clockwork::Quaternion& r, const clockwork::Vector3& s)
+Matrix4::model(const clockwork::Point3& t, const clockwork::Vector3& r, const clockwork::Vector3& s)
 {
    return Matrix4::translate(t) * Matrix4::rotate(r) * Matrix4::scale(s);
 }

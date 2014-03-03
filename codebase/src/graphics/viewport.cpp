@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,10 +27,10 @@ using clockwork::graphics::Viewport;
 
 
 Viewport::Viewport(const double& X, const double& Y, const double& W, const double& H, const double& N, const double& F) :
-x(X),
-y(Y),
-width(W),
-height(H),
-near(N),
-far(F)
+x(X < 0.0 ? 0.0 : X > 1.0 ? 1.0 : X),
+y(Y < 0.0 ? 0.0 : Y > 1.0 ? 1.0 : Y),
+width(W < 0.0 ? 0.0 : W > 1.0 ? 1.0 : W),
+height(H < 0.0 ? 0.0 : H > 1.0 ? 1.0 : H),
+near(N < 0.0 ? 0.0 : N > 1.0 ? 1.0 : N),
+far(F < 0.0 ? 0.0 : F > 1.0 ? 1.0 : F)
 {}

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -104,15 +104,25 @@ public:
     * Return the translation matrix.
     * @param T a 3D point containing translation factors for the X, Y and Z planes.
     */
-   inline static Matrix4 translate(const clockwork::Point3& t)
+   inline static Matrix4 translate(const clockwork::Point3& T)
    {
-      return Matrix4::translate(t.x, t.y, t.z);
+      return Matrix4::translate(T.x, T.y, T.z);
    }
    /**
-    * Return the rotation matrix defined by the given quaternion.
-    * @param quaternion the quaternion that defines a given rotation.
+    * Return the rotation matrix defined by the given rotation angles (in degrees).
+    * @param Rx the rotation angle around the X axis (pitch).
+    * @param Ry the rotation angle around the Y axis (yaw).
+    * @param Rz the rotation angle around the Z axis (roll).
     */
-   static Matrix4 rotate(const clockwork::Quaternion& quaternion);
+   static Matrix4 rotate(const double& Rx, const double& Ry, const double& Rz);
+   /**
+    * Return the rotation matrix defined by the given rotation vector.
+    * @param R a vector containing rotation angles (in degrees) for the X, Y and Z axes.
+    */
+   inline static Matrix4 rotate(const clockwork::Vector3& R)
+   {
+      return Matrix4::rotate(R.i, R.j, R.k);
+   }
    /**
     * Return the scaling matrix defined by the given scaling factors.
     * @param Sx the scaling factor on the X plane.
@@ -124,9 +134,9 @@ public:
     * Return the scaling matrix.
     * @param S a scaling vector.
     */
-   inline static Matrix4 scale(const clockwork::Vector3& s)
+   inline static Matrix4 scale(const clockwork::Vector3& S)
    {
-      return Matrix4::scale(s.i, s.j, s.k);
+      return Matrix4::scale(S.i, S.j, S.k);
    }
    /**
     * Return the transpose of a given matrix.
@@ -141,10 +151,10 @@ public:
    /**
     * Return the model transformation matrix for a given translation, rotation and scaling.
     * @param t a 3D translation.
-    * @param r a rotation.
+    * @param r a rotation vector.
     * @param s a scaling vector.
     */
-   static Matrix4 model(const clockwork::Point3& t, const clockwork::Quaternion& r, const clockwork::Vector3& s);
+   static Matrix4 model(const clockwork::Point3& t, const clockwork::Vector3& q, const clockwork::Vector3& s);
 private:
    /**
     * The raw matrix data.
