@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,6 @@
  */
 #include "scene.object.hh"
 #include "graphics.subsystem.hh"
-#include "graphics.update.task.hh"
 #include "services.hh"
 
 using clockwork::scene::Object;
@@ -35,6 +34,28 @@ _position(0.0, 0.0, 0.0),
 _rotation(),
 _scaling(1.0, 1.0, 1.0)
 {}
+
+
+Object::UpdateGeometryTask::UpdateGeometryTask(Object& object, const clockwork::Matrix4& CMTM) :
+Task(static_cast<int>(clockwork::concurrency::TaskPriority::PhysicsUpdateGeometryTask)),
+_object(object),
+_CMTM(CMTM)
+{}
+
+
+void
+Object::UpdateGeometryTask::onRun()
+{
+   const auto& position = _object.getPosition();
+   const auto& rotation = _object.getRotation();
+   const auto& scale = _object.getScalingVector();
+
+   const auto& newCMTM = _CMTM * clockwork::Matrix4::model(position, rotation, scale);
+   _object.setModelMatrix(newCMTM);
+
+   for (auto* const node : _object.getChildren())
+      node->updateGeometry(newCMTM);
+}
 
 
 const clockwork::Matrix4&
@@ -55,7 +76,7 @@ void
 Object::updateGeometry(const clockwork::Matrix4& CMTM)
 {
    if (!isPruned())
-      clockwork::system::Services::Concurrency.submitTask(new clockwork::concurrency::GeometryUpdateTask(*this, CMTM));
+      clockwork::system::Services::Concurrency.submitTask(new UpdateGeometryTask(*this, CMTM));
 }
 
 

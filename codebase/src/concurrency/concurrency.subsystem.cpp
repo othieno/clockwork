@@ -23,6 +23,7 @@
  */
 #include "concurrency.subsystem.hh"
 #include <QThread>
+#include <memory>
 
 
 clockwork::concurrency::ConcurrencySubsystem::ConcurrencySubsystem() :
@@ -49,12 +50,10 @@ clockwork::concurrency::ConcurrencySubsystem::isMultiThreadedExecutionEnabled() 
 void
 clockwork::concurrency::ConcurrencySubsystem::submitTask(clockwork::concurrency::Task* const task)
 {
-   if (task != nullptr)
+   std::unique_ptr<Task> _task(task);
+   if (_task != nullptr)
       //_threadPool->start(task, task->getPriority());
-   {
       task->run();
-      delete task;
-   }
 }
 
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@
 
 clockwork::system::ExecutionContext clockwork::system::Services::Context;
 clockwork::concurrency::ConcurrencySubsystem clockwork::system::Services::Concurrency;
+clockwork::physics::PhysicsSubsystem clockwork::system::Services::Physics;
 clockwork::graphics::GraphicsSubsystem clockwork::system::Services::Graphics;
 clockwork::system::AssetManager clockwork::system::Services::Assets;
 
@@ -35,6 +36,10 @@ clockwork::Error
 clockwork::system::Services::initialise(const int& argc, const char** const argv)
 {
    buildExecutionContext(argc, argv);
+
+   // Initialise the update chain.
+   QObject::connect(&Physics, SIGNAL(updateComplete()), &Graphics, SLOT(update()));
+
    return Error::None;
 }
 
@@ -49,9 +54,8 @@ clockwork::system::Services::update()
       //hasPreviousTaskCompleted = true;
 //TODO      Concurrency::stopAllTasks();
    //}
-
    // All previous update tasks have been aborted, start new ones.
-   Graphics.update();
+   Physics.update();
 }
 
 

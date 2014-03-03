@@ -24,47 +24,52 @@
 #pragma once
 
 #include "subsystem.hh"
-#include <QThreadPool>
+#include "task.hh"
+#include "scene.hh"
 
 
 namespace clockwork {
-namespace concurrency {
+namespace physics {
 
-class ConcurrencySubsystem : public clockwork::system::Subsystem
+class PhysicsSubsystem : public clockwork::system::Subsystem
 {
+Q_OBJECT
 friend clockwork::system::Services;
-public:
-   /**
-    * Enable or disable multi-threaded execution.
-    * @param enable true to enable multi-threaded execution, false to disable.
-    */
-   void enableMultiThreadedExecution(const bool& enable = true);
-   /**
-    * Is multi-threading enabled?
-    */
-   bool isMultiThreadedExecutionEnabled() const;
-   /**
-    * Submit a task to be processed.
-    * @param task a pointer to the task to process.
-    */
-   void submitTask(Task* const task);
-   /**
-    * Wait for all current tasks to complete.
-    */
-   void wait();
 private:
    /**
     * All subsystems are singletons. As such the default constructor is hidden,
     * and the copy operator and constructor are deleted from the implementation.
     */
-   ConcurrencySubsystem();
-   ConcurrencySubsystem(const ConcurrencySubsystem&) = delete;
-   ConcurrencySubsystem& operator=(const ConcurrencySubsystem&) = delete;
+   PhysicsSubsystem();
+   PhysicsSubsystem(const PhysicsSubsystem&) = delete;
+   PhysicsSubsystem& operator=(const PhysicsSubsystem&) = delete;
    /**
-    * A reference to the thread pool.
+    * The Physics subsystem's update task updates scene geometry.
     */
-   QThreadPool* const _threadPool;
+   class UpdateTask : public concurrency::Task
+   {
+   public:
+      /**
+       * Instantiate an UpdateTask that will update geometry for objects in a given scene.
+       * @param scene the scene containing the objects to update.
+       */
+      UpdateTask(scene::Scene& scene);
+      /**
+       * @see clockwork::concurrency::Task::onRun.
+       */
+      virtual void onRun() override final;
+   private:
+      /**
+       * A reference to the scene to update.
+       */
+      scene::Scene& _scene;
+   };
+private slots:
+   /**
+    * Update the subsystem.
+    */
+   void update();
 };
 
-} // namespace concurrency
+} // namespace physics
 } // namespace clockwork

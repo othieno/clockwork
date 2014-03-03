@@ -23,48 +23,41 @@
  */
 #pragma once
 
-#include "subsystem.hh"
-#include <QThreadPool>
+#include "task.hh"
+#include "framebuffer.hh"
+#include "image.filter.hh"
 
 
 namespace clockwork {
-namespace concurrency {
+namespace graphics {
 
-class ConcurrencySubsystem : public clockwork::system::Subsystem
+/**
+ * A task to apply one or more post-processing filters to a given
+ * framebuffer, after rendering is complete.
+ */
+class PostProcessTask : public clockwork::concurrency::Task
 {
-friend clockwork::system::Services;
 public:
    /**
-    * Enable or disable multi-threaded execution.
-    * @param enable true to enable multi-threaded execution, false to disable.
+    * Instantiate a PostProcessTask that will apply a filter to a framebuffer.
+    * @param framebuffer the framebuffer that the filter is applied to.
+    * @param type the type of post-processing filter to apply to the framebuffer.
     */
-   void enableMultiThreadedExecution(const bool& enable = true);
+   PostProcessTask(Framebuffer& framebuffer, const ImageFilter::Type& type);
    /**
-    * Is multi-threading enabled?
+    * @see clockwork::concurrency::Task::onRun.
     */
-   bool isMultiThreadedExecutionEnabled() const;
-   /**
-    * Submit a task to be processed.
-    * @param task a pointer to the task to process.
-    */
-   void submitTask(Task* const task);
-   /**
-    * Wait for all current tasks to complete.
-    */
-   void wait();
+   virtual void onRun() override final;
 private:
    /**
-    * All subsystems are singletons. As such the default constructor is hidden,
-    * and the copy operator and constructor are deleted from the implementation.
+    * The framebuffer where the rendered scene's information will be stored.
     */
-   ConcurrencySubsystem();
-   ConcurrencySubsystem(const ConcurrencySubsystem&) = delete;
-   ConcurrencySubsystem& operator=(const ConcurrencySubsystem&) = delete;
+   Framebuffer& _framebuffer;
    /**
-    * A reference to the thread pool.
+    * The queue of post-processing filters to apply when drawing is completed.
     */
-   QThreadPool* const _threadPool;
+   const ImageFilter* const _imageFilter;
 };
 
-} // namespace concurrency
+} // namespace graphics
 } // namespace clockwork

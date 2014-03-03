@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,64 +21,100 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+#include <memory>
 #include "graphics.subsystem.hh"
-#include "graphics.update.task.hh"
 #include "scene.hh"
 #include "scene.viewer.hh"
 #include "services.hh"
 #include "image.filter.factory.hh"
+#include "post.process.task.hh"
+
+using clockwork::graphics::GraphicsSubsystem;
 
 
-clockwork::graphics::GraphicsSubsystem::GraphicsSubsystem() :
+GraphicsSubsystem::GraphicsSubsystem() :
 _framebuffer(Framebuffer::Resolution::XGA),
 _imageFilterType(clockwork::graphics::ImageFilterFactory::getUniqueInstance().getDefaultKey())
 {}
 
 
+GraphicsSubsystem::UpdateTask::UpdateTask
+(
+   scene::Scene& scene,
+   Framebuffer& framebuffer,
+   const ImageFilter::Type& type
+) :
+Task(static_cast<int>(clockwork::concurrency::TaskPriority::GraphicsUpdateTask)),
+_scene(scene),
+_framebuffer(framebuffer),
+_imageFilterType(type)
+{}
+
+
+void
+GraphicsSubsystem::update()
+{
+   system::Services::Concurrency.submitTask(new UpdateTask(scene::Scene::getUniqueInstance(), _framebuffer, _imageFilterType));
+}
+
+
+void
+GraphicsSubsystem::UpdateTask::onRun()
+{
+   _framebuffer.clear();
+
+   // Render the scene based on the current viewer's context, then apply the post-processing filter.
+   auto* const viewer = _scene.getViewer();
+   if (viewer != nullptr)
+   {
+      for (auto* const node : _scene.getRootNodes())
+         node->render(*viewer);
+
+      auto* const postProcessTask = new PostProcessTask(_framebuffer, _imageFilterType);
+      if (postProcessTask != nullptr)
+      {
+         // Connect the post-process task's 'taskComplete' signal to this subsystem's 'updateComplete' signal
+         // since post-processing is the last operation in the graphics update phase. Note that when this is done,
+         // there's no need to submit an 'UpdateCompleteTask'.
+         connect(postProcessTask, SIGNAL(taskComplete()), &clockwork::system::Services::Graphics, SIGNAL(updateComplete()));
+         clockwork::system::Services::Concurrency.submitTask(postProcessTask);
+         return;
+      }
+   }
+   clockwork::system::Services::Graphics.submitUpdateCompleteTask();
+}
+
+
 clockwork::graphics::Framebuffer&
-clockwork::graphics::GraphicsSubsystem::getFramebuffer()
+GraphicsSubsystem::getFramebuffer()
 {
    return _framebuffer;
 }
 
 
 const clockwork::graphics::ImageFilter::Type&
-clockwork::graphics::GraphicsSubsystem::getImageFilterType() const
+GraphicsSubsystem::getImageFilterType() const
 {
    return _imageFilterType;
 }
 
 
 void
-clockwork::graphics::GraphicsSubsystem::setImageFilter(const clockwork::graphics::ImageFilter::Type& type)
+GraphicsSubsystem::setImageFilter(const clockwork::graphics::ImageFilter::Type& type)
 {
    _imageFilterType = type;
 }
 
 
-void
-clockwork::graphics::GraphicsSubsystem::update()
-{
-   clockwork::system::Services::Concurrency.submitTask(new clockwork::concurrency::GraphicsUpdateTask);
-}
-
-
-void
-clockwork::graphics::GraphicsSubsystem::signalUpdateComplete()
-{
-   emit updateComplete();
-}
-
-
 bool
-clockwork::graphics::GraphicsSubsystem::isScissorTestEnabled() const
+GraphicsSubsystem::isScissorTestEnabled() const
 {
    return false;
 }
 
 
 bool
-clockwork::graphics::GraphicsSubsystem::isAlphaTestEnabled() const
+GraphicsSubsystem::isAlphaTestEnabled() const
 {
    return false;
 }

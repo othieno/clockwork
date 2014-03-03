@@ -21,26 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "subsystem.hh"
+#include "physics.subsystem.hh"
 #include "services.hh"
+#include "scene.viewer.hh"
 
-using clockwork::system::Subsystem;
-
-
-void
-Subsystem::submitUpdateCompleteTask()
-{
-   clockwork::system::Services::Concurrency.submitTask(new UpdateCompleteTask(*this));
-}
+using clockwork::physics::PhysicsSubsystem;
 
 
-Subsystem::UpdateCompleteTask::UpdateCompleteTask(const Subsystem& subsystem) :
-Task(static_cast<int>(clockwork::concurrency::TaskPriority::SubsystemUpdateCompleteTask))
-{
-   connect(this, SIGNAL(taskComplete()), &subsystem, SIGNAL(updateComplete()));
-}
-
-
-void
-Subsystem::UpdateCompleteTask::onRun()
+PhysicsSubsystem::PhysicsSubsystem()
 {}
+
+
+PhysicsSubsystem::UpdateTask::UpdateTask(scene::Scene& scene) :
+Task(static_cast<int>(clockwork::concurrency::TaskPriority::PhysicsUpdateTask)),
+_scene(scene)
+{}
+
+
+void
+PhysicsSubsystem::update()
+{
+   system::Services::Concurrency.submitTask(new UpdateTask(scene::Scene::getUniqueInstance()));
+}
+
+
+void
+PhysicsSubsystem::UpdateTask::onRun()
+{
+   // Update the scene geometry.
+   const auto* const viewer = _scene.getViewer();
+   const auto CMTM = viewer != nullptr ?
+   clockwork::Matrix4::translate(clockwork::Point3::negative(viewer->getPosition())) : clockwork::Matrix4();
+
+   for (auto* const node : _scene.getRootNodes())
+      node->updateGeometry(CMTM);
+
+   clockwork::system::Services::Physics.submitUpdateCompleteTask();
+}

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@
 #include "framebuffer.hh"
 #include "image.filter.hh"
 #include "ui.busy.indicator.hh"
+#include "scene.hh"
 #include "scene.object.hh"
 
 
@@ -66,10 +67,6 @@ public:
       _framebuffer.plot(x, y, z, pixel);
    }
    /**
-    * Raise the 'updateComplete' signal.
-    */
-   void signalUpdateComplete();
-   /**
     * Returns true if scissor testing is enabled, false otherwise.
     */
    bool isScissorTestEnabled() const;
@@ -101,6 +98,38 @@ private:
     * The image filter that is applied to the framebuffer during post-processing.
     */
    ImageFilter::Type _imageFilterType;
+   /**
+    * The Graphics subsystem's update task renders the scene's visible geometry.
+    */
+   class UpdateTask : public concurrency::Task
+   {
+   public:
+      /**
+       * Instantiate an UpdateTask that will draw all visible objects in a given
+       * scene to a specified framebuffer.
+       * @param scene the scene to render.
+       * @param framebuffer the framebuffer that will contain the rendered scene.
+       * @param imageFilterType the type of post-processing filter to apply to the framebuffer.
+       */
+      UpdateTask(scene::Scene& scene, Framebuffer& framebuffer, const ImageFilter::Type& imageFilterType);
+      /**
+       * @see clockwork::concurrency::Task::onRun.
+       */
+      virtual void onRun() override final;
+   private:
+      /**
+       * A reference to the scene to render.
+       */
+      scene::Scene& _scene;
+      /**
+       * The framebuffer where the rendered scene's information will be stored.
+       */
+      Framebuffer& _framebuffer;
+      /**
+       * The type of image filter to apply during the post-processing phase.
+       */
+      const ImageFilter::Type _imageFilterType;
+   };
 private slots:
    /**
     * Update the subsystem.

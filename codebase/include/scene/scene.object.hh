@@ -26,6 +26,7 @@
 #include "scene.entity.hh"
 #include "point3.hh"
 #include "quaternion.hh"
+#include "task.hh"
 
 
 namespace clockwork {
@@ -107,6 +108,35 @@ private:
     * The object's model transformation matrix.
     */
    clockwork::Matrix4 _modelMatrix;
+   /**
+    * The UpdateGeometryTask updates the model matrix of a given node and its children.
+    */
+   class UpdateGeometryTask : public concurrency::Task
+   {
+   public:
+      /**
+       * Instantiate a UpdateGeometryTask that will update the model matrix of a given
+       * scene object and its children.
+       * @param object the scene object to update.
+       * @param CMTM the cumulative model transformation matrix.
+       */
+      UpdateGeometryTask(clockwork::scene::Object& object, const clockwork::Matrix4& CMTM);
+      /**
+       * @see clockwork::concurrency::Task::onRun.
+       */
+      virtual void onRun() override final;
+   private:
+      /**
+       * A reference to the scene object that will be updated by this task.
+       */
+      clockwork::scene::Object& _object;
+      /**
+       * The cumulative model transformation matrix that will be concatenated to the object's
+       * own model transformation matrix. This usually references the node's parent's model
+       * transformation matrix.
+       */
+      const clockwork::Matrix4& _CMTM;
+   };
 };
 } // namespace scene
 } // namespace clockwork

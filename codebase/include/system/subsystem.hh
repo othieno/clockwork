@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,6 +38,30 @@ class Services;
 class Subsystem : public QObject
 {
 Q_OBJECT
+public:
+   /**
+    * Submit a task that will emit a subsystem's 'updateComplete' signal.
+    */
+   void submitUpdateCompleteTask();
+private:
+   /**
+    * The UpdateTaskCompleted is a task that emits a subsystem's 'updateComplete'
+    * signal upon its completion, and nothing more.
+    */
+   class UpdateCompleteTask : public clockwork::concurrency::Task
+   {
+   public:
+      /**
+       * Instantiate an UpdateCompleteTask that will, upon completion, emit a given
+       * subsystem's 'updateComplete' signal.
+       * @param subsystem the subsystem for which we wish to emit an 'updateComplete' signal.
+       */
+      explicit UpdateCompleteTask(const Subsystem& subsystem);
+      /**
+       * @see clockwork::concurrency::Task::onRun.
+       */
+      virtual void onRun() override final;
+   };
 signals:
    /**
     * A signal that is emitted when the system update is complete.

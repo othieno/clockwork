@@ -27,6 +27,7 @@
 #include "error.hh"
 #include "execution.context.hh"
 #include "concurrency.subsystem.hh"
+#include "physics.subsystem.hh"
 #include "graphics.subsystem.hh"
 #include "asset.manager.hh"
 
@@ -45,6 +46,10 @@ public:
     * The concurrency subsystem.
     */
    static clockwork::concurrency::ConcurrencySubsystem Concurrency;
+   /**
+    * The physics subsystem.
+    */
+   static clockwork::physics::PhysicsSubsystem Physics;
    /**
     * The graphics subsystem.
     */

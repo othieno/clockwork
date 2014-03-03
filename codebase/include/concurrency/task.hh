@@ -23,47 +23,61 @@
  */
 #pragma once
 
-#include "subsystem.hh"
-#include <QThreadPool>
+#include <QObject>
+#include <QRunnable>
 
 
 namespace clockwork {
 namespace concurrency {
 
-class ConcurrencySubsystem : public clockwork::system::Subsystem
+class Task : public QObject, public QRunnable
 {
-friend clockwork::system::Services;
+Q_OBJECT
 public:
    /**
-    * Enable or disable multi-threaded execution.
-    * @param enable true to enable multi-threaded execution, false to disable.
+    * Instantiate a task with a given priority.
     */
-   void enableMultiThreadedExecution(const bool& enable = true);
+   explicit Task(const int& priority = 0);
    /**
-    * Is multi-threading enabled?
+    * Return the task's priority.
     */
-   bool isMultiThreadedExecutionEnabled() const;
+   const int& getPriority() const;
    /**
-    * Submit a task to be processed.
-    * @param task a pointer to the task to process.
+    * Return the task's priority.
     */
-   void submitTask(Task* const task);
+   virtual void run() override final;
    /**
-    * Wait for all current tasks to complete.
+    * The operation that is performed by this task.
     */
-   void wait();
+   virtual void onRun() = 0;
 private:
    /**
-    * All subsystems are singletons. As such the default constructor is hidden,
-    * and the copy operator and constructor are deleted from the implementation.
+    * The task's priority.
     */
-   ConcurrencySubsystem();
-   ConcurrencySubsystem(const ConcurrencySubsystem&) = delete;
-   ConcurrencySubsystem& operator=(const ConcurrencySubsystem&) = delete;
+   const int _priority;
+signals:
    /**
-    * A reference to the thread pool.
+    * A signal that is raised when the task completes.
     */
-   QThreadPool* const _threadPool;
+   void taskComplete();
+};
+
+/**
+ * Task priorities from 0 to N where N > 0 such that (N - 1) and
+ * (N + 1) have a lower and higher priority than N, respectively.
+ */
+enum class TaskPriority : int
+{
+   SubsystemUpdateCompleteTask = 0,
+
+   // Graphics.
+   GraphicsUpdateTask = SubsystemUpdateCompleteTask + 128,
+   GraphicsRenderTask = GraphicsUpdateTask - 1,
+   GraphicsPostProcessTask = GraphicsRenderTask - 1,
+
+   // Physics.
+   PhysicsUpdateTask = GraphicsUpdateTask + 128,
+   PhysicsUpdateGeometryTask = PhysicsUpdateTask - 1,
 };
 
 } // namespace concurrency

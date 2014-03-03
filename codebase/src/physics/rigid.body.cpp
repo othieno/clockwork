@@ -47,7 +47,8 @@ clockwork::physics::RigidBody::render(const clockwork::scene::Viewer& viewer) co
       if (parameters != nullptr)
       {
          auto* task = new clockwork::graphics::RenderTask(*parameters, viewer, *this);
-         clockwork::system::Services::Concurrency.submitTask(task);
+         if (task != nullptr)
+            clockwork::system::Services::Concurrency.submitTask(task);
       }
    }
 }
