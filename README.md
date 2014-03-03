@@ -1,3 +1,5 @@
+<p align="center"><img src="/documentation/clockwork.png?raw=true" alt="Blender's Suzanne"></p>
+
 Clockwork
 =========
 
