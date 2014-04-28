@@ -1,3 +1,4 @@
+QT += widgets
 TEMPLATE = app
 TARGET = clockwork
 
