@@ -22,25 +22,5 @@
  * THE SOFTWARE.
  */
 #include "subsystem.hh"
-#include "services.hh"
 
 using clockwork::system::Subsystem;
-
-
-void
-Subsystem::submitUpdateCompleteTask()
-{
-   clockwork::system::Services::Concurrency.submitTask(new UpdateCompleteTask(*this));
-}
-
-
-Subsystem::UpdateCompleteTask::UpdateCompleteTask(const Subsystem& subsystem) :
-Task(static_cast<int>(clockwork::concurrency::TaskPriority::SubsystemUpdateCompleteTask))
-{
-   connect(this, SIGNAL(taskComplete()), &subsystem, SIGNAL(updateComplete()));
-}
-
-
-void
-Subsystem::UpdateCompleteTask::onRun()
-{}

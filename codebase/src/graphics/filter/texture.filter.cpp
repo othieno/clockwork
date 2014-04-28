@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,35 @@
  */
 #include "texture.filter.hh"
 
+using clockwork::graphics::TextureFilter;
+using clockwork::graphics::TextureFilterFactory;
 
-clockwork::graphics::TextureFilter::TextureFilter(const clockwork::graphics::TextureFilter::Type type) :
+
+TextureFilter::TextureFilter(const TextureFilter::Type type) :
 _type(type)
 {}
 
 
-const clockwork::graphics::TextureFilter::Type&
-clockwork::graphics::TextureFilter::getType() const
+const TextureFilter::Type&
+TextureFilter::getType() const
 {
    return _type;
+}
+
+
+TextureFilterFactory::TextureFilterFactory() :
+Factory(TextureFilter::Type::None)
+{
+   put(TextureFilter::Type::None, nullptr);
+//   put(TextureFilter::Type::Bilinear, nullptr);
+//   put(TextureFilter::Type::Trilinear, nullptr);
+//   put(TextureFilter::Type::Anisotropic, nullptr);
+}
+
+
+TextureFilterFactory&
+TextureFilterFactory::getInstance()
+{
+   static TextureFilterFactory INSTANCE;
+   return INSTANCE;
 }

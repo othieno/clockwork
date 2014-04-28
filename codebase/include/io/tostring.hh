@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,12 +26,13 @@
 #include <QString>
 #include "error.hh"
 #include "projection.hh"
-#include "line.render.parameters.hh"
-#include "texture.filter.factory.hh"
 #include "image.filter.hh"
 #include "texture.filter.hh"
+#include "render.algorithm.hh"
 #include "fragment.hh"
 #include "framebuffer.hh"
+#include "line.algorithm.hh"
+#include "primitive.mode.hh"
 
 
 namespace clockwork {
@@ -44,8 +45,9 @@ QString toString(const clockwork::graphics::Framebuffer::Resolution&);
 QString toString(const clockwork::graphics::Projection::Type&);
 QString toString(const clockwork::graphics::ImageFilter::Type&);
 QString toString(const clockwork::graphics::TextureFilter::Type&);
-QString toString(const clockwork::graphics::RenderParameters::Type&);
-QString toString(const clockwork::graphics::LineRenderParameters::LineAlgorithm&);
-QString toString(const clockwork::graphics::LineRenderParameters::LinePrimitive&);
+QString toString(const clockwork::graphics::RenderAlgorithm::Identifier&);
+QString toString(const clockwork::graphics::LineAlgorithm::Identifier&);
+QString toString(const clockwork::graphics::PrimitiveMode::Identifier&);
+QString toString(const clockwork::graphics::Viewport&);
 
 } // namespace clockwork

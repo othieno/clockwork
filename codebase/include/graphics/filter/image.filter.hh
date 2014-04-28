@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 #pragma once
+
+#include "factory.hh"
 
 
 namespace clockwork {
@@ -47,12 +49,32 @@ protected:
    /**
     * Instantiate a filter with a given type.
     */
-   ImageFilter(const Type type);
+   explicit ImageFilter(const Type type);
 private:
    /**
     * This filter's type.
     */
    const Type _type;
+};
+
+
+/**
+ * The ImageFilterFactory is a factory that creates and stores ImageFilter objects.
+ */
+class ImageFilterFactory : public clockwork::Factory<ImageFilter::Type, const ImageFilter*>
+{
+public:
+   /**
+    * Return the factory's unique instance.
+    */
+   static ImageFilterFactory& getInstance();
+private:
+   /**
+    * The ImageFilterFactory is a singleton.
+    */
+   ImageFilterFactory();
+   ImageFilterFactory(const ImageFilterFactory&) = delete;
+   ImageFilterFactory& operator=(const ImageFilterFactory&) = delete;
 };
 
 } // namespace graphics

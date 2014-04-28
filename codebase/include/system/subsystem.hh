@@ -24,49 +24,23 @@
 #pragma once
 
 #include <QObject>
-#include "task.hh"
+#include "error.hh"
 
 
 namespace clockwork {
 namespace system {
 
-/**
- * @see services.hh
- */
-class Services;
-
 class Subsystem : public QObject
 {
-Q_OBJECT
 public:
    /**
-    * Submit a task that will emit a subsystem's 'updateComplete' signal.
+    * Initialise the subsystem.
     */
-   void submitUpdateCompleteTask();
-private:
+   virtual clockwork::Error initialise() = 0;
    /**
-    * The UpdateTaskCompleted is a task that emits a subsystem's 'updateComplete'
-    * signal upon its completion, and nothing more.
+    * Destroy the subsystem.
     */
-   class UpdateCompleteTask : public clockwork::concurrency::Task
-   {
-   public:
-      /**
-       * Instantiate an UpdateCompleteTask that will, upon completion, emit a given
-       * subsystem's 'updateComplete' signal.
-       * @param subsystem the subsystem for which we wish to emit an 'updateComplete' signal.
-       */
-      explicit UpdateCompleteTask(const Subsystem& subsystem);
-      /**
-       * @see clockwork::concurrency::Task::onRun.
-       */
-      virtual void onRun() override final;
-   };
-signals:
-   /**
-    * A signal that is emitted when the system update is complete.
-    */
-   void updateComplete();
+   virtual clockwork::Error destroy() = 0;
 };
 
 } // namespace system

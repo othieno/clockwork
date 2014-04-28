@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,4 +33,21 @@ const clockwork::graphics::ImageFilter::Type&
 clockwork::graphics::ImageFilter::getType() const
 {
    return _type;
+}
+
+
+clockwork::graphics::ImageFilterFactory::ImageFilterFactory() :
+Factory(clockwork::graphics::ImageFilter::Type::None)
+{
+   put(clockwork::graphics::ImageFilter::Type::None, nullptr);
+   put(clockwork::graphics::ImageFilter::Type::BlackAndWhite, nullptr);
+   put(clockwork::graphics::ImageFilter::Type::Grayscale, nullptr);
+}
+
+
+clockwork::graphics::ImageFilterFactory&
+clockwork::graphics::ImageFilterFactory::getInstance()
+{
+   static clockwork::graphics::ImageFilterFactory INSTANCE;
+   return INSTANCE;
 }

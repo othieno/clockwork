@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,31 @@
  */
 #include "ui.view.hh"
 
+using clockwork::ui::GUIView;
 
-clockwork::ui::GUIView::GUIView(clockwork::ui::UserInterface& ui) :
-GUIComponent(ui)
-{}
+
+GUIView::GUIView(clockwork::ui::UserInterface& ui, const QString& toolTip) :
+GUIComponent(ui),
+_visibilityToggle(new QCheckBox(toolTip, this)) //TODO Use icons instead of titles.
+{
+   assert(_visibilityToggle != nullptr);
+   connect(_visibilityToggle, SIGNAL(clicked(bool)), this, SLOT(setVisible(bool)));
+
+   _visibilityToggle->setToolTip(toolTip);
+   _visibilityToggle->setStyleSheet("QCheckBox { background:#fff }");
+}
+
+
+QCheckBox&
+GUIView::getVisibilityToggle()
+{
+   return *_visibilityToggle;
+}
+
+
+void
+GUIView::setVisible(const bool visible)
+{
+   QWidget::setVisible(visible);
+   _visibilityToggle->setChecked(visible);
+}

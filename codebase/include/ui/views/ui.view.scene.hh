@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,22 +26,33 @@
 #include "ui.view.hh"
 #include <QTreeView>
 
+
 namespace clockwork {
 namespace ui {
 
 class GUISceneView : public GUIView
 {
+Q_OBJECT
 public:
    /**
     * Instantiate a GUISceneView that is attached to the user interface.
     * @param ui the user interface that this component is attached to.
     */
    GUISceneView(UserInterface& ui);
+   /**
+    * Build the view.
+    */
+   void build();
 private:
    /**
     * The tree view used to present the scene graph.
     */
    QTreeView* const _treeView;
+private slots:
+   /**
+    * This slot is called when an item in the view is clicked.
+    */
+   void onClicked(const QModelIndex&);
 };
 
 } // namespace ui

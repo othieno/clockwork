@@ -23,61 +23,35 @@
  */
 #pragma once
 
-#include <QObject>
 #include <QRunnable>
 
 
 namespace clockwork {
 namespace concurrency {
 
-class Task : public QObject, public QRunnable
+class Task : public QRunnable
 {
-Q_OBJECT
 public:
-   /**
-    * Instantiate a task with a given priority.
-    */
-   explicit Task(const int& priority = 0);
    /**
     * Return the task's priority.
     */
    const int& getPriority() const;
+//public slots:
    /**
-    * Return the task's priority.
+    * Terminate the task's execution.
     */
-   virtual void run() override final;
+//   void terminate();
+protected:
    /**
-    * The operation that is performed by this task.
+    * Instantiate a task with a specified priority.
+    * @param priority the tasks's priority.
     */
-   virtual void onRun() = 0;
+   explicit Task(const int priority = 0);
 private:
    /**
     * The task's priority.
     */
    const int _priority;
-signals:
-   /**
-    * A signal that is raised when the task completes.
-    */
-   void taskComplete();
-};
-
-/**
- * Task priorities from 0 to N where N > 0 such that (N - 1) and
- * (N + 1) have a lower and higher priority than N, respectively.
- */
-enum class TaskPriority : int
-{
-   SubsystemUpdateCompleteTask = 0,
-
-   // Graphics.
-   GraphicsUpdateTask = SubsystemUpdateCompleteTask + 128,
-   GraphicsRenderTask = GraphicsUpdateTask - 1,
-   GraphicsPostProcessTask = GraphicsRenderTask - 1,
-
-   // Physics.
-   PhysicsUpdateTask = GraphicsUpdateTask + 128,
-   PhysicsUpdateGeometryTask = PhysicsUpdateTask - 1,
 };
 
 } // namespace concurrency

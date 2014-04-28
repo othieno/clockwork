@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -58,21 +58,31 @@ public:
     * @param index the index of the item to select.
     */
    void setSelectedItem(const int& index);
+   /**
+    * Set the selected item.
+    * @param item the item to select.
+    */
+   template<typename ItemType, typename UserDataType>
+   void setSelectedItem(const ItemType& item)
+   {
+      setSelectedItem(_qComboBox->findData(static_cast<UserDataType>(item)));
+   }
 protected:
    /**
-    * Instantiate a labeled GUIComboBox that is attached to a user interface.
+    * Instantiate a GUIComboBox with a given description, that is attached
+    * to a user interface.
     * @param ui the user interface that this component is attached to.
-    * @param label the combo box's label.
+    * @param description the combo box's description.
     */
-   GUIComboBox(UserInterface& ui, const QString& label);
+   GUIComboBox(UserInterface& ui, const QString& description);
    /**
-    * Instantiate a labeled GUIComboBox with a given list of items,
-    * that is attached to a user interface.
+    * Instantiate a GUIComboBox with a given description, a specified
+    * list of items, and that is attached to a user interface.
     * @param ui the user interface that this component is attached to.
-    * @param label the combo box's label.
+    * @param description the combo box's description.
     * @param items the combo box's item list.
     */
-   GUIComboBox(UserInterface& ui, const QString& label, const QStringList& items);
+   GUIComboBox(UserInterface& ui, const QString& description, const QStringList& items);
    /**
     * Build the combo box.
     * @param items the combo box's items.
@@ -108,7 +118,7 @@ protected:
          // Re-activate all signals.
          _qComboBox->blockSignals(false);
       }
-   };
+   }
    /**
     * Add an item to the combo box and return its index.
     * @param text the item's text.

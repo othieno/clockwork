@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,61 +21,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "ui.hh"
 #include "ui.combobox.line.algorithm.hh"
-#include "render.parameters.factory.hh"
-#include "scene.hh"
+#include "line.algorithm.hh"
 #include "scene.viewer.hh"
-#include "services.hh"
 
 using clockwork::ui::GUILineAlgorithmComboBox;
-using clockwork::graphics::RenderParameters;
-using clockwork::graphics::RenderParametersFactory;
-using clockwork::graphics::LineRenderParameters;
-using ItemType = LineRenderParameters::LineAlgorithm;
+using ItemType = clockwork::graphics::LineAlgorithm::Identifier;
 using UserDataType = std::underlying_type<ItemType>::type;
 
 
 GUILineAlgorithmComboBox::GUILineAlgorithmComboBox(UserInterface& ui) :
-GUIComboBox(ui, "Algorithm"),
-_renderParameters(static_cast<LineRenderParameters*>(RenderParametersFactory::getUniqueInstance().get(RenderParameters::Type::Line)))
+GUIComboBox(ui, "Select Line Algorithm")
 {
-   // Build the combo box.
-   if (_renderParameters != nullptr)
-   {
-      const auto& items = _renderParameters->getLineAlgorithms();
-      const auto& defaultItem = _renderParameters->getLineAlgorithm();
-
-      // Build the combo box.
-      build<ItemType, UserDataType>(items, defaultItem);
-   }
-}
-
-
-void
-GUILineAlgorithmComboBox::onInterfaceUpdate(const clockwork::ui::GUIComponent* const source)
-{
-   if (source != this)
-   {
-      // The line algorithm combo box is only visible if the current renderer is
-      // set to Renderer::Type::Wireframe, and enabled if a scene viewer is set.
-      bool isEnabled = false;
-      bool isVisible = false;
-      auto* const viewer = clockwork::scene::Scene::getUniqueInstance().getViewer();
-      if (viewer != nullptr)
-      {
-         isEnabled = true;
-         isVisible = clockwork::graphics::RenderParameters::Type::Line == viewer->getRenderType();
-      }
-      setEnabled(isEnabled);
-      setVisible(isVisible);
-   }
+   const auto& factory = clockwork::graphics::LineAlgorithmFactory::getInstance();
+   build<ItemType, UserDataType>(factory.getKeys(), factory.getDefaultKey());
 }
 
 
 void
 GUILineAlgorithmComboBox::onItemSelected(const int& index)
 {
-   if (_renderParameters != nullptr)
-      _renderParameters->setLineAlgorithm(getItem<ItemType>(index));
+   auto* const viewer = static_cast<clockwork::scene::Viewer*>(GUIComponent::SelectedSceneObject);
+   assert(viewer != nullptr);
+
+   viewer->setLineAlgorithm(getItem<ItemType>(index));
+}
+
+
+void
+GUILineAlgorithmComboBox::onInterfaceUpdate(const GUIComponent* const source)
+{
+   if (source != this)
+   {
+      bool enabled = false;
+      bool visible = false;
+
+      auto* const viewer = dynamic_cast<clockwork::scene::Viewer*>(GUIComponent::SelectedSceneObject);
+      if (viewer != nullptr)
+      {
+         enabled = true;
+         visible = viewer->getRenderAlgorithm() == clockwork::graphics::RenderAlgorithm::Identifier::Wireframe;
+         setSelectedItem<ItemType, UserDataType>(viewer->getLineAlgorithm());
+      }
+      setEnabled(enabled);
+      setVisible(visible);
+   }
 }

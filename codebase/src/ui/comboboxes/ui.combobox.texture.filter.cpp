@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,59 +21,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "ui.hh"
 #include "ui.combobox.texture.filter.hh"
-#include "scene.hh"
+#include "texture.filter.hh"
+#include "render.algorithm.hh"
 #include "scene.viewer.hh"
-#include "texture.filter.factory.hh"
-#include "texture.render.parameters.hh"
-#include "render.parameters.factory.hh"
 
 using clockwork::ui::GUITextureFilterComboBox;
-using clockwork::graphics::RenderParameters;
-using clockwork::graphics::RenderParametersFactory;
-using clockwork::graphics::TextureRenderParameters;
 using ItemType = clockwork::graphics::TextureFilter::Type;
 using UserDataType = std::underlying_type<ItemType>::type;
 
 
 GUITextureFilterComboBox::GUITextureFilterComboBox(UserInterface& ui) :
-GUIComboBox(ui, "Texture Filter"),
-_renderParameters(static_cast<TextureRenderParameters*>(RenderParametersFactory::getUniqueInstance().get(RenderParameters::Type::Texture)))
+GUIComboBox(ui, "Select Texture Filter")
 {
-   const auto& factory = clockwork::graphics::TextureFilterFactory::getUniqueInstance();
-   const auto& items = factory.getKeys();
-   const auto& defaultItem = factory.getDefaultKey();
-
-   // Build the combo box.
-   build<ItemType, UserDataType>(items, defaultItem);
-}
-
-
-void
-GUITextureFilterComboBox::onInterfaceUpdate(const clockwork::ui::GUIComponent* const source)
-{
-   if (source != this)
-   {
-      // The texture filter combo box is only visible if the current renderer is
-      // set to Renderer::Type::Texture and enabled if a scene viewer is set.
-      bool isEnabled = false;
-      bool isVisible = false;
-      auto* const viewer = clockwork::scene::Scene::getUniqueInstance().getViewer();
-      if (viewer != nullptr)
-      {
-         isEnabled = true;
-         isVisible = clockwork::graphics::RenderParameters::Type::Texture == viewer->getRenderType();
-      }
-      setEnabled(isEnabled);
-      setVisible(isVisible);
-   }
+   const auto& factory = clockwork::graphics::TextureFilterFactory::getInstance();
+   build<ItemType, UserDataType>(factory.getKeys(), factory.getDefaultKey());
 }
 
 
 void
 GUITextureFilterComboBox::onItemSelected(const int& index)
 {
-   if (_renderParameters != nullptr)
-      _renderParameters->setTextureFilter(getItem<ItemType>(index));
+   auto* const viewer = static_cast<clockwork::scene::Viewer*>(GUIComponent::SelectedSceneObject);
+   assert(viewer != nullptr);
+
+   viewer->setTextureFilter(getItem<ItemType>(index));
+}
+
+
+void
+GUITextureFilterComboBox::onInterfaceUpdate(const GUIComponent* const source)
+{
+   if (source != this)
+   {
+      bool enabled = false;
+      bool visible = false;
+
+      auto* const viewer = dynamic_cast<clockwork::scene::Viewer*>(GUIComponent::SelectedSceneObject);
+      if (viewer != nullptr)
+      {
+         enabled = true;
+         visible = viewer->getRenderAlgorithm() == clockwork::graphics::RenderAlgorithm::Identifier::Texture;
+         setSelectedItem<ItemType, UserDataType>(viewer->getTextureFilter());
+      }
+      setEnabled(enabled);
+      setVisible(visible);
+   }
 }

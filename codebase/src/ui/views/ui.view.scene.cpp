@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,49 @@
  */
 #include "ui.view.scene.hh"
 #include "scene.hh"
+#include <QVBoxLayout>
+
+using clockwork::ui::GUISceneView;
 
 
-clockwork::ui::GUISceneView::GUISceneView(clockwork::ui::UserInterface& ui) :
-GUIView(ui),
+GUISceneView::GUISceneView(clockwork::ui::UserInterface& ui) :
+GUIView(ui, "Show scene hierarchy"),
 _treeView(new QTreeView(this))
 {
-   QAbstractItemModel& model = clockwork::scene::Scene::getUniqueInstance();
+   assert(_treeView != nullptr);
+   connect(_treeView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(onClicked(const QModelIndex&)));
+   setVisible(false);
+}
 
-   _treeView->setModel(&model);
-   _treeView->setCurrentIndex(model.index(0, 0));
+
+void
+GUISceneView::build()
+{
+   // Block all signals until the component is built.
    _treeView->blockSignals(true);
-   _treeView->setMinimumSize(400, 400);
+
+   QVBoxLayout* const layout = new QVBoxLayout(this);
+   layout->addWidget(_treeView);
+   setLayout(layout);
+   setMinimumWidth(400);
+   setMaximumWidth(400);
+
+   QAbstractItemModel& model = clockwork::scene::Scene::getInstance();
+   _treeView->setModel(&model);
+
+   const auto& index = model.index(0, 0);
+   _treeView->setCurrentIndex(index);
+   onClicked(index);
+
    _treeView->blockSignals(false);
+}
+
+
+void
+GUISceneView::onClicked(const QModelIndex& index)
+{
+   GUIComponent::SelectedSceneObject = static_cast<clockwork::scene::Object*>(index.internalPointer());
+   assert(GUIComponent::SelectedSceneObject != nullptr);
+
+   emit componentStateChanged(this);
 }

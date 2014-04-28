@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,6 +43,10 @@ private:
     * @see GUIComboBox::onItemSelected.
     */
    void onItemSelected(const int&) override final;
+   /**
+    * @see GUIComboBox::onInterfaceUpdate.
+    */
+   void onInterfaceUpdate(const GUIComponent* const) override final;
 };
 
 } // namespace ui

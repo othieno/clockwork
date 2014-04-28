@@ -62,8 +62,8 @@ struct Viewport
    double far;
    /**
     * Instantiate a viewport with a given origin, width and height.
-    * @param x the viewport's origin on the horizontal plane.
-    * @param y the viewport's origin on the vertical plane.
+    * @param x the viewport's origin on the horizontal axis.
+    * @param y the viewport's origin on the vertical axis.
     * @param width the viewport's width.
     * @param height the viewport's height.
     * @param near the linear mapping of the near clipping plane to the window coordinates.

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 #pragma once
 
 #include "ui.component.hh"
+#include <QCheckBox>
 
 
 namespace clockwork {
@@ -31,8 +32,27 @@ namespace ui {
 
 class GUIView : public GUIComponent
 {
+public:
+   /**
+    * Return the button that toggles this view's visibility.
+    */
+   QCheckBox& getVisibilityToggle();
+   /**
+    * @see QWidget::setVisible.
+    */
+   void setVisible(const bool) override final;
 protected:
-   GUIView(UserInterface& ui);
+   /**
+    * Instantiate a eveete that is attached to a given user interface.
+    * @param ui the user interface that this view is attached to.
+    * @param toggleButtonToolTip a tool tip describing the button that toggles this view's visibility.
+    */
+   GUIView(clockwork::ui::UserInterface& ui, const QString& toggleButtonToolTip);
+private:
+   /**
+    * A button to toggle the view's visibility.
+    */
+   QCheckBox* const _visibilityToggle;
 };
 
 } // namespace ui

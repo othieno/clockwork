@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,36 +29,27 @@
 
 using clockwork::ui::GUIComboBox;
 
-GUIComboBox::GUIComboBox(UserInterface& ui, const QString& label) :
+
+GUIComboBox::GUIComboBox(UserInterface& ui, const QString& description) :
 GUIComponent(ui),
-_qComboBox(new QComboBox(&ui))
+_qComboBox(new QComboBox(this))
 {
-   // Make the label bold.
-   QString boldLabel(label);
-   boldLabel.prepend("<b>");
-   boldLabel.append("</b>");
+   assert(_qComboBox != nullptr);
+   _qComboBox->setToolTip(description);
 
-   // Configure the label.
-   auto* const qLabel = new QLabel(boldLabel, this);
-   qLabel->setStyleSheet("QLabel { color:rgb(255, 255, 0); }");
-   qLabel->setTextFormat(Qt::RichText);
-   qLabel->setBuddy(_qComboBox);
-
-   // Set the wrapper's layout.
    auto* const layout = new QHBoxLayout(this);
+   assert(layout != nullptr);
+
+   layout->setContentsMargins(0, 0, 0, 0);
+   layout->addWidget(_qComboBox);
    setLayout(layout);
 
-   // Add the label and combo box to the wrapper.
-   layout->addWidget(qLabel);
-   layout->addWidget(_qComboBox);
-
-   // Setup the signals.
    connect(_qComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onCurrentIndexChanged(const int&)));
 }
 
 
-GUIComboBox::GUIComboBox(UserInterface& ui, const QString& label, const QStringList& items) :
-GUIComboBox(ui, label)
+GUIComboBox::GUIComboBox(UserInterface& ui, const QString& description, const QStringList& items) :
+GUIComboBox(ui, description)
 {
    _qComboBox->addItems(items);
 }
@@ -68,14 +59,14 @@ void
 GUIComboBox::onCurrentIndexChanged(const int& index)
 {
    onItemSelected(index);
-   emit componentChanged(this);
+   emit componentStateChanged(this);
 }
 
 
 void
 GUIComboBox::setSelectedItem(const int& index)
 {
-   // Make sure the index is valid.
+   // Make sure the index is in a valid [min, max] range.
    const auto& maximumIndex = _qComboBox->count() - 1;
    const auto& minimumIndex = maximumIndex >= 0 ? 0 : -1;
 
@@ -97,5 +88,5 @@ void
 GUIComboBox::onInterfaceUpdate(const clockwork::ui::GUIComponent* const source)
 {
    if (source != this)
-      setEnabled(clockwork::scene::Scene::getUniqueInstance().hasViewer());
+      setEnabled(clockwork::scene::Scene::getInstance().hasActiveViewers());
 }

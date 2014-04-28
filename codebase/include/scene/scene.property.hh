@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,44 +23,72 @@
  */
 #pragma once
 
-#include "scene.entity.hh"
+#include <QObject>
 
 
 namespace clockwork {
 namespace scene {
 
 /**
- * A Property defines the behaviors and characteristics of a given scene entity.
+ * @see scene.object.hh.
  */
-template<typename EntityType>
-class Property : public Entity
+class Object;
+
+/**
+ * TODO Explain me better.
+ * A Property defines a characteristic of the Object that it is attached to. A
+ * Property is unique to an Object, but different Properties of the same
+ * behavior may have identical parameters.
+ */
+class Property : public QObject
 {
 public:
    /**
-    * Return the entity that is characterised by this property.
+    * The Property identifier.
     */
-   EntityType& getEntity()
+   enum class Identifier : unsigned int
    {
-      return _entity;
-   }
+      Appearance = 0,
+      LightEmission = 1
+   };
+   /**
+    * Return the object that holds this property.
+    */
+   Object& getProprietor();
+   /**
+    * Return the property's identifier.
+    */
+   const Property::Identifier& getIdentifier() const;
+   /**
+    * Return the property's name.
+    */
+   QString getName() const;
 protected:
    /**
-    * Instantiate a named Property that is attached to a given entity.
-    * @param entity the entity that is characterised by this property.
+    * Instantiate a named Property with an assigned identifier, that is attached to
+    * a given Object.
+    * @param proprietor the scene object that holds this property.
     * @param name the property's name.
+    * @param identifier the property's identifier.
     */
-   Property(const EntityType& entity, const std::string& name) :
-   Leaf(name),
-   _entity(entity)
-   {
-      //setNameEditable(false);
-   }
+   Property(Object& proprietor, const QString& name, const Property::Identifier& identifier);
+   /**
+    * A property may not be copied.
+    */
+   Property(const Property&) = delete;
+   Property& operator=(const Property&) = delete;
 private:
    /**
-    * The entity that is characterised by this property.
+    * The object that holds this property.
     */
-   const EntityType& _entity;
+   Object& _proprietor;
+   /**
+    * The property's identifier.
+    */
+   const Property::Identifier _identifier;
 };
+
 } // namespace scene
 } // namespace clockwork
 
+std::ostream& operator<<(std::ostream&, const clockwork::scene::Property::Identifier&);

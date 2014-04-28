@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,8 @@
 #include "ui.hh"
 #include "ui.combobox.projection.hh"
 #include "scene.hh"
-#include "scene.viewer.hh"
 #include "projection.factory.hh"
+#include "scene.viewer.hh"
 
 using clockwork::ui::GUIProjectionComboBox;
 using ItemType = clockwork::graphics::Projection::Type;
@@ -33,22 +33,39 @@ using UserDataType = std::underlying_type<ItemType>::type;
 
 
 GUIProjectionComboBox::GUIProjectionComboBox(UserInterface& ui) :
-GUIComboBox(ui, "Projection")
+GUIComboBox(ui, "Select Projection Method")
 {
-   const auto& factory = clockwork::graphics::ProjectionFactory::getUniqueInstance();
-   const auto& items = factory.getKeys();
-   const auto& defaultItem = factory.getDefaultKey();
-
-   // Build the combo box.
-   build<ItemType, UserDataType>(items, defaultItem);
+   const auto& factory = clockwork::graphics::ProjectionFactory::getInstance();
+   build<ItemType, UserDataType>(factory.getKeys(), factory.getDefaultKey());
 }
 
 
 void
 GUIProjectionComboBox::onItemSelected(const int& index)
 {
-   // Set the current viewer's projection.
-   auto* const viewer = clockwork::scene::Scene::getUniqueInstance().getViewer();
-   if (viewer != nullptr)
-      viewer->setProjection(getItem<ItemType>(index));
+   auto* const viewer = static_cast<clockwork::scene::Viewer*>(GUIComponent::SelectedSceneObject);
+   assert(viewer != nullptr);
+
+   viewer->setProjection(getItem<ItemType>(index));
+}
+
+
+void
+GUIProjectionComboBox::onInterfaceUpdate(const GUIComponent* const source)
+{
+   if (source != this)
+   {
+      bool enabled = false;
+      bool visible = false;
+
+      auto* const viewer = dynamic_cast<clockwork::scene::Viewer*>(GUIComponent::SelectedSceneObject);
+      if (viewer != nullptr)
+      {
+         enabled = true;
+         visible = true;
+         setSelectedItem<ItemType, UserDataType>(viewer->getProjection());
+      }
+      setEnabled(false && enabled);
+      setVisible(visible);
+   }
 }

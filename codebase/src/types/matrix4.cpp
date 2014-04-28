@@ -283,7 +283,7 @@ Matrix4::inverse(const Matrix4& m)
 
 
 Matrix4
-Matrix4::model(const clockwork::Point3& t, const clockwork::Vector3& r, const clockwork::Vector3& s)
+Matrix4::model(const clockwork::Point3& position, const clockwork::Vector3& rotation, const clockwork::Vector3& scale)
 {
-   return Matrix4::translate(t) * Matrix4::rotate(r) * Matrix4::scale(s);
+   return Matrix4::translate(position) * Matrix4::rotate(rotation) * Matrix4::scale(scale);
 }

@@ -1,4 +1,4 @@
-# Ignore prototypes and generated build files.
+# Ignore prototypes and automatically generated build files.
 prototype
 build
 Makefile
@@ -7,7 +7,7 @@ Makefile
 .project
 
 # Ignore Qt Creator configuration files.
-codebase.pro.user
+*.pro.user*
 
 # Ignore design documentation.
 documentation/design

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,8 @@
 #pragma once
 
 #include <QWidget>
+#include "scene.object.hh"
+#include <cassert>
 
 
 namespace clockwork {
@@ -37,13 +39,7 @@ class UserInterface;
 class GUIComponent : public QWidget
 {
 Q_OBJECT
-protected:
-   /**
-    * Instantiate a GUIComponent that is attached to the user interface.
-    * @param ui the user interface that this component is attached to.
-    */
-   GUIComponent(UserInterface& ui);
-protected slots:
+public:
    /**
     * This slot is called for each GUIComponent when the user interface is
     * updating itself. It updates this component based on the state of other
@@ -51,14 +47,22 @@ protected slots:
     * @param source a pointer to the component that triggered the GUI update.
     */
    virtual void onInterfaceUpdate(const GUIComponent* const source);
+protected:
+   /**
+    * Instantiate a GUIComponent that is attached to the user interface.
+    * @param ui the user interface that this component is attached to.
+    */
+   GUIComponent(clockwork::ui::UserInterface& ui);
+   /**
+    * The currently selected scene object.
+    */
+   static clockwork::scene::Object* SelectedSceneObject;
 signals:
    /**
-    * This signal is raised when the component changes its state. This will
-    * update the entire user interface, effectively updating any components
-    * that may depend on this one.
-    * @param source a pointer to the component that changed, i.e. this component.
+    * This signal is emitted when the component changes its state.
+    * @param source the component that changed its state.
     */
-   void componentChanged(const GUIComponent* const source);
+   void componentStateChanged(clockwork::ui::GUIComponent* const source);
 };
 
 } // namespace ui

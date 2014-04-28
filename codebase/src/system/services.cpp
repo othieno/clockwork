@@ -24,55 +24,19 @@
 #include "services.hh"
 #include <thread>
 
-
-clockwork::system::ExecutionContext clockwork::system::Services::Context;
-clockwork::concurrency::ConcurrencySubsystem clockwork::system::Services::Concurrency;
-clockwork::physics::PhysicsSubsystem clockwork::system::Services::Physics;
-clockwork::graphics::GraphicsSubsystem clockwork::system::Services::Graphics;
-clockwork::system::AssetManager clockwork::system::Services::Assets;
+using clockwork::system::Services;
 
 
-clockwork::Error
-clockwork::system::Services::initialise(const int& argc, const char** const argv)
-{
-   buildExecutionContext(argc, argv);
-
-   // Initialise the update chain.
-   QObject::connect(&Physics, SIGNAL(updateComplete()), &Graphics, SLOT(update()));
-
-   return Error::None;
-}
+clockwork::system::ExecutionContext Services::ExecutionContext;
+clockwork::system::ConcurrencySubsystem Services::Concurrency;
+//clockwork::system::AnimationSubsystem Services::Animation;
+clockwork::system::PhysicsSubsystem Services::Physics;
+clockwork::system::GraphicsSubsystem Services::Graphics;
+clockwork::system::ResourceManager Services::Resource;
 
 
 void
-clockwork::system::Services::update()
-{
-   // Make sure the previous update task is aborted before a new one is created.
-   //static volatile bool hasPreviousTaskCompleted = true;
-   //if (!hasPreviousTaskCompleted)
-   //{
-      //hasPreviousTaskCompleted = true;
-//TODO      Concurrency::stopAllTasks();
-   //}
-   // All previous update tasks have been aborted, start new ones.
-   Physics.update();
-}
-
-
-clockwork::Error
-clockwork::system::Services::dispose(const clockwork::Error& applicationExitError)
-{
-   return clockwork::Error::None;
-}
-
-
-void
-clockwork::system::Services::buildExecutionContext(const int& argc, const char** const argv)
-{}
-
-
-void
-clockwork::system::Services::sleep(const int64_t& ms)
+Services::sleep(const uint64_t& ms)
 {
    std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }

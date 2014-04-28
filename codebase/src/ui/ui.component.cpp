@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,22 +26,21 @@
 using clockwork::ui::GUIComponent;
 
 
-GUIComponent::GUIComponent(UserInterface& ui) :
+clockwork::scene::Object* GUIComponent::SelectedSceneObject = nullptr;
+
+
+GUIComponent::GUIComponent(clockwork::ui::UserInterface& ui) :
 QWidget(&ui)
 {
+   ui.registerComponent(*this);
    connect
    (
-      this, SIGNAL(componentChanged(const GUIComponent* const)),
-      &ui, SLOT(update(const GUIComponent* const))
-   );
-   connect
-   (
-      &ui, SIGNAL(updateComponents(const GUIComponent* const)),
-      this, SLOT(onInterfaceUpdate(const GUIComponent* const))
+      this, SIGNAL(componentStateChanged(clockwork::ui::GUIComponent* const)),
+      &ui, SLOT(onComponentStateChanged(clockwork::ui::GUIComponent* const))
    );
 }
 
 
 void
-GUIComponent::onInterfaceUpdate(const GUIComponent* const source)
+GUIComponent::onInterfaceUpdate(const GUIComponent* const)
 {}

@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/asset">
+        <file alias="models/suzanne.mtl">asset/models/suzanne/suzanne.mtl</file>
+        <file alias="models/suzanne.obj">asset/models/suzanne/suzanne.obj</file>
+        <file alias="busy.indicator.gif">asset/busy.indicator.gif</file>
+    </qresource>
+</RCC>

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,16 +37,17 @@ namespace ui {
 class UserInterface;
 
 /**
- * The display device.
+ * The display device. This will be the final destination of pixels stored in the framebuffer.
  */
-class GUIDisplay : public QWidget
+class GUIDisplayDevice : public QWidget
 {
+Q_OBJECT
 public:
    /**
-    * Instantiate a GUIDisplay.
+    * Instantiate a GUIDisplayDevice.
     * @param ui the user interface that this component is attached to.
     */
-   GUIDisplay(UserInterface& ui);
+   GUIDisplayDevice(UserInterface& ui);
 private:
    /**
     * The custom paint event loads data from a framebuffer and displays it.
@@ -55,15 +56,28 @@ private:
    /**
     * The painter.
     */
-   QPainter _qPainter;
+   QPainter _painter;
    /**
     * The pen used to write text to the display.
     */
-   QPen _qPen;
+   QPen _pen;
    /**
     * A reference to the framebuffer containing the rendered scene.
     */
-   clockwork::graphics::Framebuffer& _framebuffer;
+   const clockwork::graphics::Framebuffer& _framebuffer;
+   /**
+    * A buffer that stores a copy of the framebuffer's pixels.
+    */
+   QImage _outputBuffer;
+private slots:
+   /**
+    * This slot must be called when a complete frame is available for drawing.
+    * It will upload the framebuffer's current pixel buffer into this display
+    * device's output buffer, a buffer which will then be used for future
+    * paint events until it gets updated.
+    */
+   void onFrameReady();
 };
-} // namespace graphics
+
+} // namespace ui
 } // namespace clockwork

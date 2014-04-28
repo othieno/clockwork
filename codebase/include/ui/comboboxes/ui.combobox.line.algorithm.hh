@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 #pragma once
 
 #include "ui.combobox.hh"
-#include "line.render.parameters.hh"
 
 
 namespace clockwork {
@@ -43,10 +42,6 @@ public:
     */
    virtual void onInterfaceUpdate(const GUIComponent* const) override final;
 private:
-   /**
-    * An instance to the line render parameters.
-    */
-   clockwork::graphics::LineRenderParameters* const _renderParameters;
    /**
     * @see GUIComboBox::onItemSelected.
     */

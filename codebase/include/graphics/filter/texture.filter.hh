@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 #pragma once
+
+#include "factory.hh"
 
 
 namespace clockwork {
@@ -48,12 +50,32 @@ protected:
    /**
     * Instantiate a filter with a given type.
     */
-   TextureFilter(const Type type);
+   explicit TextureFilter(const Type type);
 private:
    /**
     * This filter's type.
     */
    const Type _type;
+};
+
+
+/**
+ * The TextureFilterFactory is a factory that creates and stores TextureFilter objects.
+ */
+class TextureFilterFactory : public clockwork::Factory<TextureFilter::Type, const TextureFilter*>
+{
+public:
+   /**
+    * Return the factory's unique instance.
+    */
+   static TextureFilterFactory& getInstance();
+private:
+   /**
+    * The TextureFilterFactory is a singleton.
+    */
+   TextureFilterFactory();
+   TextureFilterFactory(const TextureFilterFactory&) = delete;
+   TextureFilterFactory& operator=(const TextureFilterFactory&) = delete;
 };
 
 } // namespace graphics

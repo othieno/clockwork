@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,122 +25,103 @@
 
 #include <QAbstractItemModel>
 #include <QModelIndex>
-#include "scene.node.hh"
+#include <QSet>
+#include "scene.object.hh"
 
 
 namespace clockwork {
 namespace scene {
 
 /**
- * @see scene.object.hh.
- */
-class Object;
-
-/**
  * @see scene.viewer.hh.
  */
 class Viewer;
 
+/**
+ * The scene graph.
+ */
 class Scene : public QAbstractItemModel
 {
-Q_OBJECT
 public:
    /**
     * Return the scene's unique instance.
     */
-   static Scene& getUniqueInstance();
+   static Scene& getInstance();
    /**
-    * Return the scene's title.
+    * Return the scene graph.
     */
-   const QString getTitle() const;
+   Object& getGraph();
    /**
-    * Set the scene's title.
-    * @param title the title to set.
+    * Return the set of active viewers.
     */
-   void setTitle(const QString& title);
+   const QSet<Viewer*>& getActiveViewers();
    /**
-    * Return the current viewer.
+    * Activate a viewer. When a viewer is activated, it receives
+    * requests to render the scene from its viewpoint.
+    * @param viewer the viewer to activate.
     */
-   clockwork::scene::Viewer* getViewer();
+   void activateViewer(Viewer& viewer);
    /**
-    * Set the current viewer.
-    * @param viewer the scene viewer to set.
+    * Deactivate a viewer.
+    * @param viewer the viewer to deregister.
     */
-   void setViewer(Viewer& viewer);
+   void deactivateViewer(Viewer& viewer);
    /**
-    * Remove the viewer that is currently set.
+    * Return true if the scene has at least one active viewer, false otherwise.
     */
-   void removeViewer();
-   /**
-    * Return true if the scene has a viewer, false otherwise.
-    */
-   bool hasViewer() const;
-   /**
-    * Add an object to the scene.
-    * @param object the object to add.
-    */
-   void addObject(Object* const object);
-   /**
-    * Return the root nodes.
-    */
-   std::set<Node*>& getRootNodes();
-   /**
-    * Remove all entities from the scene.
-    */
-   void clear();
+   bool hasActiveViewers() const;
    /**
     * Save the scene to a JSON file.
+    * @param filename the name of the JSON file.
     */
-   void save() const;
-   /**
-    * Convert the scene into a set of renderer jobs. This method traverses the
-    * scene's entities while adding anything that can be rendered to a renderer's
-    * job queue in the form of a renderer job to be processed by the renderer.
-    */
-   void render();
+   void save(const QString& filename) const;
    /**
     * @see QAbstractItemModel::index.
     */
-   virtual QModelIndex index(const int, const int, const QModelIndex& = QModelIndex()) const override final;
+   QModelIndex index(const int, const int, const QModelIndex& = QModelIndex()) const override final;
    /**
     * @see QAbstractItemModel::parent.
     */
-   virtual QModelIndex parent(const QModelIndex&) const override final;
+   QModelIndex parent(const QModelIndex&) const override final;
    /**
     * @see QAbstractItemModel::rowCount.
     */
-   virtual int rowCount(const QModelIndex& = QModelIndex()) const override final;
+   int rowCount(const QModelIndex& = QModelIndex()) const override final;
    /**
     * @see QAbstractItemModel::columnCount.
     */
-   virtual int columnCount(const QModelIndex& = QModelIndex()) const override final;
+   inline int columnCount(const QModelIndex& = QModelIndex()) const override final { return 1; }
    /**
     * @see QAbstractItemModel::data.
     */
-   virtual QVariant data(const QModelIndex&, const int) const override final;
+   QVariant data(const QModelIndex&, const int) const override final;
    /**
     * @see QAbstractItemModel::headerData.
     */
-   virtual QVariant headerData(const int, const Qt::Orientation = Qt::Horizontal, const int = Qt::DisplayRole) const override final;
-   // The constructor is temporarily public.
-   Scene();
+   QVariant headerData(const int, const Qt::Orientation = Qt::Horizontal, const int = Qt::DisplayRole) const override final;
 private:
    /**
-    * The Scene is a singleton object so no other instances of this class should be
-    * created. As such, its constructor is hidden, and its copy constructor and
-    * operator are deleted.
+    * The Scene is a singleton.
     */
-   //Scene();
+   Scene();
    Scene(const Scene&) = delete;
    Scene& operator=(const Scene&) = delete;
    /**
-    * The current scene viewer.
+    * The scene graph.
     */
-   Viewer* _currentViewer;
+   Object* const _graph;
    /**
-    * The root nodes.
+    * The set of active viewers.
     */
-   std::set<Node*> _rootNodes;
+   QSet<Viewer*> _activeViewers;
+   /**
+    * When true, this signals that each active viewer's viewport needs to be updated.
+    */
+   bool _doViewportUpdate;
+   /**
+    * Update the viewports of each activated viewer.
+    */
+   void updateViewports();
 };
 
 } // namespace scene

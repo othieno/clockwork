@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,29 +28,29 @@
 #include <QPainter>
 #include <QPaintEvent>
 
+using clockwork::ui::GUIDisplayDevice;
 
-clockwork::ui::GUIDisplay::GUIDisplay(clockwork::ui::UserInterface& ui) :
+
+GUIDisplayDevice::GUIDisplayDevice(clockwork::ui::UserInterface& ui) :
 QWidget(&ui),
-_qPainter(),
-_qPen(Qt::yellow),
+_painter(),
+_pen(Qt::yellow),
 _framebuffer(clockwork::system::Services::Graphics.getFramebuffer())
 {
-   // Match the display resolution with the framebuffer's resolution.
-// const auto& framebufferResolution = _framebuffer.size();
-// setMinimumSize(framebufferResolution);
-// setMaximumSize(framebufferResolution);
+   connect(&_framebuffer, SIGNAL(frameReady()), this, SLOT(onFrameReady()));
 
-   // Connect the GraphicsSubsystem::updateComplete signal to this widget's update
-   // slot so that the display is updated when the framebuffer contains a complete frame.
-   connect(&clockwork::system::Services::Graphics, SIGNAL(updateComplete()), this, SLOT(update()));
+   // Initialise the output buffer.
+   onFrameReady();
 }
 
 
 void
-clockwork::ui::GUIDisplay::paintEvent(QPaintEvent* const event)
+GUIDisplayDevice::onFrameReady()
 {
-   // Create a QImage from the framebuffer's data.
-   const QImage image
+   setUpdatesEnabled(false);
+
+   // Upload the framebuffer's pixel buffer into the output buffer.
+   _outputBuffer = QImage
    (
       reinterpret_cast<const uchar*>(_framebuffer.getPixelBuffer()),
       _framebuffer.getWidth(),
@@ -58,24 +58,36 @@ clockwork::ui::GUIDisplay::paintEvent(QPaintEvent* const event)
       QImage::Format_ARGB32
    );
 
+   setUpdatesEnabled(true);
+   update();
+}
+
+
+void
+GUIDisplayDevice::paintEvent(QPaintEvent* const)
+{
    // Begin painting this device.
-   _qPainter.begin(this);
+   _painter.begin(this);
 
-   // Draw the framebuffer.
-   auto& rect = event->rect();
-   _qPainter.drawImage(rect, image);
+   //TODO Optimise this to draw only the part of the screen that doesn't change.
+   // Draw the output buffer.
+   _painter.drawImage(rect(), _outputBuffer);
+//   auto& targetRect = event->rect();
+//   _painter.drawImage(rect, _outputBuffer.copy(rect));
+//   _painter.drawImage(targetRect, _outputBuffer, rect());
 
-   // Turn on text anti-aliasing and print debug information.
 /*
-   if (clockwork::system::Debug::printToDisplay)
+ * TODO Implement me.
+ *
+   if (clockwork::system::Services::ExecutionContext.printDebugInformation)
    {
       const auto& debugInfo = QObject::tr(clockwork::system::Debug::toString().c_str());
 
-      _qPainter.setRenderHint(QPainter::TextAntialiasing);
-      _qPainter.setPen(_qPen);
-      _qPainter.drawText(rect.adjusted(5, 5, 0, 0), debugInfo);
+      _painter.setRenderHint(QPainter::TextAntialiasing);
+      _painter.setPen(_pen);
+      _painter.drawText(rect.adjusted(5, 5, 0, 0), debugInfo);
    }
 */
    // End painting.
-   _qPainter.end();
+   _painter.end();
 }

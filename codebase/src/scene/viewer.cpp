@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,81 +23,185 @@
  */
 #include "scene.viewer.hh"
 #include "projection.factory.hh"
-#include "render.parameters.factory.hh"
+#include "render.algorithm.hh"
+#include "image.filter.hh"
+#include "texture.filter.hh"
+
+using clockwork::scene::Viewer;
 
 
-clockwork::scene::Viewer::Viewer(const std::string& name) :
-RigidBody(name),
-_renderType(clockwork::graphics::RenderParametersFactory::getUniqueInstance().getDefaultKey()),
-_projectionType(clockwork::graphics::ProjectionFactory::getUniqueInstance().getDefaultKey())
+Viewer::Viewer(const QString& name) :
+Object(name),
+_doViewTransformUpdate(true),
+_doProjectionTransformUpdate(true),
+_doViewProjectionTransformUpdate(true),
+_renderAlgorithmIdentifier(clockwork::graphics::RenderAlgorithmFactory::getInstance().getDefaultKey()),
+_projectionType(clockwork::graphics::ProjectionFactory::getInstance().getDefaultKey()),
+_imageFilterType(clockwork::graphics::ImageFilterFactory::getInstance().getDefaultKey()),
+_textureFilterType(clockwork::graphics::TextureFilterFactory::getInstance().getDefaultKey()),
+_lineAlgorithm(clockwork::graphics::LineAlgorithmFactory::getInstance().getDefaultKey()),
+_primitiveMode(clockwork::graphics::PrimitiveModeFactory::getInstance().getDefaultKey())
 {}
 
 
-const clockwork::graphics::RenderParameters::Type&
-clockwork::scene::Viewer::getRenderType() const
+const clockwork::graphics::RenderAlgorithm::Identifier&
+Viewer::getRenderAlgorithm() const
 {
-   return _renderType;
+   return _renderAlgorithmIdentifier;
 }
 
 
 void
-clockwork::scene::Viewer::setRenderType(const clockwork::graphics::RenderParameters::Type& type)
+Viewer::setRenderAlgorithm(const clockwork::graphics::RenderAlgorithm::Identifier& identifier)
 {
-   _renderType = type;
+   _renderAlgorithmIdentifier = identifier;
 }
 
 
 const clockwork::graphics::Projection::Type&
-clockwork::scene::Viewer::getProjectionType() const
+Viewer::getProjection() const
 {
    return _projectionType;
 }
 
 
 void
-clockwork::scene::Viewer::setProjection(const clockwork::graphics::Projection::Type& type)
+Viewer::setProjection(const clockwork::graphics::Projection::Type& type)
 {
    _projectionType = type;
 }
 
 
 const clockwork::Matrix4&
-clockwork::scene::Viewer::getViewMatrix() const
+Viewer::getViewTransform()
 {
-   return _viewMatrix;
-}
-
-
-void
-clockwork::scene::Viewer::updateViewMatrix()
-{
-   std::cerr << "Implement clockwork::scene::Viewer::updateViewMatrix" << std::endl;
-}
-
-
-const clockwork::Matrix4&
-clockwork::scene::Viewer::getProjectionMatrix() const
-{
-   return _projectionMatrix;
-}
-
-
-void
-clockwork::scene::Viewer::updateProjectionMatrix()
-{
-   std::cerr << "Implement clockwork::scene::Viewer::updateProjectionMatrix" << std::endl;
+   if (_doViewTransformUpdate)
+   {
+      //TODO Calculate view transform.
+      _doViewProjectionTransformUpdate = true;
+      _doViewTransformUpdate = false;
+   }
+   return _viewTransform;
 }
 
 
 const clockwork::Matrix4&
-clockwork::scene::Viewer::getViewProjectionMatrix() const
+Viewer::getProjectionTransform()
 {
-   return _viewProjectionMatrix;
+   if (_doProjectionTransformUpdate)
+   {
+      //TODO Calculate projection transform.
+      _doViewProjectionTransformUpdate = true;
+      _doProjectionTransformUpdate = false;
+   }
+   return _projectionTransform;
+}
+
+
+const clockwork::Matrix4&
+Viewer::getViewProjectionTransform()
+{
+   if (_doViewProjectionTransformUpdate)
+   {
+      _viewProjectionTransform = _projectionTransform * _viewTransform;
+      _doViewProjectionTransformUpdate = false;
+   }
+   return _viewProjectionTransform;
 }
 
 
 const clockwork::graphics::Viewport&
-clockwork::scene::Viewer::getViewport() const
+Viewer::getViewport() const
 {
    return _viewport;
+}
+
+
+void
+Viewer::setViewport(const clockwork::graphics::Viewport& viewport)
+{
+   _viewport = viewport;
+}
+
+
+void
+Viewer::setViewport(const float& x, const float& y, const float& w, const float& h, const float& n, const float& f)
+{
+   _viewport.x = x;
+   _viewport.y = y;
+   _viewport.width = w;
+   _viewport.height = h;
+   _viewport.near = n;
+   _viewport.far = f;
+}
+
+
+const clockwork::graphics::Frustum&
+Viewer::getFrustum() const
+{
+   return _frustum;
+}
+
+
+void
+Viewer::setFrustum(const clockwork::graphics::Frustum& frustum)
+{
+   _frustum = frustum;
+   _doProjectionTransformUpdate = true;
+}
+
+
+const clockwork::graphics::ImageFilter::Type&
+Viewer::getImageFilter() const
+{
+   return _imageFilterType;
+}
+
+
+void
+Viewer::setImageFilter(const clockwork::graphics::ImageFilter::Type& type)
+{
+   _imageFilterType = type;
+}
+
+
+const clockwork::graphics::TextureFilter::Type&
+Viewer::getTextureFilter() const
+{
+   return _textureFilterType;
+}
+
+
+void
+Viewer::setTextureFilter(const clockwork::graphics::TextureFilter::Type& type)
+{
+   _textureFilterType = type;
+}
+
+
+const clockwork::graphics::LineAlgorithm::Identifier&
+Viewer::getLineAlgorithm() const
+{
+   return _lineAlgorithm;
+}
+
+
+void
+Viewer::setLineAlgorithm(const clockwork::graphics::LineAlgorithm::Identifier& identifier)
+{
+   _lineAlgorithm = identifier;
+}
+
+
+const clockwork::graphics::PrimitiveMode::Identifier&
+Viewer::getPrimitiveMode() const
+{
+   return _primitiveMode;
+}
+
+
+void
+Viewer::setPrimitiveMode(const clockwork::graphics::PrimitiveMode::Identifier& identifier)
+{
+   _primitiveMode = identifier;
 }

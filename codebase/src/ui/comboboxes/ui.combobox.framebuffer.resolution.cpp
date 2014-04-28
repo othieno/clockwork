@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,13 +31,12 @@ using UserDataType = std::underlying_type<ItemType>::type;
 
 
 GUIFramebufferResolutionComboBox::GUIFramebufferResolutionComboBox(UserInterface& ui) :
-GUIComboBox(ui, "Resolution"),
+GUIComboBox(ui, "Select Framebuffer Resolution"),
 _framebuffer(clockwork::system::Services::Graphics.getFramebuffer())
 {
-   const auto& items = _framebuffer.getResolutions();
+   const auto& items = _framebuffer.getAvailableResolutions();
    const auto& defaultItem = _framebuffer.getResolution();
 
-   // Build the combo box.
    build<ItemType, UserDataType>(items, defaultItem);
 }
 
@@ -45,6 +44,5 @@ _framebuffer(clockwork::system::Services::Graphics.getFramebuffer())
 void
 GUIFramebufferResolutionComboBox::onItemSelected(const int& index)
 {
-   // Get the selected framebuffer resolution and resize the framebuffer.
    _framebuffer.resize(getItem<ItemType>(index));
 }

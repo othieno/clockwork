@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,45 @@
  */
 #pragma once
 
-#include "scene.entity.hh"
-#include "point3.hh"
-#include "quaternion.hh"
-#include "task.hh"
+#include <QObject>
+#include <QUuid>
+#include <QString>
+#include <QSet>
+#include <QHash>
+#include "scene.property.hh"
+#include "matrix4.hh"
 
 
 namespace clockwork {
 namespace scene {
 
 /**
- * Objects are scene entities that have a position, orientation (rotation) and scaling.
+ * An Object is a node in the scene graph that has a set of one or more
+ * properties, with a position, orientation (rotation) and scale at least.
+ * They may be visible to a viewer if the right conditions are met, or
+ * may be invisible.
  */
-class Object : public Entity
+class Object : public QObject
 {
 public:
+   /**
+    * Instantiate a named object.
+    * @param name the object's name.
+    */
+   Object(const QString& name);
+   /**
+    * Return the object's unique identifier.
+    */
+   const QUuid& getIdentifier() const;
+   /**
+    * Return the object's name.
+    */
+   QString getName() const;
+   /**
+    * Set the object's name.
+    * @param name the object's new name.
+    */
+   void setName(const QString& name);
    /**
     * Return the object's position in the scene.
     */
@@ -47,6 +71,13 @@ public:
     * @param position the position to set.
     */
    void setPosition(const clockwork::Point3& position);
+   /**
+    * Set the object's position.
+    * @param x the object's position on the X axis.
+    * @param y the object's position on the Y axis.
+    * @param z the object's position on the Z axis.
+    */
+   void setPosition(const double& x, const double& y, const double& z);
    /**
     * Return the object's rotation vector.
     */
@@ -62,9 +93,9 @@ public:
     * Set the object's rotation angles (in degrees).
     * @param pitch the object's pitch angle (rotation around the X axis).
     * @param yaw the object's yaw angle  (rotation around the Y axis).
-    * @param roll the object's roll angle  (rotation around the Z axis).
+    * @param roll the object's roll angle (rotation around the Z axis).
     */
-   void setRotation(const double roll, const double yaw, const double pitch);
+   void setRotation(const double pitch, const double yaw, const double roll);
    /**
     * Return the object's scaling vector.
     */
@@ -77,77 +108,116 @@ public:
    void setScale(const clockwork::Vector3& scaling);
    /**
     * Set the object's scale.
-    * @param sx the object's scale factor on the X axis.
-    * @param sy the object's scale factor on the Y axis.
-    * @param sz the object's scale factor on the Z axis.
+    * @param x the object's scale factor on the X axis.
+    * @param y the object's scale factor on the Y axis.
+    * @param z the object's scale factor on the Z axis.
     */
-   void setScale(const double Sx, const double Sy, const double Sz);
+   void setScale(const double x, const double y, const double z);
    /**
-    * @see clockwork::scene::Node::updateGeometry.
+    * Return the object's model transformation matrix.
     */
-   virtual void updateGeometry(const clockwork::Matrix4&) override final;
+   const clockwork::Matrix4& getModelTransform();
    /**
-    * Return the node's model transformation matrix.
+    * Return the object's cumulative (composite) model transformation matrix (CMTM).
     */
-   const clockwork::Matrix4& getModelMatrix() const;
+   const clockwork::Matrix4& getCMTM() const;
    /**
-    * Set the node's model transformation matrix.
-    * @param model the model transformation matrix to set.
+    * Update the model's cumulative transformation matrix.
     */
-   void setModelMatrix(const clockwork::Matrix4& model);
-protected:
+   void updateCMTM();
    /**
-    * Instantiate a named object.
-    * @param name the object's name.
+    * Returns true if this object is pruned, false otherwise.
     */
-   Object(const std::string& name);
+   bool isPruned() const;
+   /**
+    * Prune this object.
+    * @param pruned true if this node is to be pruned, false otherwise.
+    */
+   void setPruned(const bool pruned);
+   /**
+    * Add a child object.
+    * @param object the child object to add.
+    */
+   void addChild(Object* const object);
+   /**
+    * Remove a child object.
+    * @param object the child object to remove.
+    */
+   void removeChild(Object* const object);
+   /**
+    * Return the object's children.
+    */
+   const QSet<Object*>& getChildren() const;
+   /**
+    * Returns true if the object has at least one child, false otherwise.
+    */
+   bool hasChildren() const;
+   /**
+    * Add a property and return its instance.
+    * @param identifier the property identifier.
+    */
+   Property& addProperty(const Property::Identifier& identifier);
+   /**
+    * Return the property with the specified identifier.
+    * @param identifier the property identifier.
+    */
+   const Property* getProperty(const Property::Identifier& identifier) const;
+   /**
+    * Return true if the object has the specified property, false otherwise.
+    * @param identifier the identifier of the property to query.
+    */
+   bool hasProperty(const Property::Identifier& identifier) const;
+   /**
+    * Remove a property.
+    * @param identifier the identifier of the property to remove.
+    */
+   void removeProperty(const Property::Identifier& identifier);
+   /**
+    * Return the object's memory footprint in kibibytes (1 KiB = 1024 bytes).
+    */
+   //clockwork::u64 getMemoryFootprint();
+private:
+   /**
+    * The object's unique identifier.
+    */
+   const QUuid _identifier;
+   /**
+    * True if this object is pruned, false otherwise.
+    */
+   bool _isPruned;
    /**
     * The object's position in the world.
     */
    clockwork::Point3 _position;
    /**
-    * The object's rotation vector holds rotation angles (in degrees)
-    * for the X, Y and Z axes.
+    * The object's rotation vector holds rotation angles (in degrees) for the X, Y and Z axes.
     */
-   clockwork::Vector3 _rotation;
+   clockwork::Vector3 _rotation;    //TODO Use QQuaternion
    /**
     * The object's scaling vector.
     */
-   clockwork::Vector3 _scaling;
-private:
+   clockwork::Vector3 _scale;
    /**
     * The object's model transformation matrix.
     */
-   clockwork::Matrix4 _modelMatrix;
+   clockwork::Matrix4 _modelTransform;
    /**
-    * The UpdateGeometryTask updates the model matrix of a given node and its children.
+    * When true, this signals that the model transformation matrix needs to be updated.
     */
-   class UpdateGeometryTask : public concurrency::Task
-   {
-   public:
-      /**
-       * Instantiate a UpdateGeometryTask that will update the model matrix of a given
-       * scene object and its children.
-       * @param object the scene object to update.
-       * @param CMTM the cumulative model transformation matrix.
-       */
-      UpdateGeometryTask(clockwork::scene::Object& object, const clockwork::Matrix4& CMTM);
-      /**
-       * @see clockwork::concurrency::Task::onRun.
-       */
-      virtual void onRun() override final;
-   private:
-      /**
-       * A reference to the scene object that will be updated by this task.
-       */
-      clockwork::scene::Object& _object;
-      /**
-       * The cumulative model transformation matrix that will be concatenated to the object's
-       * own model transformation matrix. This usually references the node's parent's model
-       * transformation matrix.
-       */
-      const clockwork::Matrix4& _CMTM;
-   };
+   bool _doModelTransformUpdate;
+   /**
+    * The object's cumulative (composite) model transformation matrix. This is a
+    * concatenation of the model transformation matrices of this node's parents.
+    */
+   clockwork::Matrix4 _CMTM;
+   /**
+    * The object's children.
+    */
+   QSet<Object*> _children;
+   /**
+    * The object's properties.
+    */
+   QHash<unsigned int, Property*> _properties;
 };
 } // namespace scene
 } // namespace clockwork

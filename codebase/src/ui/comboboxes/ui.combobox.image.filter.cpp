@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,8 @@
  */
 #include "ui.hh"
 #include "ui.combobox.image.filter.hh"
-#include "scene.hh"
 #include "services.hh"
-#include "image.filter.factory.hh"
+#include "image.filter.hh"
 
 using clockwork::ui::GUIImageFilterComboBox;
 using ItemType = clockwork::graphics::ImageFilter::Type;
@@ -33,20 +32,39 @@ using UserDataType = std::underlying_type<ItemType>::type;
 
 
 GUIImageFilterComboBox::GUIImageFilterComboBox(UserInterface& ui) :
-GUIComboBox(ui, "Image Filter")
+GUIComboBox(ui, "Select Post-Process Image Filter")
 {
-   const auto& factory = clockwork::graphics::ImageFilterFactory::getUniqueInstance();
-   const auto& items = factory.getKeys();
-   const auto& defaultItem = factory.getDefaultKey();
-
-   // Build the combo box.
-   build<ItemType, UserDataType>(items, defaultItem);
+   const auto& factory = clockwork::graphics::ImageFilterFactory::getInstance();
+   build<ItemType, UserDataType>(factory.getKeys(), factory.getDefaultKey());
 }
 
 
 void
 GUIImageFilterComboBox::onItemSelected(const int& index)
 {
-   // Get the selected image filter type and update the framebuffer with it.
-   clockwork::system::Services::Graphics.setImageFilter(getItem<ItemType>(index));
+   auto* const viewer = static_cast<clockwork::scene::Viewer*>(GUIComponent::SelectedSceneObject);
+   assert(viewer != nullptr);
+
+   viewer->setImageFilter(getItem<ItemType>(index));
+}
+
+
+void
+GUIImageFilterComboBox::onInterfaceUpdate(const GUIComponent* const source)
+{
+   if (source != this)
+   {
+      bool enabled = false;
+      bool visible = false;
+
+      auto* const viewer = dynamic_cast<clockwork::scene::Viewer*>(GUIComponent::SelectedSceneObject);
+      if (viewer != nullptr)
+      {
+         enabled = true;
+         visible = true;
+         setSelectedItem<ItemType, UserDataType>(viewer->getImageFilter());
+      }
+      setEnabled(false && enabled);
+      setVisible(visible);
+   }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,32 +23,50 @@
  */
 #include "ui.hh"
 #include "ui.combobox.renderer.hh"
-#include "render.parameters.factory.hh"
+#include "render.algorithm.hh"
 #include "scene.hh"
 #include "scene.viewer.hh"
 
 using clockwork::ui::GUIRendererComboBox;
-using ItemType = clockwork::graphics::RenderParameters::Type;
+using clockwork::graphics::RenderAlgorithmFactory;
+using ItemType = clockwork::graphics::RenderAlgorithm::Identifier;
 using UserDataType = std::underlying_type<ItemType>::type;
 
 
 GUIRendererComboBox::GUIRendererComboBox(UserInterface& ui) :
-GUIComboBox(ui, "Renderer")
+GUIComboBox(ui, "Select Render Algorithm")
 {
-   auto& factory = clockwork::graphics::RenderParametersFactory::getUniqueInstance();
-   const auto& items = factory.getKeys();
-   const auto& defaultItem = factory.getDefaultKey();
-
-   // Build the combo box.
-   build<ItemType, UserDataType>(items, defaultItem);
+   const auto& factory = RenderAlgorithmFactory::getInstance();
+   build<ItemType, UserDataType>(factory.getKeys(), factory.getDefaultKey());
 }
 
 
 void
 GUIRendererComboBox::onItemSelected(const int& index)
 {
-   // Set the current viewer's renderer.
-   auto* const viewer = clockwork::scene::Scene::getUniqueInstance().getViewer();
-   if (viewer != nullptr)
-      viewer->setRenderType(getItem<ItemType>(index));
+   auto* const viewer = static_cast<clockwork::scene::Viewer*>(GUIComponent::SelectedSceneObject);
+   assert(viewer != nullptr);
+
+   viewer->setRenderAlgorithm(getItem<ItemType>(index));
+}
+
+
+void
+GUIRendererComboBox::onInterfaceUpdate(const GUIComponent* const source)
+{
+   if (source != this)
+   {
+      bool enabled = false;
+      bool visible = false;
+
+      auto* const viewer = dynamic_cast<clockwork::scene::Viewer*>(GUIComponent::SelectedSceneObject);
+      if (viewer != nullptr)
+      {
+         enabled = true;
+         visible = true;
+         setSelectedItem<ItemType, UserDataType>(viewer->getRenderAlgorithm());
+      }
+      setEnabled(enabled);
+      setVisible(visible);
+   }
 }

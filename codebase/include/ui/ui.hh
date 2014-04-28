@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,11 +24,13 @@
 #pragma once
 
 #include "error.hh"
-#include "ui.control.panel.hh"
 #include "ui.display.hh"
-#include "ui.busy.indicator.hh"
+#include "ui.view.scene.hh"
 #include <QMenuBar>
 #include <QStatusBar>
+#include <QMainWindow>
+#include <QVBoxLayout>
+#include <QLabel>
 
 
 namespace clockwork {
@@ -45,58 +47,89 @@ class Window;
 class UserInterface : public QWidget
 {
 Q_OBJECT
+friend class clockwork::ui::Window;
 public:
-   /**
-    * Instantiate a user interface attached to a window.
-    * @param window the window where this interface will be rendered to.
-    */
-   explicit UserInterface(Window& window);
    /**
     * Build the user interface.
     */
    clockwork::Error build();
    /**
-    * Return the window that this user interface is attached to.
+    * Register a user interface component so that it receives
+    * updates from this interface.
+    * @param component the component to register.
     */
-   Window& getWindow();
+   void registerComponent(GUIComponent& component);
 private:
    /**
-    * A reference to the window where this user interface is rendered.
+    * Instantiate a user interface attached to a window.
+    * @param window the window where this interface will be rendered to.
     */
-   Window& _window;
+   explicit UserInterface(clockwork::ui::Window& window);
+   UserInterface(const UserInterface&) = delete;
+   UserInterface& operator=(const UserInterface&) = delete;
+   /**
+    * The set of all components attached to this interface.
+    */
+   QSet<GUIComponent*> _registeredComponents;
    /**
     * The display device.
     */
-   GUIDisplay* const _display;
+   GUIDisplayDevice* const _displayDevice;
    /**
-    * The control panel.
+    * The scene view.
     */
-   GUIControlPanel* const _controlPanel;
+   GUISceneView* const _sceneView;
    /**
     * The busy indicator.
     */
-   GUIBusyIndicator* const _busyIndicator;
+   QLabel* const _busyIndicator;
+   /**
+    * The movie (animation) that is played when the busy indicator is activated.
+    */
+   QMovie* const _busyIndicatorMovie;
    /**
     * The menu bar.
     */
-   QMenuBar* const _qMenuBar;
+   QMenuBar* const _menubar;
    /**
     * The status bar.
     */
-   QStatusBar* const _qStatusBar;
+   QStatusBar* const _statusbar;
+   /**
+    * Build the menubar component.
+    */
+   void buildMenuBar();
+   /**
+    * Build the statusbar component.
+    */
+   void buildStatusBar();
+   /**
+    * Build the scene view.
+    */
+   void buildSceneView(QVBoxLayout& layout);
 private slots:
    /**
-    * Update the user interface and the components that are attached to it.
-    * @param source the component that triggered the update.
+    * This slot is called when a component changes its state. It will
+    * update all components attached to the user interface if need be,
+    * effectively updating any components that may depend on the
+    * component that emitted the signal.
+    * @param source the component that changed its state.
     */
-   void update(const GUIComponent* const source);
+   void onComponentStateChanged(clockwork::ui::GUIComponent* const source);
+   /**
+    * Show the busy indicator.
+    */
+   void showBusyIndicator();
+   /**
+    * Hide the busy indicator.
+    */
+   void hideBusyIndicator();
 signals:
    /**
-    * This signal is raised when the user interface's components need to
-    * be updated, which usually happens after any sort of interaction
-    * with the user interface.
+    * This signal is emitted when all the components attached to this user
+    * interface have been updated after a user interaction.
     */
-   void updateComponents(const GUIComponent* const source);
+   void updated();
 };
 
 } // namespace ui

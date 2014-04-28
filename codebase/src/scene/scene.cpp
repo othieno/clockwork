@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,126 +22,155 @@
  * THE SOFTWARE.
  */
 #include "scene.hh"
+#include "services.hh"
+#include "predefs.hh"
 #include "camera.hh"
-#include "rigid.body.hh"
-#include <iostream> // remove when done debugging.
+#include <cassert>
+
+using clockwork::scene::Scene;
+using clockwork::scene::Viewer;
 
 
-clockwork::scene::Scene::Scene() :
+Scene::Scene() :
 QAbstractItemModel(nullptr),
-_currentViewer(nullptr)
+_graph(new Object("Default Scene Graph")),
+_doViewportUpdate(true)
 {
-   // Set the title.
-   setTitle(QString("Scene Graph"));
+   assert(_graph != nullptr);
 
-   // Populate the scene.
-   addObject(new clockwork::graphics::Camera("Camera 1"));
-   addObject(new clockwork::graphics::Camera("Camera 2"));
-   addObject(new clockwork::graphics::Camera("Camera 3"));
-   addObject(new clockwork::physics::SuzanneRigidBody);
-}
-
-//FIXME This is the only way to stop the application from hanging at startup...
-// WHY? It worked before. Find out what changed!
-static clockwork::scene::Scene UNIQUE_INSTANCE;
-clockwork::scene::Scene&
-clockwork::scene::Scene::getUniqueInstance()
-{
-   //static clockwork::scene::Scene UNIQUE_INSTANCE;
-   return UNIQUE_INSTANCE;
-}
-
-
-clockwork::scene::Viewer*
-clockwork::scene::Scene::getViewer()
-{
-   return _currentViewer;
-}
-
-
-bool
-clockwork::scene::Scene::hasViewer() const
-{
-   return _currentViewer != nullptr;
-}
-
-
-void
-clockwork::scene::Scene::removeViewer()
-{
-   std::cerr << "Implement clockwork::scene::Scene::removeViewer" << std::endl;
-}
-
-
-void
-clockwork::scene::Scene::addObject(clockwork::scene::Object* const object)
-{
-   if (object != nullptr)
+   auto* const suzanne = &clockwork::scene::predefs::Suzanne::getInstance();
+   std::list<clockwork::graphics::Camera*> cameras =
    {
-      _rootNodes.insert(object);
+      new clockwork::graphics::Camera("Camera A"),
+//      new clockwork::graphics::Camera("Camera B"),
+//      new clockwork::graphics::Camera("Camera C"),
+//      new clockwork::graphics::Camera("Camera D")
+   };
 
-      // If the current viewer is not set and the object is a viewer,
-      // then make it the default viewer.
-      if (_currentViewer == nullptr)
-         _currentViewer = dynamic_cast<clockwork::scene::Viewer*>(object);
+   _graph->addChild(suzanne);
+   for (auto* const camera : cameras)
+   {
+      _graph->addChild(camera);
+      activateViewer(*camera);
    }
 }
 
 
-std::set<clockwork::scene::Node*>&
-clockwork::scene::Scene::getRootNodes()
+Scene&
+Scene::getInstance()
 {
-   return _rootNodes;
+   static Scene INSTANCE;
+   return INSTANCE;
 }
 
 
-const QString
-clockwork::scene::Scene::getTitle() const
+clockwork::scene::Object&
+Scene::getGraph()
 {
-   return objectName();
+   return *_graph;
+}
+
+
+const QSet<Viewer*>&
+Scene::getActiveViewers()
+{
+   if (_doViewportUpdate)
+      updateViewports();
+
+
+   return _activeViewers;
 }
 
 
 void
-clockwork::scene::Scene::setTitle(const QString& title)
+Scene::activateViewer(Viewer& viewer)
 {
-   setObjectName(title);
+   _activeViewers.insert(&viewer);
+   _doViewportUpdate = true;
 }
 
 
 void
-clockwork::scene::Scene::save() const
+Scene::deactivateViewer(Viewer& viewer)
 {
-   std::cerr << "Implement clockwork::scene::Scene::save" << std::endl;
+   _activeViewers.remove(&viewer);
+   _doViewportUpdate = true;
 }
 
 
-QModelIndex
-clockwork::scene::Scene::index(const int row, const int column, const QModelIndex& index) const
+bool
+Scene::hasActiveViewers() const
 {
-   const QObject* parent = this;
-   if (index.isValid())
-      parent = static_cast<QObject*>(index.internalPointer());
+   return !_activeViewers.empty();
+}
 
-   const auto& children = parent->children();
-   if (row < children.count())
-      return createIndex(row, column, children.at(row));
+
+void
+Scene::updateViewports()
+{
+   auto it = _activeViewers.begin();
+
+   const unsigned nActiveViewers = _activeViewers.size();
+   if (nActiveViewers > 1)
+   {
+      // TODO Explain me more.
+      // If  there is more than one active viewer, then the viewport is
+      // partitioned to accomodate each viewer.
+      const unsigned int M = static_cast<unsigned int>(std::ceil(nActiveViewers / 2.0));
+      const unsigned int N = nActiveViewers - M;
+
+      for (unsigned int i = 0; i < M; ++i)
+      {
+         const float w = 1.0f / M;
+         (*it++)->setViewport(i * w, 0.0f, w, 0.5f);
+      }
+      for (unsigned int i = 0; i < N; ++i)
+      {
+         const float w = 1.0f / N;
+         (*it++)->setViewport(i * w, 0.5f, w, 0.5f);
+      }
+   }
    else
-      return QModelIndex();
+      (*it)->setViewport(0.0f, 0.0f, 1.0f, 1.0f);
+
+   _doViewportUpdate = false;
+}
+
+
+void
+Scene::save(const QString&) const
+{}
+
+
+QModelIndex
+Scene::index(const int row, const int column, const QModelIndex& parent) const
+{
+   const Object* const object =
+   !parent.isValid() ? _graph : static_cast<const Object*>(parent.internalPointer());
+   assert(object != nullptr);
+
+   const auto& children = object->getChildren();
+   const auto& hasModel = !children.isEmpty() && row < children.count();
+
+   return !hasModel ? QModelIndex() : createIndex(row, column, *(children.begin() + row));
 }
 
 
 QModelIndex
-clockwork::scene::Scene::parent(const QModelIndex& index) const
+Scene::parent(const QModelIndex& index) const
 {
    if (index.isValid())
    {
-      const auto* const indexObject = static_cast<const QObject*>(index.internalPointer());
-      auto* const parent = indexObject->parent();
-      if (parent != this)
+      const auto* const node = static_cast<const Object*>(index.internalPointer());
+      const auto* const parent = node->parent();
+      if (parent != nullptr && parent != _graph)
       {
-         const auto indexOfParent = parent->parent()->children().indexOf(parent);
-         return createIndex(indexOfParent, 0, parent);
+         const auto* const grandParent = parent->parent();
+         if (grandParent != nullptr)
+         {
+            const auto& indexOfParent = grandParent->children().indexOf(const_cast<QObject*>(parent));
+            return createIndex(indexOfParent, 0, (void*)parent);
+         }
       }
    }
    return QModelIndex();
@@ -149,39 +178,34 @@ clockwork::scene::Scene::parent(const QModelIndex& index) const
 
 
 int
-clockwork::scene::Scene::rowCount(const QModelIndex& index) const
+Scene::rowCount(const QModelIndex& index) const
 {
-   const QObject* parent = this;
+   const Object* parent = _graph;
    if (index.isValid())
-      parent = static_cast<const QObject*>(index.internalPointer());
-
-   return parent->children().count();
-}
-
-
-int
-clockwork::scene::Scene::columnCount(const QModelIndex&) const
-{
-   return 1;
+   {
+      parent = static_cast<const Object*>(index.internalPointer());
+      assert(parent != nullptr);
+   }
+   return parent->getChildren().count();
 }
 
 
 QVariant
-clockwork::scene::Scene::data(const QModelIndex& index, const int role) const
+Scene::data(const QModelIndex& index, const int role) const
 {
    if (index.isValid())
    {
       if (role == Qt::DisplayRole)
-         return static_cast<QObject*>(index.internalPointer())->objectName();
+         return static_cast<Object*>(index.internalPointer())->getName();
       else if (role == Qt::ToolTipRole)
-         return QString("The scene entity's name.");
+         return QString("Select a scene entity.");
    }
    return QVariant();
 }
 
 
 QVariant
-clockwork::scene::Scene::headerData(const int, const Qt::Orientation orientation, const int role) const
+Scene::headerData(const int, const Qt::Orientation orientation, const int role) const
 {
-   return (role == Qt::DisplayRole && orientation == Qt::Horizontal) ? getTitle() : QVariant();
+   return (role == Qt::DisplayRole && orientation == Qt::Horizontal) ? _graph->getName() : QVariant();
 }

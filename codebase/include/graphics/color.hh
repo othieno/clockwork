@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,7 +57,8 @@ struct ColorRGBA
     */
    ColorRGBA(const float& red = 0.0f, const float& green = 0.0f, const float& blue = 0.0f, const float& alpha = 1.0f);
    /**
-    * Convert the RGBA color into a 32-bit integer value. Consider this a shortcut for the merge method.
+    * Convert the RGBA color into a 32-bit integer value.
+    * Consider this a shortcut for ColorRGBA::merge(*this).
     */
    operator uint32_t() const;
 public:

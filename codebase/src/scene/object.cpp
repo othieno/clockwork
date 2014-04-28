@@ -21,62 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "scene.object.hh"
-#include "graphics.subsystem.hh"
+#include "scene.hh"
 #include "services.hh"
+#include <cassert>
 
 using clockwork::scene::Object;
 
 
-Object::Object(const std::string& name) :
-Entity(name),
-_position(0.0, 0.0, 0.0),
-_rotation(),
-_scaling(1.0, 1.0, 1.0)
-{}
-
-
-Object::UpdateGeometryTask::UpdateGeometryTask(Object& object, const clockwork::Matrix4& CMTM) :
-Task(static_cast<int>(clockwork::concurrency::TaskPriority::PhysicsUpdateGeometryTask)),
-_object(object),
-_CMTM(CMTM)
-{}
-
-
-void
-Object::UpdateGeometryTask::onRun()
+Object::Object(const QString& name) :
+_identifier(QUuid::createUuid()),
+_isPruned(false),
+_position(0, 0, 0),
+_rotation(0, 0, 0),
+_scale(1, 1, 1),
+_doModelTransformUpdate(true)
 {
-   const auto& position = _object.getPosition();
-   const auto& rotation = _object.getRotation();
-   const auto& scale = _object.getScale();
-
-   const auto& newCMTM = _CMTM * clockwork::Matrix4::model(position, rotation, scale);
-   _object.setModelMatrix(newCMTM);
-
-   for (auto* const node : _object.getChildren())
-      node->updateGeometry(newCMTM);
+   setObjectName(name);
 }
 
 
-const clockwork::Matrix4&
-Object::getModelMatrix() const
+const QUuid&
+Object::getIdentifier() const
 {
-   return _modelMatrix;
+   return _identifier;
+}
+
+
+QString
+Object::getName() const
+{
+   return objectName();
 }
 
 
 void
-Object::setModelMatrix(const clockwork::Matrix4& model)
+Object::setName(const QString& name)
 {
-   _modelMatrix = model;
-}
-
-
-void
-Object::updateGeometry(const clockwork::Matrix4& CMTM)
-{
-   if (!isPruned())
-      clockwork::system::Services::Concurrency.submitTask(new UpdateGeometryTask(*this, CMTM));
+   setObjectName(name);
 }
 
 
@@ -88,9 +69,19 @@ Object::getPosition() const
 
 
 void
-Object::setPosition(const clockwork::Point3& position)
+Object::setPosition(const clockwork::Point3& p)
 {
-   _position = position;
+   setPosition(p.x, p.y, p.z);
+}
+
+
+void
+Object::setPosition(const double& x, const double& y, const double& z)
+{
+   _position.x = x;
+   _position.y = y;
+   _position.z = z;
+   _doModelTransformUpdate = true;
 }
 
 
@@ -102,39 +93,186 @@ Object::getRotation() const
 
 
 void
-Object::setRotation(const clockwork::Vector3& rotation)
+Object::setRotation(const clockwork::Vector3& r)
 {
-   _rotation = rotation;
+   setRotation(r.i, r.j, r.k);
 }
 
 
 void
-Object::setRotation(const double roll, const double yaw, const double pitch)
+Object::setRotation(const double pitch, const double yaw, const double roll)
 {
-   _rotation.i = roll;
+   _rotation.i = pitch;
    _rotation.j = yaw;
-   _rotation.k = pitch;
+   _rotation.k = roll;
+   _doModelTransformUpdate = true;
 }
 
 
 const clockwork::Vector3&
 Object::getScale() const
 {
-   return _scaling;
+   return _scale;
 }
 
 
 void
-Object::setScale(const clockwork::Vector3& scaling)
+Object::setScale(const clockwork::Vector3& s)
 {
-   _scaling = scaling;
+   setScale(s.i, s.j, s.k);
 }
 
 
 void
 Object::setScale(const double x, const double y, const double z)
 {
-   _scaling.i = x;
-   _scaling.j = y;
-   _scaling.k = z;
+   _scale.i = x;
+   _scale.j = y;
+   _scale.k = z;
+   _doModelTransformUpdate = true;
+}
+
+
+const clockwork::Matrix4&
+Object::getModelTransform()
+{
+   if (_doModelTransformUpdate)
+   {
+      _modelTransform = clockwork::Matrix4::model(_position, _rotation, _scale);
+      _doModelTransformUpdate = false;
+   }
+   return _modelTransform;
+}
+
+
+const clockwork::Matrix4&
+Object::getCMTM() const
+{
+   return _CMTM;
+}
+
+
+void
+Object::updateCMTM()
+{
+   const auto* const parentObject = static_cast<const clockwork::scene::Object*>(parent());
+
+   // Update the CMTM. Note that instead of directy accessing the _modelTransform variable,
+   // getModelTransform() is used to update a possibly "dirty" transformation matrix.
+   const auto& modelTransform = getModelTransform();
+
+   _CMTM = parentObject != nullptr ? parentObject->getCMTM() * modelTransform : modelTransform;
+}
+
+
+bool
+Object::isPruned() const
+{
+   return _isPruned;
+}
+
+
+void
+Object::setPruned(const bool pruned)
+{
+   _isPruned = pruned;
+}
+
+
+void
+Object::addChild(Object* const child)
+{
+   if (child != nullptr)
+   {
+      _children << child;
+      child->setParent(this);
+   }
+}
+
+
+void
+Object::removeChild(Object* const child)
+{
+   if (child != nullptr)
+   {
+      _children.remove(child);
+      setParent(nullptr);
+      child->deleteLater();
+   }
+}
+
+
+const QSet<Object*>&
+Object::getChildren() const
+{
+   return _children;
+}
+
+
+bool
+Object::hasChildren() const
+{
+   return !_children.empty();
+}
+
+
+clockwork::scene::Property&
+Object::addProperty(const Property::Identifier& identifier)
+{
+   const auto key = static_cast<unsigned int>(identifier);
+   Property* property = nullptr;
+
+   switch (identifier)
+   {
+      case Property::Identifier::Appearance:
+         property = new Appearance(*this);
+         break;
+      default:
+         assert(false);
+         break;
+   }
+   assert(property != nullptr);
+   _properties.insert(key, property);
+
+   return *property;
+}
+
+
+const clockwork::scene::Property*
+Object::getProperty(const Property::Identifier& identifier) const
+{
+   const auto key = static_cast<unsigned int>(identifier);
+
+   return _properties.contains(key) ? _properties.value(key) : nullptr;
+}
+
+
+bool
+Object::hasProperty(const Property::Identifier& identifier) const
+{
+   const auto* const property = getProperty(identifier);
+   if (property != nullptr)
+   {
+      switch (identifier)
+      {
+         case Property::Identifier::Appearance:
+         {
+            const auto* const model = static_cast<const Appearance*>(property)->getModel3D();
+            return model != nullptr && !model->isEmpty();
+         }
+         default:
+            assert(false);
+            break;
+      }
+   }
+   return false;
+}
+
+
+void
+Object::removeProperty(const Property::Identifier& identifier)
+{
+   const auto key = static_cast<unsigned int>(identifier);
+   if (_properties.contains(key))
+      assert(_properties.remove(key) > 0);
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 #pragma once
 
+#include <QObject>
 #include <QImage>
 #include <cstdint>
 #include <atomic>
@@ -32,8 +33,9 @@
 namespace clockwork {
 namespace graphics {
 
-class Framebuffer
+class Framebuffer : public QObject
 {
+Q_OBJECT
 public:
    /**
     * Available framebuffer resolutions.
@@ -152,9 +154,9 @@ public:
     */
    void discard(const uint32_t& x, const uint32_t& y);
    /**
-    * Return all possible framebuffer resolutions.
+    * Return all available framebuffer resolutions.
     */
-   static QList<Framebuffer::Resolution> getResolutions();
+   static QList<Framebuffer::Resolution> getAvailableResolutions();
    /**
     * Return the buffer offset for a given <x, y> coordinate. If the coordinate
     * is out of the framebuffer's bounds, then -1 is returned.
@@ -221,6 +223,12 @@ private:
     * Free the memory used by the internal buffers.
     */
    void free();
+signals:
+   /**
+    * This signal is emitted when the framebuffer contains a frame that can
+    * be drawn to the display device.
+    */
+   void frameReady();
 };
 
 } // namespace graphics

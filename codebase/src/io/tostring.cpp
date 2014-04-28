@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -98,13 +98,13 @@ clockwork::toString(const clockwork::graphics::TextureFilter::Type& type)
 
 
 QString
-clockwork::toString(const clockwork::graphics::LineRenderParameters::LineAlgorithm& algorithm)
+clockwork::toString(const clockwork::graphics::LineAlgorithm::Identifier& identifier)
 {
-   switch (algorithm)
+   switch (identifier)
    {
-      case clockwork::graphics::LineRenderParameters::LineAlgorithm::Bresenham:
+      case clockwork::graphics::LineAlgorithm::Identifier::Bresenham:
          return "Bresenham";
-      case clockwork::graphics::LineRenderParameters::LineAlgorithm::XiaolinWu:
+      case clockwork::graphics::LineAlgorithm::Identifier::XiaolinWu:
          return "Xiaolin Wu";
       default:
          return "Unknown line algorithm";
@@ -113,51 +113,57 @@ clockwork::toString(const clockwork::graphics::LineRenderParameters::LineAlgorit
 
 
 QString
-clockwork::toString(const clockwork::graphics::LineRenderParameters::LinePrimitive& primitive)
+clockwork::toString(const clockwork::graphics::PrimitiveMode::Identifier& identifier)
 {
-   switch (primitive)
+   switch (identifier)
    {
-      case clockwork::graphics::LineRenderParameters::LinePrimitive::Line:
-         return "Line";
-      case clockwork::graphics::LineRenderParameters::LinePrimitive::LineStrip:
-         return "Line strip";
-      case clockwork::graphics::LineRenderParameters::LinePrimitive::LineLoop:
-         return "Line loop";
+      case clockwork::graphics::PrimitiveMode::Identifier::Points:
+         return "Points";
+      case clockwork::graphics::PrimitiveMode::Identifier::Lines:
+         return "Lines";
+      case clockwork::graphics::PrimitiveMode::Identifier::LineStrip:
+         return "Line Strip";
+      case clockwork::graphics::PrimitiveMode::Identifier::LineLoop:
+         return "Line Loop";
+      case clockwork::graphics::PrimitiveMode::Identifier::Triangles:
+         return "Triangles";
+      case clockwork::graphics::PrimitiveMode::Identifier::TriangleStrip:
+         return "Triangle Strip";
+      case clockwork::graphics::PrimitiveMode::Identifier::TriangleFan:
+         return "Triangle Fan";
       default:
-         return "Unknown line primitive";
+         return "Unknown primitive mode";
    }
 }
 
 
 QString
-clockwork::toString(const clockwork::graphics::RenderParameters::Type& type)
+clockwork::toString(const clockwork::graphics::RenderAlgorithm::Identifier& identifier)
 {
-   switch (type)
+   switch (identifier)
    {
-      case clockwork::graphics::RenderParameters::Type::Point:
+      case clockwork::graphics::RenderAlgorithm::Identifier::Point:
          return "Points";
-      case clockwork::graphics::RenderParameters::Type::Line:
-         return "Lines";
-      case clockwork::graphics::RenderParameters::Type::Wireframe:
+      case clockwork::graphics::RenderAlgorithm::Identifier::Wireframe:
          return "Wireframe";
-      case clockwork::graphics::RenderParameters::Type::Random:
-         return "Random shading";
-      case clockwork::graphics::RenderParameters::Type::Depth:
-         return "Depth shading";
-      case clockwork::graphics::RenderParameters::Type::Normals:
-         return "Normals shading";
-      case clockwork::graphics::RenderParameters::Type::Texture:
-         return "Texture mapping";
-      case clockwork::graphics::RenderParameters::Type::Constant:
-         return "Constant shading";
-      case clockwork::graphics::RenderParameters::Type::Phong:
-         return "Phong shading";
-      case clockwork::graphics::RenderParameters::Type::Cel:
-         return "Cel shading";
-      case clockwork::graphics::RenderParameters::Type::Bump:
-         return "Bump mapping";
-      case clockwork::graphics::RenderParameters::Type::Deferred:
-         return "Deferred shading";
+      case clockwork::graphics::RenderAlgorithm::Identifier::Random:
+         return "Random";
+      case clockwork::graphics::RenderAlgorithm::Identifier::Depth:
+         return "Depth Map";
+      case clockwork::graphics::RenderAlgorithm::Identifier::Normals:
+         return "Normal Map";
+      case clockwork::graphics::RenderAlgorithm::Identifier::Texture:
+         return "Texture Map";
+      case clockwork::graphics::RenderAlgorithm::Identifier::Constant:
+         return "Constant Shading";
+      case clockwork::graphics::RenderAlgorithm::Identifier::Phong:
+         return "Phong Shading";
+      case clockwork::graphics::RenderAlgorithm::Identifier::Cel:
+         return "Cel Shading";
+      case clockwork::graphics::RenderAlgorithm::Identifier::Bump:
+         return "Bump Map";
+      case clockwork::graphics::RenderAlgorithm::Identifier::Deferred:
+         return "Deferred Shading";
       default:
          return "Unknown render type";
    }
@@ -215,4 +221,16 @@ clockwork::toString(const clockwork::graphics::Framebuffer::Resolution& resoluti
       default:
          return "Unknown resolution";
    }
+}
+
+
+QString
+clockwork::toString(const clockwork::graphics::Viewport& vp)
+{
+   std::stringstream stream;
+   stream.precision(2);
+   stream << "viewport (x, y, width, height, near, far): <"
+   << vp.x << ", " << vp.y << ", " << vp.width << ", " << vp.height << ", " << vp.near << ", " << vp.far << ">";
+
+   return QString(stream.str().c_str());
 }

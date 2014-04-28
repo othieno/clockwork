@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@
 #include <QList>
 #include <QStringList>
 #include <sstream>
+#include <cassert>
 
 
 namespace clockwork {
@@ -88,7 +89,7 @@ public:
    /**
     * Return the default value, i.e. the value associated to the default key.
     */
-   ValueType* getDefaultValue()
+   ValueType& getDefaultValue()
    {
       return get(_defaultKey);
    }
@@ -96,9 +97,10 @@ public:
     * Return an element from the factory associated to the given key.
     * @param key the element's key.
     */
-   ValueType* get(const KeyType& key)
+   ValueType& get(const KeyType& key)
    {
-      return exists(key) ? _map[key] : nullptr;
+      assert(exists(key));
+      return _map[key];
    }
    /**
     * Delete an item with the given key from the factory.
@@ -114,13 +116,13 @@ public:
     * @param key the element's key.
     * @param value the actual element.
     */
-   void put(const KeyType& key, ValueType* value)
+   void put(const KeyType& key, ValueType value)
    {
       // If the key exists, then remove its old value before setting a new one.
       if (exists(key))
          remove(key);
 
-      _map.insert(std::pair<const KeyType, ValueType*>(key, value));
+      _map.insert(std::pair<const KeyType, ValueType>(key, value));
    }
    /**
     * Return true if a given key exists in the factory.
@@ -138,7 +140,7 @@ private:
    /**
     * The map containing key-value pairs.
     */
-   std::map<KeyType, ValueType*> _map;
+   std::map<KeyType, ValueType> _map;
 };
 
 } // namespace clockwork

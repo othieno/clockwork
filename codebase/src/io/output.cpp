@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 Jeremy Othieno.
+ * Copyright (c) 2014 Jeremy Othieno.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -65,9 +65,9 @@ operator<<(std::ostream& os, const clockwork::graphics::TextureFilter::Type& typ
 
 
 std::ostream&
-operator<<(std::ostream& os, const clockwork::graphics::RenderParameters::Type& type)
+operator<<(std::ostream& os, const clockwork::graphics::RenderAlgorithm::Identifier& identifier)
 {
-   os << clockwork::toString(type);
+   os << clockwork::toString(identifier);
    return os;
 }
 
@@ -105,16 +105,24 @@ operator<<(std::ostream& os, const clockwork::graphics::Framebuffer::Resolution&
 
 
 std::ostream&
-operator<<(std::ostream& os, const clockwork::graphics::LineRenderParameters::LineAlgorithm& algorithm)
+operator<<(std::ostream& os, const clockwork::graphics::LineAlgorithm::Identifier& identifier)
 {
-   os << clockwork::toString(algorithm);
+   os << clockwork::toString(identifier);
    return os;
 }
 
 
 std::ostream&
-operator<<(std::ostream& os, const clockwork::graphics::LineRenderParameters::LinePrimitive& primitive)
+operator<<(std::ostream& os, const clockwork::graphics::PrimitiveMode::Identifier& identifier)
 {
-   os << clockwork::toString(primitive);
+   os << clockwork::toString(identifier);
+   return os;
+}
+
+
+std::ostream&
+operator<<(std::ostream& os, const clockwork::graphics::Viewport& viewport)
+{
+   os << clockwork::toString(viewport);
    return os;
 }
