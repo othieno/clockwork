@@ -3,11 +3,11 @@ prototype
 build
 Makefile
 
-# Ignore Eclipse configuration files.
-.project
+# Ignore Sublime configuration files.
+*.sublime-*
 
 # Ignore Qt Creator configuration files.
 *.pro.user*
 
-# Ignore design documentation.
+# Ignore design documentation (for now).
 documentation/design

@@ -1,0 +1,13 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/">
+        <file alias="framebuffer">resources/assets/images/clockwork.png</file>
+    </qresource>
+    <qresource prefix="/icon/action">
+        <file alias="Preferences">resources/assets/icons/action/preferences.svg</file>
+    </qresource>
+    <qresource prefix="/view">
+        <file alias="main">src/ui/views/main.qml</file>
+        <file alias="Preferences">src/ui/views/Preferences.qml</file>
+    </qresource>
+</RCC>
