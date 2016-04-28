@@ -1,8 +1,9 @@
 QT += widgets
 TEMPLATE = app
 TARGET = clockwork
+CONFIG += c++14
 
-QMAKE_CXXFLAGS += -std=c++11 -Wextra
+QMAKE_CXXFLAGS += -Wextra
 
 DESTDIR = ../build
 OBJECTS_DIR = $${DESTDIR}/obj
