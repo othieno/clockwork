@@ -27,6 +27,7 @@
 #include <QImage>
 #include <cstdint>
 #include <atomic>
+#include <functional>
 #include "fragment.hh"
 
 
