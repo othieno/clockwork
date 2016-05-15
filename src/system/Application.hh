@@ -27,6 +27,8 @@
 
 #include <QGuiApplication>
 #include "Error.hh"
+#include "TaskManager.hh"
+#include "GraphicsEngine.hh"
 #include "UserInterface.hh"
 
 
@@ -36,13 +38,54 @@ class Application final : public QGuiApplication
 {
     Q_OBJECT
 public:
-    Application(int& argc, char** argv);
+    /**
+     * Instantiates the application.
+     */
+    explicit Application(int& argc, char** argv);
+    /**
+     *
+     */
     Application(const Application&) = delete;
-    Application& operator=(const Application&) = delete;
+    /**
+     *
+     */
+    Application(Application&&) = delete;
+    /**
+     *
+     */
     ~Application();
-
+    /**
+     *
+     */
+    Application& operator=(const Application&) = delete;
+    /**
+     *
+     */
+    Application& operator=(Application&&) = delete;
+    /**
+     * Initializes the application.
+     */
     Error initialize();
+    /**
+     * Returns the task manager instance.
+     */
+    TaskManager& getTaskManager();
+    /**
+     * Returns the graphics engine instance.
+     */
+    GraphicsEngine& getGraphicsEngine();
 private:
+    /**
+     * The task manager.
+     */
+    TaskManager taskManager_;
+    /**
+     * The graphics engine.
+     */
+    GraphicsEngine graphicsEngine_;
+    /**
+     * The user interface.
+     */
     UserInterface userInterface_;
 };
 

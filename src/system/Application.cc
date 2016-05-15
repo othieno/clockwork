@@ -29,7 +29,9 @@ using clockwork::Application;
 
 Application::Application(int& argc, char** argv) :
 QGuiApplication(argc, argv),
-userInterface_(*this)
+taskManager_(),
+graphicsEngine_(taskManager_),
+userInterface_()
 {}
 
 
@@ -42,9 +44,23 @@ Application::initialize()
 {
     auto error = Error::None;
 
-    error = userInterface_.initialize();
+    error = userInterface_.initialize(graphicsEngine_.getFramebuffer());
     if (error != Error::None)
         return error;
 
     return error;
+}
+
+
+clockwork::TaskManager&
+Application::getTaskManager()
+{
+    return taskManager_;
+}
+
+
+clockwork::GraphicsEngine&
+Application::getGraphicsEngine()
+{
+    return graphicsEngine_;
 }

@@ -26,6 +26,7 @@
 #define CLOCKWORK_FRAMEBUFFER_HH
 
 #include <QObject>
+#include <QSize>
 
 
 namespace clockwork {
@@ -33,12 +34,110 @@ namespace clockwork {
 class Framebuffer final : public QObject
 {
 public:
-    Framebuffer();
+   /**
+    * Available framebuffer resolutions.
+    */
+    enum class Resolution
+    {
+        VGA,     //  640 x 480
+        SVGA,    //  800 x 600
+        XGA,     // 1024 x 768
+        SXGA,    // 1280 x 1024
+        FHD,     // 1920 x 1080
+        QSXGA,   // 2560 x 2048
+        UHD8K    // 7680 x 4320
+    };
+    /**
+     *
+     */
+    explicit Framebuffer(const Framebuffer::Resolution resolution);
+    /**
+     *
+     */
     Framebuffer(const Framebuffer&) = delete;
-    Framebuffer& operator=(const Framebuffer&) = delete;
+    /**
+     *
+     */
+    Framebuffer(Framebuffer&&) = delete;
+    /**
+     *
+     */
     ~Framebuffer();
+    /**
+     *
+     */
+    Framebuffer& operator=(const Framebuffer&) = delete;
+    /**
+     *
+     */
+    Framebuffer& operator=(Framebuffer&&) = delete;
+    /**
+     * Returns the framebuffer's width and height.
+     */
+    QSize getResolution() const;
+    /**
+     * Sets the framebuffer's resolution.
+     */
+    void setResolution(const Framebuffer::Resolution resolution);
+    /**
+     * Returns the pixel buffer.
+     */
+    std::uint32_t* getPixelBuffer();
+    /**
+     * Returns an image representation of the pixel buffer.
+     */
+    const QImage& getPixelBufferImage() const;
+    /**
+     * Returns the depth buffer.
+     */
+    std::int32_t* getDepthStencilBuffer();
+    /**
+     * Returns an image representation of the depth buffer.
+     */
+    const QImage& getDepthStencilBufferImage() const;
+    /**
+     * Clears the framebuffer.
+     */
+    void clear();
+    /**
+     * Discards the fragment at the specified <x, y> coordinate.
+     */
+    void discard(const unsigned int x, const unsigned int y);
 private:
+    /**
+     * The framebuffer's resolution.
+     */
+    Framebuffer::Resolution resolution_;
+    /**
+     * The framebuffer's pixel buffer attachment.
+     */
+    std::uint32_t* pixelBuffer_;
+    /**
+     * The framebuffer's pixel buffer image.
+     */
+    QImage* pixelBufferImage_;
+    /**
+     * The framebuffer's depth-stencil buffer attachment.
+     */
+    std::int32_t* depthStencilBuffer_;
+    /**
+     * The framebuffer's depth-stencil buffer image.
+     */
+    QImage* depthStencilBufferImage_;
+    /**
+     * Resizes the framebuffer's attachments.
+     */
+    void resize();
 };
+
+/**
+ * Returns all available framebuffer resolutions.
+ */
+QList<Framebuffer::Resolution> getFramebufferResolutions();
+/**
+ * Returns the human-readable name of the specified framebuffer resolution.
+ */
+QString toString(const Framebuffer::Resolution);
 
 } // namespace clockwork
 

@@ -29,15 +29,10 @@
 using clockwork::UserInterface;
 
 
-UserInterface::UserInterface(clockwork::Application& application) :
-application_(application)
-{}
-
-
 clockwork::Error
-UserInterface::initialize()
+UserInterface::initialize(const Framebuffer& framebuffer)
 {
-    engine_.addImageProvider("framebuffer", new clockwork::FramebufferProvider);
+    engine_.addImageProvider("framebuffer", new clockwork::FramebufferProvider(framebuffer));
     engine_.load(QUrl("qrc:/view/main"));
 
     return Error::None;

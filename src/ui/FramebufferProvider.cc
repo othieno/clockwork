@@ -27,30 +27,21 @@
 
 using clockwork::FramebufferProvider;
 
-static clockwork::Framebuffer FRAMEBUFFER; // Replace this with System::Graphics.getFramebuffer()
 
-
-FramebufferProvider::FramebufferProvider() :
+FramebufferProvider::FramebufferProvider(const Framebuffer& framebuffer) :
 QQuickImageProvider(QQmlImageProviderBase::Image, QQmlImageProviderBase::ForceAsynchronousImageLoading),
-framebuffer_(FRAMEBUFFER)
+framebuffer_(framebuffer)
 {}
 
 
 QImage
 FramebufferProvider::requestImage(const QString& id, QSize* const size, const QSize&)
 {
-	Q_UNUSED(id); // For now...
-
-    const int width = 100;
-    const int height = 50;
-
     if (size != nullptr)
-        *size = QSize(width, height);
+        *size = framebuffer_.getResolution();
 
-    static int pixels[width][height];
-    for (int i = 0; i < width; ++i)
-        for (int j = 0; j < height; ++j)
-            pixels[i][j] = 0xFF000000;
-
-    return QImage(reinterpret_cast<const uchar*>(pixels), width, height, QImage::Format_ARGB32);
+    if (id == "depth")
+        return framebuffer_.getDepthStencilBufferImage();
+    else
+        return framebuffer_.getPixelBufferImage();
 }

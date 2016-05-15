@@ -27,9 +27,110 @@
 using clockwork::Framebuffer;
 
 
-Framebuffer::Framebuffer()
-{}
+Framebuffer::Framebuffer(const Resolution resolution) :
+resolution_(resolution),
+pixelBuffer_(nullptr),
+pixelBufferImage_(nullptr),
+depthStencilBuffer_(nullptr),
+depthStencilBufferImage_(nullptr)
+{
+    resize();
+}
 
 
 Framebuffer::~Framebuffer()
 {}
+
+
+QSize
+Framebuffer::getResolution() const
+{
+    switch (resolution_)
+    {
+        case Resolution::VGA:
+            return QSize(640, 480);
+        case Resolution::SVGA:
+            return QSize(800, 600);
+        case Resolution::XGA:
+            return QSize(1024, 768);
+        case Resolution::SXGA:
+            return QSize(1280, 1024);
+        case Resolution::FHD:
+            return QSize(1920, 1080);
+        case Resolution::QSXGA:
+            return QSize(2560, 2048);
+        case Resolution::UHD8K:
+            return QSize(7680, 4320);
+        default:
+            return QSize();
+    }
+}
+
+
+void
+Framebuffer::setResolution(const Resolution resolution)
+{
+    if (resolution_ != resolution)
+    {
+        resolution_ = resolution;
+        resize();
+    }
+}
+
+
+std::uint32_t*
+Framebuffer::getPixelBuffer()
+{
+    return pixelBuffer_;
+}
+
+
+const QImage&
+Framebuffer::getPixelBufferImage() const
+{
+    return *pixelBufferImage_;
+}
+
+
+std::int32_t*
+Framebuffer::getDepthStencilBuffer()
+{
+    return depthStencilBuffer_;
+}
+
+
+const QImage&
+Framebuffer::getDepthStencilBufferImage() const
+{
+    return *depthStencilBufferImage_;
+}
+
+
+void
+Framebuffer::clear()
+{}
+
+
+void
+Framebuffer::discard(const unsigned int, const unsigned int)
+{}
+
+
+void
+Framebuffer::resize()
+{}
+
+
+QList<Framebuffer::Resolution> getAvailableResolutions()
+{
+    return
+    {
+        Framebuffer::Resolution::VGA,
+        Framebuffer::Resolution::SVGA,
+        Framebuffer::Resolution::XGA,
+        Framebuffer::Resolution::SXGA,
+        Framebuffer::Resolution::FHD,
+        Framebuffer::Resolution::QSXGA,
+        Framebuffer::Resolution::UHD8K
+    };
+}

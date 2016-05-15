@@ -35,7 +35,7 @@ class Framebuffer;
 class FramebufferProvider final : public QQuickImageProvider
 {
 public:
-	FramebufferProvider();
+	explicit FramebufferProvider(const Framebuffer& framebuffer);
 
 	QImage requestImage(const QString& id, QSize* const size, const QSize&) override;
 private:
