@@ -41,7 +41,9 @@ FramebufferProvider::requestImage(const QString& id, QSize* const size, const QS
         *size = framebuffer_.getResolution();
 
     if (id == "depth")
-        return framebuffer_.getDepthStencilBufferImage();
+        return framebuffer_.getDepthBufferImage();
+    else if (id == "stencil")
+        return framebuffer_.getStencilBufferImage();
     else
         return framebuffer_.getPixelBufferImage();
 }

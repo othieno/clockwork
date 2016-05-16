@@ -43,12 +43,10 @@ ApplicationWindow {
             width: dp(800)
             height: dp(600)
             cache: false
-            source: "qrc:/framebuffer"
-/*
             source: "image://framebuffer/pixel"
+/*
             source: "image://framebuffer/depth"
             source: "image://framebuffer/stencil"
-            source: "image://framebuffer/accumulation"
 */
         }
     }
