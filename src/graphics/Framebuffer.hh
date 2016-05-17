@@ -27,6 +27,8 @@
 
 #include <QObject>
 #include <QSize>
+#include <QImage>
+#include <memory>
 
 
 namespace clockwork {
@@ -90,11 +92,19 @@ public:
     /**
      * Returns the depth buffer.
      */
-    std::int32_t* getDepthStencilBuffer();
+    double* getDepthBuffer();
     /**
      * Returns an image representation of the depth buffer.
      */
-    const QImage& getDepthStencilBufferImage() const;
+    const QImage& getDepthBufferImage() const;
+    /**
+     * Returns the stencil buffer.
+     */
+    std::uint8_t* getStencilBuffer();
+    /**
+     * Returns an image representation of the stencil buffer.
+     */
+    const QImage& getStencilBufferImage() const;
     /**
      * Clears the framebuffer.
      */
@@ -111,19 +121,43 @@ private:
     /**
      * The framebuffer's pixel buffer attachment.
      */
-    std::uint32_t* pixelBuffer_;
+    std::unique_ptr<std::uint32_t[]> pixelBuffer_;
+    /**
+     * The pixel buffer's clear value.
+     */
+    std::uint32_t pixelBufferClearValue_;
     /**
      * The framebuffer's pixel buffer image.
      */
-    QImage* pixelBufferImage_;
+    std::unique_ptr<QImage> pixelBufferImage_;
     /**
-     * The framebuffer's depth-stencil buffer attachment.
+     * The framebuffer's depth buffer attachment.
      */
-    std::int32_t* depthStencilBuffer_;
+    std::unique_ptr<double[]> depthBuffer_;
+    /**
+     * The pixel buffer's clear value.
+     */
+    double depthBufferClearValue_;
+    /**
+     * The framebuffer's depth buffer image data.
+     */
+    std::unique_ptr<std::uint32_t[]> depthBufferImageData_;
     /**
      * The framebuffer's depth-stencil buffer image.
      */
-    QImage* depthStencilBufferImage_;
+    std::unique_ptr<QImage> depthBufferImage_;
+    /**
+     * The framebuffer's stencil buffer attachment.
+     */
+    std::unique_ptr<std::uint8_t[]> stencilBuffer_;
+    /**
+     * The stencil buffer's clear value.
+     */
+    std::uint8_t stencilBufferClearValue_;
+    /**
+     * The framebuffer's stencil buffer image.
+     */
+    std::unique_ptr<QImage> stencilBufferImage_;
     /**
      * Resizes the framebuffer's attachments.
      */

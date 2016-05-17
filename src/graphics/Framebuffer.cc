@@ -30,9 +30,15 @@ using clockwork::Framebuffer;
 Framebuffer::Framebuffer(const Resolution resolution) :
 resolution_(resolution),
 pixelBuffer_(nullptr),
+pixelBufferClearValue_(0xFF000000),
 pixelBufferImage_(nullptr),
-depthStencilBuffer_(nullptr),
-depthStencilBufferImage_(nullptr)
+depthBuffer_(nullptr),
+depthBufferClearValue_(std::numeric_limits<double>::max()),
+depthBufferImageData_(nullptr),
+depthBufferImage_(nullptr),
+stencilBuffer_(nullptr),
+stencilBufferClearValue_(0x00),
+stencilBufferImage_(nullptr)
 {
     resize();
 }
@@ -81,7 +87,7 @@ Framebuffer::setResolution(const Resolution resolution)
 std::uint32_t*
 Framebuffer::getPixelBuffer()
 {
-    return pixelBuffer_;
+    return pixelBuffer_.get();
 }
 
 
@@ -92,23 +98,54 @@ Framebuffer::getPixelBufferImage() const
 }
 
 
-std::int32_t*
-Framebuffer::getDepthStencilBuffer()
+double*
+Framebuffer::getDepthBuffer()
 {
-    return depthStencilBuffer_;
+   return depthBuffer_.get();
 }
 
 
 const QImage&
-Framebuffer::getDepthStencilBufferImage() const
+Framebuffer::getDepthBufferImage() const
 {
-    return *depthStencilBufferImage_;
+    return *depthBufferImage_;
+}
+
+
+std::uint8_t*
+Framebuffer::getStencilBuffer()
+{
+    return stencilBuffer_.get();
+}
+
+
+const QImage&
+Framebuffer::getStencilBufferImage() const
+{
+    return *stencilBufferImage_;
 }
 
 
 void
 Framebuffer::clear()
-{}
+{
+    const auto& resolution = getResolution();
+    if (!resolution.isValid())
+        return;
+
+    auto* a = pixelBuffer_.get();
+    auto* b = depthBuffer_.get();
+    auto* c = depthBufferImageData_.get();
+    auto* d = stencilBuffer_.get();
+
+    for (std::size_t i = 0; i < std::size_t(resolution.width() * resolution.height()); ++i)
+    {
+        *a++ = pixelBufferClearValue_;
+        *b++ = depthBufferClearValue_;
+        *c++ = std::numeric_limits<std::uint32_t>::max();
+        *d++ = stencilBufferClearValue_;
+    }
+}
 
 
 void
@@ -118,7 +155,30 @@ Framebuffer::discard(const unsigned int, const unsigned int)
 
 void
 Framebuffer::resize()
-{}
+{
+    // Make sure the resolution size is valid. A size is invalid when both its width and
+    // height are negative values. This can happen when getResolution cannot determine a
+    // size for a given resolution identifier.
+    const auto& resolution = getResolution();
+    if (!resolution.isValid())
+        throw std::domain_error("The framebuffer resolution has not been initialized yet.");
+
+    const auto width = resolution.width();
+    const auto height = resolution.height();
+    const std::size_t size = width * height;
+
+    pixelBuffer_.reset(new std::uint32_t[size]);
+    pixelBufferImage_.reset(new QImage(reinterpret_cast<uchar*>(pixelBuffer_.get()), width, height, QImage::Format_ARGB32));
+
+    depthBuffer_.reset(new double[size]);
+    depthBufferImageData_.reset(new std::uint32_t[size]);
+    depthBufferImage_.reset(new QImage(reinterpret_cast<uchar*>(depthBufferImageData_.get()), width, height, QImage::Format_RGB32));
+
+    stencilBuffer_.reset(new std::uint8_t[size]);
+    stencilBufferImage_.reset(new QImage(reinterpret_cast<uchar*>(stencilBuffer_.get()), width, height, QImage::Format_Mono));
+
+    clear();
+}
 
 
 QList<Framebuffer::Resolution> getAvailableResolutions()
