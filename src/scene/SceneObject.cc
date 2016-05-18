@@ -1,0 +1,152 @@
+/*
+ * This file is part of Clockwork.
+ *
+ * Copyright (c) 2014-2016 Jeremy Othieno.
+ *
+ * The MIT License (MIT)
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+#include "SceneObject.hh"
+
+using clockwork::SceneObject;
+
+
+SceneObject::SceneObject(const QString& name) :
+identifier_(QUuid::createUuid()),
+//position_(0, 0, 0),
+//rotation_(0, 0, 0),
+//scale_(1, 1, 1)
+/*
+*/
+isPruned_(false)
+{
+    setObjectName(name);
+}
+
+
+
+
+const QUuid&
+SceneObject::getIdentifier() const
+{
+    return identifier_;
+}
+
+
+QString
+SceneObject::getName() const
+{
+    return objectName();
+}
+
+
+void
+SceneObject::setName(const QString& name)
+{
+    setObjectName(name);
+}
+
+
+const clockwork::Point3&
+SceneObject::getPosition() const
+{
+    return position_;
+}
+
+
+void
+SceneObject::setPosition(const clockwork::Point3& p)
+{
+    //setPosition(p.x, p.y, p.z);
+}
+
+
+void
+SceneObject::setPosition(const double x, const double y, const double z)
+{
+/*
+    position_.x = x;
+    position_.y = y;
+    position_.z = z;
+*/
+}
+
+
+const clockwork::Vector3&
+SceneObject::getRotation() const
+{
+    return rotation_;
+}
+
+
+void
+SceneObject::setRotation(const clockwork::Vector3& r)
+{
+    //setRotation(r.i, r.j, r.k);
+}
+
+
+void
+SceneObject::setRotation(const double pitch, const double yaw, const double roll)
+{
+/*
+    rotation_.i = pitch;
+    rotation_.j = yaw;
+    rotation_.k = roll;
+*/
+}
+
+
+const clockwork::Vector3&
+SceneObject::getScale() const
+{
+    return scale_;
+}
+
+
+void
+SceneObject::setScale(const clockwork::Vector3& s)
+{
+    //setScale(s.i, s.j, s.k);
+}
+
+
+void
+SceneObject::setScale(const double x, const double y, const double z)
+{
+/*
+    scale_.i = x;
+    scale_.j = y;
+    scale_.k = z;
+*/
+}
+
+
+bool
+SceneObject::isPruned() const
+{
+    return isPruned_;
+}
+
+
+void
+SceneObject::setPruned(const bool pruned)
+{
+    isPruned_ = pruned;
+}

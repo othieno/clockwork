@@ -27,6 +27,7 @@ INCLUDEPATH += \
 HEADERS += \
     src/graphics/Framebuffer.hh \
     src/graphics/GraphicsEngine.hh \
+    src/scene/SceneObject.hh \
     src/system/Application.hh \
     src/system/Error.hh \
     src/system/Service.hh \
@@ -38,6 +39,7 @@ HEADERS += \
 SOURCES += \
     src/graphics/Framebuffer.cc \
     src/graphics/GraphicsEngine.cc \
+    src/scene/SceneObject.cc \
     src/system/Application.cc \
     src/system/Error.cc \
     src/system/Service.cc \
