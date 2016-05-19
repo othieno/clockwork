@@ -39,8 +39,8 @@ x(p.x), y(p.y), z(p.z), w(1.0)
 
 Point4::operator clockwork::Point3() const
 {
-   if (w > 0)
-      return clockwork::Point3(x / w, y / w, z / w);
-   else
-      return clockwork::Point3(0, 0, 0);
+    if (w > 0)
+        return clockwork::Point3(x / w, y / w, z / w);
+    else
+        return clockwork::Point3(0, 0, 0);
 }

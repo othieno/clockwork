@@ -28,10 +28,8 @@ using clockwork::Error;
 
 
 std::string
-clockwork::toString(const Error error)
-{
-    switch (error)
-    {
+clockwork::toString(const Error error) {
+    switch (error) {
         case Error::None:
             return "None";
         default:

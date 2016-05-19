@@ -31,36 +31,28 @@ Application::Application(int& argc, char** argv) :
 QGuiApplication(argc, argv),
 taskManager_(),
 graphicsEngine_(taskManager_),
-userInterface_()
-{}
+userInterface_() {}
 
 
-Application::~Application()
-{}
+Application::~Application() {}
 
 
 clockwork::Error
-Application::initialize()
-{
-    auto error = Error::None;
+Application::initialize() {
+	Framebuffer& framebuffer = graphicsEngine_.getFramebuffer();
+	framebuffer.setResolution(Framebuffer::Resolution::VGA);
 
-    error = userInterface_.initialize(graphicsEngine_.getFramebuffer());
-    if (error != Error::None)
-        return error;
-
-    return error;
+	return userInterface_.initialize(framebuffer);
 }
 
 
 clockwork::TaskManager&
-Application::getTaskManager()
-{
-    return taskManager_;
+Application::getTaskManager() {
+	return taskManager_;
 }
 
 
 clockwork::GraphicsEngine&
-Application::getGraphicsEngine()
-{
-    return graphicsEngine_;
+Application::getGraphicsEngine() {
+	return graphicsEngine_;
 }

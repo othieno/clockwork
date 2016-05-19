@@ -27,143 +27,125 @@
 
 #include <QObject>
 #include <QSize>
-#include <QImage>
 #include <memory>
 
 
 namespace clockwork {
-
-class Framebuffer final : public QObject
-{
+/**
+ *
+ */
+class Framebuffer final : public QObject {
+	Q_OBJECT
 public:
-   /**
-    * Available framebuffer resolutions.
-    */
-    enum class Resolution
-    {
-        VGA,     //  640 x 480
-        SVGA,    //  800 x 600
-        XGA,     // 1024 x 768
-        SXGA,    // 1280 x 1024
-        FHD,     // 1920 x 1080
-        QSXGA,   // 2560 x 2048
-        UHD8K    // 7680 x 4320
-    };
-    /**
-     *
-     */
-    explicit Framebuffer(const Framebuffer::Resolution resolution);
-    /**
-     *
-     */
-    Framebuffer(const Framebuffer&) = delete;
-    /**
-     *
-     */
-    Framebuffer(Framebuffer&&) = delete;
-    /**
-     *
-     */
-    ~Framebuffer();
-    /**
-     *
-     */
-    Framebuffer& operator=(const Framebuffer&) = delete;
-    /**
-     *
-     */
-    Framebuffer& operator=(Framebuffer&&) = delete;
-    /**
-     * Returns the framebuffer's width and height.
-     */
-    QSize getResolution() const;
-    /**
-     * Sets the framebuffer's resolution.
-     */
-    void setResolution(const Framebuffer::Resolution resolution);
-    /**
-     * Returns the pixel buffer.
-     */
-    std::uint32_t* getPixelBuffer();
-    /**
-     * Returns an image representation of the pixel buffer.
-     */
-    const QImage& getPixelBufferImage() const;
-    /**
-     * Returns the depth buffer.
-     */
-    double* getDepthBuffer();
-    /**
-     * Returns an image representation of the depth buffer.
-     */
-    const QImage& getDepthBufferImage() const;
-    /**
-     * Returns the stencil buffer.
-     */
-    std::uint8_t* getStencilBuffer();
-    /**
-     * Returns an image representation of the stencil buffer.
-     */
-    const QImage& getStencilBufferImage() const;
-    /**
-     * Clears the framebuffer.
-     */
-    void clear();
-    /**
-     * Discards the fragment at the specified <x, y> coordinate.
-     */
-    void discard(const unsigned int x, const unsigned int y);
+	/**
+	 * Available framebuffer resolutions.
+	 */
+	enum class Resolution {
+		ZERO,    //    0 x 0
+		VGA,     //  640 x 480
+		SVGA,    //  800 x 600
+		XGA,     // 1024 x 768
+		SXGA,    // 1280 x 1024
+		FHD,     // 1920 x 1080
+		QSXGA,   // 2560 x 2048
+		UHD8K    // 7680 x 4320
+	};
+	/**
+	 *
+	 */
+	Framebuffer();
+	/**
+	 *
+	 */
+	Framebuffer(const Framebuffer&) = delete;
+	/**
+	 *
+	 */
+	Framebuffer(Framebuffer&&) = delete;
+	/**
+	 *
+	 */
+	~Framebuffer();
+	/**
+	 *
+	 */
+	Framebuffer& operator=(const Framebuffer&) = delete;
+	/**
+	 *
+	 */
+	Framebuffer& operator=(Framebuffer&&) = delete;
+	/**
+	 * Returns the framebuffer's resolution identifier.
+	 */
+	Resolution getResolution() const;
+	/**
+	 * Sets the framebuffer's resolution.
+	 */
+	void setResolution(const Framebuffer::Resolution resolution);
+	/**
+	 * Returns the framebuffer's width and height.
+	 */
+	QSize getResolutionSize() const;
+	/**
+	 * Returns the pixel buffer.
+	 */
+	std::uint32_t* getPixelBuffer();
+	/**
+	 * Returns the depth buffer.
+	 */
+	double* getDepthBuffer();
+	/**
+	 * Returns the stencil buffer.
+	 */
+	std::uint8_t* getStencilBuffer();
+	/**
+	 * Clears the framebuffer.
+	 */
+	void clear();
+	/**
+	 * Discards the fragment at the specified <x, y> coordinate.
+	 */
+	void discard(const unsigned int x, const unsigned int y);
 private:
-    /**
-     * The framebuffer's resolution.
-     */
-    Framebuffer::Resolution resolution_;
-    /**
-     * The framebuffer's pixel buffer attachment.
-     */
-    std::unique_ptr<std::uint32_t[]> pixelBuffer_;
-    /**
-     * The pixel buffer's clear value.
-     */
-    std::uint32_t pixelBufferClearValue_;
-    /**
-     * The framebuffer's pixel buffer image.
-     */
-    std::unique_ptr<QImage> pixelBufferImage_;
-    /**
-     * The framebuffer's depth buffer attachment.
-     */
-    std::unique_ptr<double[]> depthBuffer_;
-    /**
-     * The pixel buffer's clear value.
-     */
-    double depthBufferClearValue_;
-    /**
-     * The framebuffer's depth buffer image data.
-     */
-    std::unique_ptr<std::uint32_t[]> depthBufferImageData_;
-    /**
-     * The framebuffer's depth-stencil buffer image.
-     */
-    std::unique_ptr<QImage> depthBufferImage_;
-    /**
-     * The framebuffer's stencil buffer attachment.
-     */
-    std::unique_ptr<std::uint8_t[]> stencilBuffer_;
-    /**
-     * The stencil buffer's clear value.
-     */
-    std::uint8_t stencilBufferClearValue_;
-    /**
-     * The framebuffer's stencil buffer image.
-     */
-    std::unique_ptr<QImage> stencilBufferImage_;
-    /**
-     * Resizes the framebuffer's attachments.
-     */
-    void resize();
+	/**
+	 * Resizes the framebuffer's attachments.
+	 */
+	void resize();
+	/**
+	 * The framebuffer's resolution.
+	 */
+	Framebuffer::Resolution resolution_;
+	/**
+	 * The framebuffer's pixel buffer attachment.
+	 */
+	std::unique_ptr<std::uint32_t[]> pixelBuffer_;
+	/**
+	 * The pixel buffer's clear value.
+	 */
+	std::uint32_t pixelBufferClearValue_;
+	/**
+	 * The framebuffer's depth buffer attachment.
+	 */
+	std::unique_ptr<double[]> depthBuffer_;
+	/**
+	 * The pixel buffer's clear value.
+	 */
+	double depthBufferClearValue_;
+	/**
+	 * The framebuffer's stencil buffer attachment.
+	 */
+	std::unique_ptr<std::uint8_t[]> stencilBuffer_;
+	/**
+	 * The stencil buffer's clear value.
+	 */
+	std::uint8_t stencilBufferClearValue_;
+signals:
+	/**
+	 * A signal that is raised when the framebuffer is resized.
+	 * @param resolution the framebuffer's new resolution.
+	 */
+	void resized(const QSize& resolution);
 };
-
 /**
  * Returns all available framebuffer resolutions.
  */
@@ -172,7 +154,6 @@ QList<Framebuffer::Resolution> getFramebufferResolutions();
  * Returns the human-readable name of the specified framebuffer resolution.
  */
 QString toString(const Framebuffer::Resolution);
-
 } // namespace clockwork
 
 #endif // CLOCKWORK_FRAMEBUFFER_HH

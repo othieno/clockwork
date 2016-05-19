@@ -30,12 +30,18 @@
 
 
 namespace clockwork {
-
+/**
+ *
+ */
 class Application;
+/**
+ *
+ */
 class Framebuffer;
-
-class UserInterface
-{
+/**
+ *
+ */
+class UserInterface {
 	friend class Application;
 public:
     UserInterface(const UserInterface&) = delete;
@@ -43,13 +49,12 @@ public:
     UserInterface& operator=(const UserInterface&) = delete;
     UserInterface& operator=(UserInterface&&) = delete;
 
-    Error initialize(const Framebuffer& framebuffer);
+    Error initialize(Framebuffer& framebuffer);
 private:
     QQmlApplicationEngine engine_;
 
     UserInterface() = default;
 };
-
 } // namespace clockwork
 
 #endif // CLOCKWORK_USER_INTERFACE_HH

@@ -27,170 +27,131 @@
 using clockwork::Framebuffer;
 
 
-Framebuffer::Framebuffer(const Resolution resolution) :
-resolution_(resolution),
+Framebuffer::Framebuffer() :
+resolution_(Resolution::ZERO),
 pixelBuffer_(nullptr),
 pixelBufferClearValue_(0xFF000000),
-pixelBufferImage_(nullptr),
 depthBuffer_(nullptr),
 depthBufferClearValue_(std::numeric_limits<double>::max()),
-depthBufferImageData_(nullptr),
-depthBufferImage_(nullptr),
 stencilBuffer_(nullptr),
-stencilBufferClearValue_(0x00),
-stencilBufferImage_(nullptr)
-{
-    resize();
-}
+stencilBufferClearValue_(0x00) {}
 
 
-Framebuffer::~Framebuffer()
-{}
+Framebuffer::~Framebuffer() {}
 
 
-QSize
-Framebuffer::getResolution() const
-{
-    switch (resolution_)
-    {
-        case Resolution::VGA:
-            return QSize(640, 480);
-        case Resolution::SVGA:
-            return QSize(800, 600);
-        case Resolution::XGA:
-            return QSize(1024, 768);
-        case Resolution::SXGA:
-            return QSize(1280, 1024);
-        case Resolution::FHD:
-            return QSize(1920, 1080);
-        case Resolution::QSXGA:
-            return QSize(2560, 2048);
-        case Resolution::UHD8K:
-            return QSize(7680, 4320);
-        default:
-            return QSize();
-    }
+Framebuffer::Resolution
+Framebuffer::getResolution() const {
+	return resolution_;
 }
 
 
 void
-Framebuffer::setResolution(const Resolution resolution)
-{
-    if (resolution_ != resolution)
-    {
-        resolution_ = resolution;
-        resize();
-    }
+Framebuffer::setResolution(const Resolution resolution) {
+	if (resolution_ != resolution) {
+		resolution_ = resolution;
+		resize();
+	}
+}
+
+
+QSize
+Framebuffer::getResolutionSize() const {
+	switch (resolution_) {
+		case Resolution::VGA:
+			return QSize(640, 480);
+		case Resolution::SVGA:
+			return QSize(800, 600);
+		case Resolution::XGA:
+			return QSize(1024, 768);
+		case Resolution::SXGA:
+			return QSize(1280, 1024);
+		case Resolution::FHD:
+			return QSize(1920, 1080);
+		case Resolution::QSXGA:
+			return QSize(2560, 2048);
+		case Resolution::UHD8K:
+			return QSize(7680, 4320);
+		case Resolution::ZERO:
+		default:
+			return QSize(0, 0);
+	}
 }
 
 
 std::uint32_t*
-Framebuffer::getPixelBuffer()
-{
-    return pixelBuffer_.get();
-}
-
-
-const QImage&
-Framebuffer::getPixelBufferImage() const
-{
-    return *pixelBufferImage_;
+Framebuffer::getPixelBuffer() {
+	return pixelBuffer_.get();
 }
 
 
 double*
-Framebuffer::getDepthBuffer()
-{
-   return depthBuffer_.get();
-}
-
-
-const QImage&
-Framebuffer::getDepthBufferImage() const
-{
-    return *depthBufferImage_;
+Framebuffer::getDepthBuffer() {
+	return depthBuffer_.get();
 }
 
 
 std::uint8_t*
-Framebuffer::getStencilBuffer()
-{
-    return stencilBuffer_.get();
-}
-
-
-const QImage&
-Framebuffer::getStencilBufferImage() const
-{
-    return *stencilBufferImage_;
+Framebuffer::getStencilBuffer() {
+	return stencilBuffer_.get();
 }
 
 
 void
-Framebuffer::clear()
-{
-    const auto& resolution = getResolution();
-    if (!resolution.isValid())
-        return;
+Framebuffer::clear() {
+	const auto& resolution = getResolutionSize();
+	if (!resolution.isValid()) {
+		return;
+	}
+	const std::size_t bufferSize = resolution.width() * resolution.height();
+	if (bufferSize > 0) {
+		auto* a = pixelBuffer_.get();
+		auto* b = depthBuffer_.get();
+		auto* c = stencilBuffer_.get();
 
-    auto* a = pixelBuffer_.get();
-    auto* b = depthBuffer_.get();
-    auto* c = depthBufferImageData_.get();
-    auto* d = stencilBuffer_.get();
-
-    for (std::size_t i = 0; i < std::size_t(resolution.width() * resolution.height()); ++i)
-    {
-        *a++ = pixelBufferClearValue_;
-        *b++ = depthBufferClearValue_;
-        *c++ = std::numeric_limits<std::uint32_t>::max();
-        *d++ = stencilBufferClearValue_;
-    }
+		for (std::size_t i = 0; i < bufferSize; ++i) {
+			*a++ = pixelBufferClearValue_;
+			*b++ = depthBufferClearValue_;
+			*c++ = stencilBufferClearValue_;
+		}
+	}
 }
 
 
 void
-Framebuffer::discard(const unsigned int, const unsigned int)
-{}
+Framebuffer::discard(const unsigned int, const unsigned int) {}
 
 
 void
-Framebuffer::resize()
-{
-    // Make sure the resolution size is valid. A size is invalid when both its width and
-    // height are negative values. This can happen when getResolution cannot determine a
-    // size for a given resolution identifier.
-    const auto& resolution = getResolution();
-    if (!resolution.isValid())
-        throw std::domain_error("The framebuffer resolution has not been initialized yet.");
+Framebuffer::resize() {
+	const QSize& resolution = getResolutionSize();
+	const std::size_t bufferSize = resolution.width() * resolution.height();
 
-    const auto width = resolution.width();
-    const auto height = resolution.height();
-    const std::size_t size = width * height;
+	if (bufferSize == 0) {
+		pixelBuffer_.reset(nullptr);
+		depthBuffer_.reset(nullptr);
+		stencilBuffer_.reset(nullptr);
+	} else {
+		pixelBuffer_.reset(new std::uint32_t[bufferSize]);
+		depthBuffer_.reset(new double[bufferSize]);
+		stencilBuffer_.reset(new std::uint8_t[bufferSize]);
+	}
 
-    pixelBuffer_.reset(new std::uint32_t[size]);
-    pixelBufferImage_.reset(new QImage(reinterpret_cast<uchar*>(pixelBuffer_.get()), width, height, QImage::Format_ARGB32));
-
-    depthBuffer_.reset(new double[size]);
-    depthBufferImageData_.reset(new std::uint32_t[size]);
-    depthBufferImage_.reset(new QImage(reinterpret_cast<uchar*>(depthBufferImageData_.get()), width, height, QImage::Format_RGB32));
-
-    stencilBuffer_.reset(new std::uint8_t[size]);
-    stencilBufferImage_.reset(new QImage(reinterpret_cast<uchar*>(stencilBuffer_.get()), width, height, QImage::Format_Mono));
-
-    clear();
+	clear();
+	emit resized(resolution);
 }
 
 
-QList<Framebuffer::Resolution> getAvailableResolutions()
-{
-    return
-    {
-        Framebuffer::Resolution::VGA,
-        Framebuffer::Resolution::SVGA,
-        Framebuffer::Resolution::XGA,
-        Framebuffer::Resolution::SXGA,
-        Framebuffer::Resolution::FHD,
-        Framebuffer::Resolution::QSXGA,
-        Framebuffer::Resolution::UHD8K
-    };
+QList<Framebuffer::Resolution>
+getAvailableResolutions() {
+	return {
+		Framebuffer::Resolution::ZERO,
+		Framebuffer::Resolution::VGA,
+		Framebuffer::Resolution::SVGA,
+		Framebuffer::Resolution::XGA,
+		Framebuffer::Resolution::SXGA,
+		Framebuffer::Resolution::FHD,
+		Framebuffer::Resolution::QSXGA,
+		Framebuffer::Resolution::UHD8K
+	};
 }

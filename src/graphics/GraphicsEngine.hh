@@ -29,12 +29,18 @@
 
 
 namespace clockwork {
-
+/**
+ *
+ */
 class TaskManager;
+/**
+ *
+ */
 class Scene;
-
-class GraphicsEngine final
-{
+/**
+ *
+ */
+class GraphicsEngine {
 public:
     /**
      *
@@ -78,7 +84,5 @@ private:
      */
     Framebuffer framebuffer_;
 };
-
 } // namespace clockwork
-
 #endif // CLOCKWORK_GRAPHICS_ENGINE_HH

@@ -33,27 +33,27 @@ namespace clockwork {
 
 struct Point4
 {
-   /**
-    * The point's X, Y, Z and W coordinates.
-    */
-   double x, y, z, w;
-   /**
-    * Instantiate a 3D homogeneous point from a set of X, Y, Z, and W coordinates.
-    * @param x the point's X coordinate.
-    * @param y the point's Y coordinate.
-    * @param z the point's Z coordinate.
-    * @param w the point's W coordinate.
-    */
-   Point4(const double x = 0, const double y = 0, const double z = 0, const double w = 1);
-   /**
-    * Instantiate a 3D homogeneous point from a 3D affine point.
-    * @param p the affine point.
-    */
-   explicit Point4(const clockwork::Point3& p);
-   /**
-    * Convert the homogeneous point into its affine representation.
-    */
-   operator clockwork::Point3() const;
+    /**
+     * The point's X, Y, Z and W coordinates.
+     */
+    double x, y, z, w;
+    /**
+     * Instantiate a 3D homogeneous point from a set of X, Y, Z, and W coordinates.
+     * @param x the point's X coordinate.
+     * @param y the point's Y coordinate.
+     * @param z the point's Z coordinate.
+     * @param w the point's W coordinate.
+     */
+    Point4(const double x = 0, const double y = 0, const double z = 0, const double w = 1);
+    /**
+     * Instantiate a 3D homogeneous point from a 3D affine point.
+     * @param p the affine point.
+     */
+    explicit Point4(const clockwork::Point3& p);
+    /**
+     * Convert the homogeneous point into its affine representation.
+     */
+    operator clockwork::Point3() const;
 };
 
 QString toString(const Point4&);

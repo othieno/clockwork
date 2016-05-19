@@ -1,5 +1,6 @@
 /*
  * This file is part of Clockwork.
+ * https://github.com/othieno/clockwork.
  *
  * Copyright (c) 2014-2016 Jeremy Othieno.
  *
@@ -26,22 +27,54 @@
 #define CLOCKWORK_FRAMEBUFFER_PROVIDER_HH
 
 #include <QQuickImageProvider>
+#include <memory>
 
 
 namespace clockwork {
-
+/**
+ *
+ */
 class Framebuffer;
-
-class FramebufferProvider final : public QQuickImageProvider
-{
+/**
+ *
+ */
+class FramebufferProvider final : public QQuickImageProvider {
 public:
-	explicit FramebufferProvider(const Framebuffer& framebuffer);
-
+	/**
+	 *
+	 */
+	explicit FramebufferProvider(Framebuffer& framebuffer);
+	/**
+	 *
+	 */
 	QImage requestImage(const QString& id, QSize* const size, const QSize&) override;
 private:
-	const Framebuffer& framebuffer_;
+	/**
+	 * A function that is called when the framebuffer is resized.
+	 * @param resolution the framebuffer's new resolution.
+	 */
+	void onFramebufferResized(const QSize& resolution);
+	/**
+	 *
+	 */
+	Framebuffer& framebuffer_;
+	/**
+	 * An image representation of the framebuffer's pixel buffer attachment.
+	 */
+	std::unique_ptr<QImage> pixelBufferImage_;
+	/**
+	 * An integer representation of the depth buffer's data.
+	 */
+//    std::unique_ptr<std::uint32_t[]> depthBufferImageData_;
+	/**
+	 * An image representation of the framebuffer's depth buffer attachment.
+	 */
+	std::unique_ptr<QImage> depthBufferImage_;
+	/**
+	 * An image representation of the framebuffer's stencil buffer attachment.
+	 */
+	std::unique_ptr<QImage> stencilBufferImage_;
 };
-
 } // namespace clockwork
 
 #endif // CLOCKWORK_FRAMEBUFFER_PROVIDER_HH

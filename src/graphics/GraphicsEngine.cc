@@ -29,16 +29,13 @@ using clockwork::GraphicsEngine;
 
 GraphicsEngine::GraphicsEngine(TaskManager& taskManager) :
 taskManager_(taskManager),
-framebuffer_(Framebuffer::Resolution::SVGA)
-{}
+framebuffer_() {}
 
 
-GraphicsEngine::~GraphicsEngine()
-{}
+GraphicsEngine::~GraphicsEngine() {}
 
 
 clockwork::Framebuffer&
-GraphicsEngine::getFramebuffer()
-{
-    return framebuffer_;
+GraphicsEngine::getFramebuffer() {
+	return framebuffer_;
 }

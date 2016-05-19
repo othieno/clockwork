@@ -33,15 +33,16 @@
 
 
 namespace clockwork {
-
-class Application final : public QGuiApplication
-{
+/**
+ *
+ */
+class Application final : public QGuiApplication {
     Q_OBJECT
 public:
     /**
      * Instantiates the application.
      */
-    explicit Application(int& argc, char** argv);
+    Application(int& argc, char** argv);
     /**
      *
      */
@@ -84,11 +85,10 @@ private:
      */
     GraphicsEngine graphicsEngine_;
     /**
-     * The user interface.
+     * The application's user interface.
      */
     UserInterface userInterface_;
 };
-
 } // namespace clockwork
 
 #endif // CLOCKWORK_APPLICATION_HH

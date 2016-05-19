@@ -30,5 +30,5 @@
 bool
 clockwork::fuzzyEqual(const double a, const double b, const double epsilon)
 {
-   return std::fabs(a - b) < epsilon;
+    return std::fabs(a - b) < epsilon;
 }

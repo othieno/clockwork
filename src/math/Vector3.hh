@@ -32,40 +32,40 @@ namespace clockwork {
 
 struct Vector3
 {
-   /**
-    * The point's I component.
-    */
-   double i;
-   /**
-    * The point's J component.
-    */
-   double j;
-   /**
-    * The point's K component.
-    */
-   double k;
-   /**
-    * Instantiate a vector from a set of I, J and K components.
-    * @param i the point's I component.
-    * @param j the point's J component.
-    * @param k the point's K component.
-    */
-   Vector3(const double i = 0, const double j = 0, const double k = 0);
-   /**
-    * Return the vector's magnitude.
-    */
-   double getMagnitude() const;
-   /**
-    * Normalise a vector.
-    * @param v the vector to normalise.
-    */
-   static Vector3 normalise(const Vector3& v);
-   /**
-    * Return the cross product of two vectors.
-    * @param v1 the first vector.
-    * @param v2 the second vector.
-    */
-   static Vector3 cross(const Vector3& v1, const Vector3& v2);
+    /**
+     * The point's I component.
+     */
+    double i;
+    /**
+     * The point's J component.
+     */
+    double j;
+    /**
+     * The point's K component.
+     */
+    double k;
+    /**
+     * Instantiate a vector from a set of I, J and K components.
+     * @param i the point's I component.
+     * @param j the point's J component.
+     * @param k the point's K component.
+     */
+    Vector3(const double i = 0, const double j = 0, const double k = 0);
+    /**
+     * Return the vector's magnitude.
+     */
+    double getMagnitude() const;
+    /**
+     * Normalise a vector.
+     * @param v the vector to normalise.
+     */
+    static Vector3 normalise(const Vector3& v);
+    /**
+     * Return the cross product of two vectors.
+     * @param v1 the first vector.
+     * @param v2 the second vector.
+     */
+    static Vector3 cross(const Vector3& v1, const Vector3& v2);
 };
 
 QString toString(const Vector3&);

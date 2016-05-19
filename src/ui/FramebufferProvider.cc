@@ -24,26 +24,54 @@
  */
 #include "FramebufferProvider.hh"
 #include "Framebuffer.hh"
+#include <QObject>
 
 using clockwork::FramebufferProvider;
 
 
-FramebufferProvider::FramebufferProvider(const Framebuffer& framebuffer) :
+FramebufferProvider::FramebufferProvider(Framebuffer& framebuffer) :
 QQuickImageProvider(QQmlImageProviderBase::Image, QQmlImageProviderBase::ForceAsynchronousImageLoading),
-framebuffer_(framebuffer)
-{}
+framebuffer_(framebuffer),
+pixelBufferImage_(nullptr),
+//depthBufferImageData_(nullptr),
+depthBufferImage_(nullptr),
+stencilBufferImage_(nullptr) {
+	using std::placeholders::_1;
+
+	onFramebufferResized(framebuffer.getResolutionSize());
+	QObject::connect(&framebuffer, &Framebuffer::resized, std::bind(&FramebufferProvider::onFramebufferResized, this, _1));
+}
 
 
 QImage
 FramebufferProvider::requestImage(const QString& id, QSize* const size, const QSize&)
 {
-    if (size != nullptr)
-        *size = framebuffer_.getResolution();
+	if (size != nullptr)
+		*size = framebuffer_.getResolutionSize();
 
-    if (id == "depth")
-        return framebuffer_.getDepthBufferImage();
-    else if (id == "stencil")
-        return framebuffer_.getStencilBufferImage();
-    else
-        return framebuffer_.getPixelBufferImage();
+	if (id == "pixel" && pixelBufferImage_ != nullptr) {
+		return *pixelBufferImage_;
+	} else if (id == "depth" && depthBufferImage_ != nullptr) {
+		return *depthBufferImage_;
+	} else if (id == "stencil" && stencilBufferImage_ != nullptr) {
+		return *stencilBufferImage_;
+	} else {
+		return QImage();
+	}
+}
+
+
+void
+FramebufferProvider::onFramebufferResized(const QSize& resolution) {
+	const std::size_t w = resolution.width();
+	const std::size_t h = resolution.height();
+
+	uchar* const pb = reinterpret_cast<uchar*>(framebuffer_.getPixelBuffer());
+	pixelBufferImage_.reset(new QImage(pb, w, h, QImage::Format_ARGB32));
+/*
+	depthBufferImageData_.reset(new std::uint32_t[size]);
+	depthBufferImage_.reset(new QImage(reinterpret_cast<uchar*>(depthBufferImageData_.get()), width, height, QImage::Format_RGB32));
+*/
+	uchar* const sb = reinterpret_cast<uchar*>(framebuffer_.getStencilBuffer());
+	stencilBufferImage_.reset(new QImage(sb, w, h, QImage::Format_Mono));
 }

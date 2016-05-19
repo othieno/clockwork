@@ -36,34 +36,34 @@ k(K)
 double
 clockwork::Vector3::getMagnitude() const
 {
-   return std::sqrt((i * i) + (j * j) + (k * k));
+    return std::sqrt((i * i) + (j * j) + (k * k));
 }
 
 
 clockwork::Vector3
 clockwork::Vector3::normalise(const clockwork::Vector3& v)
 {
-   clockwork::Vector3 output(v);
+    clockwork::Vector3 output(v);
 
-   double magnitude = v.getMagnitude();
-   if (magnitude != 0)
-   {
-      magnitude = 1/magnitude;
-      output.i *= magnitude;
-      output.j *= magnitude;
-      output.k *= magnitude;
-   }
-   return output;
+    double magnitude = v.getMagnitude();
+    if (magnitude != 0)
+    {
+        magnitude = 1/magnitude;
+        output.i *= magnitude;
+        output.j *= magnitude;
+        output.k *= magnitude;
+    }
+    return output;
 }
 
 
 clockwork::Vector3
 clockwork::Vector3::cross(const clockwork::Vector3& v1, const clockwork::Vector3& v2)
 {
-   return Vector3
-   (
-      (v1.j * v2.k) - (v1.k * v2.j),
-      (v1.k * v2.i) - (v1.i * v2.k),
-      (v1.i * v2.j) - (v1.j * v2.i)
-   );
+    return Vector3
+    (
+        (v1.j * v2.k) - (v1.k * v2.j),
+        (v1.k * v2.i) - (v1.i * v2.k),
+        (v1.i * v2.j) - (v1.j * v2.i)
+    );
 }
