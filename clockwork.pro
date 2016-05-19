@@ -27,6 +27,10 @@ INCLUDEPATH += \
 HEADERS += \
     src/graphics/Framebuffer.hh \
     src/graphics/GraphicsEngine.hh \
+    src/math/Matrix4.hh \
+    src/math/Point3.hh \
+    src/math/Quaternion.hh \
+    src/math/Vector3.hh \
     src/scene/SceneObject.hh \
     src/system/Application.hh \
     src/system/Error.hh \
@@ -39,6 +43,11 @@ HEADERS += \
 SOURCES += \
     src/graphics/Framebuffer.cc \
     src/graphics/GraphicsEngine.cc \
+    src/math/Matrix4.cc \
+    src/math/Point3.cc \
+    src/math/Point4.cc \
+    src/math/Quaternion.cc \
+    src/math/Vector3.cc \
     src/scene/SceneObject.cc \
     src/system/Application.cc \
     src/system/Error.cc \
