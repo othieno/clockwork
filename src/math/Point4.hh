@@ -56,8 +56,8 @@ struct Point4
    operator clockwork::Point3() const;
 };
 
-} // namespace clockwork
+QString toString(const Point4&);
 
-std::ostream& operator<<(std::ostream&, const clockwork::Point4&);
+} // namespace clockwork
 
 #endif // CLOCKWORK_POINT4_HH

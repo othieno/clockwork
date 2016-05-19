@@ -55,6 +55,8 @@ struct Point3
    static Point3 negative(const Point3& input);
 };
 
+QString toString(const Point3&);
+
 } // namespace clockwork
 
 #endif // CLOCKWORK_POINT3_HH

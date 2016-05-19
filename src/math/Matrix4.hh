@@ -164,8 +164,8 @@ private:
    std::array<double, 16> _data;
 };
 
-} // namespace clockwork
+QString toString(const Matrix4&);
 
-std::ostream& operator<<(std::ostream&, const clockwork::Matrix4&);
+} // namespace clockwork
 
 #endif // CLOCKWORK_MATRIX4_HH

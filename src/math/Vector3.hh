@@ -25,7 +25,7 @@
 #ifndef CLOCKWORK_VECTOR3_HH
 #define CLOCKWORK_VECTOR3_HH
 
-#include <iostream>
+#include <QString>
 
 
 namespace clockwork {
@@ -68,8 +68,8 @@ struct Vector3
    static Vector3 cross(const Vector3& v1, const Vector3& v2);
 };
 
-} // namespace clockwork
+QString toString(const Vector3&);
 
-std::ostream& operator<<(std::ostream&, const clockwork::Vector3&);
+} // namespace clockwork
 
 #endif // CLOCKWORK_VECTOR3_HH

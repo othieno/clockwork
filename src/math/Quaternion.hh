@@ -25,12 +25,16 @@
 #ifndef CLOCKWORK_QUATERNION
 #define CLOCKWORK_QUATERNION
 
+#include <QString>
+
 
 namespace clockwork {
 
 class Quaternion
 {
 };
+
+QString toString(const Quaternion&);
 
 } // namespace clockwork
 
