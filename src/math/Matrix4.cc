@@ -39,7 +39,7 @@ clockwork::Matrix4({1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1})
 
 
 void
-Matrix4::fill(const double& value)
+Matrix4::fill(const double value)
 {
    _data.fill(value);
 }
@@ -53,7 +53,7 @@ Matrix4::getData() const
 
 
 double
-Matrix4::get(const unsigned int& i, const unsigned int& j) const
+Matrix4::get(const unsigned int i, const unsigned int j) const
 {
    // Since i and j are unsigned, they're guaranteed to be greater than or equal to zero.
    return (i < 4 && j < 4) ? _data[(i * 4) + j] : 0;
@@ -61,7 +61,7 @@ Matrix4::get(const unsigned int& i, const unsigned int& j) const
 
 
 void
-Matrix4::set(const unsigned int& i, const unsigned int& j, const double& value)
+Matrix4::set(const unsigned int i, const unsigned int j, const double value)
 {
    if (i < 4 && j < 4)
       _data[(i * 4) + j] = value;
@@ -139,7 +139,7 @@ Matrix4::ones()
 
 
 Matrix4
-Matrix4::translate(const double& x, const double& y, const double& z)
+Matrix4::translate(const double x, const double y, const double z)
 {
    return Matrix4
    ({
@@ -153,7 +153,7 @@ Matrix4::translate(const double& x, const double& y, const double& z)
 
 // TODO Use quaternions.
 Matrix4
-Matrix4::rotate(const double& x, const double& y, const double& z)
+Matrix4::rotate(const double x, const double y, const double z)
 {
    const auto radians = [](const double degrees)
    {
@@ -197,7 +197,7 @@ Matrix4::rotate(const double& x, const double& y, const double& z)
 
 
 Matrix4
-Matrix4::scale(const double& x, const double& y, const double& z)
+Matrix4::scale(const double x, const double y, const double z)
 {
    return Matrix4
    ({

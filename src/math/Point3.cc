@@ -25,10 +25,10 @@
 #include "Point3.hh"
 
 
-clockwork::Point3::Point3(const double& inx, const double& iny, const double& inz) :
-x(inx),
-y(iny),
-z(inz)
+clockwork::Point3::Point3(const double X, const double Y, const double Z) :
+x(X),
+y(Y),
+z(Z)
 {}
 
 

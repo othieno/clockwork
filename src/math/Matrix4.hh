@@ -49,7 +49,7 @@ public:
     * Fill the matrix with a given value.
     * @param value the value used to fill the matrix.
     */
-   void fill(const double& value);
+   void fill(const double value);
    /**
     * Return the matrix's raw data.
     */
@@ -59,14 +59,14 @@ public:
     * @param i the matrix's ith row.
     * @param j the matrix's jth column.
     */
-   double get(const unsigned int& i, const unsigned int& j) const;
+   double get(const unsigned int i, const unsigned int j) const;
    /**
     * Set the element at the given coordinate.
     * @param i the matrix's ith row.
     * @param j the matrix's jth column.
     * @param value the value to set.
     */
-   void set(const unsigned int& i, const unsigned int& j, const double& value);
+   void set(const unsigned int i, const unsigned int j, const double value);
    /**
     * The multiplication operator.
     * @param rhs the right-hand side operand.
@@ -101,7 +101,7 @@ public:
     * @param Ty the translation factor on the Y plane.
     * @param Tz the translation factor on the Z plane.
     */
-   static Matrix4 translate(const double& Tx, const double& Ty, const double& Tz);
+   static Matrix4 translate(const double Tx, const double Ty, const double Tz);
    /**
     * Return the translation matrix.
     * @param T a 3D point containing translation factors for the X, Y and Z planes.
@@ -116,7 +116,7 @@ public:
     * @param Ry the rotation angle around the Y axis (yaw).
     * @param Rz the rotation angle around the Z axis (roll).
     */
-   static Matrix4 rotate(const double& Rx, const double& Ry, const double& Rz);
+   static Matrix4 rotate(const double Rx, const double Ry, const double Rz);
    /**
     * Return the rotation matrix defined by the given rotation vector.
     * @param R a vector containing rotation angles (in degrees) for the X, Y and Z axes.
@@ -131,7 +131,7 @@ public:
     * @param Sy the scaling factor on the Y plane.
     * @param Sz the scaling factor on the Z plane.
     */
-   static Matrix4 scale(const double& Sx, const double& Sy, const double& Sz);
+   static Matrix4 scale(const double Sx, const double Sy, const double Sz);
    /**
     * Return the scaling matrix.
     * @param S a scaling vector.

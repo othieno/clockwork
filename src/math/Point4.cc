@@ -27,7 +27,7 @@
 using clockwork::Point4;
 
 
-Point4::Point4(const double& X, const double& Y, const double& Z, const double& W) :
+Point4::Point4(const double X, const double Y, const double Z, const double W) :
 x(X), y(Y), z(Z), w(W)
 {}
 

@@ -26,10 +26,10 @@
 #include <cmath>
 
 
-clockwork::Vector3::Vector3(const double& ini, const double& inj, const double& ink) :
-i(ini),
-j(inj),
-k(ink)
+clockwork::Vector3::Vector3(const double I, const double J, const double K) :
+i(I),
+j(J),
+k(K)
 {}
 
 

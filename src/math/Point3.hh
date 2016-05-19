@@ -42,7 +42,7 @@ struct Point3
     * @param y the point's Y coordinate.
     * @param z the point's Z coordinate.
     */
-   Point3(const double& x = 0, const double& y = 0, const double& z = 0);
+   Point3(const double x = 0, const double y = 0, const double z = 0);
    /**
     * Return the difference between this point and another.
     * @param p the point that's being substracted from this.

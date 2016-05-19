@@ -44,7 +44,7 @@ struct Point4
     * @param z the point's Z coordinate.
     * @param w the point's W coordinate.
     */
-   Point4(const double& x = 0, const double& y = 0, const double& z = 0, const double& w = 1);
+   Point4(const double x = 0, const double y = 0, const double z = 0, const double w = 1);
    /**
     * Instantiate a 3D homogeneous point from a 3D affine point.
     * @param p the affine point.

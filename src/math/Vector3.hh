@@ -50,7 +50,7 @@ struct Vector3
     * @param j the point's J component.
     * @param k the point's K component.
     */
-   Vector3(const double& i = 0, const double& j = 0, const double& k = 0);
+   Vector3(const double i = 0, const double j = 0, const double k = 0);
    /**
     * Return the vector's magnitude.
     */
