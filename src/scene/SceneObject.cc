@@ -29,17 +29,13 @@ using clockwork::SceneObject;
 
 SceneObject::SceneObject(const QString& name) :
 identifier_(QUuid::createUuid()),
-//position_(0, 0, 0),
-//rotation_(0, 0, 0),
-//scale_(1, 1, 1)
-/*
-*/
+position_(0, 0, 0),
+rotation_(0, 0, 0),
+scale_(1, 1, 1),
 isPruned_(false)
 {
     setObjectName(name);
 }
-
-
 
 
 const QUuid&
@@ -73,18 +69,16 @@ SceneObject::getPosition() const
 void
 SceneObject::setPosition(const clockwork::Point3& p)
 {
-    //setPosition(p.x, p.y, p.z);
+    setPosition(p.x, p.y, p.z);
 }
 
 
 void
 SceneObject::setPosition(const double x, const double y, const double z)
 {
-/*
     position_.x = x;
     position_.y = y;
     position_.z = z;
-*/
 }
 
 
@@ -98,18 +92,16 @@ SceneObject::getRotation() const
 void
 SceneObject::setRotation(const clockwork::Vector3& r)
 {
-    //setRotation(r.i, r.j, r.k);
+    setRotation(r.i, r.j, r.k);
 }
 
 
 void
 SceneObject::setRotation(const double pitch, const double yaw, const double roll)
 {
-/*
     rotation_.i = pitch;
     rotation_.j = yaw;
     rotation_.k = roll;
-*/
 }
 
 
@@ -123,18 +115,16 @@ SceneObject::getScale() const
 void
 SceneObject::setScale(const clockwork::Vector3& s)
 {
-    //setScale(s.i, s.j, s.k);
+    setScale(s.i, s.j, s.k);
 }
 
 
 void
 SceneObject::setScale(const double x, const double y, const double z)
 {
-/*
     scale_.i = x;
     scale_.j = y;
     scale_.k = z;
-*/
 }
 
 

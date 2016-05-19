@@ -1,8 +1,9 @@
 /*
+ * This file is part of Clockwork.
+ *
+ * Copyright (c) 2014-2016 Jeremy Othieno.
+ *
  * The MIT License (MIT)
- *
- * Copyright (c) 2014 Jeremy Othieno.
- *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -23,12 +24,11 @@
  */
 #include "numerical.hh"
 #include <cmath>
-#include <limits>
 
 
 // TODO Study this and make sure its correct!
 bool
-clockwork::fequal(const double& a, const double& b)
+clockwork::fuzzyEqual(const double a, const double b, const double epsilon)
 {
-   return std::fabs(a - b) < std::numeric_limits<double>::epsilon();
+   return std::fabs(a - b) < epsilon;
 }

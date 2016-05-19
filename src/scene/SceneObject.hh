@@ -30,19 +30,13 @@
 #include <QString>
 #include <QSet>
 #include <QHash>
-/*
-#include "Point3.hh"
-#include "Vector3.hh"
 #include "Matrix4.hh"
+/*
 #include "SceneProperty.hh"
 */
 
 
 namespace clockwork {
-
-using Point3 = int;
-using Vector3 = int;
-using Matrix4 = int;
 
 /**
  * An Object is a node in the scene graph that has a set of one or more
