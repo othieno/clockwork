@@ -117,6 +117,18 @@ public:
      */
     void setScale(const double x, const double y, const double z);
     /**
+     * Returns the scene object's model transformation matrix.
+     */
+    Matrix4 getModelTransform() const;
+    /**
+     * Returns the scene object's cumulative (composite) model transformation matrix.
+     */
+    const Matrix4& getCumulativeModelTransform() const;
+    /**
+     * Updates the scene object's cumulative (composite) model transformation matrix.
+     */
+    void updateCumulativeModelTransform();
+    /**
      * Returns true if this object is pruned, false otherwise.
      */
     bool isPruned() const;
@@ -142,6 +154,12 @@ private:
      * The scene object's scaling vector.
      */
     Vector3 scale_;
+    /**
+     * The scene object's cumulative (composite) model transformation matrix. This is a concatenation
+     * of the model transformation matrices of this node's ancestors (parent, grand-parent, great
+     * grand-parent, great great grand-parent, ...), with its own transformation matrix.
+     */
+    Matrix4 cumulativeModelTransform_;
     /**
      * If set to true, this object will be skipped by certain operations performed on
      * nodes in the scene graph that this object belongs to. For example, if this object is out of

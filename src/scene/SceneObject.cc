@@ -128,6 +128,30 @@ SceneObject::setScale(const double x, const double y, const double z)
 }
 
 
+clockwork::Matrix4
+SceneObject::getModelTransform() const
+{
+    return Matrix4::model(position_, rotation_, scale_);
+}
+
+
+const clockwork::Matrix4&
+SceneObject::getCumulativeModelTransform() const
+{
+    return cumulativeModelTransform_;
+}
+
+
+void
+SceneObject::updateCumulativeModelTransform()
+{
+    cumulativeModelTransform_ = getModelTransform();
+    const auto* const parentObject = static_cast<SceneObject*>(parent());
+    if (parentObject != nullptr)
+        cumulativeModelTransform_ = parentObject->getCumulativeModelTransform() * cumulativeModelTransform_;
+}
+
+
 bool
 SceneObject::isPruned() const
 {
