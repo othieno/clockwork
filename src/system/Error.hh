@@ -25,8 +25,6 @@
 #ifndef CLOCKWORK_ERROR_HH
 #define CLOCKWORK_ERROR_HH
 
-#include <string>
-
 
 namespace clockwork {
 /**
@@ -35,10 +33,6 @@ namespace clockwork {
 enum class Error {
 	None,
 };
-/**
- *
- */
-std::string toString(const Error);
 } // namespace clockwork
 
 #endif // CLOCKWORK_ERROR_HH

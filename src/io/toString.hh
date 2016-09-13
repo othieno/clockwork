@@ -22,10 +22,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_HH
-#define CLOCKWORK_HH
+#ifndef CLOCKWORK_TO_STRING_HH
+#define CLOCKWORK_TO_STRING_HH
 
-#include "Application.hh"
-#include "toString.hh"
+#include <string>
+#include "Error.hh"
+#include "Framebuffer.hh"
 
-#endif // CLOCKWORK_HH
+
+namespace clockwork {
+/**
+ * Returns the human-readable name of the specified system error.
+ */
+std::string toString(const Error);
+/**
+ * Returns the human-readable name of the specified framebuffer resolution.
+ */
+std::string toString(const Framebuffer::Resolution resolution);
+} // namespace clockwork
+
+#endif // CLOCKWORK_TO_STRING_HH

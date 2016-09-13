@@ -177,10 +177,6 @@ signals:
  * Returns all available framebuffer resolutions.
  */
 QList<Framebuffer::Resolution> getFramebufferResolutions();
-/**
- * Returns the human-readable name of the specified framebuffer resolution.
- */
-QString toString(const Framebuffer::Resolution);
 } // namespace clockwork
 
 #endif // CLOCKWORK_FRAMEBUFFER_HH
