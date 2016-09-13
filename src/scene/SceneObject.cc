@@ -28,35 +28,10 @@ using clockwork::SceneObject;
 
 
 SceneObject::SceneObject(const QString& name) :
-identifier_(QUuid::createUuid()),
+SceneNode(name),
 position_(0, 0, 0),
 rotation_(0, 0, 0),
-scale_(1, 1, 1),
-isPruned_(false)
-{
-    setObjectName(name);
-}
-
-
-const QUuid&
-SceneObject::getIdentifier() const
-{
-    return identifier_;
-}
-
-
-QString
-SceneObject::getName() const
-{
-    return objectName();
-}
-
-
-void
-SceneObject::setName(const QString& name)
-{
-    setObjectName(name);
-}
+scale_(1, 1, 1) {}
 
 
 const clockwork::Point3&
@@ -149,18 +124,4 @@ SceneObject::updateCumulativeModelTransform()
     const auto* const parentObject = static_cast<SceneObject*>(parent());
     if (parentObject != nullptr)
         cumulativeModelTransform_ = parentObject->getCumulativeModelTransform() * cumulativeModelTransform_;
-}
-
-
-bool
-SceneObject::isPruned() const
-{
-    return isPruned_;
-}
-
-
-void
-SceneObject::setPruned(const bool pruned)
-{
-    isPruned_ = pruned;
 }

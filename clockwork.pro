@@ -36,6 +36,7 @@ HEADERS += \
     src/math/Point3.hh \
     src/math/Quaternion.hh \
     src/math/Vector3.hh \
+    src/scene/SceneNode.hh \
     src/scene/SceneObject.hh \
     src/system/Application.hh \
     src/system/Error.hh \
@@ -58,6 +59,7 @@ SOURCES += \
     src/math/Point4.cc \
     src/math/Quaternion.cc \
     src/math/Vector3.cc \
+    src/scene/SceneNode.cc \
     src/scene/SceneObject.cc \
     src/system/Application.cc \
     src/system/Service.cc \

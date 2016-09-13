@@ -25,11 +25,9 @@
 #ifndef CLOCKWORK_SCENE_OBJECT_HH
 #define CLOCKWORK_SCENE_OBJECT_HH
 
-#include <QObject>
-#include <QUuid>
 #include <QString>
-#include <QSet>
 #include <QHash>
+#include "SceneNode.hh"
 #include "Matrix4.hh"
 /*
 #include "SceneProperty.hh"
@@ -37,34 +35,17 @@
 
 
 namespace clockwork {
-
 /**
- * An Object is a node in the scene graph that has a set of one or more
- * properties, with a position, orientation (rotation) and scale at least.
- * They may be visible to a viewer if the right conditions are met, or
- * may be invisible.
+ * A SceneObject is a special node in a scene with a position, orientation
+ * and scale, as well as other properties.
  */
-class SceneObject : public QObject
-{
+class SceneObject : public SceneNode {
 public:
     /**
      * Instantiates a named scene object.
      * @param name the scene object's name.
      */
-    SceneObject(const QString& name);
-    /**
-     * Retursn the scene object's unique identifier.
-     */
-    const QUuid& getIdentifier() const;
-    /**
-     * Returns the scene object's name.
-     */
-    QString getName() const;
-    /**
-     * Sets the scene object's name.
-     * @param name the scene object's name.
-     */
-    void setName(const QString& name);
+    explicit SceneObject(const QString& name);
     /**
      * Return the scene object's position in the scene.
      */
@@ -128,20 +109,7 @@ public:
      * Updates the scene object's cumulative (composite) model transformation matrix.
      */
     void updateCumulativeModelTransform();
-    /**
-     * Returns true if this object is pruned, false otherwise.
-     */
-    bool isPruned() const;
-    /**
-     * Prune this object.
-     * @param pruned true if this node is to be pruned, false otherwise.
-     */
-    void setPruned(const bool pruned);
 private:
-    /**
-     * The scene object's unique identifier.
-     */
-    const QUuid identifier_;
     /**
      * The scene object's position in the world.
      */
@@ -160,15 +128,7 @@ private:
      * grand-parent, great great grand-parent, ...), with its own transformation matrix.
      */
     Matrix4 cumulativeModelTransform_;
-    /**
-     * If set to true, this object will be skipped by certain operations performed on
-     * nodes in the scene graph that this object belongs to. For example, if this object is out of
-     * view, it is pruned so that the rendering process does not waste time on an otherwise
-     * invisible object.
-     */
-    bool isPruned_;
 };
-
 } // namespace clockwork
 
 #endif // CLOCKWORK_SCENE_OBJECT_HH
