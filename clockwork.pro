@@ -27,6 +27,10 @@ INCLUDEPATH += \
 HEADERS += \
     src/graphics/Framebuffer.hh \
     src/graphics/GraphicsEngine.hh \
+    src/graphics/renderer/LineRenderer.hh \
+    src/graphics/renderer/PointRenderer.hh \
+    src/graphics/renderer/PolygonRenderer.hh \
+    src/graphics/renderer/Renderer.hh \
     src/io/toString.hh \
     src/math/Matrix4.hh \
     src/math/Point3.hh \
@@ -44,6 +48,10 @@ HEADERS += \
 SOURCES += \
     src/graphics/Framebuffer.cc \
     src/graphics/GraphicsEngine.cc \
+    src/graphics/renderer/LineRenderer.cc \
+    src/graphics/renderer/PointRenderer.cc \
+    src/graphics/renderer/PolygonRenderer.cc \
+    src/graphics/renderer/Renderer.cc \
     src/io/toString.cc \
     src/math/Matrix4.cc \
     src/math/Point3.cc \
