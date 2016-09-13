@@ -91,13 +91,40 @@ public:
 	 */
 	std::uint32_t* getPixelBuffer();
 	/**
+	 * Returns the pixel buffer's clear value.
+	 */
+	std::uint32_t getPixelBufferClearValue() const;
+	/**
+	 * Sets the pixel buffer's clear value.
+	 * @param value the clear value to set.
+	 */
+	void setPixelBufferClearValue(const std::uint32_t value);
+	/**
 	 * Returns the depth buffer.
 	 */
 	double* getDepthBuffer();
 	/**
+	 * Returns the depth buffer's clear value.
+	 */
+	double getDepthBufferClearValue() const;
+	/**
+	 * Sets the depth buffer's clear value.
+	 * @param value the clear value to set.
+	 */
+	void setDepthBufferClearValue(const double value);
+	/**
 	 * Returns the stencil buffer.
 	 */
 	std::uint8_t* getStencilBuffer();
+	/**
+	 * Returns the stencil buffer's clear value.
+	 */
+	std::uint8_t getStencilBufferClearValue() const;
+	/**
+	 * Sets the stencil buffer's clear value.
+	 * @param value the clear value to set.
+	 */
+	void setStencilBufferClearValue(const std::uint8_t value);
 	/**
 	 * Clears the framebuffer.
 	 */

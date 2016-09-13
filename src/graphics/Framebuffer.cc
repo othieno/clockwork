@@ -85,15 +85,51 @@ Framebuffer::getPixelBuffer() {
 }
 
 
+std::uint32_t
+Framebuffer::getPixelBufferClearValue() const {
+	return pixelBufferClearValue_;
+}
+
+
+void
+Framebuffer::setPixelBufferClearValue(const std::uint32_t value) {
+	pixelBufferClearValue_ = value;
+}
+
+
 double*
 Framebuffer::getDepthBuffer() {
 	return depthBuffer_.get();
 }
 
 
+double
+Framebuffer::getDepthBufferClearValue() const {
+	return depthBufferClearValue_;
+}
+
+
+void
+Framebuffer::setDepthBufferClearValue(const double value) {
+	depthBufferClearValue_ = value;
+}
+
+
 std::uint8_t*
 Framebuffer::getStencilBuffer() {
 	return stencilBuffer_.get();
+}
+
+
+std::uint8_t
+Framebuffer::getStencilBufferClearValue() const {
+	return stencilBufferClearValue_;
+}
+
+
+void
+Framebuffer::setStencilBufferClearValue(const std::uint8_t value) {
+	stencilBufferClearValue_ = value;
 }
 
 
