@@ -16,11 +16,11 @@ UI_DIR = $${DESTDIR}/ui
 INCLUDEPATH += \
     src/graphics \
     src/graphics/renderer \
-    src/io \
     src/math \
     src/scene \
     src/system \
-    src/task \
+    src/system/io \
+    src/system/task \
     src/types \
     src/ui \
     src
@@ -35,7 +35,6 @@ HEADERS += \
     src/graphics/renderer/PolygonRenderer.hh \
     src/graphics/renderer/Renderer.hh \
     src/graphics/Viewport.hh \
-    src/io/toString.hh \
     src/math/Matrix4.hh \
     src/math/Point3.hh \
     src/math/Quaternion.hh \
@@ -47,7 +46,8 @@ HEADERS += \
     src/system/Application.hh \
     src/system/Error.hh \
     src/system/Service.hh \
-    src/task/TaskManager.hh \
+    src/system/io/toString.hh \
+    src/system/task/TaskManager.hh \
     src/types/Factory.hh \
     src/ui/FramebufferProvider.hh \
     src/ui/UserInterface.hh \
@@ -63,7 +63,6 @@ SOURCES += \
     src/graphics/renderer/PolygonRenderer.cc \
     src/graphics/renderer/Renderer.cc \
     src/graphics/Viewport.cc \
-    src/io/toString.cc \
     src/math/Matrix4.cc \
     src/math/Point3.cc \
     src/math/Point4.cc \
@@ -75,7 +74,8 @@ SOURCES += \
     src/scene/SceneObject.cc \
     src/system/Application.cc \
     src/system/Service.cc \
-    src/task/TaskManager.cc \
+    src/system/io/toString.cc \
+    src/system/task/TaskManager.cc \
     src/ui/FramebufferProvider.cc \
     src/ui/UserInterface.cc \
     src/clockwork.cc
