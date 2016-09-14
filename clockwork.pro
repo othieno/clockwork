@@ -36,6 +36,8 @@ HEADERS += \
     src/math/Point3.hh \
     src/math/Quaternion.hh \
     src/math/Vector3.hh \
+    src/scene/predefined/Suzanne.hh \
+    src/scene/predefined/TexturedCube.hh \
     src/scene/SceneNode.hh \
     src/scene/SceneObject.hh \
     src/system/Application.hh \
@@ -59,6 +61,8 @@ SOURCES += \
     src/math/Point4.cc \
     src/math/Quaternion.cc \
     src/math/Vector3.cc \
+    src/scene/predefined/Suzanne.cc \
+    src/scene/predefined/TexturedCube.cc \
     src/scene/SceneNode.cc \
     src/scene/SceneObject.cc \
     src/system/Application.cc \
