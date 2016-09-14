@@ -31,6 +31,7 @@ HEADERS += \
     src/graphics/renderer/PointRenderer.hh \
     src/graphics/renderer/PolygonRenderer.hh \
     src/graphics/renderer/Renderer.hh \
+    src/graphics/Viewport.hh \
     src/io/toString.hh \
     src/math/Matrix4.hh \
     src/math/Point3.hh \
@@ -55,6 +56,7 @@ SOURCES += \
     src/graphics/renderer/PointRenderer.cc \
     src/graphics/renderer/PolygonRenderer.cc \
     src/graphics/renderer/Renderer.cc \
+    src/graphics/Viewport.cc \
     src/io/toString.cc \
     src/math/Matrix4.cc \
     src/math/Point3.cc \

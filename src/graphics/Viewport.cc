@@ -1,8 +1,9 @@
 /*
+ * This file is part of Clockwork.
+ *
+ * Copyright (c) 2014-2016 Jeremy Othieno.
+ *
  * The MIT License (MIT)
- *
- * Copyright (c) 2014 Jeremy Othieno.
- *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -21,16 +22,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "viewport.hh"
+#include "Viewport.hh"
+#include <algorithm>
 
-using clockwork::graphics::Viewport;
+using clockwork::Viewport;
 
 
-Viewport::Viewport(const double& X, const double& Y, const double& W, const double& H, const double& N, const double& F) :
-x(X < 0.0 ? 0.0 : X > 1.0 ? 1.0 : X),
-y(Y < 0.0 ? 0.0 : Y > 1.0 ? 1.0 : Y),
-width(W < 0.0 ? 0.0 : W > 1.0 ? 1.0 : W),
-height(H < 0.0 ? 0.0 : H > 1.0 ? 1.0 : H),
-near(N < 0.0 ? 0.0 : N > 1.0 ? 1.0 : N),
-far(F < 0.0 ? 0.0 : F > 1.0 ? 1.0 : F)
-{}
+static constexpr double
+clamp(const double d) {
+	return std::max(0.0, std::min(d, 1.0));
+}
+
+
+Viewport::Viewport(const double X, const double Y, const double W, const double H, const double N, const double F) :
+x(clamp(X)),
+y(clamp(Y)),
+width(clamp(W)),
+height(clamp(H)),
+near(clamp(N)),
+far(clamp(F)) {}
