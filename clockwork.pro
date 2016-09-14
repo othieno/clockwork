@@ -27,6 +27,7 @@ INCLUDEPATH += \
 HEADERS += \
     src/graphics/ColorARGB.hh \
     src/graphics/Framebuffer.hh \
+    src/graphics/Frustum.hh \
     src/graphics/GraphicsEngine.hh \
     src/graphics/renderer/LineRenderer.hh \
     src/graphics/renderer/PointRenderer.hh \
@@ -53,6 +54,7 @@ HEADERS += \
 SOURCES += \
     src/graphics/ColorARGB.cc \
     src/graphics/Framebuffer.cc \
+    src/graphics/Frustum.cc \
     src/graphics/GraphicsEngine.cc \
     src/graphics/renderer/LineRenderer.cc \
     src/graphics/renderer/PointRenderer.cc \

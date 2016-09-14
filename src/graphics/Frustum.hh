@@ -1,8 +1,9 @@
 /*
+ * This file is part of Clockwork.
+ *
+ * Copyright (c) 2014-2016 Jeremy Othieno.
+ *
  * The MIT License (MIT)
- *
- * Copyright (c) 2014 Jeremy Othieno.
- *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -21,19 +22,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#pragma once
-
-#include <iostream>
+#ifndef CLOCKWORK_FRUSTUM_HH
+#define CLOCKWORK_FRUSTUM_HH
 
 
 namespace clockwork {
-namespace graphics {
-
-class Frustum
-{
-};
-
-} // namespace graphics
+/**
+ *
+ */
+class Frustum {};
 } // namespace clockwork
 
-std::ostream& operator<<(std::ostream&, const clockwork::graphics::Frustum&);
+#endif // CLOCKWORK_FRUSTUM_HH
