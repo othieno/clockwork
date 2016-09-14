@@ -154,6 +154,21 @@ Framebuffer::clear() {
 }
 
 
+int
+Framebuffer::getOffset(const unsigned int x, const unsigned int y) const {
+	int offset = -1;
+	const auto& resolution = getResolutionSize();
+	if (resolution.isValid()) {
+		const unsigned int w = resolution.width();
+		const unsigned int h = resolution.height();
+		if (x < w && y < h) {
+			offset = x + (y * w);
+		}
+	}
+	return offset;
+}
+
+
 void
 Framebuffer::discard(const unsigned int, const unsigned int) {}
 

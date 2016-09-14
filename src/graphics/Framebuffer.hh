@@ -133,6 +133,13 @@ public:
 	 * Discards the fragment at the specified <x, y> coordinate.
 	 */
 	void discard(const unsigned int x, const unsigned int y);
+	/**
+	 * Return the buffer offset for a given <x, y> coordinate. If the coordinate
+	 * is out of range, then -1 is returned.
+	 * @param x the buffer element's row position.
+	 * @param y the buffer element's column position.
+	 */
+	int getOffset(const unsigned int x, const unsigned int y) const;
 private:
 	/**
 	 * Resizes the framebuffer's attachments.
