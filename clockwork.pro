@@ -21,6 +21,7 @@ INCLUDEPATH += \
     src/scene \
     src/system \
     src/task \
+    src/types \
     src/ui \
     src
 
@@ -47,6 +48,7 @@ HEADERS += \
     src/system/Error.hh \
     src/system/Service.hh \
     src/task/TaskManager.hh \
+    src/types/Factory.hh \
     src/ui/FramebufferProvider.hh \
     src/ui/UserInterface.hh \
     src/clockwork.hh
