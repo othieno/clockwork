@@ -25,6 +25,7 @@ INCLUDEPATH += \
     src
 
 HEADERS += \
+    src/graphics/ColorARGB.hh \
     src/graphics/Framebuffer.hh \
     src/graphics/GraphicsEngine.hh \
     src/graphics/renderer/LineRenderer.hh \
@@ -50,6 +51,7 @@ HEADERS += \
     src/clockwork.hh
 
 SOURCES += \
+    src/graphics/ColorARGB.cc \
     src/graphics/Framebuffer.cc \
     src/graphics/GraphicsEngine.cc \
     src/graphics/renderer/LineRenderer.cc \
