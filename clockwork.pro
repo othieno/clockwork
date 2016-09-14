@@ -50,8 +50,7 @@ HEADERS += \
     src/system/task/TaskManager.hh \
     src/types/Factory.hh \
     src/ui/FramebufferProvider.hh \
-    src/ui/UserInterface.hh \
-    src/clockwork.hh
+    src/ui/UserInterface.hh
 
 SOURCES += \
     src/graphics/ColorARGB.cc \

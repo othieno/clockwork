@@ -23,7 +23,9 @@
  * THE SOFTWARE.
  */
 #include <iostream>
-#include "clockwork.hh"
+#include "Application.hh"
+#include "toString.hh"
+
 
 int main(int argc, char** argv) {
     clockwork::Application application(argc, argv);
