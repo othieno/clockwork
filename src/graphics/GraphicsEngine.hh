@@ -32,6 +32,10 @@ namespace clockwork {
 /**
  *
  */
+class Fragment;
+/**
+ *
+ */
 class TaskManager;
 /**
  *
@@ -74,6 +78,11 @@ public:
      * Returns the framebuffer instance.
      */
     Framebuffer& getFramebuffer();
+    /**
+     * Returns true if the specified fragment passes all fragment tests, false otherwise.
+     * @param fragment the Fragment instance to test.
+     */
+    bool fragmentPasses(const Fragment& fragment);
 private:
     /**
      * The task manager.
