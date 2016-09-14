@@ -32,6 +32,8 @@ namespace clockwork {
  */
 enum class Error {
 	None,
+	FileNotAccessible,
+	Unknown,
 };
 } // namespace clockwork
 
