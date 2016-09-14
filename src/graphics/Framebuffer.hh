@@ -130,7 +130,7 @@ public:
 	 */
 	void clear();
 	/**
-	 * Discards the fragment at the specified <x, y> coordinate.
+	 * Discards (clears) the framebuffer element at the specified <x, y> coordinate.
 	 */
 	void discard(const unsigned int x, const unsigned int y);
 	/**

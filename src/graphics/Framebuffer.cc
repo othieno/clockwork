@@ -154,6 +154,17 @@ Framebuffer::clear() {
 }
 
 
+void
+Framebuffer::discard(const unsigned int x, const unsigned int y) {
+	const int offset = getOffset(x, y);
+	if (offset >= 0) {
+		pixelBuffer_[offset] = pixelBufferClearValue_;
+		depthBuffer_[offset] = depthBufferClearValue_;
+		stencilBuffer_[offset] = stencilBufferClearValue_;
+	}
+}
+
+
 int
 Framebuffer::getOffset(const unsigned int x, const unsigned int y) const {
 	int offset = -1;
@@ -167,10 +178,6 @@ Framebuffer::getOffset(const unsigned int x, const unsigned int y) const {
 	}
 	return offset;
 }
-
-
-void
-Framebuffer::discard(const unsigned int, const unsigned int) {}
 
 
 void
