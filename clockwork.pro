@@ -51,6 +51,8 @@ HEADERS += \
     src/system/Application.hh \
     src/system/Error.hh \
     src/system/Service.hh \
+    src/system/io/Resource.hh \
+    src/system/io/ResourceManager.hh \
     src/system/io/toString.hh \
     src/system/task/Task.hh \
     src/system/task/TaskManager.hh \
@@ -81,6 +83,8 @@ SOURCES += \
     src/scene/SceneObject.cc \
     src/system/Application.cc \
     src/system/Service.cc \
+    src/system/io/Resource.cc \
+    src/system/io/ResourceManager.cc \
     src/system/io/toString.cc \
     src/system/task/Task.cc \
     src/system/task/TaskManager.cc \
