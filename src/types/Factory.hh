@@ -26,6 +26,7 @@
 #define CLOCKWORK_FACTORY_HH
 
 #include <QHash>
+#include <memory>
 
 
 namespace clockwork {
@@ -36,60 +37,97 @@ template<class Key, class Value>
 class Factory {
 public:
 	/**
-	 * Instantiate a Factory object.
+	 *
 	 */
-	Factory() {}
+	Factory(Factory&) = delete;
 	/**
-	 * The destructor.
+	 *
 	 */
-	virtual ~Factory() {
-		cache_.clear();
-	}
+	Factory(Factory&&) = delete;
 	/**
-	 * Return a list of keys in the factory.
+	 *
 	 */
-	QList<Key> getKeys() const {
-		return cache_.uniqueKeys();
-	}
+	Factory& operator=(Factory&) = delete;
 	/**
-	 * Return an element from the factory associated to the given key.
-	 * @param key the element's key.
+	 *
 	 */
-	Value* get(const Key& key) {
-		return contains(key) ? &cache_[key] : nullptr;
-	}
+	Factory& operator=(Factory&&) = delete;
 	/**
-	 * Delete an item with the given key from the factory.
-	 * @param key the element's key.
+	 * Frees up resources used by the factory.
 	 */
-	void remove(const Key& key) {
-		if (contains(key)) {
-			cache_.remove(key);
-		}
-	}
+	virtual ~Factory();
 	/**
-	 * Add an element to the factory.
-	 * @param key the element's key.
-	 * @param value the actual element.
-	 */
-	void put(const Key& key, const Value& value) {
-		remove(key); // Remove original value.
-		cache_.insert(key, value);
-	}
-	/**
-	 * Return true if a value with the specified key has been instantiated by the factory,
-	 * false otherwise.
+	 * Returns true if a value with the specified key is stored by the factory, false otherwise.
 	 * @param key the key to query.
 	 */
-	bool contains(const Key& key) const {
-		return !cache_.isEmpty() && cache_.contains(key);
-	}
+	bool contains(const Key& key) const;
+	/**
+	 * Returns an element associated with the specified key.
+	 * @param key the element's key.
+	 */
+	Value* get(const Key& key);
+	/**
+	 * Deletes the entry with the specified key from the factory's cache.
+	 * @param key the entry's key.
+	 */
+	void remove(const Key& key);
+	/**
+	 * Returns a list of keys stored in the factory's cache.
+	 */
+	QList<Key> getKeys() const;
+protected:
+	/**
+	 * Instantiates a Factory object.
+	 */
+	Factory() = default;
 private:
+	/**
+	 *
+	 */
+	using CacheEntry = std::unique_ptr<Value>;
+	/**
+	 * Instantiates the Value object assigned to the specified key.
+	 * @param key the Value object's unique key.
+	 */
+	static Value* create(const Key& key);
 	/**
 	 * The cache will contain already instantiated values.
 	 */
-	QHash<Key, Value> cache_;
+	QHash<Key, CacheEntry> cache_;
 };
+
+
+template<class K, class V>
+Factory<K, V>::~Factory() {
+	cache_.clear();
+}
+
+
+template<class K, class V> bool
+Factory<K, V>::contains(const K& key) const {
+	return !cache_.isEmpty() && cache_.contains(key);
+}
+
+
+template<class K, class V> V*
+Factory<K, V>::get(const K& key) {
+	if (!contains(key)) {
+		cache_[key] = Factory::CacheEntry(Factory::create(key));
+	}
+	return cache_[key];
+}
+
+
+template<class K, class V> void
+Factory<K, V>::remove(const K& key) {
+	cache_.remove(key);
+}
+
+
+template<class K, class V> QList<K>
+Factory<K, V>::getKeys() const {
+	return cache_.uniqueKeys();
+}
 } // namespace clockwork
 
 #endif // CLOCKWORK_FACTORY_HH
