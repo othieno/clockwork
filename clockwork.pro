@@ -15,6 +15,7 @@ UI_DIR = $${DESTDIR}/ui
 
 INCLUDEPATH += \
     src/graphics \
+    src/graphics/filter \
     src/graphics/renderer \
     src/math \
     src/scene \
@@ -30,6 +31,10 @@ HEADERS += \
     src/graphics/Framebuffer.hh \
     src/graphics/Frustum.hh \
     src/graphics/GraphicsEngine.hh \
+    src/graphics/filter/ImageFilter.hh \
+    src/graphics/filter/ImageFilterFactory.hh \
+    src/graphics/filter/TextureFilter.hh \
+    src/graphics/filter/TextureFilterFactory.hh \
     src/graphics/renderer/LineRenderer.hh \
     src/graphics/renderer/PointRenderer.hh \
     src/graphics/renderer/PolygonRenderer.hh \
@@ -57,6 +62,8 @@ SOURCES += \
     src/graphics/Framebuffer.cc \
     src/graphics/Frustum.cc \
     src/graphics/GraphicsEngine.cc \
+    src/graphics/filter/ImageFilter.cc \
+    src/graphics/filter/TextureFilter.cc \
     src/graphics/renderer/LineRenderer.cc \
     src/graphics/renderer/PointRenderer.cc \
     src/graphics/renderer/PolygonRenderer.cc \

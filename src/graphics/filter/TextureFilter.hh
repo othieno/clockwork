@@ -1,8 +1,9 @@
 /*
+ * This file is part of Clockwork.
+ *
+ * Copyright (c) 2014-2016 Jeremy Othieno.
+ *
  * The MIT License (MIT)
- *
- * Copyright (c) 2014 Jeremy Othieno.
- *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -21,33 +22,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "image.filter.hh"
+#ifndef CLOCKWORK_TEXTURE_FILTER_HH
+#define CLOCKWORK_TEXTURE_FILTER_HH
 
 
-clockwork::graphics::ImageFilter::ImageFilter(const clockwork::graphics::ImageFilter::Type type) :
-_type(type)
-{}
+namespace clockwork {
+/**
+ *
+ */
+class TextureFilter {
+public:
+	/**
+	 * Available texture filters.
+	 */
+	enum class Identifier {
+		Bilinear,
+		Trilinear,
+		Anisotropic,
+	};
+	/**
+	 * Returns the filter's identifier.
+	 */
+	Identifier getIdentifier() const;
+protected:
+	/**
+	 * Instantiates an TextureFilter object with the specified identifier.
+	 */
+	explicit TextureFilter(const Identifier identifier);
+private:
+	/**
+	 * The filter's identifier.
+	 */
+	const Identifier identifier_;
+};
+} // namespace clockwork
 
-
-const clockwork::graphics::ImageFilter::Type&
-clockwork::graphics::ImageFilter::getType() const
-{
-   return _type;
-}
-
-
-clockwork::graphics::ImageFilterFactory::ImageFilterFactory() :
-Factory(clockwork::graphics::ImageFilter::Type::None)
-{
-   put(clockwork::graphics::ImageFilter::Type::None, nullptr);
-   put(clockwork::graphics::ImageFilter::Type::BlackAndWhite, nullptr);
-   put(clockwork::graphics::ImageFilter::Type::Grayscale, nullptr);
-}
-
-
-clockwork::graphics::ImageFilterFactory&
-clockwork::graphics::ImageFilterFactory::getInstance()
-{
-   static clockwork::graphics::ImageFilterFactory INSTANCE;
-   return INSTANCE;
-}
+#endif // CLOCKWORK_TEXTURE_FILTER_HH

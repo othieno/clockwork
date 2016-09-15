@@ -1,8 +1,9 @@
 /*
+ * This file is part of Clockwork.
+ *
+ * Copyright (c) 2014-2016 Jeremy Othieno.
+ *
  * The MIT License (MIT)
- *
- * Copyright (c) 2014 Jeremy Othieno.
- *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -21,37 +22,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "texture.filter.hh"
+#include "ImageFilter.hh"
+#include "ImageFilterFactory.hh"
 
-using clockwork::graphics::TextureFilter;
-using clockwork::graphics::TextureFilterFactory;
-
-
-TextureFilter::TextureFilter(const TextureFilter::Type type) :
-_type(type)
-{}
+using clockwork::ImageFilter;
+using clockwork::ImageFilterFactory;
+using clockwork::Factory;
 
 
-const TextureFilter::Type&
-TextureFilter::getType() const
-{
-   return _type;
+ImageFilter::ImageFilter(const Identifier id) :
+identifier_(id) {}
+
+
+ImageFilter::Identifier
+ImageFilter::getIdentifier() const {
+	return identifier_;
 }
 
 
-TextureFilterFactory::TextureFilterFactory() :
-Factory(TextureFilter::Type::None)
-{
-   put(TextureFilter::Type::None, nullptr);
-//   put(TextureFilter::Type::Bilinear, nullptr);
-//   put(TextureFilter::Type::Trilinear, nullptr);
-//   put(TextureFilter::Type::Anisotropic, nullptr);
+ImageFilterFactory&
+ImageFilterFactory::getInstance() {
+	static ImageFilterFactory INSTANCE;
+	return INSTANCE;
 }
 
 
-TextureFilterFactory&
-TextureFilterFactory::getInstance()
-{
-   static TextureFilterFactory INSTANCE;
-   return INSTANCE;
+template<> ImageFilter*
+Factory<ImageFilter::Identifier, ImageFilter>::create(const ImageFilter::Identifier& id) {
+	switch (id) {
+		case ImageFilter::Identifier::BlackAndWhite:
+		case ImageFilter::Identifier::Grayscale:
+		default:
+			return nullptr;
+	}
 }

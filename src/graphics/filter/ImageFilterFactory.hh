@@ -1,8 +1,9 @@
 /*
+ * This file is part of Clockwork.
+ *
+ * Copyright (c) 2014-2016 Jeremy Othieno.
+ *
  * The MIT License (MIT)
- *
- * Copyright (c) 2014 Jeremy Othieno.
- *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -21,62 +22,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#pragma once
+#ifndef CLOCKWORK_IMAGE_FILTER_FACTORY_HH
+#define CLOCKWORK_IMAGE_FILTER_FACTORY_HH
 
-#include "factory.hh"
+#include "ImageFilter.hh"
+#include "Factory.hh"
 
 
 namespace clockwork {
-namespace graphics {
-
-class TextureFilter
-{
-public:
-   /**
-    * Types of texture filters.
-    */
-   enum class Type
-   {
-      None,
-      Bilinear,
-      Trilinear,
-      Anisotropic
-   };
-   /**
-    * Return the filter's type.
-    */
-   const Type& getType() const;
-protected:
-   /**
-    * Instantiate a filter with a given type.
-    */
-   explicit TextureFilter(const Type type);
-private:
-   /**
-    * This filter's type.
-    */
-   const Type _type;
-};
-
-
 /**
- * The TextureFilterFactory is a factory that creates and stores TextureFilter objects.
+ * The ImageFilterFactory is responsible for instantiating ImageFilter objects.
  */
-class TextureFilterFactory : public clockwork::Factory<TextureFilter::Type, const TextureFilter*>
-{
+class ImageFilterFactory : public Factory<ImageFilter::Identifier, ImageFilter> {
 public:
-   /**
-    * Return the factory's unique instance.
-    */
-   static TextureFilterFactory& getInstance();
+	/**
+	 *
+	 */
+	ImageFilterFactory(const ImageFilterFactory&) = delete;
+	/**
+	 *
+	 */
+	ImageFilterFactory(const ImageFilterFactory&&) = delete;
+	/**
+	 *
+	 */
+	ImageFilterFactory& operator=(const ImageFilterFactory&) = delete;
+	/**
+	 *
+	 */
+	ImageFilterFactory& operator=(const ImageFilterFactory&&) = delete;
+	/**
+	 * Returns the factory's unique instance.
+	 */
+	static ImageFilterFactory& getInstance();
 private:
-   /**
-    * The TextureFilterFactory is a singleton.
-    */
-   TextureFilterFactory();
-   TextureFilterFactory(const TextureFilterFactory&) = delete;
-   TextureFilterFactory& operator=(const TextureFilterFactory&) = delete;
+	/**
+	 * Instantiates an ImageFilterFactory object.
+	 */
+	ImageFilterFactory() = default;
 };
-
-} // namespace graphics
+/**
+ * @see Factory::create.
+ */
+template<> ImageFilter* Factory<ImageFilter::Identifier, ImageFilter>::create(const ImageFilter::Identifier&);
 } // namespace clockwork
+
+#endif // CLOCKWORK_IMAGE_FILTER_FACTORY_HH
