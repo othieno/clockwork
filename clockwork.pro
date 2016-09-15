@@ -52,6 +52,7 @@ HEADERS += \
     src/system/Error.hh \
     src/system/Service.hh \
     src/system/io/toString.hh \
+    src/system/task/Task.hh \
     src/system/task/TaskManager.hh \
     src/types/Factory.hh \
     src/ui/FramebufferProvider.hh \
@@ -81,6 +82,7 @@ SOURCES += \
     src/system/Application.cc \
     src/system/Service.cc \
     src/system/io/toString.cc \
+    src/system/task/Task.cc \
     src/system/task/TaskManager.cc \
     src/ui/FramebufferProvider.cc \
     src/ui/UserInterface.cc \

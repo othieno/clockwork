@@ -1,8 +1,9 @@
 /*
+ * This file is part of Clockwork.
+ *
+ * Copyright (c) 2014-2016 Jeremy Othieno.
+ *
  * The MIT License (MIT)
- *
- * Copyright (c) 2014 Jeremy Othieno.
- *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -21,38 +22,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#pragma once
+#ifndef CLOCKWORK_TASK_HH
+#define CLOCKWORK_TASK_HH
 
 #include <QRunnable>
 
 
 namespace clockwork {
-namespace concurrency {
-
-class Task : public QRunnable
-{
+/**
+ *
+ */
+class Task : public QRunnable {
 public:
-   /**
-    * Return the task's priority.
-    */
-   const int& getPriority() const;
+	/**
+	 *
+	 */
+	Task(const Task&) = delete;
+	/**
+	 *
+	 */
+	Task(const Task&&) = delete;
+	/**
+	 *
+	 */
+	Task& operator=(const Task&) = delete;
+	/**
+	 *
+	 */
+	Task& operator=(const Task&&) = delete;
+	/**
+	 * Return the task's priority.
+	 */
+	int getPriority() const;
 //public slots:
-   /**
-    * Terminate the task's execution.
-    */
+	/**
+	 * Terminate the task's execution.
+	 */
 //   void terminate();
 protected:
-   /**
-    * Instantiate a task with a specified priority.
-    * @param priority the tasks's priority.
-    */
-   explicit Task(const int priority = 0);
+	/**
+	 * Instantiate a task with a specified priority.
+	 * @param priority the tasks's priority.
+	 */
+	explicit Task(const int priority = 0);
 private:
-   /**
-    * The task's priority.
-    */
-   const int _priority;
+	/**
+	 * The task's priority.
+	 */
+	const int priority_;
 };
-
-} // namespace concurrency
 } // namespace clockwork
+
+#endif // CLOCKWORK_TASK_HH
