@@ -46,13 +46,14 @@ Rectangle {
 	Rectangle {
 		anchors.fill: parent
 		color: "#000"
-		visible: framebuffer.visible
+		//visible: framebuffer.visible
 		Image {
 			id: framebuffer
 			cache: false
 			visible: true
 			width: parent.width
-			fillMode: Image.PreserveAspectFit
+			height: parent.height
+			//fillMode: Image.PreserveAspectFit
 			source: "image://framebuffer/pixel"
 			Row {
 				anchors {
