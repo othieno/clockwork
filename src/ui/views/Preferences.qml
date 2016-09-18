@@ -24,7 +24,84 @@
  */
 import QtQuick 2.4
 import Material 0.2
+import Material.ListItems 0.1 as ListItem
+import Material.Extras 0.1
+
 
 Page {
-    title: "Preferences"
+	title: qsTr("Preferences")
+	Flickable {
+		anchors.fill: parent
+		contentWidth: parent.width
+		contentHeight: parent.height * 1.25
+		boundsBehavior: Flickable.StopAtBounds
+		Column {
+			anchors.fill: parent
+			ListItem.Subheader {
+				text: qsTr("Interface")
+			}
+			ListItem.SimpleMenu {
+				text: qsTr("Language")
+				model: interfaceLanguages
+			}
+			ListItem.Divider {}
+			ListItem.Subtitled {
+				text: qsTr("Large text")
+				subText: qsTr("Show larger text.")
+				secondaryItem: Switch {
+					id: toggleLargeText
+					anchors.verticalCenter: parent.verticalCenter
+				}
+				onClicked: toggleLargeText.checked = !toggleLargeText.checked
+			}
+			ListItem.Divider {}
+			ListItem.Subtitled {
+				text: qsTr("Night mode")
+				subText: qsTr("")
+				secondaryItem: Switch {
+					id: toggleNightMode
+					anchors.verticalCenter: parent.verticalCenter
+				}
+				onClicked: toggleNightMode.checked = !toggleNightMode.checked
+			}
+			ListItem.Subheader {
+				text: qsTr("Perfomance")
+			}
+/*
+			ListItem.Subtitled {
+				text: qsTr("")
+				subText: qsTr("")
+				secondaryItem: Switch {
+					anchors.verticalCenter: parent.verticalCenter
+				}
+			}
+			ListItem.Divider {}
+*/
+			ListItem.SimpleMenu {
+				text: qsTr("Framebuffer resolution")
+				model: framebufferResolutions
+			}
+			ListItem.Subheader {
+				text: qsTr("About")
+			}
+			ListItem.Subtitled {
+				text: qsTr("Project repository")
+				subText: "https://github.com/othieno/clockwork"
+				onClicked: {
+					Qt.openUrlExternally(subText)
+				}
+			}
+			ListItem.Divider {}
+			ListItem.Subtitled {
+				text: qsTr("Build version")
+				subText: "0.0.0"
+			}
+			ListItem.Divider {}
+			ListItem.Standard {
+				text: qsTr("Licenses")
+				onClicked: {
+				}
+			}
+		}
+	}
 }

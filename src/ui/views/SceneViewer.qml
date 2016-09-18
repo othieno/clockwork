@@ -45,7 +45,7 @@ Rectangle {
 	}
 	Rectangle {
 		anchors.fill: parent
-		color: "#000"
+		color: Palette.colors["grey"]["900"]
 		//visible: framebuffer.visible
 		Image {
 			id: framebuffer

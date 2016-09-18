@@ -36,7 +36,6 @@ ApplicationWindow {
 	initialPage: page
 	theme {
 		accentColor: Palette.colors["red"]["900"]
-		backgroundColor: Palette.colors["grey"]["900"]
 		//primaryDarkColor: "#FFF"
 		//primaryColor: "#0AF"
 		primaryColor: Palette.colors["blue"]["700"]
@@ -51,8 +50,9 @@ ApplicationWindow {
 		actions: [
 			Action {
 				name: qsTr("Preferences")
-				iconName: "/"
-				onTriggered: pageStack.depth == 1 ? pageStack.push("qrc:/view/%1".arg(modelData)) : pageStack.pop()
+				iconSource: "qrc:/icon/action/Preferences"
+				onTriggered: pageStack.push("qrc:/view/Preferences")
+				hoverAnimation: true
 			}
 		]
 		Repeater {
