@@ -9,7 +9,6 @@
     <qresource prefix="/view">
         <file alias="ApplicationWindow">src/ui/views/ApplicationWindow.qml</file>
         <file alias="DocumentationViewer">src/ui/views/DocumentationViewer.qml</file>
-        <file alias="main">src/ui/views/main.qml</file>
         <file alias="Preferences">src/ui/views/Preferences.qml</file>
         <file alias="SceneViewer">src/ui/views/SceneViewer.qml</file>
     </qresource>

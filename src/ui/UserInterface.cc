@@ -32,7 +32,7 @@ using clockwork::UserInterface;
 clockwork::Error
 UserInterface::initialize(Framebuffer& framebuffer) {
 	engine_.addImageProvider("framebuffer", new clockwork::FramebufferProvider(framebuffer));
-	engine_.load(QUrl("qrc:/view/main"));
+	engine_.load(QUrl("qrc:/view/ApplicationWindow"));
 
 	return Error::None;
 }
