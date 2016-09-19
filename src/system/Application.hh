@@ -26,6 +26,7 @@
 #define CLOCKWORK_APPLICATION_HH
 
 #include <QGuiApplication>
+#include "ApplicationPreferences.hh"
 #include "Error.hh"
 #include "TaskManager.hh"
 #include "GraphicsEngine.hh"
@@ -68,6 +69,10 @@ public:
      */
     Error initialize();
     /**
+     * Returns the application's preferences.
+     */
+    ApplicationPreferences& getPreferences();
+    /**
      * Returns the task manager instance.
      */
     TaskManager& getTaskManager();
@@ -76,6 +81,10 @@ public:
      */
     GraphicsEngine& getGraphicsEngine();
 private:
+    /**
+     * The application's preferences.
+     */
+    ApplicationPreferences preferences_;
     /**
      * The task manager.
      */

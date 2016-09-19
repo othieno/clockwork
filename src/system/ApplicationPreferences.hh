@@ -22,46 +22,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "Application.hh"
+#ifndef CLOCKWORK_APPLICATION_PREFERENCES_HH
+#define CLOCKWORK_APPLICATION_PREFERENCES_HH
 
-using clockwork::Application;
-
-
-Application::Application(int& argc, char** argv) :
-QGuiApplication(argc, argv),
-taskManager_(),
-graphicsEngine_(taskManager_),
-userInterface_() {
-	setApplicationName("Clockwork");
-	setApplicationVersion("0.0.0");
-}
+#include <QSettings>
 
 
-Application::~Application() {}
+namespace clockwork {
+/**
+ *
+ */
+class ApplicationPreferences : public QSettings {
 
+};
+} // namespace clockwork
 
-clockwork::Error
-Application::initialize() {
-	Framebuffer& framebuffer = graphicsEngine_.getFramebuffer();
-	framebuffer.setResolution(Framebuffer::Resolution::VGA);
-
-	return userInterface_.initialize(framebuffer);
-}
-
-
-clockwork::ApplicationPreferences&
-Application::getPreferences() {
-	return preferences_;
-}
-
-
-clockwork::TaskManager&
-Application::getTaskManager() {
-	return taskManager_;
-}
-
-
-clockwork::GraphicsEngine&
-Application::getGraphicsEngine() {
-	return graphicsEngine_;
-}
+#endif // CLOCKWORK_APPLICATION_PREFERENCES_HH

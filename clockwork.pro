@@ -49,6 +49,7 @@ HEADERS += \
     src/scene/SceneNode.hh \
     src/scene/SceneObject.hh \
     src/system/Application.hh \
+    src/system/ApplicationPreferences.hh \
     src/system/Error.hh \
     src/system/Service.hh \
     src/system/io/Resource.hh \
@@ -82,6 +83,7 @@ SOURCES += \
     src/scene/SceneNode.cc \
     src/scene/SceneObject.cc \
     src/system/Application.cc \
+    src/system/ApplicationPreferences.cc \
     src/system/Service.cc \
     src/system/io/Resource.cc \
     src/system/io/ResourceManager.cc \
