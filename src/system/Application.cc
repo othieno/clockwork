@@ -31,7 +31,10 @@ Application::Application(int& argc, char** argv) :
 QGuiApplication(argc, argv),
 taskManager_(),
 graphicsEngine_(taskManager_),
-userInterface_() {}
+userInterface_() {
+	setApplicationName("Clockwork");
+	setApplicationVersion("0.0.0");
+}
 
 
 Application::~Application() {}
