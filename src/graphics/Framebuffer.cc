@@ -57,25 +57,7 @@ Framebuffer::setResolution(const Resolution resolution) {
 
 QSize
 Framebuffer::getResolutionSize() const {
-	switch (resolution_) {
-		case Resolution::VGA:
-			return QSize(640, 480);
-		case Resolution::SVGA:
-			return QSize(800, 600);
-		case Resolution::XGA:
-			return QSize(1024, 768);
-		case Resolution::SXGA:
-			return QSize(1280, 1024);
-		case Resolution::FHD:
-			return QSize(1920, 1080);
-		case Resolution::QSXGA:
-			return QSize(2560, 2048);
-		case Resolution::UHD8K:
-			return QSize(7680, 4320);
-		case Resolution::ZERO:
-		default:
-			return QSize(0, 0);
-	}
+	return Framebuffer::getResolutionSize(resolution_);
 }
 
 
@@ -180,6 +162,45 @@ Framebuffer::getOffset(const unsigned int x, const unsigned int y) const {
 }
 
 
+QList<Framebuffer::Resolution>
+Framebuffer::getAvailableResolutions() {
+	return {
+		Framebuffer::Resolution::ZERO,
+		Framebuffer::Resolution::VGA,
+		Framebuffer::Resolution::SVGA,
+		Framebuffer::Resolution::XGA,
+		Framebuffer::Resolution::SXGA,
+		Framebuffer::Resolution::FHD,
+		Framebuffer::Resolution::QSXGA,
+		Framebuffer::Resolution::UHD8K
+	};
+}
+
+
+QSize
+Framebuffer::getResolutionSize(const Resolution resolution) {
+	switch (resolution) {
+		case Resolution::VGA:
+			return QSize(640, 480);
+		case Resolution::SVGA:
+			return QSize(800, 600);
+		case Resolution::XGA:
+			return QSize(1024, 768);
+		case Resolution::SXGA:
+			return QSize(1280, 1024);
+		case Resolution::FHD:
+			return QSize(1920, 1080);
+		case Resolution::QSXGA:
+			return QSize(2560, 2048);
+		case Resolution::UHD8K:
+			return QSize(7680, 4320);
+		case Resolution::ZERO:
+		default:
+			return QSize(0, 0);
+	}
+}
+
+
 void
 Framebuffer::resize() {
 	const QSize& resolution = getResolutionSize();
@@ -197,19 +218,4 @@ Framebuffer::resize() {
 
 	clear();
 	emit resized(resolution);
-}
-
-
-QList<Framebuffer::Resolution>
-getAvailableResolutions() {
-	return {
-		Framebuffer::Resolution::ZERO,
-		Framebuffer::Resolution::VGA,
-		Framebuffer::Resolution::SVGA,
-		Framebuffer::Resolution::XGA,
-		Framebuffer::Resolution::SXGA,
-		Framebuffer::Resolution::FHD,
-		Framebuffer::Resolution::QSXGA,
-		Framebuffer::Resolution::UHD8K
-	};
 }

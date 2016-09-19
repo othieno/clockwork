@@ -140,6 +140,14 @@ public:
 	 * @param y the buffer element's column position.
 	 */
 	int getOffset(const unsigned int x, const unsigned int y) const;
+	/**
+	 * Returns all available framebuffer resolutions.
+	 */
+	static QList<Resolution> getAvailableResolutions();
+	/**
+	 * Returns the specified resolution's actual size.
+	 */
+	static QSize getResolutionSize(const Resolution resolution);
 private:
 	/**
 	 * Resizes the framebuffer's attachments.
@@ -180,10 +188,6 @@ signals:
 	 */
 	void resized(const QSize& resolution);
 };
-/**
- * Returns all available framebuffer resolutions.
- */
-QList<Framebuffer::Resolution> getFramebufferResolutions();
 } // namespace clockwork
 
 #endif // CLOCKWORK_FRAMEBUFFER_HH
