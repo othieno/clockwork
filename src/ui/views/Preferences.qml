@@ -30,22 +30,40 @@ import Material.Extras 0.1
 
 Page {
 	title: qsTr("Preferences")
+	/**
+	 * Set up the page when it's been completely loaded.
+	 */
+	Component.onCompleted: {
+		applicationWindow.title = title + " - " + application.applicationName
+	}
+	/**
+	 * The page's content.
+	 */
 	Flickable {
 		anchors.fill: parent
 		contentWidth: parent.width
-		contentHeight: parent.height * 1.25
+		contentHeight: parent.height * 1.3
 		boundsBehavior: Flickable.StopAtBounds
 		Column {
 			anchors.fill: parent
+			ListItem.Subtitled {
+				enabled: false
+				text: qsTr("Configuration file location")
+				subText: preferences.fileLocation
+			}
+
+
 			ListItem.Subheader {
 				text: qsTr("Interface")
 			}
 			ListItem.SimpleMenu {
+				enabled: false
 				text: qsTr("Language")
-				model: interfaceLanguages
+				model: preferences.availableLanguages
 			}
 			ListItem.Divider {}
 			ListItem.Subtitled {
+				enabled: false
 				text: qsTr("Large text")
 				subText: qsTr("Show larger text.")
 				secondaryItem: Switch {
@@ -56,6 +74,7 @@ Page {
 			}
 			ListItem.Divider {}
 			ListItem.Subtitled {
+				enabled: false
 				text: qsTr("Night mode")
 				subText: qsTr("")
 				secondaryItem: Switch {
@@ -64,44 +83,54 @@ Page {
 				}
 				onClicked: toggleNightMode.checked = !toggleNightMode.checked
 			}
+
+
 			ListItem.Subheader {
 				text: qsTr("Perfomance")
 			}
-/*
-			ListItem.Subtitled {
-				text: qsTr("")
-				subText: qsTr("")
-				secondaryItem: Switch {
-					anchors.verticalCenter: parent.verticalCenter
-				}
+			ListItem.SimpleMenu {
+				enabled: false
+				text: qsTr("Framebuffer resolution")
+				model: preferences.availableFramebufferResolutions
 			}
 			ListItem.Divider {}
-*/
-			ListItem.SimpleMenu {
-				text: qsTr("Framebuffer resolution")
-				model: framebufferResolutions
+			ListItem.Subtitled {
+				text: qsTr("Show FPS counter")
+				subText: qsTr("Display the number of frames rendered per second")
+				secondaryItem: Switch {
+					id: toggleFpsCounterVisibility
+					checked: preferences.showFramesPerSecond
+					anchors.verticalCenter: parent.verticalCenter
+				}
+				onClicked: toggleFpsCounterVisibility.checked = !toggleFpsCounterVisibility.checked
 			}
+
+
 			ListItem.Subheader {
 				text: qsTr("About")
 			}
 			ListItem.Subtitled {
-				text: qsTr("Project repository")
-				subText: "https://github.com/othieno/clockwork"
-				onClicked: {
-					Qt.openUrlExternally(subText)
-				}
+				text: qsTr("Build version")
+				subText: application.applicationVersion
 			}
 			ListItem.Divider {}
 			ListItem.Subtitled {
-				text: qsTr("Build version")
-				subText: "0.0.0"
+				text: qsTr("Source code repository")
+				subText: application.applicationRepository
+				onClicked: Qt.openUrlExternally(subText)
 			}
 			ListItem.Divider {}
 			ListItem.Standard {
+				enabled: false
 				text: qsTr("Licenses")
-				onClicked: {
-				}
+				onClicked: pageStack.push("qrc:/view/Licenses")
 			}
 		}
+	}
+	/**
+	 * Save the settings when the Preferences page has been closed.
+	 */
+	Component.onDestruction: {
+		preferences.showFramesPerSecond = toggleFpsCounterVisibility.checked
 	}
 }

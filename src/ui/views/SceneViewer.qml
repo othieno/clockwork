@@ -124,7 +124,6 @@ Rectangle {
 						color: Theme.dark.iconColor
 						action: Action {
 							onTriggered: {
-								console.log("X")
 							}
 						}
 					}

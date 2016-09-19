@@ -33,20 +33,23 @@ ApplicationWindow {
 	id: applicationWindow
 	visible: true
 	visibility: "Maximized"
+	//flags: Qt.FramelessWindowHint
 	initialPage: page
 	theme {
-		accentColor: Palette.colors["red"]["900"]
-		//primaryDarkColor: "#FFF"
-		//primaryColor: "#0AF"
+		accentColor: Palette.colors["blueGrey"]["700"]
 		primaryColor: Palette.colors["blue"]["700"]
-		tabHighlightColor: "#FFF"
+		tabHighlightColor: "white"
 	}
+	/**
+	 *
+	 */
+	//Component.onCompleted: {}
 	/**
 	 * The application's page content.
 	 */
 	TabbedPage {
 		id: page
-		title: "Clockwork"
+		title: application.applicationName
 		actions: [
 			Action {
 				name: qsTr("Preferences")
@@ -65,10 +68,14 @@ ApplicationWindow {
 				source: "qrc:view/%1Viewer".arg(modelData)
 				onVisibleChanged: {
 					if (visible) {
-						applicationWindow.title = "%1 [Clockwork]".arg(title)
+						applicationWindow.title = title + " - " + application.applicationName
 					}
 				}
 			}
 		}
 	}
+	/**
+	 *
+	 */
+	//Component.onDestruction: {}
 }
