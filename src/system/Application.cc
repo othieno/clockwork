@@ -29,6 +29,7 @@ using clockwork::Application;
 
 Application::Application(int& argc, char** argv) :
 QGuiApplication(argc, argv),
+preferences_(*this),
 taskManager_(),
 graphicsEngine_(taskManager_),
 userInterface_() {

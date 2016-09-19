@@ -32,8 +32,70 @@ namespace clockwork {
 /**
  *
  */
+class Application;
+/**
+ *
+ */
 class ApplicationPreferences : public QSettings {
-
+	Q_OBJECT
+	Q_PROPERTY(bool showFramesPerSecond READ isFpsCounterVisible WRITE showFpsCounter NOTIFY fpsCounterVisibilityChanged)
+	Q_PROPERTY(QStringList availableLanguages READ getAvailableLanguages CONSTANT)
+	Q_PROPERTY(QStringList availableFramebufferResolutions READ getAvailableFramebufferResolutions CONSTANT)
+	friend class Application;
+public:
+	/**
+	 * Returns true if the FPS counter should be visible, false otherwise.
+	 */
+	bool isFpsCounterVisible() const;
+	/**
+	 * Sets the FPS counter's visibility.
+	 * @param visible makes the FPS counter visible if set to true, hides it otherwise.
+	 */
+	void showFpsCounter(const bool visible);
+	/**
+	 * Returns the list of available languages.
+	 */
+	static QStringList getAvailableLanguages();
+	/**
+	 * Returns the list of available framebuffer resolutions.
+	 */
+	static QStringList getAvailableFramebufferResolutions();
+signals:
+	/**
+	 * A signal that is raised when the FPS counter's visibility is changed.
+	 */
+	void fpsCounterVisibilityChanged(const bool visible);
+private:
+	/**
+	 * An enumeration of available configuration keys.
+	 */
+	enum class Key {
+		ShowFramesPerSecond,
+	};
+	/**
+	 * Instantiates an ApplicationPreferences object.
+	 */
+	ApplicationPreferences(Application&);
+	/**
+	 * Returns true if a value with the specified key exists in the configuration, false otherwise.
+	 * @param key the key to query.
+	 */
+	bool contains(const Key key) const;
+	/**
+	 * Returns the stored value for the specified key.
+	 * @param key the key to query.
+	 * @param defaultValue if no value is found, then this value will be returned.
+	 */
+	QVariant value(const Key key, const QVariant& defaultValue = QVariant()) const;
+	/**
+	 * Stores the value with the specified key.
+	 */
+	void setValue(const Key key, const QVariant& value);
+	/**
+	 * Converts the specified configuration key into a string.
+	 * @param key the configuration key to convert.
+	 */
+	static QString keyToString(const Key key);
 };
 } // namespace clockwork
 
