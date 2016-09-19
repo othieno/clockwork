@@ -39,6 +39,7 @@ class Application;
 class ApplicationPreferences : public QSettings {
 	Q_OBJECT
 	Q_PROPERTY(bool showFramesPerSecond READ isFpsCounterVisible WRITE showFpsCounter NOTIFY fpsCounterVisibilityChanged)
+	Q_PROPERTY(QString fileLocation READ fileName CONSTANT)
 	Q_PROPERTY(QStringList availableLanguages READ getAvailableLanguages CONSTANT)
 	Q_PROPERTY(QStringList availableFramebufferResolutions READ getAvailableFramebufferResolutions CONSTANT)
 	friend class Application;
