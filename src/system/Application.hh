@@ -39,6 +39,7 @@ namespace clockwork {
  */
 class Application final : public QGuiApplication {
     Q_OBJECT
+    Q_PROPERTY(QString applicationRepository READ applicationRepository CONSTANT)
 public:
     /**
      * Instantiates the application.
@@ -65,6 +66,10 @@ public:
      */
     Application& operator=(Application&&) = delete;
     /**
+     * Returns the application's source code repository URL.
+     */
+    QString applicationRepository() const;
+    /**
      * Initializes the application.
      */
     Error initialize();
@@ -81,6 +86,10 @@ public:
      */
     GraphicsEngine& getGraphicsEngine();
 private:
+    /**
+     * Parses the specified command line arguments.
+     */
+    void parseCommandLineArguments(int& argc, char** argv);
     /**
      * The application's preferences.
      */

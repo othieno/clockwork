@@ -33,6 +33,7 @@ namespace clockwork {
 enum class Error {
 	None,
 	FileNotAccessible,
+	InvalidQmlContext,
 	Unknown,
 };
 } // namespace clockwork

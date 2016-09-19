@@ -25,14 +25,23 @@
 #include "UserInterface.hh"
 #include "Application.hh"
 #include "FramebufferProvider.hh"
+#include <QQmlContext>
 
 using clockwork::UserInterface;
 
 
 clockwork::Error
-UserInterface::initialize(Framebuffer& framebuffer) {
-	engine_.addImageProvider("framebuffer", new clockwork::FramebufferProvider(framebuffer));
-	engine_.load(QUrl("qrc:/view/ApplicationWindow"));
+UserInterface::initialize(Application& application) {
+	auto& framebuffer = application.getGraphicsEngine().getFramebuffer();
+	engine_.addImageProvider("framebuffer", new FramebufferProvider(framebuffer));
 
+	auto* const qmlContext = engine_.rootContext();
+	if (qmlContext != nullptr) {
+		qmlContext->setContextProperty("application", &application);
+		qmlContext->setContextProperty("preferences", &application.getPreferences());
+	} else {
+		return Error::InvalidQmlContext;
+	}
+	engine_.load(QUrl("qrc:/view/ApplicationWindow"));
 	return Error::None;
 }

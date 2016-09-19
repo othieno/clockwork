@@ -34,6 +34,7 @@ graphicsEngine_(taskManager_),
 userInterface_() {
 	setApplicationName("Clockwork");
 	setApplicationVersion("0.0.0");
+	parseCommandLineArguments(argc, argv);
 }
 
 
@@ -45,7 +46,13 @@ Application::initialize() {
 	Framebuffer& framebuffer = graphicsEngine_.getFramebuffer();
 	framebuffer.setResolution(Framebuffer::Resolution::VGA);
 
-	return userInterface_.initialize(framebuffer);
+	return userInterface_.initialize(*this);
+}
+
+
+QString
+Application::applicationRepository() const {
+	return QString("https://github.com/othieno/clockwork");
 }
 
 
@@ -64,4 +71,12 @@ Application::getTaskManager() {
 clockwork::GraphicsEngine&
 Application::getGraphicsEngine() {
 	return graphicsEngine_;
+}
+
+
+void
+Application::parseCommandLineArguments(int& argc, char** argv) {
+	//TODO Implement me.
+	Q_UNUSED(argc);
+	Q_UNUSED(argv);
 }

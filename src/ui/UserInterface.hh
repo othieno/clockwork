@@ -37,23 +37,38 @@ class Application;
 /**
  *
  */
-class Framebuffer;
-/**
- *
- */
 class UserInterface {
 	friend class Application;
 public:
+    /**
+     *
+     */
     UserInterface(const UserInterface&) = delete;
+    /**
+     *
+     */
     UserInterface(UserInterface&&) = delete;
+    /**
+     *
+     */
     UserInterface& operator=(const UserInterface&) = delete;
+    /**
+     *
+     */
     UserInterface& operator=(UserInterface&&) = delete;
-
-    Error initialize(Framebuffer& framebuffer);
 private:
-    QQmlApplicationEngine engine_;
-
+	/**
+	 * Instantiates a UserInterface object.
+	 */
     UserInterface() = default;
+	/**
+	 * Initializes the user interface.
+	 */
+	Error initialize(Application&);
+	/**
+	 *
+	 */
+    QQmlApplicationEngine engine_;
 };
 } // namespace clockwork
 
