@@ -38,74 +38,74 @@ namespace clockwork {
  *
  */
 class Application final : public QGuiApplication {
-    Q_OBJECT
-    Q_PROPERTY(QString applicationRepository READ applicationRepository CONSTANT)
+	Q_OBJECT
+	Q_PROPERTY(QString applicationRepository READ applicationRepository CONSTANT)
 public:
-    /**
-     * Instantiates the application.
-     */
-    Application(int& argc, char** argv);
-    /**
-     *
-     */
-    Application(const Application&) = delete;
-    /**
-     *
-     */
-    Application(Application&&) = delete;
-    /**
-     *
-     */
-    ~Application();
-    /**
-     *
-     */
-    Application& operator=(const Application&) = delete;
-    /**
-     *
-     */
-    Application& operator=(Application&&) = delete;
-    /**
-     * Returns the application's source code repository URL.
-     */
-    QString applicationRepository() const;
-    /**
-     * Initializes the application.
-     */
-    Error initialize();
-    /**
-     * Returns the application's preferences.
-     */
-    ApplicationPreferences& getPreferences();
-    /**
-     * Returns the task manager instance.
-     */
-    TaskManager& getTaskManager();
-    /**
-     * Returns the graphics engine instance.
-     */
-    GraphicsEngine& getGraphicsEngine();
+	/**
+	 * Instantiates the application.
+	 */
+	Application(int& argc, char** argv);
+	/**
+	 *
+	 */
+	Application(const Application&) = delete;
+	/**
+	 *
+	 */
+	Application(Application&&) = delete;
+	/**
+	 *
+	 */
+	~Application();
+	/**
+	 *
+	 */
+	Application& operator=(const Application&) = delete;
+	/**
+	 *
+	 */
+	Application& operator=(Application&&) = delete;
+	/**
+	 * Returns the application's source code repository URL.
+	 */
+	QString applicationRepository() const;
+	/**
+	 * Initializes the application.
+	 */
+	Error initialize();
+	/**
+	 * Returns the application's preferences.
+	 */
+	ApplicationPreferences& getPreferences();
+	/**
+	 * Returns the task manager instance.
+	 */
+	TaskManager& getTaskManager();
+	/**
+	 * Returns the graphics engine instance.
+	 */
+	GraphicsEngine& getGraphicsEngine();
 private:
-    /**
-     * Parses the specified command line arguments.
-     */
-    void parseCommandLineArguments(int& argc, char** argv);
-    /**
-     * The application's preferences.
-     */
-    ApplicationPreferences preferences_;
-    /**
-     * The task manager.
-     */
-    TaskManager taskManager_;
-    /**
-     * The graphics engine.
-     */
-    GraphicsEngine graphicsEngine_;
-    /**
-     * The application's user interface.
-     */
-    UserInterface userInterface_;
+	/**
+	 * Parses the specified command line arguments.
+	 */
+	void parseCommandLineArguments(int& argc, char** argv);
+	/**
+	 * The application's preferences.
+	 */
+	ApplicationPreferences preferences_;
+	/**
+	 * The task manager.
+	 */
+	TaskManager taskManager_;
+	/**
+	 * The graphics engine.
+	 */
+	GraphicsEngine graphicsEngine_;
+	/**
+	 * The application's user interface.
+	 */
+	UserInterface userInterface_;
 };
 } // namespace clockwork
 

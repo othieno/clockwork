@@ -40,27 +40,27 @@ class Application;
 class UserInterface {
 	friend class Application;
 public:
-    /**
-     *
-     */
-    UserInterface(const UserInterface&) = delete;
-    /**
-     *
-     */
-    UserInterface(UserInterface&&) = delete;
-    /**
-     *
-     */
-    UserInterface& operator=(const UserInterface&) = delete;
-    /**
-     *
-     */
-    UserInterface& operator=(UserInterface&&) = delete;
+	/**
+	 *
+	 */
+	UserInterface(const UserInterface&) = delete;
+	/**
+	 *
+	 */
+	UserInterface(UserInterface&&) = delete;
+	/**
+	 *
+	 */
+	UserInterface& operator=(const UserInterface&) = delete;
+	/**
+	 *
+	 */
+	UserInterface& operator=(UserInterface&&) = delete;
 private:
 	/**
 	 * Instantiates a UserInterface object.
 	 */
-    UserInterface() = default;
+	UserInterface() = default;
 	/**
 	 * Initializes the user interface.
 	 */
@@ -68,7 +68,7 @@ private:
 	/**
 	 *
 	 */
-    QQmlApplicationEngine engine_;
+	QQmlApplicationEngine engine_;
 };
 } // namespace clockwork
 

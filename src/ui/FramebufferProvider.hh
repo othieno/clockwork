@@ -65,7 +65,7 @@ private:
 	/**
 	 * An integer representation of the depth buffer's data.
 	 */
-//    std::unique_ptr<std::uint32_t[]> depthBufferImageData_;
+//	std::unique_ptr<std::uint32_t[]> depthBufferImageData_;
 	/**
 	 * An image representation of the framebuffer's depth buffer attachment.
 	 */
