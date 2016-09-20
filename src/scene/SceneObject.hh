@@ -25,13 +25,9 @@
 #ifndef CLOCKWORK_SCENE_OBJECT_HH
 #define CLOCKWORK_SCENE_OBJECT_HH
 
-#include <QString>
-#include <QHash>
 #include "SceneNode.hh"
+#include "SceneObjectProperty.hh"
 #include "Matrix4.hh"
-/*
-#include "SceneProperty.hh"
-*/
 
 
 namespace clockwork {

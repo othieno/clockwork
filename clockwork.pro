@@ -48,6 +48,7 @@ HEADERS += \
     src/scene/predefined/TexturedCube.hh \
     src/scene/SceneNode.hh \
     src/scene/SceneObject.hh \
+    src/scene/SceneObjectProperty.hh \
     src/system/Application.hh \
     src/system/ApplicationPreferences.hh \
     src/system/Error.hh \
@@ -82,6 +83,7 @@ SOURCES += \
     src/scene/predefined/TexturedCube.cc \
     src/scene/SceneNode.cc \
     src/scene/SceneObject.cc \
+    src/scene/SceneObjectProperty.cc \
     src/system/Application.cc \
     src/system/ApplicationPreferences.cc \
     src/system/Service.cc \
