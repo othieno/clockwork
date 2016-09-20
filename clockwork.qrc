@@ -6,6 +6,12 @@
     <qresource prefix="/icon/action">
         <file alias="Preferences">resources/assets/icons/action/preferences.svg</file>
     </qresource>
+    <qresource prefix="/material">
+        <file alias="Suzanne">resources/assets/models/suzanne/suzanne.mtl</file>
+    </qresource>
+    <qresource prefix="/model">
+        <file alias="Suzanne">resources/assets/models/suzanne/suzanne.obj</file>
+    </qresource>
     <qresource prefix="/view">
         <file alias="ApplicationWindow">src/ui/views/ApplicationWindow.qml</file>
         <file alias="DocumentationViewer">src/ui/views/DocumentationViewer.qml</file>
