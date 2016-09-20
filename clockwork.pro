@@ -46,7 +46,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 	HEADERS += \
 		src/graphics/ColorARGB.hh \
 		src/graphics/Framebuffer.hh \
-		src/graphics/Frustum.hh \
 		src/graphics/GraphicsEngine.hh \
 		src/graphics/filter/ImageFilter.hh \
 		src/graphics/filter/ImageFilterFactory.hh \
@@ -57,6 +56,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/PolygonRenderer.hh \
 		src/graphics/renderer/Renderer.hh \
 		src/graphics/Viewport.hh \
+		src/math/Frustum.hh \
 		src/math/Matrix4.hh \
 		src/math/Point3.hh \
 		src/math/Quaternion.hh \
@@ -82,7 +82,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 	SOURCES += \
 		src/graphics/ColorARGB.cc \
 		src/graphics/Framebuffer.cc \
-		src/graphics/Frustum.cc \
 		src/graphics/GraphicsEngine.cc \
 		src/graphics/filter/ImageFilter.cc \
 		src/graphics/filter/TextureFilter.cc \
@@ -91,6 +90,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/PolygonRenderer.cc \
 		src/graphics/renderer/Renderer.cc \
 		src/graphics/Viewport.cc \
+		src/math/Frustum.cc \
 		src/math/Matrix4.cc \
 		src/math/Point3.cc \
 		src/math/Point4.cc \
