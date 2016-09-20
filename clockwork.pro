@@ -67,6 +67,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/scene/SceneNode.hh \
 		src/scene/SceneObject.hh \
 		src/scene/SceneObjectProperty.hh \
+		src/scene/SceneViewer.hh \
 		src/scene/property/SceneObjectAppearance.hh \
 		src/system/Application.hh \
 		src/system/ApplicationPreferences.hh \
@@ -102,6 +103,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/scene/SceneNode.cc \
 		src/scene/SceneObject.cc \
 		src/scene/SceneObjectProperty.cc \
+		src/scene/SceneViewer.cc \
 		src/scene/property/SceneObjectAppearance.cc \
 		src/system/Application.cc \
 		src/system/ApplicationPreferences.cc \
