@@ -44,6 +44,22 @@ public:
 		TriangleStrip,
 		TriangleFan
 	};
+	/**
+	 * An enumeration of available rendering algorithms.
+	 */
+	enum class RenderingAlgorithm {
+		Point,
+		Wireframe,
+		Random,
+		Depth,
+		Normals,
+		Texture,
+		Constant,
+		Phong,
+		Cel,
+		Bump,
+		Deferred
+	};
 };
 } // namespace clockwork
 
