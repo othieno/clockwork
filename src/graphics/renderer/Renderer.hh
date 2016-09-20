@@ -33,6 +33,13 @@ namespace clockwork {
 class Renderer {
 public:
 	/**
+	 * An enumeration of available line-drawing algorithms.
+	 */
+	enum class LineDrawingAlgorithm {
+		Bresenham,
+		XiaolinWu
+	};
+	/**
 	 * An enumeration of available primitive assembly modes.
 	 */
 	enum class PrimitiveAssemblyMode {
