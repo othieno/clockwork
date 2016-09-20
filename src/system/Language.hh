@@ -22,51 +22,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "toString.hh"
+#ifndef CLOCKWORK_LANGUAGE_HH
+#define CLOCKWORK_LANGUAGE_HH
 
 
-std::string
-clockwork::toString(const Error error) {
-	switch (error) {
-		case Error::None:
-			return "None";
-		default:
-			return "???";
-	}
-}
+namespace clockwork {
+/**
+ *
+ */
+enum class Language {
+	English,
+};
+} // namespace clockwork
 
-
-std::string
-clockwork::toString(const Framebuffer::Resolution resolution) {
-	switch (resolution) {
-		case Framebuffer::Resolution::ZERO:
-			return "ZERO (0 x 0)";
-		case Framebuffer::Resolution::VGA:
-			return "VGA (640 x 480)";
-		case Framebuffer::Resolution::SVGA:
-			return "SVGA (800 x 600)";
-		case Framebuffer::Resolution::XGA:
-			return "XGA (1024 x 768)";
-		case Framebuffer::Resolution::SXGA:
-			return "SXGA (1280 x 1024)";
-		case Framebuffer::Resolution::FHD:
-			return "FHD (1920 x 1080)";
-		case Framebuffer::Resolution::QSXGA:
-			return "QSXGA (2560 x 2048)";
-		case Framebuffer::Resolution::UHD8K:
-			return "UHD8K (7680 x 4320)";
-		default:
-			return "???";
-	}
-}
-
-
-std::string
-clockwork::toString(const Language language) {
-	switch (language) {
-		case Language::English:
-			return "English";
-		default:
-			return "???";
-	}
-}
+#endif // CLOCKWORK_LANGUAGE_HH

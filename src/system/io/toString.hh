@@ -28,6 +28,7 @@
 #include <string>
 #include "Error.hh"
 #include "Framebuffer.hh"
+#include "Language.hh"
 
 
 namespace clockwork {
@@ -39,6 +40,10 @@ std::string toString(const Error);
  * Returns the human-readable name of the specified framebuffer resolution.
  */
 std::string toString(const Framebuffer::Resolution resolution);
+/**
+ * Returns the human-readable name of the specified language.
+ */
+std::string toString(const Language);
 } // namespace clockwork
 
 #endif // CLOCKWORK_TO_STRING_HH
