@@ -1,8 +1,5 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
-    <qresource prefix="/">
-        <file alias="framebuffer">resources/assets/images/clockwork.png</file>
-    </qresource>
     <qresource prefix="/icon/action">
         <file alias="Preferences">resources/assets/icons/action/preferences.svg</file>
     </qresource>
