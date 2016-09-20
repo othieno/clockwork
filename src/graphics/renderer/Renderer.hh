@@ -31,7 +31,19 @@ namespace clockwork {
  *
  */
 class Renderer {
-
+public:
+	/**
+	 * An enumeration of available primitive assembly modes.
+	 */
+	enum class PrimitiveAssemblyMode {
+		Points,
+		Lines,
+		LineStrip,
+		LineLoop,
+		Triangles,
+		TriangleStrip,
+		TriangleFan
+	};
 };
 } // namespace clockwork
 
