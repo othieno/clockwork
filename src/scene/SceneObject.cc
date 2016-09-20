@@ -28,7 +28,7 @@ using clockwork::SceneObject;
 
 
 SceneObject::SceneObject(const QString& name) :
-SceneNode(name),
+SceneNode(SceneNode::Type::Object, name),
 position_(0, 0, 0),
 rotation_(0, 0, 0),
 scale_(1, 1, 1) {}

@@ -27,8 +27,9 @@
 using clockwork::SceneNode;
 
 
-SceneNode::SceneNode(const QString& name) :
+SceneNode::SceneNode(const Type type, const QString& name) :
 identifier_(QUuid::createUuid()),
+type_(type),
 isPruned_(false) {
 	setObjectName(name);
 }
@@ -37,6 +38,12 @@ isPruned_(false) {
 const QUuid&
 SceneNode::getIdentifier() const {
 	return identifier_;
+}
+
+
+SceneNode::Type
+SceneNode::getNodeType() const {
+	return type_;
 }
 
 

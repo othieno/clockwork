@@ -38,9 +38,20 @@ class SceneNode : public QObject
 {
 public:
 	/**
+	 * An enumeration of available node types.
+	 */
+	enum class Type {
+		Object,
+		Property,
+	};
+	/**
 	 * Returns the node's unique identifier.
 	 */
 	const QUuid& getIdentifier() const;
+	/**
+	 * Returns the node's type.
+	 */
+	Type getNodeType() const;
 	/**
 	 * Returns the scene node's name.
 	 */
@@ -62,9 +73,10 @@ public:
 protected:
 	/**
 	 * Instantiates a named scene node.
+	 * @param type the scene node's type.
 	 * @param name the scene node's name.
 	 */
-	explicit SceneNode(const QString& name);
+	SceneNode(const Type type, const QString& name);
 	/**
 	 * Returns true if the node has at least one child, false otherwise.
 	 */
@@ -88,6 +100,10 @@ private:
 	 * The scene node's unique identifier.
 	 */
 	const QUuid identifier_;
+	/**
+	 * The scene node's type.
+	 */
+	const Type type_;
 	/**
 	 * If set to true, this node will be skipped by certain operations performed on the
 	 * scene. For example, if this is a node that is out of view, it will be pruned so
