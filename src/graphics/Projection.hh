@@ -1,8 +1,9 @@
 /*
+ * This file is part of Clockwork.
+ *
+ * Copyright (c) 2014-2016 Jeremy Othieno.
+ *
  * The MIT License (MIT)
- *
- * Copyright (c) 2014 Jeremy Othieno.
- *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -21,46 +22,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#pragma once
+#ifndef CLOCKWORK_PROJECTION_HH
+#define CLOCKWORK_PROJECTION_HH
 
 
 namespace clockwork {
-namespace graphics {
-
-class Projection
-{
-public:
-   /**
-    * Types of projections.
-    */
-   enum class Type
-   {
-      Orthographic,
-      Cabinet,
-      Cavalier,
-      Perspective
-   };
-   /**
-    * Return the projection's type.
-    */
-   const Type& getType() const;
-   /**
-    * TODO Explain me better.
-    * Return this projection's transformation matrix in a given frustum.
-    * @param frustum the frustum that this projection is applied to.
-    */
-   //virtual Matrix4 getTransformationMatrix(const Frustum& frustum) const = 0;
-protected:
-   /**
-    * Instantiate a projection with a given type.
-    */
-   Projection(const Type type);
-private:
-   /**
-    * This projection's type.
-    */
-   const Type _type;
+/**
+ * An enumeration of available 3D projections.
+ */
+enum class Projection {
+	Cabinet,
+	Cavalier,
+	Orthographic,
+	Perspective
 };
-
-} // namespace graphics
 } // namespace clockwork
+
+#endif // CLOCKWORK_PROJECTION_HH

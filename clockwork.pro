@@ -47,6 +47,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/ColorARGB.hh \
 		src/graphics/Framebuffer.hh \
 		src/graphics/GraphicsEngine.hh \
+		src/graphics/Projection.hh \
 		src/graphics/filter/ImageFilter.hh \
 		src/graphics/filter/ImageFilterFactory.hh \
 		src/graphics/filter/TextureFilter.hh \
