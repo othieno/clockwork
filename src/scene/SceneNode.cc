@@ -36,7 +36,7 @@ isPruned_(false) {
 
 
 const QUuid&
-SceneNode::getIdentifier() const {
+SceneNode::getUniqueIdentifier() const {
 	return identifier_;
 }
 

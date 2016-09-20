@@ -47,7 +47,7 @@ public:
 	/**
 	 * Returns the node's unique identifier.
 	 */
-	const QUuid& getIdentifier() const;
+	const QUuid& getUniqueIdentifier() const;
 	/**
 	 * Returns the node's type.
 	 */
