@@ -37,6 +37,9 @@ Page {
 		boundsBehavior: Flickable.StopAtBounds
 		Column {
 			anchors.fill: parent
+			ListItem.Subheader {
+				text: qsTr("Application information")
+			}
 			ListItem.Subtitled {
 				text: qsTr("Build version")
 				subText: application.applicationVersion
@@ -47,7 +50,11 @@ Page {
 				subText: application.applicationRepository
 				onClicked: Qt.openUrlExternally(subText)
 			}
-			ListItem.Divider {}
+
+
+			ListItem.Subheader {
+				text: qsTr("Legal information")
+			}
 			ListItem.Subtitled {
 				text: qsTr("Source code license")
 				subText: qsTr("The MIT License (MIT).")
