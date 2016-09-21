@@ -26,13 +26,14 @@ import QtQuick 2.4
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.0
+import QtQuick.Window 2.2
 import Material 0.2
 
 
 ApplicationWindow {
 	id: applicationWindow
 	visible: true
-	visibility: "Maximized"
+	visibility: Window.Maximized
 	initialPage: page
 	theme {
 		accentColor: Palette.colors["blueGrey"]["700"]
@@ -56,9 +57,24 @@ ApplicationWindow {
 		actions: [
 			Action {
 				name: qsTr("Preferences")
-				iconSource: "qrc:/icon/action/Preferences"
+				iconSource: "qrc:/icon/action/settings"
 				onTriggered: pageStack.push("qrc:/view/Preferences")
 				hoverAnimation: true
+			},
+			Action {
+				property var oldVisibility
+
+				name: qsTr("Toggle full screen")
+				iconSource: "qrc:/icon/navigation/fullscreen%1".arg(applicationWindow.visibility !== Window.FullScreen ? "" : "_exit")
+				onTriggered: {
+					var visibility = applicationWindow.visibility
+					if (visibility !== Window.FullScreen) {
+						oldVisibility = visibility
+						applicationWindow.visibility = Window.FullScreen
+					} else {
+						applicationWindow.visibility = oldVisibility === undefined ? Window.Maximized : oldVisibility
+					}
+				}
 			}
 		]
 		Repeater {
