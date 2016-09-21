@@ -46,10 +46,20 @@ Page {
 		boundsBehavior: Flickable.StopAtBounds
 		Column {
 			anchors.fill: parent
+
+
+			ListItem.Subheader {
+				text: qsTr("About")
+			}
 			ListItem.Subtitled {
 				enabled: false
 				text: qsTr("Configuration file location")
 				subText: preferences.fileLocation
+			}
+			ListItem.Divider {}
+			ListItem.Standard {
+				text: qsTr("About Clockwork")
+				onClicked: pageStack.push("qrc:/view/AboutClockwork")
 			}
 
 
@@ -117,15 +127,6 @@ Page {
 					anchors.verticalCenter: parent.verticalCenter
 				}
 				onClicked: toggleFpsCounterVisibility.checked = !toggleFpsCounterVisibility.checked
-			}
-
-
-			ListItem.Subheader {
-				text: qsTr("About")
-			}
-			ListItem.Standard {
-				text: qsTr("About Clockwork")
-				onClicked: pageStack.push("qrc:/view/AboutClockwork")
 			}
 		}
 	}
