@@ -1,13 +1,13 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
 	<qresource prefix="/icon">
-		<file alias="action/accessibility">resources/icons/material-design/action/svg/production/ic_accessibility_48px.svg</file>
 		<file alias="action/info_outline">resources/icons/material-design/action/svg/production/ic_info_outline_48px.svg</file>
 		<file alias="action/done">resources/icons/material-design/action/svg/production/ic_done_48px.svg</file>
 		<file alias="action/delete">resources/icons/material-design/action/svg/production/ic_delete_48px.svg</file>
 		<file alias="action/settings">resources/icons/material-design/action/svg/production/ic_settings_48px.svg</file>
 		<file alias="action/translate">resources/icons/material-design/action/svg/production/ic_translate_48px.svg</file>
 		<file alias="file/folder_open">resources/icons/material-design/file/svg/production/ic_folder_open_48px.svg</file>
+		<file alias="image/palette">resources/icons/material-design/image/svg/production/ic_palette_48px.svg</file>
 		<file alias="image/timer">resources/icons/material-design/image/svg/production/ic_timer_48px.svg</file>
 		<file alias="navigation/close">resources/icons/material-design/navigation/svg/production/ic_close_48px.svg</file>
 		<file alias="navigation/refresh">resources/icons/material-design/navigation/svg/production/ic_refresh_48px.svg</file>
@@ -26,7 +26,9 @@
 		<file alias="CreativeCommonsLicense">src/ui/views/CreativeCommonsLicense.qml</file>
 		<file alias="DocumentationViewer">src/ui/views/DocumentationViewer.qml</file>
 		<file alias="MITLicense">src/ui/views/MITLicense.qml</file>
+		<file alias="PerformanceSettings">src/ui/views/PerformanceSettings.qml</file>
 		<file alias="Preferences">src/ui/views/Preferences.qml</file>
 		<file alias="SceneViewer">src/ui/views/SceneViewer.qml</file>
+		<file alias="ThemeSettings">src/ui/views/ThemeSettings.qml</file>
 	</qresource>
 </RCC>

@@ -1,7 +1,7 @@
 /*
  * This file is part of Clockwork.
  *
- * Copyright (c) 2014-2016 Jeremy Othieno.
+ * Copyright (c) 2013-2016 Jeremy Othieno.
  *
  * The MIT License (MIT)
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,78 +29,63 @@ import Material.Extras 0.1
 
 
 Page {
-	title: qsTr("Preferences")
-	/**
-	 * Set up the page when it's been completely loaded.
-	 */
+	title: qsTr("Theme")
 	Component.onCompleted: {
-		applicationWindow.title = title + " - " + application.applicationName
 	}
-	/**
-	 * The page's content.
-	 */
 	Flickable {
 		anchors.fill: parent
 		contentWidth: parent.width
-		contentHeight: parent.height * 1.3
+		contentHeight: parent.height
 		boundsBehavior: Flickable.StopAtBounds
 		Column {
 			anchors.fill: parent
-			ListItem.Standard {
-				text: qsTr("About Clockwork")
-				onClicked: pageStack.push("qrc:/view/AboutClockwork")
-				action: Icon {
-					anchors.centerIn: parent
-					source: "qrc:/icon/action/info_outline"
-					size: dp(32)
-				}
+			ListItem.Subheader {
+				text: qsTr("Accessibility")
 			}
-			ListItem.Divider {}
-			ListItem.SimpleMenu {
+			ListItem.Subtitled {
 				enabled: false
-				text: qsTr("Language")
-				model: preferences.availableLanguages
-				action: Icon {
-					anchors.centerIn: parent
-					source: "qrc:/icon/action/translate"
-					size: dp(32)
+				text: qsTr("Show larger text")
+				subText: qsTr("Increases the base font size.")
+				secondaryItem: Switch {
+					id: toggleLargerText
+					anchors.verticalCenter: parent.verticalCenter
 				}
-			}
-			ListItem.Divider {}
-			ListItem.Subtitled {
-				text: qsTr("Performance")
-				onClicked: pageStack.push("qrc:/view/PerformanceSettings")
-				subText: qsTr("[Performance short description]")
-				action: Icon {
-					anchors.centerIn: parent
-					source: "qrc:/icon/image/timer"
-					size: dp(32)
-				}
-			}
-			ListItem.Divider {}
-			ListItem.Subtitled {
-				text: qsTr("Theme")
-				onClicked: pageStack.push("qrc:/view/ThemeSettings")
-				subText: qsTr("[Theme short description]")
-				action: Icon {
-					anchors.centerIn: parent
-					source: "qrc:/icon/image/palette"
-					size: dp(32)
-				}
+				onClicked: toggleLargerText.checked = !toggleLargerText.checked
 			}
 			ListItem.Divider {}
 			ListItem.Subtitled {
 				enabled: false
-				text: qsTr("Configuration file location")
-				subText: preferences.fileLocation
-				action: Icon {
-					anchors.centerIn: parent
-					source: "qrc:/icon/file/folder_open"
-					size: dp(32)
+				text: qsTr("Night mode")
+				subText: qsTr("Reduces eyestrain in poorly-lit environments.")
+				secondaryItem: Switch {
+					id: toggleNightMode
+					anchors.verticalCenter: parent.verticalCenter
+				}
+				onClicked: toggleNightMode.checked = !toggleNightMode.checked
+			}
+
+
+			ListItem.Subheader {
+				text: qsTr("Window")
+			}
+			ListItem.Subtitled {
+				enabled: false
+				text: qsTr("Show borderless window")
+				subText: qsTr("Removes the borders around the application's window.")
+				secondaryItem: Switch {
+					id: toggleBorderlessWindow
+					anchors.verticalCenter: parent.verticalCenter
+				}
+				onClicked: {
+					toggleBorderlessWindow.checked = !toggleBorderlessWindow.checked
+					applicationWindow.flags = toggleBorderlessWindow.checked ? Qt.FramelessWindowHint : Qt.Window
 				}
 			}
 		}
 	}
 	Component.onDestruction: {
+		preferences.enableLargerText = toggleLargerText.checked
+		preferences.enableNightMode = toggleNightMode.checked
+		preferences.enableBorderlessWindow = toggleBorderlessWindow.checked
 	}
 }
