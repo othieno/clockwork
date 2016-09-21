@@ -33,7 +33,6 @@ ApplicationWindow {
 	id: applicationWindow
 	visible: true
 	visibility: "Maximized"
-	//flags: Qt.FramelessWindowHint
 	initialPage: page
 	theme {
 		accentColor: Palette.colors["blueGrey"]["700"]
@@ -43,7 +42,11 @@ ApplicationWindow {
 	/**
 	 *
 	 */
-	//Component.onCompleted: {}
+	Component.onCompleted: {
+		if (preferences.showBorderlessWindow) {
+			flags = Qt.FramelessWindowHint
+		}
+	}
 	/**
 	 * The application's page content.
 	 */

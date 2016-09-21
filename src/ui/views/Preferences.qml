@@ -63,6 +63,20 @@ Page {
 			}
 			ListItem.Divider {}
 			ListItem.Subtitled {
+				enabled: applicationWindow.visiblity !== "FullScreen"
+				text: qsTr("Show borderless window")
+				subText: qsTr(enabled ? "Removes the borders around the application's window." : "This option is not available in full screen mode.")
+				secondaryItem: Switch {
+					id: toggleBorderlessWindow
+					anchors.verticalCenter: parent.verticalCenter
+				}
+				onClicked: {
+					toggleBorderlessWindow.checked = !toggleBorderlessWindow.checked
+					applicationWindow.flags = toggleBorderlessWindow.checked ? Qt.FramelessWindowHint : Qt.Window
+				}
+			}
+			ListItem.Divider {}
+			ListItem.Subtitled {
 				enabled: false
 				text: qsTr("Large text")
 				subText: qsTr("Show larger text.")
@@ -119,6 +133,7 @@ Page {
 	 * Save the settings when the Preferences page has been closed.
 	 */
 	Component.onDestruction: {
+		preferences.showBorderlessWindow = toggleBorderlessWindow.checked
 		preferences.showFramesPerSecond = toggleFpsCounterVisibility.checked
 	}
 }
