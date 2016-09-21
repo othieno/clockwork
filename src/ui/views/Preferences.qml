@@ -109,21 +109,9 @@ Page {
 			ListItem.Subheader {
 				text: qsTr("About")
 			}
-			ListItem.Subtitled {
-				text: qsTr("Build version")
-				subText: application.applicationVersion
-			}
-			ListItem.Divider {}
-			ListItem.Subtitled {
-				text: qsTr("Source code repository")
-				subText: application.applicationRepository
-				onClicked: Qt.openUrlExternally(subText)
-			}
-			ListItem.Divider {}
 			ListItem.Standard {
-				enabled: false
-				text: qsTr("Licenses")
-				onClicked: pageStack.push("qrc:/view/Licenses")
+				text: qsTr("About Clockwork")
+				onClicked: pageStack.push("qrc:/view/AboutClockwork")
 			}
 		}
 	}
