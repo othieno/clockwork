@@ -41,12 +41,8 @@ class Model3d;
  *
  */
 class SceneObjectAppearance : public SceneObjectProperty {
+	friend class SceneObject;
 public:
-	/**
-	 * Instantiates a SceneObjectAppearance object attached to a given owner.
-	 * @param owner the property's owner.
-	 */
-	explicit SceneObjectAppearance(SceneObject&);
 	/**
 	 *
 	 */
@@ -100,6 +96,11 @@ public:
 	 */
 	void removeMaterial();
 private:
+	/**
+	 * Instantiates a SceneObjectAppearance object attached to a given owner.
+	 * @param owner the property's owner.
+	 */
+	explicit SceneObjectAppearance(SceneObject&);
 	/**
 	 * A 3D model.
 	 */
