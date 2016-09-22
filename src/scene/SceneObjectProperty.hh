@@ -87,6 +87,11 @@ private:
 	 */
 	const Type type_;
 };
+/**
+ * Returns the specified type's hash.
+ * @param type the SceneObjectProperty type to hash.
+ */
+uint qHash(SceneObjectProperty::Type type);
 } // namespace clockwork
 
 #endif // CLOCKWORK_SCENE_OBJECT_PROPERTY_HH

@@ -43,3 +43,10 @@ SceneObjectProperty::Type
 SceneObjectProperty::getType() const {
 	return type_;
 }
+
+
+uint
+clockwork::qHash(SceneObjectProperty::Type propertyType) {
+	using UnderlyingType = std::underlying_type<SceneObjectProperty::Type>::type;
+	return ::qHash(static_cast<UnderlyingType>(propertyType));
+}
