@@ -37,93 +37,93 @@ namespace clockwork {
  */
 class SceneObject : public SceneNode {
 public:
-    /**
-     * Instantiates a named scene object.
-     * @param name the scene object's name.
-     */
-    explicit SceneObject(const QString& name);
-    /**
-     * Return the scene object's position in the scene.
-     */
-    const Point3& getPosition() const;
-    /**
-     * Set the scene object's position.
-     * @param position the position to set.
-     */
-    void setPosition(const Point3& position);
-    /**
-     * Set the scene object's position.
-     * @param x the scene object's position on the X axis.
-     * @param y the scene object's position on the Y axis.
-     * @param z the scene object's position on the Z axis.
-     */
-    void setPosition(const double x, const double y, const double z);
-    /**
-     * Return the scene object's rotation vector.
-     */
-    const Vector3& getRotation() const;
-    /**
-     * Set the scene object's rotation vector. The vector should contain
-     * angles (in degrees) for rotations around the X axis (pitch),
-     * Y axis (yaw) and Z axis (roll).
-     * @param rotation the rotation vector to set.
-     */
-    void setRotation(const Vector3& rotation);
-    /**
-     * Set the scene object's rotation angles (in degrees).
-     * @param pitch the scene object's pitch angle (rotation around the X axis).
-     * @param yaw the scene object's yaw angle  (rotation around the Y axis).
-     * @param roll the scene object's roll angle (rotation around the Z axis).
-     */
-    void setRotation(const double pitch, const double yaw, const double roll);
-    /**
-     * Return the scene object's scaling vector.
-     */
-    const Vector3& getScale() const;
-    /**
-     * Set the scene object's scale defined by a given scaling vector.
-     * The vector should contain scale factors for the X, Y and Z axes.
-     * @param scaling the vector containing the scaling factors to set.
-     */
-    void setScale(const Vector3& scaling);
-    /**
-     * Set the scene object's scale.
-     * @param x the scene object's scale factor on the X axis.
-     * @param y the scene object's scale factor on the Y axis.
-     * @param z the scene object's scale factor on the Z axis.
-     */
-    void setScale(const double x, const double y, const double z);
-    /**
-     * Returns the scene object's model transformation matrix.
-     */
-    Matrix4 getModelTransform() const;
-    /**
-     * Returns the scene object's cumulative (composite) model transformation matrix.
-     */
-    const Matrix4& getCumulativeModelTransform() const;
-    /**
-     * Updates the scene object's cumulative (composite) model transformation matrix.
-     */
-    void updateCumulativeModelTransform();
+	/**
+	 * Instantiates a named scene object.
+	 * @param name the scene object's name.
+	 */
+	explicit SceneObject(const QString& name);
+	/**
+	 * Return the scene object's position in the scene.
+	 */
+	const Point3& getPosition() const;
+	/**
+	 * Set the scene object's position.
+	 * @param position the position to set.
+	 */
+	void setPosition(const Point3& position);
+	/**
+	 * Set the scene object's position.
+	 * @param x the scene object's position on the X axis.
+	 * @param y the scene object's position on the Y axis.
+	 * @param z the scene object's position on the Z axis.
+	 */
+	void setPosition(const double x, const double y, const double z);
+	/**
+	 * Return the scene object's rotation vector.
+	 */
+	const Vector3& getRotation() const;
+	/**
+	 * Set the scene object's rotation vector. The vector should contain
+	 * angles (in degrees) for rotations around the X axis (pitch),
+	 * Y axis (yaw) and Z axis (roll).
+	 * @param rotation the rotation vector to set.
+	 */
+	void setRotation(const Vector3& rotation);
+	/**
+	 * Set the scene object's rotation angles (in degrees).
+	 * @param pitch the scene object's pitch angle (rotation around the X axis).
+	 * @param yaw the scene object's yaw angle  (rotation around the Y axis).
+	 * @param roll the scene object's roll angle (rotation around the Z axis).
+	 */
+	void setRotation(const double pitch, const double yaw, const double roll);
+	/**
+	 * Return the scene object's scaling vector.
+	 */
+	const Vector3& getScale() const;
+	/**
+	 * Set the scene object's scale defined by a given scaling vector.
+	 * The vector should contain scale factors for the X, Y and Z axes.
+	 * @param scaling the vector containing the scaling factors to set.
+	 */
+	void setScale(const Vector3& scaling);
+	/**
+	 * Set the scene object's scale.
+	 * @param x the scene object's scale factor on the X axis.
+	 * @param y the scene object's scale factor on the Y axis.
+	 * @param z the scene object's scale factor on the Z axis.
+	 */
+	void setScale(const double x, const double y, const double z);
+	/**
+	 * Returns the scene object's model transformation matrix.
+	 */
+	Matrix4 getModelTransform() const;
+	/**
+	 * Returns the scene object's cumulative (composite) model transformation matrix.
+	 */
+	const Matrix4& getCumulativeModelTransform() const;
+	/**
+	 * Updates the scene object's cumulative (composite) model transformation matrix.
+	 */
+	void updateCumulativeModelTransform();
 private:
-    /**
-     * The scene object's position in the world.
-     */
-    Point3 position_;
-    /**
-     * The scene object's rotation vector holds rotation angles (in degrees) for the X, Y and Z axes.
-     */
-    Vector3 rotation_;    //TODO Use quaternions
-    /**
-     * The scene object's scaling vector.
-     */
-    Vector3 scale_;
-    /**
-     * The scene object's cumulative (composite) model transformation matrix. This is a concatenation
-     * of the model transformation matrices of this node's ancestors (parent, grand-parent, great
-     * grand-parent, great great grand-parent, ...), with its own transformation matrix.
-     */
-    Matrix4 cumulativeModelTransform_;
+	/**
+	 * The scene object's position in the world.
+	 */
+	Point3 position_;
+	/**
+	 * The scene object's rotation vector holds rotation angles (in degrees) for the X, Y and Z axes.
+	 */
+	Vector3 rotation_;    //TODO Use quaternions
+	/**
+	 * The scene object's scaling vector.
+	 */
+	Vector3 scale_;
+	/**
+	 * The scene object's cumulative (composite) model transformation matrix. This is a concatenation
+	 * of the model transformation matrices of this node's ancestors (parent, grand-parent, great
+	 * grand-parent, great great grand-parent, ...), with its own transformation matrix.
+	 */
+	Matrix4 cumulativeModelTransform_;
 };
 } // namespace clockwork
 

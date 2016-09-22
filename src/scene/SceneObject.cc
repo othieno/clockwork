@@ -35,93 +35,81 @@ scale_(1, 1, 1) {}
 
 
 const clockwork::Point3&
-SceneObject::getPosition() const
-{
-    return position_;
+SceneObject::getPosition() const {
+	return position_;
 }
 
 
 void
-SceneObject::setPosition(const clockwork::Point3& p)
-{
-    setPosition(p.x, p.y, p.z);
+SceneObject::setPosition(const clockwork::Point3& p) {
+	setPosition(p.x, p.y, p.z);
 }
 
 
 void
-SceneObject::setPosition(const double x, const double y, const double z)
-{
-    position_.x = x;
-    position_.y = y;
-    position_.z = z;
+SceneObject::setPosition(const double x, const double y, const double z) {
+	position_.x = x;
+	position_.y = y;
+	position_.z = z;
 }
 
 
 const clockwork::Vector3&
-SceneObject::getRotation() const
-{
-    return rotation_;
+SceneObject::getRotation() const {
+	return rotation_;
 }
 
 
 void
-SceneObject::setRotation(const clockwork::Vector3& r)
-{
-    setRotation(r.i, r.j, r.k);
+SceneObject::setRotation(const clockwork::Vector3& r) {
+	setRotation(r.i, r.j, r.k);
 }
 
 
 void
-SceneObject::setRotation(const double pitch, const double yaw, const double roll)
-{
-    rotation_.i = pitch;
-    rotation_.j = yaw;
-    rotation_.k = roll;
+SceneObject::setRotation(const double pitch, const double yaw, const double roll) {
+	rotation_.i = pitch;
+	rotation_.j = yaw;
+	rotation_.k = roll;
 }
 
 
 const clockwork::Vector3&
-SceneObject::getScale() const
-{
-    return scale_;
+SceneObject::getScale() const {
+	return scale_;
 }
 
 
 void
-SceneObject::setScale(const clockwork::Vector3& s)
-{
-    setScale(s.i, s.j, s.k);
+SceneObject::setScale(const clockwork::Vector3& s) {
+	setScale(s.i, s.j, s.k);
 }
 
 
 void
-SceneObject::setScale(const double x, const double y, const double z)
-{
-    scale_.i = x;
-    scale_.j = y;
-    scale_.k = z;
+SceneObject::setScale(const double x, const double y, const double z) {
+	scale_.i = x;
+	scale_.j = y;
+	scale_.k = z;
 }
 
 
 clockwork::Matrix4
-SceneObject::getModelTransform() const
-{
-    return Matrix4::model(position_, rotation_, scale_);
+SceneObject::getModelTransform() const {
+	return Matrix4::model(position_, rotation_, scale_);
 }
 
 
 const clockwork::Matrix4&
-SceneObject::getCumulativeModelTransform() const
-{
-    return cumulativeModelTransform_;
+SceneObject::getCumulativeModelTransform() const {
+	return cumulativeModelTransform_;
 }
 
 
 void
-SceneObject::updateCumulativeModelTransform()
-{
-    cumulativeModelTransform_ = getModelTransform();
-    const auto* const parentObject = static_cast<SceneObject*>(parent());
-    if (parentObject != nullptr)
-        cumulativeModelTransform_ = parentObject->getCumulativeModelTransform() * cumulativeModelTransform_;
+SceneObject::updateCumulativeModelTransform() {
+	cumulativeModelTransform_ = getModelTransform();
+	const auto* const parentObject = static_cast<SceneObject*>(parent());
+	if (parentObject != nullptr)
+		cumulativeModelTransform_ = parentObject->getCumulativeModelTransform() * cumulativeModelTransform_;
 }
