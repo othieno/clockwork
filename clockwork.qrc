@@ -4,6 +4,9 @@
 		<file alias="action/info_outline">resources/icons/material-design/action/svg/production/ic_info_outline_48px.svg</file>
 		<file alias="action/done">resources/icons/material-design/action/svg/production/ic_done_48px.svg</file>
 		<file alias="action/delete">resources/icons/material-design/action/svg/production/ic_delete_48px.svg</file>
+		<file alias="action/framebuffer/depth">resources/icons/material-design/image/svg/production/ic_looks_two_48px.svg</file>
+		<file alias="action/framebuffer/pixel">resources/icons/material-design/image/svg/production/ic_looks_one_48px.svg</file>
+		<file alias="action/framebuffer/stencil">resources/icons/material-design/image/svg/production/ic_looks_3_48px.svg</file>
 		<file alias="action/settings">resources/icons/material-design/action/svg/production/ic_settings_48px.svg</file>
 		<file alias="action/translate">resources/icons/material-design/action/svg/production/ic_translate_48px.svg</file>
 		<file alias="file/folder_open">resources/icons/material-design/file/svg/production/ic_folder_open_48px.svg</file>
