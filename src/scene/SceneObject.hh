@@ -38,6 +38,11 @@ namespace clockwork {
 class SceneObject : public SceneNode {
 public:
     /**
+     * Instantiates a named scene object.
+     * @param name the scene object's name.
+     */
+    explicit SceneObject(const QString& name);
+    /**
      * Return the scene object's position in the scene.
      */
     const Point3& getPosition() const;
@@ -100,12 +105,6 @@ public:
      * Updates the scene object's cumulative (composite) model transformation matrix.
      */
     void updateCumulativeModelTransform();
-protected:
-    /**
-     * Instantiates a named scene object.
-     * @param name the scene object's name.
-     */
-    explicit SceneObject(const QString& name);
 private:
     /**
      * The scene object's position in the world.
