@@ -48,22 +48,29 @@ Rectangle {
 		color: Palette.colors["grey"]["900"]
 		//visible: framebuffer.visible
 		Image {
+			/**
+			 * The framebuffer's currently selected attachment.
+			 */
+			property var attachment: "pixel"
+
 			id: framebuffer
 			cache: false
 			visible: true
 			width: parent.width
 			height: parent.height
 			//fillMode: Image.PreserveAspectFit
-			source: "image://framebuffer/pixel"
+			source: "image://framebuffer/%1".arg(attachment)
 			Row {
+				/**
+				 * Framebuffer attachment toggles.
+				 */
 				anchors {
 					top: parent.top
 					right: parent.right
-					topMargin: dp(16)
-					rightMargin: dp(16)
+					topMargin: dp(8)
+					rightMargin: dp(8)
 				}
-				height: dp(48)
-				spacing: dp(24)
+				spacing: dp(8)
 				Repeater {
 					model: [
 						"pixel",
@@ -71,12 +78,14 @@ Rectangle {
 						"stencil",
 					]
 					delegate: IconButton {
-						iconSource: "qrc:/icon/action/framebuffer/%1".arg(iconName)
-						color: Theme.dark.iconColor
+						readonly property bool selected: framebuffer.attachment === modelData
+						iconSource: "qrc:/icon/action/framebuffer/%1".arg(modelData)
+						size: dp(32)
+						color: selected ? Theme.accentColor : Theme.backgroundColor
+						opacity: selected ? 1 : 0.1
 						action: Action {
-							onTriggered: {
-								framebuffer.source = "image://framebuffer/%1".arg(modelData)
-							}
+							iconName: "framebuffer-attachment-%1".arg(modelData)
+							onTriggered: framebuffer.attachment = modelData
 						}
 					}
 				}
