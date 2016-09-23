@@ -25,9 +25,9 @@
 #ifndef CLOCKWORK_SCENE_OBJECT_HH
 #define CLOCKWORK_SCENE_OBJECT_HH
 
-#include "SceneNode.hh"
-#include "SceneObjectProperty.hh"
+#include "SceneObjectAppearance.hh"
 #include "Matrix4.hh"
+#include "toString.hh"
 
 
 namespace clockwork {
@@ -109,12 +109,27 @@ public:
 	 * Returns the property with the specified type, if one exists.
 	 * @param type the type of property to return.
 	 */
-	template<class Property> Property* getProperty(const SceneObjectProperty::Type type);
+	template<class Property> Property* getProperty(const SceneObjectProperty::Type type) {
+		static_assert(std::is_base_of<SceneObjectProperty, Property>::value);
+		return findChild<Property*>(toString(type), Qt::FindDirectChildrenOnly);
+	}
 	/**
 	 * Adds a property to the SceneObject and returns its instance.
 	 * @param type the type of property to add to the object.
 	 */
-	template<class Property> Property& addProperty(const SceneObjectProperty::Type type);
+	template<class Property> Property& addProperty(const SceneObjectProperty::Type type) {
+		Property* property = getProperty<Property>(type);
+		if (property == nullptr) {
+			switch (type) {
+				case SceneObjectProperty::Type::Appearance:
+					property = new SceneObjectAppearance(*this);
+					break;
+				default:
+					qFatal("[SceneObject::addProperty] Undefined SceneObjectProperty::Type!");
+			}
+		}
+		return *property;
+	}
 	/**
 	 * Removes a property.
 	 * @param type the type of the property to remove.

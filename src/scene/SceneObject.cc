@@ -23,8 +23,6 @@
  * THE SOFTWARE.
  */
 #include "SceneObject.hh"
-#include "SceneObjectAppearance.hh"
-#include "toString.hh"
 
 using clockwork::SceneObject;
 
@@ -114,30 +112,6 @@ SceneObject::updateCumulativeModelTransform() {
 	const auto* const parentObject = static_cast<SceneObject*>(parent());
 	if (parentObject != nullptr)
 		cumulativeModelTransform_ = parentObject->getCumulativeModelTransform() * cumulativeModelTransform_;
-}
-
-
-template<class Property> Property*
-SceneObject::getProperty(const SceneObjectProperty::Type type) {
-	static_assert(std::is_base_of<Property, SceneObjectProperty>::value);
-	return findChild<Property*>(toString(type), Qt::FindDirectChildrenOnly);
-}
-
-
-template<class Property> Property&
-SceneObject::addProperty(const SceneObjectProperty::Type type) {
-	Property* property = getProperty<Property>(type);
-	if (property == nullptr) {
-		switch (type) {
-			case SceneObjectProperty::Type::Appearance:
-				property = new SceneObjectAppearance(*this);
-				break;
-			default:
-				qFatal("[SceneObject::addProperty] Undefined SceneObjectProperty::Type!");
-				break;
-		}
-	}
-	return *property;
 }
 
 
