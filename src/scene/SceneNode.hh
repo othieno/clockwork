@@ -27,7 +27,6 @@
 
 #include <QObject>
 #include <QUuid>
-#include <QSet>
 
 
 namespace clockwork {
@@ -77,24 +76,6 @@ protected:
 	 * @param name the scene node's name.
 	 */
 	SceneNode(const Type type, const QString& name);
-	/**
-	 * Returns true if the node has at least one child, false otherwise.
-	 */
-	bool hasChildren() const;
-	/**
-	 * Return the node's children.
-	 */
-	const QSet<SceneNode*>& getChildren() const;
-	/**
-	 * Add a child node.
-	 * @param node the child node to add.
-	 */
-	void addChild(SceneNode* const node);
-	/**
-	 * Remove a child node.
-	 * @param node the child node to remove.
-	 */
-	void removeChild(SceneNode* const node);
 private:
 	/**
 	 * The scene node's unique identifier.
@@ -110,10 +91,6 @@ private:
 	 * that the renderer does not waste time on an otherwise invisible object.
 	 */
 	bool isPruned_;
-	/**
-	 * The node's children.
-	 */
-	QSet<SceneNode*> children_;
 };
 } // namespace clockwork
 
