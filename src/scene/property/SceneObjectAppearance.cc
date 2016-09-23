@@ -28,7 +28,7 @@ using clockwork::SceneObjectAppearance;
 
 
 SceneObjectAppearance::SceneObjectAppearance(SceneObject& owner) :
-SceneObjectProperty(owner, SceneObjectProperty::Type::Appearance, QString()),
+SceneObjectProperty(owner, SceneObjectProperty::Type::Appearance),
 model_(nullptr),
 material_(nullptr) {}
 

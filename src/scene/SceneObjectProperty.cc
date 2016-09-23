@@ -23,12 +23,13 @@
  * THE SOFTWARE.
  */
 #include "SceneObjectProperty.hh"
+#include "toString.hh"
 
 using clockwork::SceneObjectProperty;
 
 
-SceneObjectProperty::SceneObjectProperty(SceneObject& owner, const Type type, const QString& name) :
-SceneNode(SceneNode::Type::Property, name),
+SceneObjectProperty::SceneObjectProperty(SceneObject& owner, const Type type) :
+SceneNode(SceneNode::Type::Property, toString(type)),
 owner_(owner),
 type_(type) {}
 

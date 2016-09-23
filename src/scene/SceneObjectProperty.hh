@@ -74,9 +74,8 @@ protected:
 	 * Instantiates a named SceneObjectProperty object attached to a given SceneObject instance.
 	 * @param owner the scene object that is characterized by this property.
 	 * @param type the property's internal type.
-	 * @param name the property's human-readable name.
 	 */
-	SceneObjectProperty(SceneObject& owner, const Type type, const QString& name);
+	SceneObjectProperty(SceneObject& owner, const Type type);
 private:
 	/**
 	 * The property's owner, i.e. the object that is characterized by this property.
