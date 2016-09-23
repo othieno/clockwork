@@ -35,6 +35,7 @@ namespace clockwork {
 class SceneObject;
 /**
  * A SceneObjectProperty defines a characteristic or behavior of a SceneObject.
+ * A SceneObject may have at most one property of a given type.
  */
 class SceneObjectProperty : public SceneNode {
 public:
