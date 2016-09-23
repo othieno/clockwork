@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "SceneObjectProperty.hh"
+#include "SceneObject.hh"
 #include "toString.hh"
 
 using clockwork::SceneObjectProperty;
@@ -31,7 +31,9 @@ using clockwork::SceneObjectProperty;
 SceneObjectProperty::SceneObjectProperty(SceneObject& owner, const Type type) :
 SceneNode(SceneNode::Type::Property, toString(type)),
 owner_(owner),
-type_(type) {}
+type_(type) {
+	setParent(&owner);
+}
 
 
 clockwork::SceneObject&
