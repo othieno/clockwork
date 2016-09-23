@@ -70,3 +70,14 @@ clockwork::toString(const Language language) {
 			return "???";
 	}
 }
+
+
+QString
+clockwork::toString(const SceneObjectProperty::Type type) {
+	switch (type) {
+		case SceneObjectProperty::Type::Appearance:
+			return "Appearance";
+		default:
+			return "???";
+	}
+}
