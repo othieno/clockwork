@@ -69,7 +69,7 @@ QStringList
 ApplicationPreferences::getAvailableFramebufferResolutions() {
 	QStringList resolutions;
 	for (const auto resolution : Framebuffer::getAvailableResolutions()) {
-		resolutions.append(toString(resolution).c_str());
+		resolutions.append(toString(resolution));
 	}
 	return resolutions;
 }

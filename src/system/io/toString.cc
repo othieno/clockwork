@@ -25,7 +25,7 @@
 #include "toString.hh"
 
 
-std::string
+QString
 clockwork::toString(const Error error) {
 	switch (error) {
 		case Error::None:
@@ -36,7 +36,7 @@ clockwork::toString(const Error error) {
 }
 
 
-std::string
+QString
 clockwork::toString(const Framebuffer::Resolution resolution) {
 	switch (resolution) {
 		case Framebuffer::Resolution::ZERO:
@@ -61,7 +61,7 @@ clockwork::toString(const Framebuffer::Resolution resolution) {
 }
 
 
-std::string
+QString
 clockwork::toString(const Language language) {
 	switch (language) {
 		case Language::English:
