@@ -37,6 +37,8 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer \
 		src/math \
 		src/scene \
+		src/scene/predefined \
+		src/scene/property \
 		src/system \
 		src/system/io \
 		src/system/task \
