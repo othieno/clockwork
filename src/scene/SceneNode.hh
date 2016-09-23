@@ -114,34 +114,6 @@ private:
 	 * The node's children.
 	 */
 	QSet<SceneNode*> children_;
-#ifdef TO_IMPLEMENT
-protected:
-	/**
-	* Add a property and return its instance.
-	* @param identifier the property identifier.
-	*/
-	Property& addProperty(const Property::Identifier& identifier);
-	/**
-	* Return the property with the specified identifier.
-	* @param identifier the property identifier.
-	*/
-	const Property* getProperty(const Property::Identifier& identifier) const;
-	/**
-	* Return true if the object has the specified property, false otherwise.
-	* @param identifier the identifier of the property to query.
-	*/
-	bool hasProperty(const Property::Identifier& identifier) const;
-	/**
-	* Remove a property.
-	* @param identifier the identifier of the property to remove.
-	*/
-	void removeProperty(const Property::Identifier& identifier);
-private:
-	/**
-	* The object's properties.
-	*/
-	QHash<unsigned int, Property*> _properties;
-#endif // TO_IMPLEMENT
 };
 } // namespace clockwork
 

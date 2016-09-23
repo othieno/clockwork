@@ -105,6 +105,21 @@ public:
 	 * Updates the scene object's cumulative (composite) model transformation matrix.
 	 */
 	void updateCumulativeModelTransform();
+	/**
+	 * Returns the property with the specified type, if one exists.
+	 * @param type the type of property to return.
+	 */
+	template<class Property> Property* getProperty(const SceneObjectProperty::Type type);
+	/**
+	 * Adds a property to the SceneObject and returns its instance.
+	 * @param type the type of property to add to the object.
+	 */
+	template<class Property> Property& addProperty(const SceneObjectProperty::Type type);
+	/**
+	 * Removes a property.
+	 * @param type the type of the property to remove.
+	 */
+	void removeProperty(const SceneObjectProperty::Type type);
 private:
 	/**
 	 * The scene object's position in the world.
