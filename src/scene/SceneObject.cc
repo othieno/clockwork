@@ -120,7 +120,7 @@ SceneObject::updateCumulativeModelTransform() {
 template<class Property> Property*
 SceneObject::getProperty(const SceneObjectProperty::Type type) {
 	static_assert(std::is_base_of<Property, SceneObjectProperty>::value);
-	return findChild<Property>(toString(type), Qt::FindDirectChildrenOnly);
+	return findChild<Property*>(toString(type), Qt::FindDirectChildrenOnly);
 }
 
 
@@ -142,6 +142,11 @@ SceneObject::addProperty(const SceneObjectProperty::Type type) {
 
 
 void
-SceneObject::removeProperty(const SceneObjectProperty::Type) {
-	qFatal("[SceneObject::removeProperty] Implement me!");
+SceneObject::removeProperty(const SceneObjectProperty::Type type) {
+	auto* const property = getProperty<SceneObjectProperty>(type);
+	if (property != nullptr) {
+		property->setParent(nullptr);
+		property->disconnect();
+		property->deleteLater();
+	}
 }
