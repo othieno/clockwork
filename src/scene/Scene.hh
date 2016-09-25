@@ -69,6 +69,13 @@ public:
 		return findChildren<Node*>(QString(), Qt::FindDirectChildrenOnly);
 	}
 	/**
+	 * Returns all scene nodes of a given Node type.
+	 */
+	template<class Node> QList<const Node*> getAllNodes() const {
+		static_assert(std::is_base_of<SceneNode, Node>::value);
+		return findChildren<const Node*>(QString(), Qt::FindDirectChildrenOnly);
+	}
+	/**
 	 * Adds the specified node to the scene.
 	 * The scene will claim ownership of the node, i.e. it will automatically
 	 * destroy the node in its destructor.
