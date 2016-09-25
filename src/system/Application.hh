@@ -31,6 +31,7 @@
 #include "TaskManager.hh"
 #include "GraphicsEngine.hh"
 #include "UserInterface.hh"
+#include "Scene.hh"
 
 
 namespace clockwork {
@@ -106,6 +107,10 @@ private:
 	 * The application's user interface.
 	 */
 	UserInterface userInterface_;
+	/**
+	 * The application's scene.
+	 */
+	Scene scene_;
 };
 } // namespace clockwork
 

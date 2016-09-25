@@ -66,6 +66,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/math/Vector3.hh \
 		src/scene/predefined/Suzanne.hh \
 		src/scene/predefined/TexturedCube.hh \
+		src/scene/Scene.hh \
 		src/scene/SceneNode.hh \
 		src/scene/SceneObject.hh \
 		src/scene/SceneObjectProperty.hh \
@@ -102,6 +103,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/math/Vector3.cc \
 		src/scene/predefined/Suzanne.cc \
 		src/scene/predefined/TexturedCube.cc \
+		src/scene/Scene.cc \
 		src/scene/SceneNode.cc \
 		src/scene/SceneObject.cc \
 		src/scene/SceneObjectProperty.cc \
