@@ -52,12 +52,7 @@ public:
 	 */
 	Suzanne& operator=(const Suzanne&&) = delete;
 	/**
-	 * Returns the singleton instance.
-	 */
-	static Suzanne& getInstance();
-private:
-	/**
-	 *
+	 * Instantiates a Suzanne object.
 	 */
 	Suzanne();
 };

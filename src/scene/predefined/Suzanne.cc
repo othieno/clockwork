@@ -36,10 +36,3 @@ SceneObject("Suzanne") {
 	appearance.setModel(":/asset/suzanne.obj");
 	appearance.setMaterial(":/asset/suzanne.mtl");
 }
-
-
-Suzanne&
-Suzanne::getInstance() {
-	static Suzanne INSTANCE;
-	return INSTANCE;
-}

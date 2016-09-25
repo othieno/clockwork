@@ -52,12 +52,7 @@ public:
 	 */
 	TexturedCube& operator=(const TexturedCube&&) = delete;
 	/**
-	 * Returns the singleton instance.
-	 */
-	static TexturedCube& getInstance();
-private:
-	/**
-	 *
+	 * Instantiates a TexturedCube object.
 	 */
 	TexturedCube();
 };

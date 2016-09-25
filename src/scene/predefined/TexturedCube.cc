@@ -29,10 +29,3 @@ using clockwork::asset::TexturedCube;
 
 TexturedCube::TexturedCube() :
 SceneObject("Textured Cube") {}
-
-
-TexturedCube&
-TexturedCube::getInstance() {
-	static TexturedCube INSTANCE;
-	return INSTANCE;
-}
