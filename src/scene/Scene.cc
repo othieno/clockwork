@@ -53,3 +53,15 @@ void
 Scene::removeNode(const QString&) {
 	qFatal("[Scene::removeNode] Implement me!");
 }
+
+
+clockwork::SceneViewer*
+Scene::getViewer() {
+	return viewer_.get();
+}
+
+
+const clockwork::SceneViewer*
+Scene::getViewer() const {
+	return viewer_.get();
+}

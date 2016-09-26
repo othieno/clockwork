@@ -92,6 +92,10 @@ public:
 	 */
 	SceneViewer* getViewer();
 	/**
+	 * Returns the SceneViewer instance.
+	 */
+	const SceneViewer* getViewer() const;
+	/**
 	 * Sets the type of SceneViewer.
 	 * @param type the SceneViewer type to set.
 	 */
