@@ -27,8 +27,9 @@
 using clockwork::SceneViewer;
 
 
-SceneViewer::SceneViewer(const QString& name) :
+SceneViewer::SceneViewer(const Type type, const QString& name) :
 SceneObject(name),
+type_(type),
 projection_(Projection::Perspective),
 updateViewTransform_(true),
 updateProjectionTransform_(true),
@@ -36,6 +37,12 @@ renderingAlgorithm_(Renderer::RenderingAlgorithm::Point),
 lineDrawingAlgorithm_(Renderer::LineDrawingAlgorithm::Bresenham),
 primitiveAssemblyMode_(Renderer::PrimitiveAssemblyMode::Triangles),
 textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {}
+
+
+SceneViewer::Type
+SceneViewer::getType() const {
+	return type_;
+}
 
 
 clockwork::Projection

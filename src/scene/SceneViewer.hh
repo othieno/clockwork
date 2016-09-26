@@ -41,6 +41,12 @@ namespace clockwork {
 class SceneViewer : public SceneObject {
 public:
 	/**
+	 * An enumeration of available scene viewers.
+	 */
+	enum class Type {
+		Camera,
+	};
+	/**
 	 *
 	 */
 	SceneViewer(const SceneViewer&) = delete;
@@ -57,11 +63,15 @@ public:
 	 */
 	SceneViewer& operator=(SceneViewer&&) = delete;
 	/**
-	 * Return the viewer's projection.
+	 * Returns the viewer's type.
+	 */
+	Type getType() const;
+	/**
+	 * Returns the viewer's projection.
 	 */
 	Projection getProjection() const;
 	/**
-	 * Set the viewer's projection.
+	 * Sets the viewer's projection.
 	 * @param projection the projection to set.
 	 */
 	void setProjection(const Projection projection);
@@ -158,11 +168,16 @@ public:
 	bool isObjectVisible(const SceneObject& object) const;
 protected:
 	/**
-	 * Instantiates a named SceneViewer object.
+	 * Instantiates a named SceneViewer object of a given type.
+	 * @param type the viewer's type.
 	 * @param name the viewer's name.
 	 */
-	explicit SceneViewer(const QString& name);
+	SceneViewer(const Type type, const QString& name);
 private:
+	/**
+	 * The type of viewer.
+	 */
+	const Type type_;
 	/**
 	 * Calculates the viewer's view transform.
 	 */
