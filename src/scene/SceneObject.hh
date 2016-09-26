@@ -114,6 +114,14 @@ public:
 		return findChild<Property*>(toString(type), Qt::FindDirectChildrenOnly);
 	}
 	/**
+	 * Returns the property with the specified type, if one exists.
+	 * @param type the type of property to return.
+	 */
+	template<class Property> const Property* getProperty(const SceneObjectProperty::Type type) const {
+		static_assert(std::is_base_of<SceneObjectProperty, Property>::value);
+		return findChild<const Property*>(toString(type), Qt::FindDirectChildrenOnly);
+	}
+	/**
 	 * Adds a property to the SceneObject and returns its instance.
 	 * @param type the type of property to add to the object.
 	 */
