@@ -60,6 +60,10 @@ public:
 	 */
 	SceneObjectAppearance& operator=(SceneObjectAppearance&&) = delete;
 	/**
+	 * Returns true if the property has a 3D model, false otherwise.
+	 */
+	bool hasModel() const;
+	/**
 	 * Returns the 3D model.
 	 */
 	const Model3d* getModel() const;
@@ -77,6 +81,10 @@ public:
 	 * Unsets the property's 3D model.
 	 */
 	void removeModel();
+	/**
+	 * Returns true if the property has a material, false otherwise.
+	 */
+	bool hasMaterial() const;
 	/**
 	 * Returns the material.
 	 */

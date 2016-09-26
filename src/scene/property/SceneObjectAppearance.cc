@@ -33,6 +33,11 @@ model_(nullptr),
 material_(nullptr) {}
 
 
+bool
+SceneObjectAppearance::hasModel() const {
+	return model_ != nullptr;
+}
+
 
 const clockwork::Model3d*
 SceneObjectAppearance::getModel() const {
@@ -57,6 +62,12 @@ SceneObjectAppearance::setModel(const QString& filename) {
 void
 SceneObjectAppearance::removeModel() {
 	model_ = nullptr;
+}
+
+
+bool
+SceneObjectAppearance::hasMaterial() const {
+	return material_ != nullptr;
 }
 
 
