@@ -46,6 +46,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/ui \
 		src
 	HEADERS += \
+		src/graphics/Camera.hh \
 		src/graphics/ColorARGB.hh \
 		src/graphics/Framebuffer.hh \
 		src/graphics/GraphicsEngine.hh \
@@ -85,6 +86,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/ui/FramebufferProvider.hh \
 		src/ui/UserInterface.hh
 	SOURCES += \
+		src/graphics/Camera.cc \
 		src/graphics/ColorARGB.cc \
 		src/graphics/Framebuffer.cc \
 		src/graphics/GraphicsEngine.cc \
