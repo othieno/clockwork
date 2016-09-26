@@ -27,8 +27,7 @@
 using clockwork::GraphicsEngine;
 
 
-GraphicsEngine::GraphicsEngine(TaskManager& taskManager) :
-taskManager_(taskManager),
+GraphicsEngine::GraphicsEngine() :
 framebuffer_() {}
 
 

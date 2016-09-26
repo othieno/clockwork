@@ -28,8 +28,6 @@
 #include <QGuiApplication>
 #include "ApplicationPreferences.hh"
 #include "Error.hh"
-#include "TaskManager.hh"
-#include "GraphicsEngine.hh"
 #include "UserInterface.hh"
 #include "Scene.hh"
 
@@ -78,14 +76,6 @@ public:
 	 * Returns the application's preferences.
 	 */
 	ApplicationPreferences& getPreferences();
-	/**
-	 * Returns the task manager instance.
-	 */
-	TaskManager& getTaskManager();
-	/**
-	 * Returns the graphics engine instance.
-	 */
-	GraphicsEngine& getGraphicsEngine();
 private:
 	/**
 	 * Parses the specified command line arguments.
@@ -95,14 +85,6 @@ private:
 	 * The application's preferences.
 	 */
 	ApplicationPreferences preferences_;
-	/**
-	 * The task manager.
-	 */
-	TaskManager taskManager_;
-	/**
-	 * The graphics engine.
-	 */
-	GraphicsEngine graphicsEngine_;
 	/**
 	 * The application's user interface.
 	 */

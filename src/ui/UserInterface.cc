@@ -25,6 +25,7 @@
 #include "UserInterface.hh"
 #include "Application.hh"
 #include "FramebufferProvider.hh"
+#include "Service.hh"
 #include <QQmlContext>
 
 using clockwork::UserInterface;
@@ -32,8 +33,7 @@ using clockwork::UserInterface;
 
 clockwork::Error
 UserInterface::initialize(Application& application) {
-	auto& framebuffer = application.getGraphicsEngine().getFramebuffer();
-	engine_.addImageProvider("framebuffer", new FramebufferProvider(framebuffer));
+	engine_.addImageProvider("framebuffer", new FramebufferProvider(Service::Graphics.getFramebuffer()));
 
 	auto* const qmlContext = engine_.rootContext();
 	if (qmlContext != nullptr) {

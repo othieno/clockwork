@@ -36,20 +36,17 @@ class Fragment;
 /**
  *
  */
-class TaskManager;
-/**
- *
- */
 class Scene;
 /**
  *
  */
+class Service;
+/**
+ *
+ */
 class GraphicsEngine {
+    friend class Service;
 public:
-    /**
-     *
-     */
-    explicit GraphicsEngine(TaskManager&);
     /**
      *
      */
@@ -85,9 +82,9 @@ public:
     bool fragmentPasses(const Fragment& fragment);
 private:
     /**
-     * The task manager.
+     *
      */
-    TaskManager& taskManager_;
+    GraphicsEngine();
     /**
      * The framebuffer.
      */

@@ -23,6 +23,7 @@
  * THE SOFTWARE.
  */
 #include "Application.hh"
+#include "Service.hh"
 
 using clockwork::Application;
 
@@ -30,8 +31,6 @@ using clockwork::Application;
 Application::Application(int& argc, char** argv) :
 QGuiApplication(argc, argv),
 preferences_(*this),
-taskManager_(),
-graphicsEngine_(taskManager_),
 userInterface_() {
 	setApplicationName("Clockwork");
 	setApplicationVersion("0.0.0");
@@ -44,7 +43,7 @@ Application::~Application() {}
 
 clockwork::Error
 Application::initialize() {
-	Framebuffer& framebuffer = graphicsEngine_.getFramebuffer();
+	Framebuffer& framebuffer = Service::Graphics.getFramebuffer();
 	framebuffer.setResolution(Framebuffer::Resolution::VGA);
 
 	return userInterface_.initialize(*this);
@@ -60,18 +59,6 @@ Application::applicationRepository() const {
 clockwork::ApplicationPreferences&
 Application::getPreferences() {
 	return preferences_;
-}
-
-
-clockwork::TaskManager&
-Application::getTaskManager() {
-	return taskManager_;
-}
-
-
-clockwork::GraphicsEngine&
-Application::getGraphicsEngine() {
-	return graphicsEngine_;
 }
 
 

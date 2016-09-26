@@ -37,9 +37,14 @@ namespace clockwork {
  */
 class Model3d;
 /**
+ * @see system/Service.hh.
+ */
+class Service;
+/**
  *
  */
 class ResourceManager {
+	friend class Service;
 public:
 	/**
 	 *
@@ -57,10 +62,6 @@ public:
 	 *
 	 */
 	ResourceManager& operator=(const ResourceManager&&) = delete;
-	/**
-	 * Returns the ResourceManager's singleton instance.
-	 */
-	ResourceManager& getInstance();
 	/**
 	 * Loads a 3D model from the specified file.
 	 * @param filename the name of the file containing the 3D model to load.
