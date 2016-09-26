@@ -31,7 +31,7 @@ using clockwork::Scene;
 Scene::Scene() :
 viewer_(nullptr) {
 	//TODO Remove this when done debugging.
-	addNode(&asset::Suzanne::getInstance());
+	addNode(new asset::Suzanne());
 }
 
 
