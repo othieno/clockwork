@@ -65,3 +65,9 @@ const clockwork::SceneViewer*
 Scene::getViewer() const {
 	return viewer_.get();
 }
+
+
+void
+Scene::setViewer(const SceneViewer::Type) {
+	qFatal("[Scene::setViewer] Implement me!");
+}

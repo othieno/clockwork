@@ -99,7 +99,7 @@ public:
 	 * Sets the type of SceneViewer.
 	 * @param type the SceneViewer type to set.
 	 */
-	//void setViewer(const SceneViewer::Type type);
+	void setViewer(const SceneViewer::Type type);
 private:
 	/**
 	 * Instantiates a Scene object.
