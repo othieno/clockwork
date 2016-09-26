@@ -32,7 +32,12 @@ namespace clockwork {
 /**
  *
  */
-class Resource {
+class ResourceManager;
+/**
+ *
+ */
+class Resource : public QObject {
+	friend class ResourceManager;
 public:
 	/**
 	 *

@@ -1,8 +1,9 @@
 /*
+ * This file is part of Clockwork.
+ *
+ * Copyright (c) 2014-2016 Jeremy Othieno.
+ *
  * The MIT License (MIT)
- *
- * Copyright (c) 2014 Jeremy Othieno.
- *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -21,32 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#pragma once
+#include "Texture.hh"
 
-#include "resource.hh"
-#include <iostream>
-
-
-namespace clockwork {
-namespace graphics {
-
-class Texture : public clockwork::system::Resource
-{
-public:
-   /**
-    * Texture mapping coordinates.
-    */
-   struct Coordinates
-   {
-      double u, v;
-      /**
-       * Instantiate texture mapping coordinates with a given U and V.
-       */
-      Coordinates(const double& u = 0, const double& v = 0);
-   };
-};
-
-} // namespace graphics
-} // namespace clockwork
-
-std::ostream& operator<<(std::ostream&, const clockwork::graphics::Texture&);
+using clockwork::Texture;

@@ -1,8 +1,9 @@
 /*
+ * This file is part of Clockwork.
+ *
+ * Copyright (c) 2014-2016 Jeremy Othieno.
+ *
  * The MIT License (MIT)
- *
- * Copyright (c) 2014 Jeremy Othieno.
- *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -21,11 +22,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "texture.hh"
+#ifndef CLOCKWORK_TEXTURE_HH
+#define CLOCKWORK_TEXTURE_HH
 
-using clockwork::graphics::Texture;
+#include "Resource.hh"
 
 
-Texture::Coordinates::Coordinates(const double& U, const double& V) :
-u(U), v(V)
-{}
+namespace clockwork {
+/**
+ *
+ */
+class Texture : public Resource {
+	friend class ResourceManager;
+public:
+	/**
+	 *
+	 */
+	Texture(const Texture&) = delete;
+	/**
+	 *
+	 */
+	Texture(Texture&&) = delete;
+	/**
+	 *
+	 */
+	Texture& operator=(const Texture&) = delete;
+	/**
+	 *
+	 */
+	Texture& operator=(Texture&&) = delete;
+private:
+	/**
+	 * Instantiates a Texture object.
+	 */
+	Texture() = default;
+};
+} // namespace clockwork
+
+#endif // CLOCKWORK_TEXTURE_HH
