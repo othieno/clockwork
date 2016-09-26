@@ -30,15 +30,23 @@
 
 namespace clockwork {
 /**
- *
+ * see Fragment.hh.
  */
 class Fragment;
 /**
- *
+ * @see scene/Scene.hh.
  */
 class Scene;
 /**
- *
+ * @see scene/SceneObject.hh.
+ */
+class SceneObject;
+/**
+ * @see scene/SceneViewer.hh.
+ */
+class SceneViewer;
+/**
+ * @see system/Service.hh.
  */
 class Service;
 /**
@@ -71,6 +79,12 @@ public:
      * Renders the specified scene.
      */
     void render(const Scene& scene);
+    /**
+     * Renders the specified scene object from the given viewer's point of view.
+     * @param viewer the object viewing the scene.
+     * @param object the scene object to render.
+     */
+    void renderObject(const SceneViewer& viewer, const SceneObject& object);
     /**
      * Returns the framebuffer instance.
      */

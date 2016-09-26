@@ -23,6 +23,7 @@
  * THE SOFTWARE.
  */
 #include "GraphicsEngine.hh"
+#include "Scene.hh"
 
 using clockwork::GraphicsEngine;
 
@@ -32,6 +33,24 @@ framebuffer_() {}
 
 
 GraphicsEngine::~GraphicsEngine() {}
+
+
+void
+GraphicsEngine::render(const Scene& scene) {
+	const auto* viewer = scene.getViewer();
+	if (viewer != nullptr) {
+		for (const SceneObject* object : scene.getAllNodes<SceneObject>()) {
+			if (object != nullptr) {
+				renderObject(*viewer, *object);
+			}
+		}
+	}
+}
+
+
+void
+GraphicsEngine::renderObject(const SceneViewer&, const SceneObject&) {
+}
 
 
 clockwork::Framebuffer&
