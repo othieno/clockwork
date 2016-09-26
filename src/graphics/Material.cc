@@ -1,8 +1,9 @@
 /*
+ * This file is part of Clockwork.
+ *
+ * Copyright (c) 2014-2016 Jeremy Othieno.
+ *
  * The MIT License (MIT)
- *
- * Copyright (c) 2014 Jeremy Othieno.
- *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -21,23 +22,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "material.hh"
+#include "Material.hh"
+
+using clockwork::Material;
 
 
-clockwork::graphics::Material::Material
-(
-   const clockwork::graphics::Texture* a,
-   const clockwork::graphics::Texture* d,
-   const clockwork::graphics::Texture* n,
-   const clockwork::graphics::Texture* s
-) :
-shininess(1),
-transparency(0),
+Material::Material() :
+shininess(1.0),
+transparency(0.0),
 Ka(0.5, 0.5, 0.5),
 Kd(0.5, 0.5, 0.5),
 Ks(0.5, 0.5, 0.5),
-ambient(a),
-diffuse(d),
-normal(n),
-specular(s)
-{}
+ambient(nullptr),
+diffuse(nullptr),
+normal(nullptr),
+specular(nullptr) {}
