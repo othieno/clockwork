@@ -196,3 +196,10 @@ SceneViewer::calculateProjectionTransform() {
 	//TODO Implement me.
 	return Matrix4();
 }
+
+
+bool
+SceneViewer::isObjectVisible(const SceneObject&) const {
+	//TODO Implement me.
+	return true;
+}

@@ -150,6 +150,12 @@ public:
 	 * Removes all image filters.
 	 */
 	void removeAllImageFilters();
+	/**
+	 * Returns true if an object is (partially) visible from this SceneViewer's
+	 * point of view, false otherwise.
+	 * @param object the object to query.
+	 */
+	bool isObjectVisible(const SceneObject& object) const;
 protected:
 	/**
 	 * Instantiates a named SceneViewer object.
