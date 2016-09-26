@@ -48,6 +48,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 	HEADERS += \
 		src/graphics/Camera.hh \
 		src/graphics/ColorARGB.hh \
+		src/graphics/Fragment.hh \
 		src/graphics/Framebuffer.hh \
 		src/graphics/GraphicsEngine.hh \
 		src/graphics/Projection.hh \
@@ -88,6 +89,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 	SOURCES += \
 		src/graphics/Camera.cc \
 		src/graphics/ColorARGB.cc \
+		src/graphics/Fragment.cc \
 		src/graphics/Framebuffer.cc \
 		src/graphics/GraphicsEngine.cc \
 		src/graphics/filter/ImageFilter.cc \
