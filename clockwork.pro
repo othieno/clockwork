@@ -52,6 +52,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/Framebuffer.hh \
 		src/graphics/GraphicsEngine.hh \
 		src/graphics/Projection.hh \
+		src/graphics/Vertex.hh \
 		src/graphics/filter/ImageFilter.hh \
 		src/graphics/filter/ImageFilterFactory.hh \
 		src/graphics/filter/TextureFilter.hh \
@@ -92,6 +93,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/Fragment.cc \
 		src/graphics/Framebuffer.cc \
 		src/graphics/GraphicsEngine.cc \
+		src/graphics/Vertex.cc \
 		src/graphics/filter/ImageFilter.cc \
 		src/graphics/filter/TextureFilter.cc \
 		src/graphics/renderer/LineRenderer.cc \
