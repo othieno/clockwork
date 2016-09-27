@@ -27,23 +27,22 @@
 #include <QFileInfo>
 
 using clockwork::ResourceManager;
-using clockwork::Model3d;
+
 
 // TODO Use Bloom filter on filenames, before hashing files.
 
-const Model3d*
-ResourceManager::loadModel3d(const QString& filename)
+const clockwork::Mesh*
+ResourceManager::loadMesh(const QString& filename)
 {
-	const Model3d* model = nullptr;
-	const auto& fileHash = ResourceManager::getFileHash(filename, QCryptographicHash::Md4);
+	const Mesh* mesh = nullptr;
+	const auto& fileHash = getFileHash(filename, QCryptographicHash::Md4);
 	if (!fileHash.isEmpty()) {
 		if (resources_.contains(fileHash)) {
-			//model = static_cast<Model3d*>(resources_[fileHash]);
+			//mesh = static_cast<Mesh*>(resources_[fileHash]);
 		} else {
 /*
-			// A new 3D model has to be loaded. Create a new instance where the model
-			// will be stored.
-			output = new clockwork::graphics::Model3D;
+			// A new mesh has to be instantiated and cached.
+			output = new clockwork::graphics::Mesh;
 			assert(output != nullptr);
 
 			// The input file cursor needs rewound to the beginning of the file since
@@ -63,7 +62,7 @@ ResourceManager::loadModel3d(const QString& filename)
 */
 		}
 	}
-	return model;
+	return mesh;
 }
 
 

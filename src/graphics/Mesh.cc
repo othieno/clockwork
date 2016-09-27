@@ -1,8 +1,9 @@
 /*
+ * This file is part of Clockwork.
+ *
+ * Copyright (c) 2014-2016 Jeremy Othieno.
+ *
  * The MIT License (MIT)
- *
- * Copyright (c) 2014 Jeremy Othieno.
- *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -21,50 +22,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "face.hh"
-#include "model3d.hh"
+#include "Mesh.hh"
 
-using clockwork::graphics::Face;
-
-
-Face::Face
-(
-   const std::array<const uint32_t, 3>& indices,
-   const std::array<const clockwork::Vector3, 3>& normals,
-   const std::array<const Texture::Coordinates, 3>& texcoords
-) :
-_indices(indices),
-_normals(normals),
-_textureMappingCoordinates(texcoords)
-{}
+using clockwork::Mesh;
 
 
-Face::Face(const std::array<const uint32_t, 3>& indices) :
-Face
-(
-   indices,
-   {clockwork::Vector3(), clockwork::Vector3(), clockwork::Vector3()},
-   {Texture::Coordinates(), Texture::Coordinates(), Texture::Coordinates()}
-)
-{}
-
-
-const std::array<const uint32_t, 3>&
-Face::getIndices() const
-{
-   return _indices;
+const QList<clockwork::Point3>&
+Mesh::getVertices() const {
+	return vertices_;
 }
 
 
-const std::array<const clockwork::Vector3, 3>&
-Face::getNormals() const
-{
-   return _normals;
+void
+Mesh::setVertices(const QList<clockwork::Point3>& vertices) {
+	vertices_ = vertices;
 }
 
 
-const std::array<const clockwork::graphics::Texture::Coordinates, 3>&
-Face::getTextureMappingCoordinates() const
-{
-   return _textureMappingCoordinates;
+const QList<Mesh::Face>&
+Mesh::getFaces() const {
+	return faces_;
+}
+
+
+void
+Mesh::setFaces(const QList<Mesh::Face>& faces) {
+	faces_ = faces;
+}
+
+
+const clockwork::Material&
+Mesh::getMaterial() const {
+	return material_;
+}
+
+
+void
+Mesh::setMaterial(const clockwork::Material& material) {
+	material_ = material;
 }

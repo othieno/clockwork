@@ -23,75 +23,41 @@
  * THE SOFTWARE.
  */
 #include "SceneObjectAppearance.hh"
+#include "Service.hh"
 
 using clockwork::SceneObjectAppearance;
 
 
 SceneObjectAppearance::SceneObjectAppearance(SceneObject& owner) :
 SceneObjectProperty(owner, SceneObjectProperty::Type::Appearance),
-model_(nullptr),
-material_(nullptr) {}
+mesh_(nullptr) {}
 
 
 bool
-SceneObjectAppearance::hasModel() const {
-	return model_ != nullptr;
+SceneObjectAppearance::hasMesh() const {
+	return mesh_ != nullptr;
 }
 
 
-const clockwork::Model3d*
-SceneObjectAppearance::getModel() const {
-	return model_;
-}
-
-
-void
-SceneObjectAppearance::setModel(const Model3d& model) {
-	model_ = &model;
+const clockwork::Mesh*
+SceneObjectAppearance::getMesh() const {
+	return mesh_;
 }
 
 
 void
-SceneObjectAppearance::setModel(const QString& filename) {
-	Q_UNUSED(filename);
-	qFatal("[SceneObjectAppearance::setModel] Implement me!");
-	//model_ = ResourceManager::loadModel3d(filename);
+SceneObjectAppearance::setMesh(const Mesh& mesh) {
+	mesh_ = &mesh;
 }
 
 
 void
-SceneObjectAppearance::removeModel() {
-	model_ = nullptr;
-}
-
-
-bool
-SceneObjectAppearance::hasMaterial() const {
-	return material_ != nullptr;
-}
-
-
-const clockwork::Material*
-SceneObjectAppearance::getMaterial() const {
-	return material_;
+SceneObjectAppearance::setMesh(const QString& filename) {
+	mesh_ = Service::Resources.loadMesh(filename);
 }
 
 
 void
-SceneObjectAppearance::setMaterial(const Material& material) {
-	material_ = &material;
-}
-
-
-void
-SceneObjectAppearance::setMaterial(const QString& filename) {
-	Q_UNUSED(filename);
-	qFatal("[SceneObjectAppearance::setMaterial] Implement me!");
-	//material_ = ResourceManager::loadMaterial(filename);
-}
-
-
-void
-SceneObjectAppearance::removeMaterial() {
-	material_ = nullptr;
+SceneObjectAppearance::removeMesh() {
+	mesh_ = nullptr;
 }

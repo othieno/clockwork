@@ -33,6 +33,5 @@ SceneObject("Suzanne") {
 	setRotation(-180, 0, 0);
 
 	auto& appearance = addProperty<SceneObjectAppearance>(SceneObjectProperty::Type::Appearance);
-	appearance.setModel(":/asset/suzanne.obj");
-	appearance.setMaterial(":/asset/suzanne.mtl");
+	appearance.setMesh(":/asset/suzanne.obj");
 }

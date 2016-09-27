@@ -30,13 +30,9 @@
 
 namespace clockwork {
 /**
- *
+ * @see graphics/Mesh.hh.
  */
-class Material;
-/**
- *
- */
-class Model3d;
+class Mesh;
 /**
  *
  */
@@ -60,49 +56,27 @@ public:
 	 */
 	SceneObjectAppearance& operator=(SceneObjectAppearance&&) = delete;
 	/**
-	 * Returns true if the property has a 3D model, false otherwise.
+	 * Returns true if the property has a polygon mesh, false otherwise.
 	 */
-	bool hasModel() const;
+	bool hasMesh() const;
 	/**
-	 * Returns the 3D model.
+	 * Returns the polygon mesh.
 	 */
-	const Model3d* getModel() const;
+	const Mesh* getMesh() const;
 	/**
-	 * Sets the property's 3D model.
-	 * @param model the 3D model to set.
+	 * Sets the property's polygon mesh.
+	 * @param mesh the polygon mesh to set.
 	 */
-	void setModel(const Model3d& model);
+	void setMesh(const Mesh& mesh);
 	/**
-	 * Sets the property's 3D model.
-	 * @param filename a name of the file containing the 3D model.
+	 * Sets the property's polygon mesh.
+	 * @param filename a name of the file containing the polygon mesh.
 	 */
-	void setModel(const QString& filename);
+	void setMesh(const QString& filename);
 	/**
-	 * Unsets the property's 3D model.
+	 * Unsets the property's polygon mesh.
 	 */
-	void removeModel();
-	/**
-	 * Returns true if the property has a material, false otherwise.
-	 */
-	bool hasMaterial() const;
-	/**
-	 * Returns the material.
-	 */
-	const Material* getMaterial() const;
-	/**
-	 * Sets the property's material.
-	 * @param material the material to set.
-	 */
-	void setMaterial(const Material& material);
-	/**
-	 * Sets the property's material.
-	 * @param filename a name of the file containing the material.
-	 */
-	void setMaterial(const QString& filename);
-	/**
-	 * Unsets the property's material.
-	 */
-	void removeMaterial();
+	void removeMesh();
 private:
 	/**
 	 * Instantiates a SceneObjectAppearance object attached to a given owner.
@@ -110,13 +84,9 @@ private:
 	 */
 	explicit SceneObjectAppearance(SceneObject&);
 	/**
-	 * A 3D model.
+	 * A polygon mesh.
 	 */
-	const Model3d* model_;
-	/**
-	 * A material, i.e. the 3D model's look-and-feel.
-	 */
-	const Material* material_;
+	const Mesh* mesh_;
 };
 } // namespace clockwork
 

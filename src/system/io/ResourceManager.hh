@@ -33,9 +33,9 @@
 
 namespace clockwork {
 /**
- * @see graphics/Model3d.hh.
+ * @see graphics/Mesh.hh.
  */
-class Model3d;
+class Mesh;
 /**
  * @see system/Service.hh.
  */
@@ -63,10 +63,10 @@ public:
 	 */
 	ResourceManager& operator=(const ResourceManager&&) = delete;
 	/**
-	 * Loads a 3D model from the specified file.
-	 * @param filename the name of the file containing the 3D model to load.
+	 * Loads a polygon mesh from the file with the specified filename.
+	 * @param filename the name of the file containing the mesh to load.
 	 */
-	const Model3d* loadModel3d(const QString& filename);
+	const Mesh* loadMesh(const QString& filename);
 private:
 	/**
 	 * Instantiates a ResourceManager object.
