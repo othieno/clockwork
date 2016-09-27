@@ -67,6 +67,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/Viewport.hh \
 		src/math/Frustum.hh \
 		src/math/Matrix4.hh \
+		src/math/Point.hh \
 		src/math/Point3.hh \
 		src/math/Quaternion.hh \
 		src/math/Vector3.hh \
@@ -109,6 +110,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/Viewport.cc \
 		src/math/Frustum.cc \
 		src/math/Matrix4.cc \
+		src/math/Point.cc \
 		src/math/Point3.cc \
 		src/math/Point4.cc \
 		src/math/Quaternion.cc \
