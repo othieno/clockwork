@@ -56,6 +56,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/Projection.hh \
 		src/graphics/Texture.hh \
 		src/graphics/Vertex.hh \
+		src/graphics/VertexAttribute.hh \
 		src/graphics/filter/ImageFilter.hh \
 		src/graphics/filter/ImageFilterFactory.hh \
 		src/graphics/filter/TextureFilter.hh \
@@ -71,6 +72,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/math/Point3.hh \
 		src/math/Quaternion.hh \
 		src/math/Vector3.hh \
+		src/math/Vector4.hh \
 		src/scene/predefined/Suzanne.hh \
 		src/scene/predefined/TexturedCube.hh \
 		src/scene/Scene.hh \
