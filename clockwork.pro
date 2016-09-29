@@ -64,6 +64,8 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/LineRenderer.hh \
 		src/graphics/renderer/PointRenderer.hh \
 		src/graphics/renderer/PolygonRenderer.hh \
+		src/graphics/renderer/Uniform.hh \
+		src/graphics/renderer/Varying.hh \
 		src/graphics/Viewport.hh \
 		src/math/Frustum.hh \
 		src/math/Matrix4.hh \
