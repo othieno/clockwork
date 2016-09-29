@@ -40,14 +40,14 @@ public:
 		XiaolinWu
 	};
 	/**
-	 * An enumeration of available primitive assembly modes.
+	 * An enumeration of available primitives.
 	 */
-	enum class PrimitiveAssemblyMode {
-		Points,
-		Lines,
+	enum class Primitive {
+		Point,
+		Line,
 		LineStrip,
 		LineLoop,
-		Triangles,
+		Triangle,
 		TriangleStrip,
 		TriangleFan
 	};

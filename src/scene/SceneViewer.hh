@@ -124,14 +124,14 @@ public:
 	 */
 	void setLineDrawingAlgorithm(const Renderer::LineDrawingAlgorithm algorithm);
 	/**
-	 * Return the viewer's primitive assembly mode.
+	 * Returns the viewer's primitive mode.
 	 */
-	Renderer::PrimitiveAssemblyMode getPrimitiveAssemblyMode() const;
+	Renderer::Primitive getPrimitiveMode() const;
 	/**
-	 * Set the viewer's primitive assembly mode.
-	 * @param mode the assembly mode to set.
+	 * Sets the viewer's primitive mode.
+	 * @param primitive the primitive mode to set.
 	 */
-	void setPrimitiveAssemblyMode(const Renderer::PrimitiveAssemblyMode mode);
+	void setPrimitiveMode(const Renderer::Primitive primitive);
 	/**
 	 * Returns the viewer's texture filter.
 	 */
@@ -229,9 +229,9 @@ private:
 	 */
 	Renderer::LineDrawingAlgorithm lineDrawingAlgorithm_;
 	/**
-	 * The viewer's primitive assembly mode.
+	 * The viewer's primitive mode.
 	 */
-	Renderer::PrimitiveAssemblyMode primitiveAssemblyMode_;
+	Renderer::Primitive primitiveMode_;
 	/**
 	 * The unique identifier of the viewer's texture filter.
 	 */

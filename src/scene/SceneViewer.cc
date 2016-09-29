@@ -35,7 +35,7 @@ updateViewTransform_(true),
 updateProjectionTransform_(true),
 renderingAlgorithm_(Renderer::RenderingAlgorithm::Point),
 lineDrawingAlgorithm_(Renderer::LineDrawingAlgorithm::Bresenham),
-primitiveAssemblyMode_(Renderer::PrimitiveAssemblyMode::Triangles),
+primitiveMode_(Renderer::Primitive::Triangle),
 textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {}
 
 
@@ -143,15 +143,15 @@ SceneViewer::setLineDrawingAlgorithm(const Renderer::LineDrawingAlgorithm algori
 }
 
 
-clockwork::Renderer::PrimitiveAssemblyMode
-SceneViewer::getPrimitiveAssemblyMode() const {
-	return primitiveAssemblyMode_;
+clockwork::Renderer::Primitive
+SceneViewer::getPrimitiveMode() const {
+	return primitiveMode_;
 }
 
 
 void
-SceneViewer::setPrimitiveAssemblyMode(const Renderer::PrimitiveAssemblyMode mode) {
-	primitiveAssemblyMode_ = mode;
+SceneViewer::setPrimitiveMode(const Renderer::Primitive primitive) {
+	primitiveMode_ = primitive;
 }
 
 
