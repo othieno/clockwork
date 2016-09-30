@@ -97,7 +97,7 @@ public:
 	/**
 	 *
 	 */
-	struct State {
+	struct PipelineContext {
 		/**
 		 * The primitive mode.
 		 */
@@ -113,10 +113,10 @@ public:
 	};
 	/**
 	 * Renders the specified mesh in the given state.
-	 * @param state the renderer's state.
+	 * @param context the rendering pipeline context.
 	 * @param mesh the polygon mesh to render.
 	 */
-	static void draw(State& state, const Mesh& mesh);
+	static void draw(PipelineContext& context, const Mesh& mesh);
 };
 } // namespace clockwork
 

@@ -29,5 +29,5 @@ using clockwork::Renderer;
 
 
 void
-Renderer::draw(State&, const Mesh&) {
+Renderer::draw(PipelineContext&, const Mesh&) {
 }
