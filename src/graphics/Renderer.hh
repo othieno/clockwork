@@ -42,6 +42,10 @@ namespace clockwork {
  */
 class Mesh;
 /**
+ * @see graphics/Viewport.hh.
+ */
+struct Viewport;
+/**
  *
  */
 class Renderer {
@@ -119,9 +123,17 @@ public:
 	 */
 	struct PipelineContext {
 		/**
+		 * The line algorithm.
+		 */
+		LineDrawingAlgorithm lineDrawingAlgorithm;
+		/**
 		 * The primitive mode.
 		 */
 		Primitive primitiveMode;
+		/**
+		 * The viewport.
+		 */
+		const Viewport* viewport;
 		/**
 		 * The set of uniform variables.
 		 */
