@@ -25,6 +25,8 @@
 #ifndef CLOCKWORK_RENDERER_HH
 #define CLOCKWORK_RENDERER_HH
 
+#include "ReferenceVariant.hh"
+
 
 namespace clockwork {
 /**
@@ -67,6 +69,14 @@ public:
 		Bump,
 		Deferred
 	};
+	/**
+	 *
+	 */
+	using Uniform = ReferenceVariant<>;
+	/**
+	 *
+	 */
+	using Varying = ReferenceVariant<>;
 };
 } // namespace clockwork
 
