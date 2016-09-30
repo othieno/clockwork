@@ -26,6 +26,7 @@
 #define CLOCKWORK_RENDERER_HH
 
 #include "ReferenceVariant.hh"
+#include <QHash>
 
 
 namespace clockwork {
@@ -77,6 +78,23 @@ public:
 	 *
 	 */
 	using Varying = ReferenceVariant<>;
+	/**
+	 *
+	 */
+	struct State {
+		/**
+		 * The primitive mode.
+		 */
+		Primitive primitiveMode;
+		/**
+		 * The set of uniform variables.
+		 */
+		QHash<QString, Uniform> uniform;
+		/**
+		 * The set of varying variables.
+		 */
+		QHash<QString, Varying> varying;
+	};
 };
 } // namespace clockwork
 
