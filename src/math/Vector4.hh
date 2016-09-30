@@ -31,6 +31,17 @@
 namespace clockwork {
 namespace math {
 /**
+ * @see below.
+ */
+template<class Type> struct Vector4;
+/**
+ * Vector4 shorthands.
+ */
+using Vector4i = Vector4<int>;
+using Vector4u = Vector4<unsigned>;
+using Vector4f = Vector4<float>;
+using Vector4d = Vector4<double>;
+/**
  * A 4D vector.
  */
 template<class Type>
