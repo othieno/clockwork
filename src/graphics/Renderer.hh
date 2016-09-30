@@ -75,13 +75,25 @@ public:
 		Deferred
 	};
 	/**
-	 *
+	 * Checks whether T is a valid Uniform value type.
 	 */
-	using Uniform = ReferenceVariant<>;
+	template<class T>
+	struct UniformValidator :
+	std::integral_constant<bool, true> {};
 	/**
 	 *
 	 */
-	using Varying = ReferenceVariant<>;
+	using Uniform = ReferenceVariant<UniformValidator>;
+	/**
+	 * Checks whether T is a valid Varying value type.
+	 */
+	template<class T>
+	struct VaryingValidator :
+	std::integral_constant<bool, true> {};
+	/**
+	 *
+	 */
+	using Varying = ReferenceVariant<VaryingValidator>;
 	/**
 	 *
 	 */
