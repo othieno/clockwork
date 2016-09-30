@@ -23,5 +23,11 @@
  * THE SOFTWARE.
  */
 #include "Renderer.hh"
+#include "Mesh.hh"
 
 using clockwork::Renderer;
+
+
+void
+Renderer::draw(State&, const Mesh&) {
+}

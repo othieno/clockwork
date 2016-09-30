@@ -31,6 +31,10 @@
 
 namespace clockwork {
 /**
+ * @see graphics/Mesh.hh.
+ */
+class Mesh;
+/**
  *
  */
 class Renderer {
@@ -95,6 +99,12 @@ public:
 		 */
 		QHash<QString, Varying> varying;
 	};
+	/**
+	 * Renders the specified mesh in the given state.
+	 * @param state the renderer's state.
+	 * @param mesh the polygon mesh to render.
+	 */
+	static void draw(State& state, const Mesh& mesh);
 };
 } // namespace clockwork
 
