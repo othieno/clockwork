@@ -78,15 +78,15 @@ public:
 	/**
 	 * Returns the viewer's view transform matrix.
 	 */
-	const Matrix4& getViewTransform();
+	const Matrix4& getViewTransform() const;
 	/**
 	 * Returns the viewer's projection transform matrix.
 	 */
-	const Matrix4& getProjectionTransform();
+	const Matrix4& getProjectionTransform() const;
 	/**
 	 * Returns the viewer's view-projection transform matrix.
 	 */
-	const Matrix4& getViewProjectionTransform();
+	const Matrix4& getViewProjectionTransform() const;
 	/**
 	 * Returns the viewer's viewport.
 	 */
@@ -175,17 +175,17 @@ protected:
 	SceneViewer(const Type type, const QString& name);
 private:
 	/**
+	 * Calculates and returns the viewer's view transform.
+	 */
+	Matrix4 calculateViewTransform() const;
+	/**
+	 * Calculates and returns the viewer's projection transform.
+	 */
+	Matrix4 calculateProjectionTransform() const;
+	/**
 	 * The type of viewer.
 	 */
 	const Type type_;
-	/**
-	 * Calculates the viewer's view transform.
-	 */
-	Matrix4 calculateViewTransform();
-	/**
-	 * Calculates the viewer's projection transform.
-	 */
-	Matrix4 calculateProjectionTransform();
 	/**
 	 * The viewer's projection.
 	 */
@@ -193,25 +193,25 @@ private:
 	/**
 	 * The view transformation matrix.
 	 */
-	Matrix4 viewTransform_;
+	mutable Matrix4 cachedViewTransform_;
 	/**
-	 * When true, this signals that the view transformation matrix needs to be updated
-	 * before being returned.
+	 * When true, this signals that the cached view transformation matrix needs
+	 * to be updated before being accessed.
 	 */
-	bool updateViewTransform_;
+	mutable bool updateCachedViewTransform_;
 	/**
 	 * The projection transformation matrix.
 	 */
-	Matrix4 projectionTransform_;
+	mutable Matrix4 cachedProjectionTransform_;
 	/**
-	 * When true, this signals that the view transformation matrix needs to be updated
-	 * before being returned.
+	 * When true, this signals that the cached projection transformation matrix
+	 * needs to be updated before being accessed.
 	 */
-	bool updateProjectionTransform_;
+	mutable bool updateCachedProjectionTransform_;
 	/**
 	 * The view-projection transformation matrix.
 	 */
-	Matrix4 viewProjectionTransform_;
+	mutable Matrix4 cachedViewProjectionTransform_;
 	/**
 	 * The viewer's viewport.
 	 */

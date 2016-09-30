@@ -31,8 +31,8 @@ SceneViewer::SceneViewer(const Type type, const QString& name) :
 SceneObject(name),
 type_(type),
 projection_(Projection::Perspective),
-updateViewTransform_(true),
-updateProjectionTransform_(true),
+updateCachedViewTransform_(true),
+updateCachedProjectionTransform_(true),
 renderingAlgorithm_(Renderer::RenderingAlgorithm::Point),
 lineDrawingAlgorithm_(Renderer::LineDrawingAlgorithm::Bresenham),
 primitiveMode_(Renderer::Primitive::Triangle),
@@ -55,39 +55,39 @@ void
 SceneViewer::setProjection(const Projection projection) {
 	if (projection_ != projection) {
 		projection_ = projection;
-		updateProjectionTransform_ = true;
+		updateCachedProjectionTransform_ = true;
 	}
 }
 
 
 const clockwork::Matrix4&
-SceneViewer::getViewTransform() {
-	if (updateViewTransform_) {
-		updateViewTransform_ = false;
-		viewTransform_ = calculateViewTransform();
+SceneViewer::getViewTransform() const {
+	if (updateCachedViewTransform_) {
+		updateCachedViewTransform_ = false;
+		cachedViewTransform_ = calculateViewTransform();
 	}
-	return viewTransform_;
+	return cachedViewTransform_;
 }
 
 
 const clockwork::Matrix4&
-SceneViewer::getProjectionTransform() {
-	if (updateProjectionTransform_) {
-		updateProjectionTransform_ = false;
-		projectionTransform_ = calculateProjectionTransform();
+SceneViewer::getProjectionTransform() const {
+	if (updateCachedProjectionTransform_) {
+		updateCachedProjectionTransform_ = false;
+		cachedProjectionTransform_ = calculateProjectionTransform();
 	}
-	return projectionTransform_;
+	return cachedProjectionTransform_;
 }
 
 
 const clockwork::Matrix4&
-SceneViewer::getViewProjectionTransform() {
-	if (updateViewTransform_ || updateProjectionTransform_) {
+SceneViewer::getViewProjectionTransform() const {
+	if (updateCachedViewTransform_ || updateCachedProjectionTransform_) {
 		const auto& P = getProjectionTransform();
 		const auto& V = getViewTransform();
-		viewProjectionTransform_ = P * V; // The order is important: PROJECTION * VIEW!
+		cachedViewProjectionTransform_ = P * V; // The order is important: PROJECTION * VIEW!
 	}
-	return viewProjectionTransform_;
+	return cachedViewProjectionTransform_;
 }
 
 
@@ -114,7 +114,7 @@ SceneViewer::setViewFrustum(const Frustum& viewFrustum) {
 //TODO Implement the comparison operator.
 //	if (viewFrustum_ != viewFrustum) {
 		viewFrustum_ = viewFrustum;
-		updateProjectionTransform_ = true;
+		updateCachedProjectionTransform_ = true;
 //	}
 }
 
@@ -192,14 +192,14 @@ SceneViewer::removeAllImageFilters() {
 
 
 clockwork::Matrix4
-SceneViewer::calculateViewTransform() {
+SceneViewer::calculateViewTransform() const {
 	//TODO Implement me.
 	return Matrix4();
 }
 
 
 clockwork::Matrix4
-SceneViewer::calculateProjectionTransform() {
+SceneViewer::calculateProjectionTransform() const {
 	//TODO Implement me.
 	return Matrix4();
 }
