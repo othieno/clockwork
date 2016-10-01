@@ -76,6 +76,10 @@ public:
 	 * Returns the application's preferences.
 	 */
 	ApplicationPreferences& getPreferences();
+	/**
+	 * Updates the application's state.
+	 */
+	Q_INVOKABLE void update();
 private:
 	/**
 	 * Parses the specified command line arguments.

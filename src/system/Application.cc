@@ -63,6 +63,13 @@ Application::getPreferences() {
 
 
 void
+Application::update() {
+	Service::Graphics.clear();
+	Service::Graphics.render(scene_);
+}
+
+
+void
 Application::parseCommandLineArguments(int& argc, char** argv) {
 	//TODO Implement me.
 	Q_UNUSED(argc);
