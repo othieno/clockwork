@@ -30,6 +30,111 @@
 
 namespace clockwork {
 /**
+ * Checks whether Type is a valid reference type.
+ * This generic implementation always returns true.
+ */
+template<class Type>
+struct GenericWeakVariantValidator : std::integral_constant<bool, true> {};
+/**
+ * A WeakVariant is a data type, based on a variant, that contains a non-owning
+ * reference to any kind of object.
+ */
+template<template<typename> class Validator = GenericWeakVariantValidator>
+class WeakVariant {
+public:
+	/**
+	 * Returns the referenced value.
+	 */
+	template<class Type> Type& get();
+	/**
+	 * Returns the referenced value.
+	 */
+	template<class Type> const Type& get() const;
+	/**
+	 * Instantiates a WeakVariant object that references the specified value.
+	 * @param value the referenced value.
+	 */
+	template<class Type> static WeakVariant<Validator> create(Type& value);
+private:
+	/**
+	 * Instantiates a WeakVariant object to the specified value.
+	 * @param the referenced value.
+	 */
+	inline explicit WeakVariant(void* const value);
+	/**
+	 * Instantiates a WeakVariant object to the specified immutable value.
+	 * @param the referenced value.
+	 */
+	inline explicit WeakVariant(const void* const value);
+	/**
+	 * The referenced value.
+	 */
+	union Reference {
+		/**
+		 * Instantiates a Reference object that references a specified object.
+		 */
+		inline explicit Reference(void* const value);
+		/**
+		 * Instantiates a Reference object that references a specified immutable object.
+		 */
+		inline explicit Reference(const void* const value);
+		/**
+		 * A pointer to a mutable value.
+		 */
+		void* value;
+		/**
+		 * A pointer to an immutable value.
+		 */
+		const void* const_value;
+	} reference_;
+};
+
+
+template<template<typename> class Validator>
+WeakVariant<Validator>::WeakVariant(void* const value) :
+reference_(value) {}
+
+
+template<template<typename> class Validator>
+WeakVariant<Validator>::WeakVariant(const void* const value) :
+reference_(value) {}
+
+
+template<template<typename> class Validator>
+WeakVariant<Validator>::Reference::Reference(void* const v) :
+value(v) {}
+
+
+template<template<typename> class Validator>
+WeakVariant<Validator>::Reference::Reference(const void* const v) :
+const_value(v) {}
+
+
+template<template<typename> class Validator>
+template<class T> T&
+WeakVariant<Validator>::get() {
+	static_assert(Validator<T>::value);
+	return *static_cast<T*>(reference_.value);
+}
+
+
+template<template<typename> class Validator>
+template<class T> const T&
+WeakVariant<Validator>::get() const {
+	static_assert(Validator<T>::value);
+	return *static_cast<const T*>(reference_.const_value);
+}
+
+
+template<template<typename> class Validator>
+template<class T> WeakVariant<Validator>
+WeakVariant<Validator>::create(T& value) {
+	static_assert(Validator<T>::value);
+	return WeakVariant<Validator>(&value);
+}
+
+
+/**
  * Checks whether Type is a valid reference value type.
  */
 template<class Type>
