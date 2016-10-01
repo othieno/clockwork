@@ -38,6 +38,10 @@
 
 namespace clockwork {
 /**
+ * @see graphics/Framebuffer.hh.
+ */
+class Framebuffer;
+/**
  * @see graphics/Mesh.hh.
  */
 class Mesh;
@@ -122,6 +126,10 @@ public:
 	 *
 	 */
 	struct PipelineContext {
+		/**
+		 * The framebuffer.
+		 */
+		Framebuffer* framebuffer;
 		/**
 		 * The line algorithm.
 		 */
