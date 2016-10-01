@@ -22,8 +22,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_REFERENCE_VARIANT_HH
-#define CLOCKWORK_REFERENCE_VARIANT_HH
+#ifndef CLOCKWORK_WEAK_VARIANT_HH
+#define CLOCKWORK_WEAK_VARIANT_HH
 
 #include <type_traits>
 
@@ -132,70 +132,6 @@ WeakVariant<Validator>::create(T& value) {
 	static_assert(Validator<T>::value);
 	return WeakVariant<Validator>(&value);
 }
-
-
-/**
- * Checks whether Type is a valid reference value type.
- */
-template<class Type>
-struct ReferenceVariantValidator : std::integral_constant<bool, true> {};
-/**
- * A ReferenceVariant is a data type that contains a non-owning reference to
- * any kind of object.
- */
-template<template<class> class Validator = ReferenceVariantValidator>
-class ReferenceVariant {
-public:
-	/**
-	 * Returns the referenced value.
-	 */
-	template<class Type> Type& get();
-	/**
-	 * Returns the referenced value.
-	 */
-	template<class Type> const Type& get() const;
-	/**
-	 * Instantiates a ReferenceVariant object with the specified referenced value.
-	 * @param value the referenced value.
-	 */
-	template<class Type> static ReferenceVariant<Validator> create(Type& value);
-private:
-	/**
-	 * Instantiates a ReferenceVariant object with the specified value.
-	 * @param the referenced value.
-	 */
-	inline explicit ReferenceVariant(void* const value);
-	/**
-	 * The referenced value.
-	 */
-	void* const value_;
-};
-
-
-template<template<class> class V>
-ReferenceVariant<V>::ReferenceVariant(void* const value) :
-value_(value) {}
-
-
-template<template<class> class V> template<class T> T&
-ReferenceVariant<V>::get() {
-	static_assert(V<T>::value);
-	return *static_cast<T*>(value_);
-}
-
-
-template<template<class> class V> template<class T> const T&
-ReferenceVariant<V>::get() const {
-	static_assert(V<T>::value);
-	return *static_cast<const T*>(value_);
-}
-
-
-template<template<class> class V> template<class T> ReferenceVariant<V>
-ReferenceVariant<V>::create(T& value) {
-	static_assert(V<T>::value);
-	return ReferenceVariant<V>(&value);
-}
 } // namespace clockwork
 
-#endif // CLOCKWORK_REFERENCE_VARIANT_HH
+#endif // CLOCKWORK_WEAK_VARIANT_HH
