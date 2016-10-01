@@ -24,6 +24,7 @@
  */
 #include "Scene.hh"
 #include "Suzanne.hh"
+#include "Camera.hh"
 
 using clockwork::Scene;
 
@@ -31,6 +32,7 @@ using clockwork::Scene;
 Scene::Scene() :
 viewer_(nullptr) {
 	//TODO Remove this when done debugging.
+	setViewer(SceneViewer::Type::Camera);
 	addNode(new asset::Suzanne());
 }
 
@@ -68,6 +70,14 @@ Scene::getViewer() const {
 
 
 void
-Scene::setViewer(const SceneViewer::Type) {
-	qFatal("[Scene::setViewer] Implement me!");
+Scene::setViewer(const SceneViewer::Type type) {
+	switch (type) {
+		case SceneViewer::Type::Camera:
+			viewer_.reset(new Camera("Default Camera"));
+			break;
+		default:
+			qWarning("[Scene::setViewer] Unknown SceneViewer type!");
+			viewer_.reset(nullptr);
+			break;
+	}
 }
