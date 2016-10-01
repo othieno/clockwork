@@ -25,7 +25,7 @@
 #ifndef CLOCKWORK_RENDERER_HH
 #define CLOCKWORK_RENDERER_HH
 
-#include "ReferenceVariant.hh"
+#include "WeakVariant.hh"
 #include "Point.hh"
 #include "Point3.hh"
 #include "Point4.hh"
@@ -94,7 +94,7 @@ public:
 	/**
 	 *
 	 */
-	using Uniform = ReferenceVariant<UniformValidator>;
+	using Uniform = WeakVariant<UniformValidator>;
 	/**
 	 * Checks whether T is a valid Varying value type. Varying attributes are
 	 * restricted to arithmetic types, as well as Point, Point3, Point4,
@@ -117,7 +117,7 @@ public:
 	/**
 	 *
 	 */
-	using Varying = ReferenceVariant<VaryingValidator>;
+	using Varying = WeakVariant<VaryingValidator>;
 	/**
 	 *
 	 */

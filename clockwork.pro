@@ -90,7 +90,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/system/task/Task.hh \
 		src/system/task/TaskManager.hh \
 		src/types/Factory.hh \
-		src/types/ReferenceVariant.hh \
+		src/types/WeakVariant.hh \
 		src/ui/FramebufferProvider.hh \
 		src/ui/UserInterface.hh
 	SOURCES += \
