@@ -76,6 +76,10 @@ public:
      */
     GraphicsEngine& operator=(GraphicsEngine&&) = delete;
     /**
+     * Clears the framebuffer.
+     */
+    void clear();
+    /**
      * Renders the specified scene.
      */
     void render(const Scene& scene);

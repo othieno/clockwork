@@ -36,6 +36,12 @@ GraphicsEngine::~GraphicsEngine() {}
 
 
 void
+GraphicsEngine::clear() {
+	framebuffer_.clear();
+}
+
+
+void
 GraphicsEngine::render(const Scene& scene) {
 	const auto* const viewer = scene.getViewer();
 	if (viewer != nullptr) {
