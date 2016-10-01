@@ -143,6 +143,12 @@ public:
 	 * @param type the type of the property to remove.
 	 */
 	void removeProperty(const SceneObjectProperty::Type type);
+	/**
+	 * Returns the object's appearance property if one exists, nullptr otherwise.
+	 */
+	inline const SceneObjectAppearance* getAppearanceProperty() const {
+		return getProperty<const SceneObjectAppearance>(SceneObjectProperty::Type::Appearance);
+	}
 private:
 	/**
 	 * The scene object's position in the world.

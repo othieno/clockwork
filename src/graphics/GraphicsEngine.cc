@@ -56,7 +56,7 @@ GraphicsEngine::render(const Scene& scene) {
 
 		for (const SceneObject* object : scene.getAllNodes<SceneObject>()) {
 			if (object != nullptr) {
-				const auto* appearance = object->getProperty<const SceneObjectAppearance>(SceneObjectProperty::Type::Appearance);
+				const auto* appearance = object->getAppearanceProperty();
 				if (appearance != nullptr && appearance->hasMesh()) {
 					const auto& MODEL = object->getModelTransform();
 					const auto& MODELVIEW = VIEW * MODEL;
