@@ -48,11 +48,6 @@ GraphicsEngine::render(const Scene& scene) {
 }
 
 
-void
-GraphicsEngine::renderObject(const SceneViewer&, const SceneObject&) {
-}
-
-
 clockwork::Framebuffer&
 GraphicsEngine::getFramebuffer() {
 	return framebuffer_;
