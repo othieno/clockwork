@@ -56,7 +56,8 @@ public:
 	 */
 	SceneObjectAppearance& operator=(SceneObjectAppearance&&) = delete;
 	/**
-	 * Returns true if the property has a polygon mesh, false otherwise.
+	 * Returns true if the property has a non-empty polygon mesh, false otherwise.
+	 * A polygon mesh is considered empty if it has no faces and vertices.
 	 */
 	bool hasMesh() const;
 	/**
