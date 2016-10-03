@@ -105,6 +105,10 @@ private:
 	 */
 	Mesh() = default;
 	/**
+	 *
+	 */
+	void load(QFile&) override;
+	/**
 	 * The polygon mesh's vertices.
 	 */
 	QList<Point3> vertices_;

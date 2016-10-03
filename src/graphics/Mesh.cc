@@ -61,3 +61,9 @@ void
 Mesh::setMaterial(const clockwork::Material& material) {
 	material_ = material;
 }
+
+
+void
+Mesh::load(QFile& file) {
+	Q_UNUSED(file);
+}

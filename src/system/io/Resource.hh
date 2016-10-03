@@ -28,6 +28,10 @@
 #include <QObject>
 
 
+/**
+ * @see QFile.
+ */
+class QFile;
 namespace clockwork {
 /**
  *
@@ -60,6 +64,12 @@ protected:
 	 *
 	 */
 	Resource() = default;
+private:
+	/**
+	 * Loads the resource from the specified file.
+	 * @param file the file containing the resource to load.
+	 */
+	virtual void load(QFile& file) = 0;
 };
 } // namespace clockwork
 
