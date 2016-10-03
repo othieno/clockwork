@@ -25,10 +25,12 @@
 #ifndef CLOCKWORK_RESOURCE_MANAGER_HH
 #define CLOCKWORK_RESOURCE_MANAGER_HH
 
+#include <QFile>
 #include <QHash>
 #include <QCryptographicHash>
 #include <memory>
 #include "Resource.hh"
+#include "Error.hh"
 
 
 namespace clockwork {
@@ -43,7 +45,7 @@ class Service;
 /**
  *
  */
-class ResourceManager {
+class ResourceManager : private QObject {
 	friend class Service;
 public:
 	/**
@@ -63,25 +65,51 @@ public:
 	 */
 	ResourceManager& operator=(const ResourceManager&&) = delete;
 	/**
-	 * Loads a polygon mesh from the file with the specified filename.
-	 * @param filename the name of the file containing the mesh to load.
+	 * Loads a resource from the file with the specified name.
+	 * @param filename the name of the file containing the resource to load.
 	 */
-	const Mesh* loadMesh(const QString& filename);
+	template<class ResourceType>
+	const ResourceType* load(const QString& filename) {
+		static_assert(std::is_base_of<Resource, ResourceType>::value);
+
+		QFile file;
+		auto error = open(filename, file);
+		if (error != Error::None) {
+			return nullptr;
+		}
+
+		const auto& fileHash = getFileHash(file, QCryptographicHash::Md4);
+		if (fileHash.isEmpty()) {
+			return nullptr;
+		}
+
+		// Before loading the resource, check if it's been cached.
+		ResourceType* resource = findChild<ResourceType*>(fileHash, Qt::FindDirectChildrenOnly);
+		if (resource == nullptr) {
+			resource = new ResourceType;
+			resource->setObjectName(fileHash);
+			resource->setParent(this);
+			resource->load(file);
+		}
+		return resource;
+	}
 private:
 	/**
 	 * Instantiates a ResourceManager object.
 	 */
 	ResourceManager() = default;
 	/**
+	 * Opens a file with the specified filename.
+	 * @param filename the name of the file to open.
+	 * @param file a reference to the File object to be updated.
+	 */
+	static Error open(const QString& filename, QFile& file);
+	/**
 	 * Returns the specified file's hash.
-	 * @param filename the name of the file to hash.
+	 * @param file an open, readable file to hash.
 	 * @param algorithm the hashing algorithm to use.
 	 */
-	static QString getFileHash(const QString& filename, const QCryptographicHash::Algorithm algorithm);
-	/**
-	 * The resource dictionary where each resource is identified by a unique hash.
-	 */
-	QHash<const QString, std::unique_ptr<Resource>> resources_;
+	static QString getFileHash(QFile& file, const QCryptographicHash::Algorithm algorithm);
 };
 } // namespace clockwork
 

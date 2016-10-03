@@ -24,6 +24,7 @@
  */
 #include "SceneObjectAppearance.hh"
 #include "Service.hh"
+#include "Mesh.hh"
 
 using clockwork::SceneObjectAppearance;
 
@@ -53,7 +54,7 @@ SceneObjectAppearance::setMesh(const Mesh& mesh) {
 
 void
 SceneObjectAppearance::setMesh(const QString& filename) {
-	mesh_ = Service::Resources.loadMesh(filename);
+	mesh_ = Service::Resources.load<Mesh>(filename);
 }
 
 

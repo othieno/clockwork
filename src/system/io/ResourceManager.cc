@@ -29,57 +29,32 @@
 using clockwork::ResourceManager;
 
 
-// TODO Use Bloom filter on filenames, before hashing files.
+clockwork::Error
+ResourceManager::open(const QString& filename, QFile& file) {
+	// Make sure the referenced file is closed.
+	file.close();
 
-const clockwork::Mesh*
-ResourceManager::loadMesh(const QString& filename)
-{
-	const Mesh* mesh = nullptr;
-	const auto& fileHash = getFileHash(filename, QCryptographicHash::Md4);
-	if (!fileHash.isEmpty()) {
-		if (resources_.contains(fileHash)) {
-			//mesh = static_cast<Mesh*>(resources_[fileHash]);
-		} else {
-/*
-			// A new mesh has to be instantiated and cached.
-			output = new clockwork::graphics::Mesh;
-			assert(output != nullptr);
-
-			// The input file cursor needs rewound to the beginning of the file since
-			// it's currently at the end of the file.
-			assert(file.reset());
-
-			auto error = clockwork::io::loadOBJ(file, *output);
-			if (error != clockwork::Error::None)
-			{
-				delete output;
-				output = nullptr;
-
-				std::cout << error << std::endl;
-			}
-			else
-				_resources.insert(key, output);
-*/
-		}
+	auto error = clockwork::Error::None;
+	file.setFileName(filename);
+	if (!file.open(QIODevice::ReadOnly)) {
+		error = clockwork::Error::FileNotAccessible;
 	}
-	return mesh;
+	return error;
 }
 
 
 QString
-ResourceManager::getFileHash(const QString& filename, const QCryptographicHash::Algorithm algorithm) {
-	QString hash;
-	const QFileInfo info(filename);
-	if (info.exists() && info.isFile() && info.isReadable() && info.size() > 0) {
-		QCryptographicHash hashGenerator(algorithm);
-		QFile file(filename);
+ResourceManager::getFileHash(QFile& file, const QCryptographicHash::Algorithm algorithm) {
+	QString fileHash;
+	if (file.isOpen() && file.isReadable()) {
+		file.reset(); // Make sure to start at the beginning of the file.
 
-		file.open(QIODevice::ReadOnly);
+		constexpr std::size_t READ_SIZE = 8192;
+		QCryptographicHash fileHashGenerator(algorithm);
 		while (!file.atEnd()) {
-			hashGenerator.addData(file.read(8192));
+			fileHashGenerator.addData(file.read(READ_SIZE));
 		}
-		file.close();
-		hash = hashGenerator.result().toHex();
+		fileHash = fileHashGenerator.result().toHex();
 	}
-	return hash;
+	return fileHash;
 }
