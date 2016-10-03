@@ -105,9 +105,10 @@ private:
 	 */
 	Mesh() = default;
 	/**
-	 *
+	 * Loads a polygon mesh from the specified file.
+	 * @param file a file containing the data to load.
 	 */
-	void load(QFile&) override;
+	void load(QFile& file) override;
 	/**
 	 * The polygon mesh's vertices.
 	 */

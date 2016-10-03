@@ -84,6 +84,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/system/ApplicationPreferences.hh \
 		src/system/Error.hh \
 		src/system/Service.hh \
+		src/system/io/fileReader.hh \
 		src/system/io/Resource.hh \
 		src/system/io/ResourceManager.hh \
 		src/system/io/toString.hh \
@@ -127,6 +128,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/system/Application.cc \
 		src/system/ApplicationPreferences.cc \
 		src/system/Service.cc \
+		src/system/io/fileReader.cc \
 		src/system/io/Resource.cc \
 		src/system/io/ResourceManager.cc \
 		src/system/io/toString.cc \
