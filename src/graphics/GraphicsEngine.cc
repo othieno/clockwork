@@ -61,7 +61,7 @@ GraphicsEngine::render(const Scene& scene) {
 		context.uniform.insert("VIEWPROJECTION", Renderer::Uniform::create<const Matrix4>(VIEWPROJECTION));
 
 		for (const SceneObject* object : scene.getAllNodes<SceneObject>()) {
-			if (object != nullptr) {
+			if (object != nullptr && !object->isPruned() && viewer->isObjectVisible(*object)) {
 				const auto* appearance = object->getAppearanceProperty();
 				if (appearance != nullptr && appearance->hasMesh()) {
 					const auto& MODEL = object->getModelTransform();
