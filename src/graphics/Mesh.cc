@@ -28,42 +28,6 @@
 using clockwork::Mesh;
 
 
-const QList<clockwork::Point3>&
-Mesh::getVertices() const {
-	return vertices_;
-}
-
-
-void
-Mesh::setVertices(const QList<clockwork::Point3>& vertices) {
-	vertices_ = vertices;
-}
-
-
-const QList<Mesh::Face>&
-Mesh::getFaces() const {
-	return faces_;
-}
-
-
-void
-Mesh::setFaces(const QList<Mesh::Face>& faces) {
-	faces_ = faces;
-}
-
-
-const clockwork::Material&
-Mesh::getMaterial() const {
-	return material_;
-}
-
-
-void
-Mesh::setMaterial(const clockwork::Material& material) {
-	material_ = material;
-}
-
-
 void
 Mesh::load(QFile& file) {
 	auto error = io::readOBJ(file, *this);

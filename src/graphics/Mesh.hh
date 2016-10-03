@@ -40,23 +40,6 @@ class Mesh : public Resource {
 	friend class ResourceManager;
 public:
 	/**
-	 * A triangle polygon face.
-	 */
-	struct Face {
-		/**
-		 * The index of each vertex that makes up this face.
-		 */
-		std::array<std::uint32_t, 3> indices;
-		/**
-		 * The surface normals for each vertex in the face.
-		 */
-		std::array<Vector3, 3> normals;
-		/**
-		 * The texture mapping coordinates for each vertex in the face.
-		 */
-		std::array<Point, 3> uv;
-	};
-	/**
 	 *
 	 */
 	Mesh(const Mesh&) = delete;
@@ -73,32 +56,33 @@ public:
 	 */
 	Mesh& operator=(Mesh&&) = delete;
 	/**
-	 * Returns the mesh's vertex positions.
+	 * The polygon mesh's vertices.
 	 */
-	const QList<Point3>& getVertices() const;
+	QList<Point3> vertices;
 	/**
-	 * Sets the polygon mesh's vertex positions.
-	 * @param vertices the mesh's vertex positions.
+	 * The polygon mesh's vertex index buffer.
 	 */
-	void setVertices(const QList<Point3>& vertices);
+	QList<std::uint32_t> vertexIndices;
 	/**
-	 * Returns the mesh's polygon faces.
+	 * The polygon mesh's texture coordinates.
 	 */
-	const QList<Face>& getFaces() const;
+	QList<Point> textureCoordinates;
 	/**
-	 * Sets the polygon mesh's faces.
-	 * @param faces the mesh's faces.
+	 * The polygon mesh's texture coordinate index buffer.
 	 */
-	void setFaces(const QList<Face>& faces);
+	QList<std::uint32_t> textureCoordinateIndices;
 	/**
-	 * Returns the mesh's material.
+	 * The polygon mesh's vertex normals.
 	 */
-	const Material& getMaterial() const;
+	QList<Vector3> normals;
 	/**
-	 * Sets the mesh's material.
-	 * @param material the material to set.
+	 * The polygon mesh's normal index buffer.
 	 */
-	void setMaterial(const Material& material);
+	QList<std::uint32_t> normalIndices;
+	/**
+	 * The polygon mesh's material information.
+	 */
+	Material material;
 private:
 	/**
 	 *
@@ -109,18 +93,6 @@ private:
 	 * @param file a file containing the data to load.
 	 */
 	void load(QFile& file) override;
-	/**
-	 * The polygon mesh's vertices.
-	 */
-	QList<Point3> vertices_;
-	/**
-	 * The polygon mesh's polygon faces.
-	 */
-	QList<Face> faces_;
-	/**
-	 * The polygon mesh's material information.
-	 */
-	Material material_;
 };
 } // namespace clockwork
 
