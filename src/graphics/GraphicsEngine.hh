@@ -30,10 +30,6 @@
 
 namespace clockwork {
 /**
- * see Fragment.hh.
- */
-class Fragment;
-/**
  * @see scene/Scene.hh.
  */
 class Scene;
@@ -87,11 +83,6 @@ public:
      * Returns the framebuffer instance.
      */
     Framebuffer& getFramebuffer();
-    /**
-     * Returns true if the specified fragment passes all fragment tests, false otherwise.
-     * @param fragment the Fragment instance to test.
-     */
-    bool fragmentPasses(const Fragment& fragment);
 private:
     /**
      *

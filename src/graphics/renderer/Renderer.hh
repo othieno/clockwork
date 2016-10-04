@@ -30,6 +30,10 @@
 
 namespace clockwork {
 /**
+ * see Fragment.hh.
+ */
+class Fragment;
+/**
  * @see graphics/Mesh.hh.
  */
 class Mesh;
@@ -45,6 +49,14 @@ public:
 	 * @param mesh the polygon mesh to render.
 	 */
 	static void draw(RenderingContext& context, const Mesh& mesh){}
+	/**
+	 * Returns true if the specified fragment passes all fragment tests, false otherwise.
+	 * @param context the rendering context.
+	 * @param fragment the fragment to test.
+	 */
+	static bool fragmentPasses(const RenderingContext& context, const Fragment& fragment){
+		return true;
+	}
 };
 } // namespace clockwork
 
