@@ -54,10 +54,10 @@ GraphicsEngine::render(const Scene& scene) {
 		context.framebuffer = &framebuffer_;
 		context.primitiveMode = viewer->getPrimitiveMode();
 		context.viewport = &viewer->getViewport();
-		context.uniform.insert("PROJECTION", Renderer::Uniform::create<const Matrix4>(PROJECTION));
-		context.uniform.insert("VIEW", Renderer::Uniform::create<const Matrix4>(VIEW));
-		context.uniform.insert("viewpoint", Renderer::Uniform::create<const Point3>(viewer->getPosition()));
-		context.uniform.insert("VIEWPROJECTION", Renderer::Uniform::create<const Matrix4>(VIEWPROJECTION));
+		context.uniform.insert("PROJECTION", Uniform::create<const Matrix4>(PROJECTION));
+		context.uniform.insert("VIEW", Uniform::create<const Matrix4>(VIEW));
+		context.uniform.insert("viewpoint", Uniform::create<const Point3>(viewer->getPosition()));
+		context.uniform.insert("VIEWPROJECTION", Uniform::create<const Matrix4>(VIEWPROJECTION));
 
 		std::function<void(Renderer::PipelineContext&, const Mesh&)> draw = &Renderer::draw;
 		switch (viewer->getRenderingAlgorithm()) {
@@ -104,11 +104,11 @@ GraphicsEngine::render(const Scene& scene) {
 					const auto& INVERSE_MODEL = Matrix4::inverse(MODEL);
 					const auto& NORMAL = Matrix4::transpose(Matrix4::inverse(MODELVIEW));
 
-					context.uniform.insert("MODEL", Renderer::Uniform::create<const Matrix4>(MODEL));
-					context.uniform.insert("MODELVIEW", Renderer::Uniform::create<const Matrix4>(MODELVIEW));
-					context.uniform.insert("MODELVIEWPROJECTION", Renderer::Uniform::create<const Matrix4>(MODELVIEWPROJECTION));
-					context.uniform.insert("INVERSE_MODEL", Renderer::Uniform::create<const Matrix4>(INVERSE_MODEL));
-					context.uniform.insert("NORMAL", Renderer::Uniform::create<const Matrix4>(NORMAL));
+					context.uniform.insert("MODEL", Uniform::create<const Matrix4>(MODEL));
+					context.uniform.insert("MODELVIEW", Uniform::create<const Matrix4>(MODELVIEW));
+					context.uniform.insert("MODELVIEWPROJECTION", Uniform::create<const Matrix4>(MODELVIEWPROJECTION));
+					context.uniform.insert("INVERSE_MODEL", Uniform::create<const Matrix4>(INVERSE_MODEL));
+					context.uniform.insert("NORMAL", Uniform::create<const Matrix4>(NORMAL));
 
 					draw(context, *appearance->getMesh());
 				}

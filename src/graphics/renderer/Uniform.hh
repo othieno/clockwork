@@ -22,61 +22,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_RENDERER_HH
-#define CLOCKWORK_RENDERER_HH
+#ifndef CLOCKWORK_UNIFORM_HH
+#define CLOCKWORK_UNIFORM_HH
 
 #include "WeakVariant.hh"
-#include "Primitive.hh"
-#include "Uniform.hh"
-#include <QHash>
+#include "Point.hh"
+#include "Point3.hh"
+#include "Point4.hh"
+#include "Vector3.hh"
+#include "Vector4.hh"
+#include "Matrix4.hh"
+#include "ColorARGB.hh"
 
 
 namespace clockwork {
+namespace {
 /**
- * @see graphics/Framebuffer.hh.
+ * Checks whether T is a valid Uniform value type.
  */
-class Framebuffer;
-/**
- * @see graphics/Mesh.hh.
- */
-class Mesh;
-/**
- * @see graphics/Viewport.hh.
- */
-struct Viewport;
+template<class T>
+struct UniformValidator :
+std::integral_constant<bool,
+	std::is_base_of<Point, T>::value ||
+	std::is_base_of<Point3, T>::value ||
+	std::is_base_of<Point4, T>::value ||
+	std::is_base_of<Vector3, T>::value ||
+	std::is_base_of<math::Vector4i, T>::value ||
+	std::is_base_of<math::Vector4u, T>::value ||
+	std::is_base_of<math::Vector4f, T>::value ||
+	std::is_base_of<math::Vector4d, T>::value ||
+	std::is_base_of<Matrix4, T>::value ||
+	std::is_base_of<ColorARGB, T>::value ||
+	std::is_arithmetic<T>::value> {};
+}
 /**
  *
  */
-class Renderer {
-public:
-	/**
-	 *
-	 */
-	struct PipelineContext {
-		/**
-		 * The framebuffer.
-		 */
-		Framebuffer* framebuffer;
-		/**
-		 * The primitive mode.
-		 */
-		Primitive primitiveMode;
-		/**
-		 * The viewport.
-		 */
-		const Viewport* viewport;
-		/**
-		 * The set of uniform variables.
-		 */
-		QHash<QString, Uniform> uniform;
-	};
-	/**
-	 * Renders the specified mesh in the given state.
-	 * @param context the rendering pipeline context.
-	 * @param mesh the polygon mesh to render.
-	 */
-	static void draw(PipelineContext& context, const Mesh& mesh);
-};
+using Uniform = WeakVariant<UniformValidator>;
 } // namespace clockwork
 
-#endif // CLOCKWORK_RENDERER_HH
+#endif // CLOCKWORK_UNIFORM_HH
