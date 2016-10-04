@@ -66,29 +66,6 @@ public:
 	 */
 	using Uniform = WeakVariant<UniformValidator>;
 	/**
-	 * Checks whether T is a valid Varying value type. Varying attributes are
-	 * restricted to arithmetic types, as well as Point, Point3, Point4,
-	 * Vector3, Vector4, Matrix4 or ColorARGB.
-	 */
-	template<class T>
-	struct VaryingValidator :
-	std::integral_constant<bool,
-		std::is_arithmetic<T>::value ||
-		std::is_base_of<Point, T>::value ||
-		std::is_base_of<Point3, T>::value ||
-		std::is_base_of<Point4, T>::value ||
-		std::is_base_of<Vector3, T>::value ||
-		std::is_base_of<math::Vector4i, T>::value ||
-		std::is_base_of<math::Vector4u, T>::value ||
-		std::is_base_of<math::Vector4f, T>::value ||
-		std::is_base_of<math::Vector4d, T>::value ||
-		std::is_base_of<Matrix4, T>::value ||
-		std::is_base_of<ColorARGB, T>::value> {};
-	/**
-	 *
-	 */
-	using Varying = WeakVariant<VaryingValidator>;
-	/**
 	 *
 	 */
 	struct PipelineContext {
@@ -108,10 +85,6 @@ public:
 		 * The set of uniform variables.
 		 */
 		QHash<QString, Uniform> uniform;
-		/**
-		 * The set of varying variables.
-		 */
-		QHash<QString, Varying> varying;
 	};
 	/**
 	 * Renders the specified mesh in the given state.
