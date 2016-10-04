@@ -56,22 +56,6 @@ struct Viewport;
 class Renderer {
 public:
 	/**
-	 * An enumeration of available rendering algorithms.
-	 */
-	enum class RenderingAlgorithm {
-		Point,
-		Wireframe,
-		Random,
-		Depth,
-		Normals,
-		Texture,
-		Constant,
-		Phong,
-		Cel,
-		Bump,
-		Deferred
-	};
-	/**
 	 * Checks whether T is a valid Uniform value type.
 	 */
 	template<class T>
