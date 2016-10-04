@@ -27,6 +27,7 @@
 
 #include "RendererX.hh"
 #include "Point4.hh"
+#include "ColorARGB.hh"
 
 
 namespace clockwork {
@@ -34,7 +35,14 @@ namespace clockwork {
  *
  */
 struct PointVertexAttributes {
+	/**
+	 * The vertex's position.
+	 */
 	Point4 position;
+	/**
+	 * The vertex's color.
+	 */
+	ColorARGB color;
 };
 /**
  *
