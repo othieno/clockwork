@@ -37,7 +37,7 @@ struct WireframeVertexAttributes : public PointVertexAttributes {
 /**
  *
  */
-class WireframeRenderer : public RendererX<WireframeRenderer, PointVertexAttributes> {
+class WireframeRenderer : public Renderer<WireframeRenderer, PointVertexAttributes> {
 };
 } // namespace clockwork
 

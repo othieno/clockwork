@@ -47,7 +47,7 @@ struct PointVertexAttributes {
 /**
  *
  */
-class PointRenderer : public RendererX<PointRenderer, PointVertexAttributes> {
+class PointRenderer : public Renderer<PointRenderer, PointVertexAttributes> {
 };
 } // namespace clockwork
 

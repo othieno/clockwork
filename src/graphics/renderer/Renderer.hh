@@ -25,9 +25,6 @@
 #ifndef CLOCKWORK_RENDERER_HH
 #define CLOCKWORK_RENDERER_HH
 
-#include "WeakVariant.hh"
-#include "Primitive.hh"
-#include "Uniform.hh"
 #include "RenderingContext.hh"
 
 
@@ -39,14 +36,15 @@ class Mesh;
 /**
  *
  */
+template<class Implementation, class VertexAttributes>
 class Renderer {
 public:
 	/**
-	 * Renders the specified mesh in the given state.
-	 * @param context the rendering pipeline context.
+	 * Renders the specified mesh in the given context.
+	 * @param context the rendering context.
 	 * @param mesh the polygon mesh to render.
 	 */
-	static void draw(RenderingContext& context, const Mesh& mesh);
+	static void draw(RenderingContext& context, const Mesh& mesh){}
 };
 } // namespace clockwork
 

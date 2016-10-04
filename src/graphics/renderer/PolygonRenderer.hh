@@ -42,7 +42,7 @@ struct PolygonVertexAttributes : public WireframeVertexAttributes {
 /**
  *
  */
-class PolygonRenderer : public RendererX<PointRenderer, PolygonVertexAttributes> {
+class PolygonRenderer : public Renderer<PointRenderer, PolygonVertexAttributes> {
 };
 } // namespace clockwork
 

@@ -24,6 +24,8 @@
  */
 #include "GraphicsEngine.hh"
 #include "Scene.hh"
+#include "PointRenderer.hh"
+#include "WireframeRenderer.hh"
 
 using clockwork::GraphicsEngine;
 
@@ -59,10 +61,10 @@ GraphicsEngine::render(const Scene& scene) {
 		context.uniforms.insert("viewpoint", Uniform::create<const Point3>(viewer->getPosition()));
 		context.uniforms.insert("VIEWPROJECTION", Uniform::create<const Matrix4>(VIEWPROJECTION));
 
-		std::function<void(RenderingContext&, const Mesh&)> draw = Renderer::draw;
+		std::function<void(RenderingContext&, const Mesh&)> draw = PointRenderer::draw;
 		switch (viewer->getRenderingAlgorithm()) {
 			case RenderingAlgorithm::Wireframe:
-				//draw = &WireframeRenderer::draw;
+				draw = WireframeRenderer::draw;
 				break;
 			case RenderingAlgorithm::Random:
 				//draw = &RandomShadingRenderer::draw;
