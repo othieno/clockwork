@@ -30,6 +30,7 @@
 #include "Frustum.hh"
 #include "Viewport.hh"
 #include "RenderingAlgorithm.hh"
+#include "Primitive.hh"
 #include "Renderer.hh"
 #include "ImageFilter.hh"
 #include "TextureFilter.hh"
@@ -127,12 +128,12 @@ public:
 	/**
 	 * Returns the viewer's primitive mode.
 	 */
-	Renderer::Primitive getPrimitiveMode() const;
+	Primitive getPrimitiveMode() const;
 	/**
 	 * Sets the viewer's primitive mode.
 	 * @param primitive the primitive mode to set.
 	 */
-	void setPrimitiveMode(const Renderer::Primitive primitive);
+	void setPrimitiveMode(const Primitive primitive);
 	/**
 	 * Returns the viewer's texture filter.
 	 */
@@ -232,7 +233,7 @@ private:
 	/**
 	 * The viewer's primitive mode.
 	 */
-	Renderer::Primitive primitiveMode_;
+	Primitive primitiveMode_;
 	/**
 	 * The unique identifier of the viewer's texture filter.
 	 */

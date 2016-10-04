@@ -26,6 +26,7 @@
 #define CLOCKWORK_RENDERER_HH
 
 #include "WeakVariant.hh"
+#include "Primitive.hh"
 #include "Point.hh"
 #include "Point3.hh"
 #include "Point4.hh"
@@ -60,18 +61,6 @@ public:
 	enum class LineDrawingAlgorithm {
 		Bresenham,
 		XiaolinWu
-	};
-	/**
-	 * An enumeration of available primitives.
-	 */
-	enum class Primitive {
-		Point,
-		Line,
-		LineStrip,
-		LineLoop,
-		Triangle,
-		TriangleStrip,
-		TriangleFan
 	};
 	/**
 	 * An enumeration of available rendering algorithms.

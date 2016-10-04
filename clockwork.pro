@@ -62,6 +62,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/filter/TextureFilterFactory.hh \
 		src/graphics/renderer/PointRenderer.hh \
 		src/graphics/renderer/PolygonRenderer.hh \
+		src/graphics/renderer/Primitive.hh \
 		src/graphics/renderer/Renderer.hh \
 		src/graphics/renderer/RendererX.hh \
 		src/graphics/renderer/WireframeRenderer.hh \

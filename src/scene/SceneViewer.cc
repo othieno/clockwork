@@ -35,7 +35,7 @@ updateCachedViewTransform_(true),
 updateCachedProjectionTransform_(true),
 renderingAlgorithm_(RenderingAlgorithm::Point),
 lineDrawingAlgorithm_(Renderer::LineDrawingAlgorithm::Bresenham),
-primitiveMode_(Renderer::Primitive::Triangle),
+primitiveMode_(Primitive::Triangle),
 textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {}
 
 
@@ -143,14 +143,14 @@ SceneViewer::setLineDrawingAlgorithm(const Renderer::LineDrawingAlgorithm algori
 }
 
 
-clockwork::Renderer::Primitive
+clockwork::Primitive
 SceneViewer::getPrimitiveMode() const {
 	return primitiveMode_;
 }
 
 
 void
-SceneViewer::setPrimitiveMode(const Renderer::Primitive primitive) {
+SceneViewer::setPrimitiveMode(const Primitive primitive) {
 	primitiveMode_ = primitive;
 }
 
