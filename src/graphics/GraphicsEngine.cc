@@ -61,41 +61,8 @@ GraphicsEngine::render(const Scene& scene) {
 		context.uniforms.insert("viewpoint", Uniform::create<const Point3>(viewer->getPosition()));
 		context.uniforms.insert("VIEWPROJECTION", Uniform::create<const Matrix4>(VIEWPROJECTION));
 
-		std::function<void(RenderingContext&, const Mesh&)> draw = PointRenderer::draw;
-		switch (viewer->getRenderingAlgorithm()) {
-			case RenderingAlgorithm::Wireframe:
-				draw = WireframeRenderer::draw;
-				break;
-			case RenderingAlgorithm::Random:
-				//draw = &RandomShadingRenderer::draw;
-				break;
-			case RenderingAlgorithm::Depth:
-				//draw = &DepthMapRenderer::draw;
-				break;
-			case RenderingAlgorithm::Normals:
-				//draw = &NormalMapRenderer::draw;
-				break;
-			case RenderingAlgorithm::Texture:
-				//draw = &TextureMapRenderer::draw;
-				break;
-			case RenderingAlgorithm::Constant:
-				//draw = &ConstantShadingRenderer::draw;
-				break;
-			case RenderingAlgorithm::Phong:
-				//draw = &PhongShadingRenderer::draw;
-				break;
-			case RenderingAlgorithm::Cel:
-				//draw = &CelShadingRenderer::draw;
-				break;
-			case RenderingAlgorithm::Bump:
-				//draw = &BumpMapRenderer::draw;
-				break;
-			case RenderingAlgorithm::Deferred:
-				//draw = &DeferredRenderer::draw;
-				break;
-			default:
-				break;
-		}
+		const auto& draw = getDrawFunction(viewer->getRenderingAlgorithm());
+
 		for (const SceneObject* object : scene.getAllNodes<SceneObject>()) {
 			if (object != nullptr && !object->isPruned() && viewer->isObjectVisible(*object)) {
 				const auto* appearance = object->getAppearanceProperty();
@@ -123,4 +90,22 @@ GraphicsEngine::render(const Scene& scene) {
 clockwork::Framebuffer&
 GraphicsEngine::getFramebuffer() {
 	return framebuffer_;
+}
+
+
+std::function<void(clockwork::RenderingContext&, const clockwork::Mesh&)>
+GraphicsEngine::getDrawFunction(const RenderingAlgorithm algorithm) {
+	switch (algorithm) {
+		case RenderingAlgorithm::Wireframe: return WireframeRenderer::draw;
+		case RenderingAlgorithm::Random: //return RandomShadingRenderer::draw;
+		case RenderingAlgorithm::Depth: //return DepthMapRenderer::draw;
+		case RenderingAlgorithm::Normals: //return NormalMapRenderer::draw;
+		case RenderingAlgorithm::Texture: //return TextureMapRenderer::draw;
+		case RenderingAlgorithm::Constant: //return ConstantShadingRenderer::draw;
+		case RenderingAlgorithm::Phong: //return PhongShadingRenderer::draw;
+		case RenderingAlgorithm::Cel: //return CelShadingRenderer::draw;
+		case RenderingAlgorithm::Bump: //return BumpMapRenderer::draw;
+		case RenderingAlgorithm::Deferred: //return DeferredRenderer::draw;
+		case RenderingAlgorithm::Point: default: return PointRenderer::draw;
+	}
 }

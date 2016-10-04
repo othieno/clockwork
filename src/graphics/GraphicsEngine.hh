@@ -26,25 +26,22 @@
 #define CLOCKWORK_GRAPHICS_ENGINE_HH
 
 #include "Framebuffer.hh"
+#include "RenderingAlgorithm.hh"
 
 
 namespace clockwork {
+/**
+ * @see Mesh.hh.
+ */
+class Mesh;
 /**
  * @see scene/Scene.hh.
  */
 class Scene;
 /**
- * @see scene/SceneObject.hh.
+ * @see renderer/RenderingContext.hh.
  */
-class SceneObject;
-/**
- * @see scene/SceneViewer.hh.
- */
-class SceneViewer;
-/**
- * @see system/Service.hh.
- */
-class Service;
+struct RenderingContext;
 /**
  *
  */
@@ -88,6 +85,11 @@ private:
      *
      */
     GraphicsEngine();
+    /**
+     * Returns the specified rendering algorithm's draw function.
+     * @param algorithm the rendering algorithm to query.
+     */
+    std::function<void(RenderingContext&, const Mesh&)> getDrawFunction(const RenderingAlgorithm algorithm);
     /**
      * The framebuffer.
      */
