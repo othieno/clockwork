@@ -25,9 +25,22 @@
 #ifndef CLOCKWORK_POINT_RENDERER_HH
 #define CLOCKWORK_POINT_RENDERER_HH
 
+#include "RendererX.hh"
+#include "Point4.hh"
+
 
 namespace clockwork {
-
+/**
+ *
+ */
+struct PointVertexAttributes {
+	Point4 position;
+};
+/**
+ *
+ */
+class PointRenderer : public RendererX<PointRenderer, PointVertexAttributes> {
+};
 } // namespace clockwork
 
 #endif // CLOCKWORK_POINT_RENDERER_HH

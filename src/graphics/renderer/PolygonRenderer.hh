@@ -25,9 +25,20 @@
 #ifndef CLOCKWORK_POLYGON_RENDERER_HH
 #define CLOCKWORK_POLYGON_RENDERER_HH
 
+#include "WireframeRenderer.hh"
+
 
 namespace clockwork {
-
+/**
+ *
+ */
+struct PolygonVertexAttributes : public WireframeVertexAttributes {
+};
+/**
+ *
+ */
+class PolygonRenderer : public RendererX<PointRenderer, PolygonVertexAttributes> {
+};
 } // namespace clockwork
 
 #endif // CLOCKWORK_POLYGON_RENDERER_HH

@@ -62,9 +62,10 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/filter/ImageFilterFactory.hh \
 		src/graphics/filter/TextureFilter.hh \
 		src/graphics/filter/TextureFilterFactory.hh \
-		src/graphics/renderer/LineRenderer.hh \
 		src/graphics/renderer/PointRenderer.hh \
 		src/graphics/renderer/PolygonRenderer.hh \
+		src/graphics/renderer/RendererX.hh \
+		src/graphics/renderer/WireframeRenderer.hh \
 		src/math/Frustum.hh \
 		src/math/Matrix4.hh \
 		src/math/Point.hh \
@@ -106,9 +107,9 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/Texture.cc \
 		src/graphics/filter/ImageFilter.cc \
 		src/graphics/filter/TextureFilter.cc \
-		src/graphics/renderer/LineRenderer.cc \
 		src/graphics/renderer/PointRenderer.cc \
 		src/graphics/renderer/PolygonRenderer.cc \
+		src/graphics/renderer/WireframeRenderer.cc \
 		src/graphics/Viewport.cc \
 		src/math/Frustum.cc \
 		src/math/Matrix4.cc \

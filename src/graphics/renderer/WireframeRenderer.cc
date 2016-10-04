@@ -22,4 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "LineRenderer.hh"
+#include "WireframeRenderer.hh"
+
+using clockwork::WireframeRenderer;
+using clockwork::WireframeVertexAttributes;

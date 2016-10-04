@@ -22,12 +22,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_LINE_RENDERER_HH
-#define CLOCKWORK_LINE_RENDERER_HH
+#ifndef CLOCKWORK_WIREFRAME_RENDERER_HH
+#define CLOCKWORK_WIREFRAME_RENDERER_HH
+
+#include "PointRenderer.hh"
 
 
 namespace clockwork {
-
+/**
+ *
+ */
+struct WireframeVertexAttributes : public PointVertexAttributes {
+};
+/**
+ *
+ */
+class WireframeRenderer : public RendererX<WireframeRenderer, PointVertexAttributes> {
+};
 } // namespace clockwork
 
-#endif // CLOCKWORK_LINE_RENDERER_HH
+#endif // CLOCKWORK_WIREFRAME_RENDERER_HH
