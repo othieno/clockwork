@@ -28,54 +28,25 @@
 #include "WeakVariant.hh"
 #include "Primitive.hh"
 #include "Uniform.hh"
-#include <QHash>
+#include "RenderingContext.hh"
 
 
 namespace clockwork {
 /**
- * @see graphics/Framebuffer.hh.
- */
-class Framebuffer;
-/**
  * @see graphics/Mesh.hh.
  */
 class Mesh;
-/**
- * @see graphics/Viewport.hh.
- */
-struct Viewport;
 /**
  *
  */
 class Renderer {
 public:
 	/**
-	 *
-	 */
-	struct PipelineContext {
-		/**
-		 * The framebuffer.
-		 */
-		Framebuffer* framebuffer;
-		/**
-		 * The primitive mode.
-		 */
-		Primitive primitiveMode;
-		/**
-		 * The viewport.
-		 */
-		const Viewport* viewport;
-		/**
-		 * The set of uniform variables.
-		 */
-		QHash<QString, Uniform> uniform;
-	};
-	/**
 	 * Renders the specified mesh in the given state.
 	 * @param context the rendering pipeline context.
 	 * @param mesh the polygon mesh to render.
 	 */
-	static void draw(PipelineContext& context, const Mesh& mesh);
+	static void draw(RenderingContext& context, const Mesh& mesh);
 };
 } // namespace clockwork
 

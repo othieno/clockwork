@@ -66,6 +66,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/Renderer.hh \
 		src/graphics/renderer/RendererX.hh \
 		src/graphics/renderer/RenderingAlgorithm.hh \
+		src/graphics/renderer/RenderingContext.hh \
 		src/graphics/renderer/Uniform.hh \
 		src/graphics/renderer/WireframeRenderer.hh \
 		src/math/Frustum.hh \

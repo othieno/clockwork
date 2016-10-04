@@ -22,12 +22,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "Renderer.hh"
-#include "Mesh.hh"
+#ifndef CLOCKWORK_RENDERING_CONTEXT_HH
+#define CLOCKWORK_RENDERING_CONTEXT_HH
 
-using clockwork::Renderer;
+#include "Primitive.hh"
+#include "Uniform.hh"
+#include <QHash>
 
 
-void
-Renderer::draw(RenderingContext&, const Mesh&) {
-}
+namespace clockwork {
+/**
+ * @see graphics/Framebuffer.hh.
+ */
+class Framebuffer;
+/**
+ * @see graphics/Viewport.hh.
+ */
+struct Viewport;
+/**
+ *
+ */
+struct RenderingContext {
+	/**
+	 * The framebuffer.
+	 */
+	Framebuffer* framebuffer;
+	/**
+	 * The viewport.
+	 */
+	const Viewport* viewport;
+	/**
+	 * The primitive mode.
+	 */
+	Primitive primitiveMode;
+	/**
+	 * The set of uniform variables used by the shader programs.
+	 */
+	QHash<QString, Uniform> uniforms;
+};
+} // namespace clockwork
+
+#endif // CLOCKWORK_RENDERING_CONTEXT_HH
