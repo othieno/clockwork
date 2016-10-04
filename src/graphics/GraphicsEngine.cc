@@ -52,7 +52,6 @@ GraphicsEngine::render(const Scene& scene) {
 		const Matrix4& VIEWPROJECTION = viewer->getViewProjectionTransform();
 
 		context.framebuffer = &framebuffer_;
-		context.lineDrawingAlgorithm = viewer->getLineDrawingAlgorithm();
 		context.primitiveMode = viewer->getPrimitiveMode();
 		context.viewport = &viewer->getViewport();
 		context.uniform.insert("PROJECTION", Renderer::Uniform::create<const Matrix4>(PROJECTION));

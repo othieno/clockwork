@@ -117,15 +117,6 @@ public:
 	 */
 	void setRenderingAlgorithm(const RenderingAlgorithm algorithm);
 	/**
-	 * Returns the viewer's line-drawing algorithm.
-	 */
-	Renderer::LineDrawingAlgorithm getLineDrawingAlgorithm() const;
-	/**
-	 * Sets the viewer's line-drawing algorithm.
-	 * @param algorithm the line-drawing algorithm to set.
-	 */
-	void setLineDrawingAlgorithm(const Renderer::LineDrawingAlgorithm algorithm);
-	/**
 	 * Returns the viewer's primitive mode.
 	 */
 	Primitive getPrimitiveMode() const;
@@ -226,10 +217,6 @@ private:
 	 * The viewer's rendering algorithm.
 	 */
 	RenderingAlgorithm renderingAlgorithm_;
-	/**
-	 * The viewer's line-drawing algorithm.
-	 */
-	Renderer::LineDrawingAlgorithm lineDrawingAlgorithm_;
 	/**
 	 * The viewer's primitive mode.
 	 */

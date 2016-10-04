@@ -56,13 +56,6 @@ struct Viewport;
 class Renderer {
 public:
 	/**
-	 * An enumeration of available line-drawing algorithms.
-	 */
-	enum class LineDrawingAlgorithm {
-		Bresenham,
-		XiaolinWu
-	};
-	/**
 	 * An enumeration of available rendering algorithms.
 	 */
 	enum class RenderingAlgorithm {
@@ -119,10 +112,6 @@ public:
 		 * The framebuffer.
 		 */
 		Framebuffer* framebuffer;
-		/**
-		 * The line algorithm.
-		 */
-		LineDrawingAlgorithm lineDrawingAlgorithm;
 		/**
 		 * The primitive mode.
 		 */
