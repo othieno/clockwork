@@ -55,7 +55,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/Mesh.hh \
 		src/graphics/Projection.hh \
 		src/graphics/Texture.hh \
-		src/graphics/VertexAttributes.hh \
 		src/graphics/Viewport.hh \
 		src/graphics/filter/ImageFilter.hh \
 		src/graphics/filter/ImageFilterFactory.hh \
