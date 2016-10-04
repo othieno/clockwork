@@ -26,6 +26,7 @@
 #define CLOCKWORK_POLYGON_RENDERER_HH
 
 #include "WireframeRenderer.hh"
+#include "Vector4.hh"
 
 
 namespace clockwork {
@@ -33,6 +34,10 @@ namespace clockwork {
  *
  */
 struct PolygonVertexAttributes : public WireframeVertexAttributes {
+	/**
+	 * The vertex's normal vector.
+	 */
+	math::Vector4d normal;
 };
 /**
  *
