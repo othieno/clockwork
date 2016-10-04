@@ -56,7 +56,8 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/Projection.hh \
 		src/graphics/Renderer.hh \
 		src/graphics/Texture.hh \
-		src/graphics/VertexAttribute.hh \
+		src/graphics/VertexAttributes.hh \
+		src/graphics/Viewport.hh \
 		src/graphics/filter/ImageFilter.hh \
 		src/graphics/filter/ImageFilterFactory.hh \
 		src/graphics/filter/TextureFilter.hh \
@@ -64,7 +65,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/LineRenderer.hh \
 		src/graphics/renderer/PointRenderer.hh \
 		src/graphics/renderer/PolygonRenderer.hh \
-		src/graphics/Viewport.hh \
 		src/math/Frustum.hh \
 		src/math/Matrix4.hh \
 		src/math/Point.hh \

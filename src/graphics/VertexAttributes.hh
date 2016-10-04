@@ -22,8 +22,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_VERTEX_ATTRIBUTE_HH
-#define CLOCKWORK_VERTEX_ATTRIBUTE_HH
+#ifndef CLOCKWORK_VERTEX_ATTRIBUTES_HH
+#define CLOCKWORK_VERTEX_ATTRIBUTES_HH
 
 #include "Point.hh"
 #include "Point4.hh"
@@ -35,7 +35,7 @@ namespace clockwork {
 /**
  *
  */
-struct VertexAttribute {
+struct VertexAttributes {
 	/**
 	 * The vertex's homogeneous 3D position.
 	 */
@@ -43,7 +43,7 @@ struct VertexAttribute {
 	/**
 	 * The vertex's normal vector.
 	 */
-	math::Vector4<double> normal;
+	math::Vector4d normal;
 	/**
 	 * The vertex's color.
 	 */
@@ -55,4 +55,4 @@ struct VertexAttribute {
 };
 } // namespace clockwork
 
-#endif // CLOCKWORK_VERTEX_ATTRIBUTE_HH
+#endif // CLOCKWORK_VERTEX_ATTRIBUTES_HH
