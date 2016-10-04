@@ -33,7 +33,7 @@ type_(type),
 projection_(Projection::Perspective),
 updateCachedViewTransform_(true),
 updateCachedProjectionTransform_(true),
-renderingAlgorithm_(Renderer::RenderingAlgorithm::Point),
+renderingAlgorithm_(RenderingAlgorithm::Point),
 lineDrawingAlgorithm_(Renderer::LineDrawingAlgorithm::Bresenham),
 primitiveMode_(Renderer::Primitive::Triangle),
 textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {}
@@ -119,14 +119,14 @@ SceneViewer::setViewFrustum(const Frustum& viewFrustum) {
 }
 
 
-clockwork::Renderer::RenderingAlgorithm
+clockwork::RenderingAlgorithm
 SceneViewer::getRenderingAlgorithm() const {
 	return renderingAlgorithm_;
 }
 
 
 void
-SceneViewer::setRenderingAlgorithm(const Renderer::RenderingAlgorithm algorithm) {
+SceneViewer::setRenderingAlgorithm(const RenderingAlgorithm algorithm) {
 	renderingAlgorithm_ = algorithm;
 }
 

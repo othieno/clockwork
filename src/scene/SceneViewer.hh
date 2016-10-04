@@ -29,6 +29,7 @@
 #include "Projection.hh"
 #include "Frustum.hh"
 #include "Viewport.hh"
+#include "RenderingAlgorithm.hh"
 #include "Renderer.hh"
 #include "ImageFilter.hh"
 #include "TextureFilter.hh"
@@ -108,12 +109,12 @@ public:
 	/**
 	 * Returns the viewer's rendering algorithm.
 	 */
-	Renderer::RenderingAlgorithm getRenderingAlgorithm() const;
+	RenderingAlgorithm getRenderingAlgorithm() const;
 	/**
 	 * Sets the viewer's rendering algorithm.
 	 * @param algorithm the rendering algorithm to set.
 	 */
-	void setRenderingAlgorithm(const Renderer::RenderingAlgorithm algorithm);
+	void setRenderingAlgorithm(const RenderingAlgorithm algorithm);
 	/**
 	 * Returns the viewer's line-drawing algorithm.
 	 */
@@ -223,7 +224,7 @@ private:
 	/**
 	 * The viewer's rendering algorithm.
 	 */
-	Renderer::RenderingAlgorithm renderingAlgorithm_;
+	RenderingAlgorithm renderingAlgorithm_;
 	/**
 	 * The viewer's line-drawing algorithm.
 	 */

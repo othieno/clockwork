@@ -60,6 +60,41 @@ GraphicsEngine::render(const Scene& scene) {
 		context.uniform.insert("viewpoint", Renderer::Uniform::create<const Point3>(viewer->getPosition()));
 		context.uniform.insert("VIEWPROJECTION", Renderer::Uniform::create<const Matrix4>(VIEWPROJECTION));
 
+		std::function<void(Renderer::PipelineContext&, const Mesh&)> draw = &Renderer::draw;
+		switch (viewer->getRenderingAlgorithm()) {
+			case RenderingAlgorithm::Wireframe:
+				//draw = &WireframeRenderer::draw;
+				break;
+			case RenderingAlgorithm::Random:
+				//draw = &RandomShadingRenderer::draw;
+				break;
+			case RenderingAlgorithm::Depth:
+				//draw = &DepthMapRenderer::draw;
+				break;
+			case RenderingAlgorithm::Normals:
+				//draw = &NormalMapRenderer::draw;
+				break;
+			case RenderingAlgorithm::Texture:
+				//draw = &TextureMapRenderer::draw;
+				break;
+			case RenderingAlgorithm::Constant:
+				//draw = &ConstantShadingRenderer::draw;
+				break;
+			case RenderingAlgorithm::Phong:
+				//draw = &PhongShadingRenderer::draw;
+				break;
+			case RenderingAlgorithm::Cel:
+				//draw = &CelShadingRenderer::draw;
+				break;
+			case RenderingAlgorithm::Bump:
+				//draw = &BumpMapRenderer::draw;
+				break;
+			case RenderingAlgorithm::Deferred:
+				//draw = &DeferredRenderer::draw;
+				break;
+			default:
+				break;
+		}
 		for (const SceneObject* object : scene.getAllNodes<SceneObject>()) {
 			if (object != nullptr && !object->isPruned() && viewer->isObjectVisible(*object)) {
 				const auto* appearance = object->getAppearanceProperty();
@@ -76,7 +111,7 @@ GraphicsEngine::render(const Scene& scene) {
 					context.uniform.insert("INVERSE_MODEL", Renderer::Uniform::create<const Matrix4>(INVERSE_MODEL));
 					context.uniform.insert("NORMAL", Renderer::Uniform::create<const Matrix4>(NORMAL));
 
-					Renderer::draw(context, *appearance->getMesh());
+					draw(context, *appearance->getMesh());
 				}
 			}
 		}
