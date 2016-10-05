@@ -43,9 +43,14 @@ template<RenderingAlgorithm algorithm> struct VertexAttributes {};
 template<>
 struct VertexAttributes<RenderingAlgorithm::Point> {
 	/**
-	 * The vertex's position.
+	 * The vertex's position in object space.
 	 */
-	Point4 position;
+	const Point3& position;
+	/**
+	 * Instantiates the VertexAttributes object with the specified vertex position.
+	 * @param p a vertex's position.
+	 */
+	inline explicit VertexAttributes(const Point3& p = Point3()) : position(p) {}
 };
 /**
  * Vertex attributes for the Wireframe renderer.
