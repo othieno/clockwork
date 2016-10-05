@@ -2,8 +2,7 @@
 # www.blender3d.org
 
 # The Qt resource path to the material file.
-mtllib :/asset/models/suzanne.mtl
-
+mtllib :/asset/suzanne.mtl
 
 v 0.437500 0.164063 0.765625
 v -0.437500 0.164063 0.765625
