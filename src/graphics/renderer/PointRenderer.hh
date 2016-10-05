@@ -33,6 +33,23 @@ namespace clockwork {
  *
  */
 class PointRenderer : public Renderer<RenderingAlgorithm::Point, PointRenderer> {
+public:
+	/**
+	 * Creates a set of vertex attributes from the ith element of the specified face.
+	 */
+	static VertexAttributes createVertexAttributes(const Mesh::Face&, const std::size_t);
+	/**
+	 * Performs a per-vertex operation on the specified set of vertex attributes.
+	 */
+	static VertexShaderOutput vertexShader(const Uniforms&, Varying&, const VertexAttributes&);
+	/**
+	 * Removes invisible vertex shader outputs.
+	 */
+	static void clip(VertexShaderOutputs&);
+	/**
+	 * Converts the vertex shader output into a collection of fragments.
+	 */
+	static Fragments rasterize(const RenderingContext&, const VertexShaderOutputs&);
 };
 } // namespace clockwork
 

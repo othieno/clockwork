@@ -23,5 +23,65 @@
  * THE SOFTWARE.
  */
 #include "PointRenderer.hh"
+#include "Framebuffer.hh"
+#include "Mesh.hh"
+#include <cmath>
 
 using clockwork::PointRenderer;
+
+
+PointRenderer::VertexAttributes
+PointRenderer::createVertexAttributes(const Mesh::Face& face, const std::size_t i) {
+	return VertexAttributes(*face.positions[i]);
+}
+
+
+PointRenderer::VertexShaderOutput
+PointRenderer::vertexShader(
+	const Uniforms& uniforms,
+	PointRenderer::Varying&,
+	const PointRenderer::VertexAttributes& attributes
+) {
+	const auto& MVP = uniforms["MODELVIEWPROJECTION"].as<const Matrix4>();
+
+	VertexShaderOutput output;
+	output.position = MVP * Point4(attributes.position);
+
+	return output;
+}
+
+
+void
+PointRenderer::clip(VertexShaderOutputs& outputs) {
+	static const auto& filter = [](const VertexShaderOutput& output) {
+		// Use a normalized 2D viewing volume: [-1, 1] x [-1, 1].
+		constexpr double xmin = -1.0;
+		constexpr double xmax =  1.0;
+		constexpr double ymin = -1.0;
+		constexpr double ymax =  1.0;
+
+		const auto& p = output.position;
+		return p.x < xmin || p.x > xmax || p.y < ymin || p.y > ymax;
+	};
+	const auto& begin = outputs.begin();
+	const auto& end = outputs.end();
+
+	outputs.erase(std::remove_if(begin, end, filter), end);
+}
+
+
+PointRenderer::Fragments
+PointRenderer::rasterize(const RenderingContext&, const VertexShaderOutputs& primitives) {
+	Fragments fragments;
+	for (const auto& primitive : primitives) {
+		const auto& position = primitive.position;
+		Fragment fragment;
+		fragment.x = std::round(position.x);
+		fragment.y = std::round(position.y);
+		fragment.depth = position.z;
+		fragment.stencil = 0xFF;
+
+		fragments.append(fragment);
+	}
+	return fragments;
+}
