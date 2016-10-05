@@ -33,15 +33,15 @@ namespace clockwork {
 enum class RenderingAlgorithm {
 	Point,
 	Wireframe,
-	Random,
-	Depth,
-	Normals,
-	Texture,
-	Constant,
-	Phong,
-	Cel,
-	Bump,
-	Deferred
+	RandomShading,
+	FlatShading,
+	GouraudShading,
+	PhongShading,
+	CelShading,
+	DepthMapping,
+	NormalMapping,
+	BumpMapping,
+	TextureMapping,
 };
 } // namespace clockwork
 

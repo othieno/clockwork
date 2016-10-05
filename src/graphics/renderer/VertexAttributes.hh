@@ -56,57 +56,57 @@ struct VertexAttributes<RenderingAlgorithm::Wireframe> : VertexAttributes<Render
  * Vertex attributes for the random shading renderer.
  */
 template<>
-struct VertexAttributes<RenderingAlgorithm::Random> {};
+struct VertexAttributes<RenderingAlgorithm::RandomShading> {};
+/**
+ * Vertex attributes for the flat shading renderer.
+ */
+template<>
+struct VertexAttributes<RenderingAlgorithm::FlatShading> {};
+/**
+ * Vertex attributes for the Gouraud shading renderer.
+ */
+template<>
+struct VertexAttributes<RenderingAlgorithm::GouraudShading> {};
+/**
+ * Vertex attributes for the Phong shading renderer.
+ */
+template<>
+struct VertexAttributes<RenderingAlgorithm::PhongShading> {};
+/**
+ * Vertex attributes for the cel shading renderer.
+ */
+template<>
+struct VertexAttributes<RenderingAlgorithm::CelShading> {};
 /**
  * Vertex attributes for the depth mapping renderer.
  */
 template<>
-struct VertexAttributes<RenderingAlgorithm::Depth> {};
+struct VertexAttributes<RenderingAlgorithm::DepthMapping> {};
 /**
  * Vertex attributes for the normal mapping renderer.
  */
 template<>
-struct VertexAttributes<RenderingAlgorithm::Normals> {
+struct VertexAttributes<RenderingAlgorithm::NormalMapping> {
 	/**
 	 * The vertex's normal vector.
 	 */
 	math::Vector4d normal;
 };
 /**
+ * Vertex attributes for the bump mapping renderer.
+ */
+template<>
+struct VertexAttributes<RenderingAlgorithm::BumpMapping> : VertexAttributes<RenderingAlgorithm::NormalMapping> {};
+/**
  * Vertex attributes for the texture mapping renderer.
  */
 template<>
-struct VertexAttributes<RenderingAlgorithm::Texture> : VertexAttributes<RenderingAlgorithm::Normals> {
+struct VertexAttributes<RenderingAlgorithm::TextureMapping> : VertexAttributes<RenderingAlgorithm::BumpMapping> {
 	/**
 	 * The vertex's texture mapping coordinates.
 	 */
 	Point textureCoordinates;
 };
-/**
- * Vertex attributes for the constant (flat) shading renderer.
- */
-template<>
-struct VertexAttributes<RenderingAlgorithm::Constant> {};
-/**
- * Vertex attributes for the Phong shading renderer.
- */
-template<>
-struct VertexAttributes<RenderingAlgorithm::Phong> {};
-/**
- * Vertex attributes for the cel shading renderer.
- */
-template<>
-struct VertexAttributes<RenderingAlgorithm::Cel> {};
-/**
- * Vertex attributes for the bump mapping renderer.
- */
-template<>
-struct VertexAttributes<RenderingAlgorithm::Bump> {};
-/**
- * Vertex attributes for the deferred renderer.
- */
-template<>
-struct VertexAttributes<RenderingAlgorithm::Deferred> {};
 } // namespace detail
 } // namespace clockwork
 

@@ -97,15 +97,15 @@ std::function<void(clockwork::RenderingContext&, const clockwork::Mesh&)>
 GraphicsEngine::getDrawFunction(const RenderingAlgorithm algorithm) {
 	switch (algorithm) {
 		case RenderingAlgorithm::Wireframe: return WireframeRenderer::draw;
-		case RenderingAlgorithm::Random: //return RandomShadingRenderer::draw;
-		case RenderingAlgorithm::Depth: //return DepthMapRenderer::draw;
-		case RenderingAlgorithm::Normals: //return NormalMapRenderer::draw;
-		case RenderingAlgorithm::Texture: //return TextureMapRenderer::draw;
-		case RenderingAlgorithm::Constant: //return ConstantShadingRenderer::draw;
-		case RenderingAlgorithm::Phong: //return PhongShadingRenderer::draw;
-		case RenderingAlgorithm::Cel: //return CelShadingRenderer::draw;
-		case RenderingAlgorithm::Bump: //return BumpMapRenderer::draw;
-		case RenderingAlgorithm::Deferred: //return DeferredRenderer::draw;
+		case RenderingAlgorithm::RandomShading: //return RandomShadingRenderer::draw;
+		case RenderingAlgorithm::FlatShading: //return FlatShadingRenderer::draw;
+		case RenderingAlgorithm::GouraudShading: //return GouraudShadingRenderer::draw;
+		case RenderingAlgorithm::PhongShading: //return PhongShadingRenderer::draw;
+		case RenderingAlgorithm::CelShading: //return CelShadingRenderer::draw;
+		case RenderingAlgorithm::DepthMapping: //return DepthMappingRenderer::draw;
+		case RenderingAlgorithm::NormalMapping: //return NormalMappingRenderer::draw;
+		case RenderingAlgorithm::BumpMapping: //return BumpMappingRenderer::draw;
+		case RenderingAlgorithm::TextureMapping: //return TextureMappingRenderer::draw;
 		case RenderingAlgorithm::Point: default: return PointRenderer::draw;
 	}
 }
