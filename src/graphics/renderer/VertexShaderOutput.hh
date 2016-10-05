@@ -22,46 +22,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_RENDERER_HH
-#define CLOCKWORK_RENDERER_HH
+#ifndef CLOCKWORK_VERTEX_SHADER_OUTPUT_HH
+#define CLOCKWORK_VERTEX_SHADER_OUTPUT_HH
 
-#include "RenderingContext.hh"
-#include "VertexAttributes.hh"
-#include "VertexShaderOutput.hh"
+#include "RenderingAlgorithm.hh"
+#include "Point4.hh"
 
 
 namespace clockwork {
+namespace detail {
 /**
- * see Fragment.hh.
+ * The VertexShaderOutput is the result of a per-vertex operation (vertex shader)
+ * on a set of vertex attributes.
  */
-class Fragment;
-/**
- * @see graphics/Mesh.hh.
- */
-class Mesh;
-/**
- *
- */
-template<RenderingAlgorithm algorithm, class Implementation>
-class Renderer {
-public:
-	using VertexAttributes = detail::VertexAttributes<algorithm>;
-	using VertexShaderOutput = detail::VertexShaderOutput<algorithm>;
+template<RenderingAlgorithm algorithm>
+struct VertexShaderOutput {
 	/**
-	 * Renders the specified mesh in the given context.
-	 * @param context the rendering context.
-	 * @param mesh the polygon mesh to render.
+	 * The vertex position in clip space.
 	 */
-	static void draw(RenderingContext& context, const Mesh& mesh){}
-	/**
-	 * Returns true if the specified fragment passes all fragment tests, false otherwise.
-	 * @param context the rendering context.
-	 * @param fragment the fragment to test.
-	 */
-	static bool fragmentPasses(const RenderingContext& context, const Fragment& fragment){
-		return true;
-	}
+	Point4 position;
 };
+} // namespace detail
 } // namespace clockwork
 
-#endif // CLOCKWORK_RENDERER_HH
+#endif // CLOCKWORK_VERTEX_SHADER_OUTPUT_HH
