@@ -26,6 +26,7 @@
 #define CLOCKWORK_RENDERER_HH
 
 #include "RenderingContext.hh"
+#include "VertexAttributes.hh"
 
 
 namespace clockwork {
@@ -40,9 +41,10 @@ class Mesh;
 /**
  *
  */
-template<class Implementation, class VertexAttributes>
+template<RenderingAlgorithm algorithm, class Implementation>
 class Renderer {
 public:
+	using VertexAttributes = detail::VertexAttributes<algorithm>;
 	/**
 	 * Renders the specified mesh in the given context.
 	 * @param context the rendering context.

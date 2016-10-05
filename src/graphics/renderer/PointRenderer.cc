@@ -25,4 +25,3 @@
 #include "PointRenderer.hh"
 
 using clockwork::PointRenderer;
-using clockwork::PointVertexAttributes;

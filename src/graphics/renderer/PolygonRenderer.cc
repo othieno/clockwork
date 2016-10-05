@@ -25,4 +25,3 @@
 #include "PolygonRenderer.hh"
 
 using clockwork::PolygonRenderer;
-using clockwork::PolygonVertexAttributes;

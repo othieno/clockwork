@@ -25,24 +25,15 @@
 #ifndef CLOCKWORK_POLYGON_RENDERER_HH
 #define CLOCKWORK_POLYGON_RENDERER_HH
 
-#include "WireframeRenderer.hh"
-#include "Vector4.hh"
+#include "Renderer.hh"
 
 
 namespace clockwork {
 /**
  *
  */
-struct PolygonVertexAttributes : public WireframeVertexAttributes {
-	/**
-	 * The vertex's normal vector.
-	 */
-	math::Vector4d normal;
-};
-/**
- *
- */
-class PolygonRenderer : public Renderer<PointRenderer, PolygonVertexAttributes> {
+template<RenderingAlgorithm algorithm, class Implementation>
+class PolygonRenderer : public Renderer<algorithm, Implementation> {
 };
 } // namespace clockwork
 

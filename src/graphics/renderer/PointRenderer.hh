@@ -25,29 +25,14 @@
 #ifndef CLOCKWORK_POINT_RENDERER_HH
 #define CLOCKWORK_POINT_RENDERER_HH
 
-#include "RendererX.hh"
-#include "Point4.hh"
-#include "ColorARGB.hh"
+#include "Renderer.hh"
 
 
 namespace clockwork {
 /**
  *
  */
-struct PointVertexAttributes {
-	/**
-	 * The vertex's position.
-	 */
-	Point4 position;
-	/**
-	 * The vertex's color.
-	 */
-	ColorARGB color;
-};
-/**
- *
- */
-class PointRenderer : public Renderer<PointRenderer, PointVertexAttributes> {
+class PointRenderer : public Renderer<RenderingAlgorithm::Point, PointRenderer> {
 };
 } // namespace clockwork
 

@@ -25,4 +25,3 @@
 #include "WireframeRenderer.hh"
 
 using clockwork::WireframeRenderer;
-using clockwork::WireframeVertexAttributes;

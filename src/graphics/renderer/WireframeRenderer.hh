@@ -25,19 +25,14 @@
 #ifndef CLOCKWORK_WIREFRAME_RENDERER_HH
 #define CLOCKWORK_WIREFRAME_RENDERER_HH
 
-#include "PointRenderer.hh"
+#include "Renderer.hh"
 
 
 namespace clockwork {
 /**
  *
  */
-struct WireframeVertexAttributes : public PointVertexAttributes {
-};
-/**
- *
- */
-class WireframeRenderer : public Renderer<WireframeRenderer, PointVertexAttributes> {
+class WireframeRenderer : public Renderer<RenderingAlgorithm::Wireframe, WireframeRenderer> {
 };
 } // namespace clockwork
 
