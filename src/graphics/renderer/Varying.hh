@@ -22,48 +22,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_RENDERER_HH
-#define CLOCKWORK_RENDERER_HH
+#ifndef CLOCKWORK_VARYING_HH
+#define CLOCKWORK_VARYING_HH
 
-#include "RenderingContext.hh"
-#include "Varying.hh"
-#include "VertexAttributes.hh"
-#include "VertexShaderOutput.hh"
+#include "RenderingAlgorithm.hh"
 
 
 namespace clockwork {
+namespace detail {
 /**
- * see Fragment.hh.
+ * Varying variables are sets of data that are shared between the
+ * vertex and fragment shaders.
  */
-class Fragment;
-/**
- * @see graphics/Mesh.hh.
- */
-class Mesh;
-/**
- *
- */
-template<RenderingAlgorithm algorithm, class Implementation>
-class Renderer {
-public:
-	using Varying = detail::Varying<algorithm>;
-	using VertexAttributes = detail::VertexAttributes<algorithm>;
-	using VertexShaderOutput = detail::VertexShaderOutput<algorithm>;
-	/**
-	 * Renders the specified mesh in the given context.
-	 * @param context the rendering context.
-	 * @param mesh the polygon mesh to render.
-	 */
-	static void draw(RenderingContext& context, const Mesh& mesh){}
-	/**
-	 * Returns true if the specified fragment passes all fragment tests, false otherwise.
-	 * @param context the rendering context.
-	 * @param fragment the fragment to test.
-	 */
-	static bool fragmentPasses(const RenderingContext& context, const Fragment& fragment){
-		return true;
-	}
-};
+template<RenderingAlgorithm> struct Varying {};
+} // namespace detail
 } // namespace clockwork
 
-#endif // CLOCKWORK_RENDERER_HH
+#endif // CLOCKWORK_VARYING_HH

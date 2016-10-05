@@ -67,6 +67,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/RenderingAlgorithm.hh \
 		src/graphics/renderer/RenderingContext.hh \
 		src/graphics/renderer/Uniform.hh \
+		src/graphics/renderer/Varying.hh \
 		src/graphics/renderer/VertexAttributes.hh \
 		src/graphics/renderer/VertexShaderOutput.hh \
 		src/graphics/renderer/WireframeRenderer.hh \
