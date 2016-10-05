@@ -36,7 +36,7 @@ mesh_(nullptr) {}
 
 bool
 SceneObjectAppearance::hasMesh() const {
-	return mesh_ != nullptr && mesh_->vertices.size();
+	return mesh_ != nullptr && mesh_->positions.size();
 }
 
 

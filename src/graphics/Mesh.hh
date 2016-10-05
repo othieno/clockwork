@@ -40,6 +40,35 @@ class Mesh : public Resource {
 	friend class ResourceManager;
 public:
 	/**
+	 * A polygon mesh's triangular face.
+	 */
+	struct Face {
+		using Positions = std::array<const Point3*, 3>;
+		using TextureCoordinates = std::array<const Point*, 3>;
+		using Normals = std::array<const Vector3*, 3>;
+		/**
+		 * Instantiates a Face object with references to the specified positions,
+		 * texture coordinates and normal vectors.
+		 */
+		Face(const Positions&, const TextureCoordinates&, const Normals&);
+		/**
+		 * The positions of each vertex in the face.
+		 */
+		const Positions positions;
+		/**
+		 * The texture coordinates for each vertex in the face.
+		 */
+		const TextureCoordinates textureCoordinates;
+		/**
+		 * The normal vectors for each vertex in the face.
+		 */
+		const Normals normals;
+		/**
+		 * The surface normal.
+		 */
+		const Vector3 surfaceNormal;
+	};
+	/**
 	 *
 	 */
 	Mesh(const Mesh&) = delete;
@@ -56,29 +85,25 @@ public:
 	 */
 	Mesh& operator=(Mesh&&) = delete;
 	/**
-	 * The polygon mesh's vertices.
+	 * Removes all data from the mesh's arrays.
 	 */
-	QList<Point3> vertices;
+	void clear();
 	/**
-	 * The polygon mesh's vertex index buffer.
+	 * The polygon mesh's vertex positions.
 	 */
-	QList<std::uint32_t> vertexIndices;
+	QList<Point3> positions;
 	/**
 	 * The polygon mesh's texture coordinates.
 	 */
 	QList<Point> textureCoordinates;
 	/**
-	 * The polygon mesh's texture coordinate index buffer.
-	 */
-	QList<std::uint32_t> textureCoordinateIndices;
-	/**
 	 * The polygon mesh's vertex normals.
 	 */
 	QList<Vector3> normals;
 	/**
-	 * The polygon mesh's normal index buffer.
+	 * The polygon mesh's faces.
 	 */
-	QList<std::uint32_t> normalIndices;
+	QList<Face> faces;
 	/**
 	 * The polygon mesh's material information.
 	 */

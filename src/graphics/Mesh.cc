@@ -26,11 +26,50 @@
 #include "fileReader.hh"
 
 using clockwork::Mesh;
+using clockwork::Point3;
+using clockwork::Vector3;
+
+
+/**
+ * TODO Implement me.
+ * Calculates a surface normal.
+ */
+static Vector3
+calculateSurfaceNormal(const Mesh::Face::Positions& positions) {
+	const auto& p0 = *positions[0];
+	const auto& p1 = *positions[1];
+	const auto& p2 = *positions[2];
+
+	Q_UNUSED(p0);
+	Q_UNUSED(p1);
+	Q_UNUSED(p2);
+	return Vector3(0, 0, 0);
+}
+
+
+Mesh::Face::Face(
+	const Face::Positions& p,
+	const Face::TextureCoordinates& uv,
+	const Face::Normals& n
+) :
+positions(p),
+textureCoordinates(uv),
+normals(n),
+surfaceNormal(calculateSurfaceNormal(p)) {}
+
+
+void
+Mesh::clear() {
+	positions.clear();
+	textureCoordinates.clear();
+	normals.clear();
+	faces.clear();
+}
 
 
 void
 Mesh::load(QFile& file) {
-	auto error = io::readOBJ(file, *this);
+	auto error = parseOBJFile(file, *this);
 	if (error != Error::None) {
 		qFatal("[Mesh::load] Could not load mesh data!");
 	}
