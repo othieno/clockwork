@@ -23,9 +23,185 @@
  * THE SOFTWARE.
  */
 #include "fileReader.hh"
+#include "Mesh.hh"
+#include <QFile>
+#include <QFileInfo>
+#include <QTextStream>
+#include <QtDebug>
+
+clockwork::Error
+clockwork::parseMATFile(QFile& file, const QString& materialName, Material& material) {
+	// If the file is closed, it needs to be opened before it can be processed,
+	// and closed when parsing completes.
+	const bool fileOpened = file.isOpen();
+	if (!fileOpened) {
+		if (!file.open(QIODevice::ReadOnly) || !file.isReadable()) {
+			return Error::FileNotAccessible;
+		}
+	}
+	file.reset();
+
+	// Parse the file.
+	Q_UNUSED(materialName);
+	Q_UNUSED(material);
+
+	// Close the file if it was opened in the parser.
+	if (!fileOpened) {
+		file.close();
+	}
+	return Error::None;
+}
 
 
 clockwork::Error
-clockwork::io::readOBJ(QFile&, Mesh&) {
+clockwork::parseOBJFile(QFile& file, Mesh& mesh) {
+	// If the file is closed, it needs to be opened before it can be processed,
+	// and closed when parsing completes.
+	const bool fileOpened = file.isOpen();
+	if (!fileOpened) {
+		if (!file.open(QIODevice::ReadOnly) || !file.isReadable()) {
+			return Error::FileNotAccessible;
+		}
+	}
+	file.reset();
+	mesh.clear();
+
+	QFile materialFile;
+	auto& positions = mesh.positions;
+	auto& textureCoordinates = mesh.textureCoordinates;
+	auto& normals = mesh.normals;
+	auto& faces = mesh.faces;
+
+	QTextStream stream(&file);
+	stream.skipWhiteSpace();
+	while (!stream.atEnd()) {
+		// Read a line and remove any leading and trailing spaces. Furthermore,
+		// ignore empty lines and comments.
+		const auto& line = stream.readLine().simplified();
+		if (line.isEmpty() || line[0] == '#') {
+			continue;
+		}
+		auto tokens = line.split(" ");
+		if (tokens.isEmpty()) {
+			continue;
+		}
+
+		const auto& command = tokens.takeFirst();
+		if (command == "v") {
+			double x = tokens.takeFirst().toDouble();
+			double y = tokens.takeFirst().toDouble();
+			double z = tokens.takeFirst().toDouble();
+/*
+			double w = tokens.isEmpty() ? 1.0 : tokens.takeFirst().toDouble();
+			if (!qFuzzyCompare(w, 1.0)) {
+				x /= w;
+				y /= w;
+				z /= w;
+			}
+*/
+			positions.append(Point3(x, y, z));
+		} else if (command == "vt") {
+			const double u = tokens.takeFirst().toDouble();
+			const double v = 1.0 - tokens.takeFirst().toDouble();
+			//double w = tokens.isEmpty() ? 0.0 : tokens.takeFirst().toDouble();
+
+			textureCoordinates.append(Point(u, v));
+		} else if (command == "vn") {
+			const double i = tokens.takeFirst().toDouble();
+			const double j = tokens.takeFirst().toDouble();
+			const double k = tokens.takeFirst().toDouble();
+
+			// Since the normal isn't always a unit vector, normalize it just in case.
+			normals.append(Vector3::normalise(Vector3(i, j, k)));
+		} else if (command == "f") {
+			const std::size_t positionCount = positions.size();
+			const std::size_t uvCount = textureCoordinates.size();
+			const std::size_t normalCount = normals.size();
+			const std::size_t tokenCount = tokens.size();
+
+			QList<const Point3*> parsedPositions;
+			QList<const Point*> parsedTextureCoordinates;
+			QList<const Vector3*> parsedNormals;
+
+			while (!tokens.isEmpty()) {
+				auto subtokens = tokens.takeFirst().split("/");
+
+				const Point3* p = nullptr;
+				const Point* uv = nullptr;
+				const Vector3* n = nullptr;
+
+				// Parse the vertex position.
+				const int positionIndex = subtokens.takeFirst().toInt();
+				if (positionIndex < 0) {
+					p = &positions[positionIndex + positionCount];
+				} else {
+					p = &positions[positionIndex - 1];
+				}
+
+				// Parse the texture coordinates and normal vectors. Since these
+				// fields are optional, they may not be defined.
+				if (!subtokens.isEmpty()) {
+					const auto& uvIndexToken = subtokens.takeFirst();
+					if (!uvIndexToken.isEmpty()) {
+						const int uvIndex = uvIndexToken.toInt();
+						if (uvIndex < 0) {
+							uv = &textureCoordinates[uvIndex + uvCount];
+						} else {
+							uv = &textureCoordinates[uvIndex - 1];
+						}
+					}
+					if (!subtokens.isEmpty()) {
+						const auto& normalIndexToken = subtokens.takeFirst();
+						if (!normalIndexToken.isEmpty()) {
+							const int normalIndex = normalIndexToken.toInt();
+							if (normalIndex < 0) {
+								n = &normals[normalIndex + normalCount];
+							} else {
+								n = &normals[normalIndex - 1];
+							}
+						}
+					}
+				}
+				parsedPositions.append(p);
+				parsedTextureCoordinates.append(uv);
+				parsedNormals.append(n);
+			}
+			for (std::size_t i = 0; i < tokenCount - 2; ++i) {
+				const Mesh::Face::Positions facePositions = {
+					parsedPositions[i + 0],
+					parsedPositions[i + 1],
+					parsedPositions[i + 2]
+				};
+				const Mesh::Face::TextureCoordinates faceTextureCoordinates = {
+					parsedTextureCoordinates[i + 0],
+					parsedTextureCoordinates[i + 1],
+					parsedTextureCoordinates[i + 2]
+				};
+				const Mesh::Face::Normals faceNormals = {
+					parsedNormals[i + 0],
+					parsedNormals[i + 1],
+					parsedNormals[i + 2]
+				};
+				faces.append(Mesh::Face(facePositions, faceTextureCoordinates, faceNormals));
+			}
+		} else if (command == "mtllib") {
+			materialFile.setFileName(tokens.takeFirst());
+		} else if (command == "usemtl") {
+			if (!materialFile.fileName().isEmpty()) {
+				const auto error = parseMATFile(materialFile, tokens.takeFirst(), mesh.material);
+				if (error != Error::None) {
+					qWarning() << "[parseOBJFile] The .obj reader could not parse the material file.";
+				}
+			}
+		} else if (command == "s" || command == "mg") {
+			// Ignore smoothing and merging groups.
+		} else {
+			qWarning() << "[parseOBJFile] The .obj reader does not recognize the" << command << "command.";
+		}
+	}
+	// Close the file if it was opened in the parser.
+	if (!fileOpened) {
+		file.close();
+	}
 	return Error::None;
 }

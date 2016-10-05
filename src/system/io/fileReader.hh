@@ -32,17 +32,32 @@
  * @see QFile.
  */
 class QFile;
+/**
+ * @see QString.
+ */
+class QString;
 namespace clockwork {
+/**
+ * @see graphics/Material.hh.
+ */
+class Material;
 /**
  * @see graphics/Mesh.hh.
  */
 class Mesh;
-namespace io {
 /**
- * Reads an .OBJ file.
+ * Parses a .mat file.
+ * @param file the file containing the data to parse.
+ * @param materialName the material name.
+ * @param material a reference to the material where the data will be stored.
  */
-Error readOBJ(QFile&, Mesh&);
-} // namespace io
+Error parseMATFile(QFile& file, const QString& materialName, Material& material);
+/**
+ * Parses a .obj file.
+ * @param file the file containing the data to parse.
+ * @param mesh a reference to the polygon mesh where the data will be stored.
+ */
+Error parseOBJFile(QFile& file, Mesh& mesh);
 } // namespace clockwork
 
 #endif // CLOCKWORK_FILE_READER_HH
