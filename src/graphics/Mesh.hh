@@ -43,9 +43,22 @@ public:
 	 * A polygon mesh's triangular face.
 	 */
 	struct Face {
-		using Positions = std::array<const Point3*, 3>;
-		using TextureCoordinates = std::array<const Point*, 3>;
-		using Normals = std::array<const Vector3*, 3>;
+		/**
+		 * The number of elements in the face.
+		 */
+		constexpr static std::size_t length = 3;
+		/**
+		 * An array of pointers to geometric positions.
+		 */
+		using Positions = std::array<const Point3*, Face::length>;
+		/**
+		 * An array of pointers to 2D texture coordinates.
+		 */
+		using TextureCoordinates = std::array<const Point*, Face::length>;
+		/**
+		 * An array of pointers to 3D normal vectors.
+		 */
+		using Normals = std::array<const Vector3*, Face::length>;
 		/**
 		 * Instantiates a Face object with references to the specified positions,
 		 * texture coordinates and normal vectors.
