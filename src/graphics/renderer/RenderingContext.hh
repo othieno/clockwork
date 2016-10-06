@@ -27,7 +27,6 @@
 
 #include "Primitive.hh"
 #include "Uniform.hh"
-#include <QHash>
 
 
 namespace clockwork {
@@ -58,7 +57,7 @@ struct RenderingContext {
 	/**
 	 * The set of uniform variables used by the shader programs.
 	 */
-	QHash<QString, Uniform> uniforms;
+	Uniforms uniforms;
 };
 } // namespace clockwork
 

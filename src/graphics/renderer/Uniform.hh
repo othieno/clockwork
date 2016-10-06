@@ -33,6 +33,7 @@
 #include "Vector4.hh"
 #include "Matrix4.hh"
 #include "ColorARGB.hh"
+#include <QHash>
 
 
 namespace clockwork {
@@ -59,6 +60,10 @@ std::integral_constant<bool,
  *
  */
 using Uniform = WeakVariant<UniformValidator>;
+/**
+ * A collection of uniform variables.
+ */
+using Uniforms = QHash<QString, Uniform>;
 } // namespace clockwork
 
 #endif // CLOCKWORK_UNIFORM_HH
