@@ -23,3 +23,5 @@
  * THE SOFTWARE.
  */
 #include "Quaternion.hh"
+
+using clockwork::Quaternion;

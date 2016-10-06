@@ -112,7 +112,7 @@ clockwork::parseOBJFile(QFile& file, Mesh& mesh) {
 			const double k = tokens.takeFirst().toDouble();
 
 			// Since the normal isn't always a unit vector, normalize it just in case.
-			normals.append(Vector3::normalise(Vector3(i, j, k)));
+			normals.append(Vector3::normalize(Vector3(i, j, k)));
 		} else if (command == "f") {
 			const std::size_t positionCount = positions.size();
 			const std::size_t uvCount = textureCoordinates.size();

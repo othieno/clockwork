@@ -28,19 +28,23 @@ using clockwork::Point4;
 
 
 Point4::Point4(const double X, const double Y, const double Z, const double W) :
-x(X), y(Y), z(Z), w(W)
-{}
+x(X),
+y(Y),
+z(Z),
+w(W) {}
 
 
-Point4::Point4(const clockwork::Point3& p) :
-x(p.x), y(p.y), z(p.z), w(1.0)
-{}
+Point4::Point4(const Point3& p) :
+x(p.x),
+y(p.y),
+z(p.z),
+w(1.0) {}
 
 
-Point4::operator clockwork::Point3() const
-{
-    if (w > 0)
-        return clockwork::Point3(x / w, y / w, z / w);
-    else
-        return clockwork::Point3(0, 0, 0);
+Point4::operator Point3() const {
+	if (w > 0) {
+		return clockwork::Point3(x / w, y / w, z / w);
+	} else {
+		return clockwork::Point3(0, 0, 0);
+	}
 }

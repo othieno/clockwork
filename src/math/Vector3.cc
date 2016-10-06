@@ -25,45 +25,41 @@
 #include "Vector3.hh"
 #include <cmath>
 
+using clockwork::Vector3;
 
-clockwork::Vector3::Vector3(const double I, const double J, const double K) :
+
+Vector3::Vector3(const double I, const double J, const double K) :
 i(I),
 j(J),
-k(K)
-{}
+k(K) {}
 
 
 double
-clockwork::Vector3::getMagnitude() const
-{
-    return std::sqrt((i * i) + (j * j) + (k * k));
+Vector3::getMagnitude() const {
+	return std::sqrt((i * i) + (j * j) + (k * k));
 }
 
 
-clockwork::Vector3
-clockwork::Vector3::normalise(const clockwork::Vector3& v)
-{
-    clockwork::Vector3 output(v);
+Vector3
+Vector3::normalize(const clockwork::Vector3& v) {
+	Vector3 output(v);
 
-    double magnitude = v.getMagnitude();
-    if (magnitude != 0)
-    {
-        magnitude = 1/magnitude;
-        output.i *= magnitude;
-        output.j *= magnitude;
-        output.k *= magnitude;
-    }
-    return output;
+	double magnitude = v.getMagnitude();
+	if (magnitude != 0) {
+		magnitude = 1/magnitude;
+		output.i *= magnitude;
+		output.j *= magnitude;
+		output.k *= magnitude;
+	}
+	return output;
 }
 
 
-clockwork::Vector3
-clockwork::Vector3::cross(const clockwork::Vector3& v1, const clockwork::Vector3& v2)
-{
-    return Vector3
-    (
-        (v1.j * v2.k) - (v1.k * v2.j),
-        (v1.k * v2.i) - (v1.i * v2.k),
-        (v1.i * v2.j) - (v1.j * v2.i)
-    );
+Vector3
+Vector3::cross(const clockwork::Vector3& v1, const clockwork::Vector3& v2) {
+	return Vector3 (
+		(v1.j * v2.k) - (v1.k * v2.j),
+		(v1.k * v2.i) - (v1.i * v2.k),
+		(v1.i * v2.j) - (v1.j * v2.i)
+	);
 }
