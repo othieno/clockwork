@@ -26,6 +26,7 @@
 #define CLOCKWORK_FRAGMENT_HH
 
 #include "RenderingAlgorithm.hh"
+#include "Varying.hh"
 #include "Vector3.hh"
 #include "ColorARGB.hh"
 
@@ -35,10 +36,31 @@ namespace detail {
 /**
  *
  */
-template<RenderingAlgorithm>
+template<RenderingAlgorithm algorithm>
 struct Fragment {
+	/**
+	 * The fragment's screen-space horizontal position.
+	 */
+	std::uint32_t x;
+	/**
+	 * The fragment's screen-space vertical position.
+	 */
+	std::uint32_t y;
+	/**
+	 * The fragment's depth.
+	 */
+	double depth;
+	/**
+	 * The fragment's stencil value.
+	 */
+	std::uint8_t stencil;
+	/**
+	 * The fragment's varying variables.
+	 */
+	Varying<algorithm> varying;
 };
 } // namespace detail
+#ifdef DEPRECATED
 /**
  * A fragment is the result of a per-vertex operation (vertex shader) applied to
  * a vertex, which then gets passed to the per-fragment operation (fragment shader).
@@ -88,6 +110,7 @@ struct Fragment {
 	 */
 	std::uint8_t stencil;
 };
+#endif
 } // namespace clockwork
 
 #endif // CLOCKWORK_FRAGMENT_HH
