@@ -48,7 +48,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 	HEADERS += \
 		src/graphics/Camera.hh \
 		src/graphics/ColorARGB.hh \
-		src/graphics/Fragment.hh \
 		src/graphics/Framebuffer.hh \
 		src/graphics/GraphicsEngine.hh \
 		src/graphics/Material.hh \
@@ -60,6 +59,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/filter/ImageFilterFactory.hh \
 		src/graphics/filter/TextureFilter.hh \
 		src/graphics/filter/TextureFilterFactory.hh \
+		src/graphics/renderer/Fragment.hh \
 		src/graphics/renderer/PointRenderer.hh \
 		src/graphics/renderer/PolygonRenderer.hh \
 		src/graphics/renderer/Primitive.hh \
@@ -103,7 +103,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 	SOURCES += \
 		src/graphics/Camera.cc \
 		src/graphics/ColorARGB.cc \
-		src/graphics/Fragment.cc \
 		src/graphics/Framebuffer.cc \
 		src/graphics/GraphicsEngine.cc \
 		src/graphics/Material.cc \
@@ -111,6 +110,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/Texture.cc \
 		src/graphics/filter/ImageFilter.cc \
 		src/graphics/filter/TextureFilter.cc \
+		src/graphics/renderer/Fragment.cc \
 		src/graphics/renderer/PointRenderer.cc \
 		src/graphics/renderer/PolygonRenderer.cc \
 		src/graphics/renderer/WireframeRenderer.cc \
