@@ -43,13 +43,13 @@ template<template<typename> class Validator = GenericWeakVariantValidator>
 class WeakVariant {
 public:
 	/**
-	 * Returns the referenced value.
+	 * Returns the referenced value as a specified type.
 	 */
-	template<class Type> Type& get();
+	template<class Type> Type& as();
 	/**
-	 * Returns the referenced value.
+	 * Returns the referenced value as a specified type.
 	 */
-	template<class Type> const Type& get() const;
+	template<class Type> const Type& as() const;
 	/**
 	 * Instantiates a WeakVariant object that references the specified value.
 	 * @param value the referenced value.
@@ -112,7 +112,7 @@ const_value(v) {}
 
 template<template<typename> class Validator>
 template<class T> T&
-WeakVariant<Validator>::get() {
+WeakVariant<Validator>::as() {
 	static_assert(Validator<T>::value);
 	return *static_cast<T*>(reference_.value);
 }
@@ -120,7 +120,7 @@ WeakVariant<Validator>::get() {
 
 template<template<typename> class Validator>
 template<class T> const T&
-WeakVariant<Validator>::get() const {
+WeakVariant<Validator>::as() const {
 	static_assert(Validator<T>::value);
 	return *static_cast<const T*>(reference_.const_value);
 }
