@@ -43,6 +43,16 @@ template<template<typename> class Validator = GenericWeakVariantValidator>
 class WeakVariant {
 public:
 	/**
+	 * Instantiates an invalid WeakVariant object.
+	 * This is necessary for data structures that require a default constructor.
+	 */
+	WeakVariant();
+	/**
+	 * Returns true if the WeakVariant is valid, false otherwise. A WeakVariant
+	 * is considered valid if, and only if, it references an object.
+	 */
+	bool isValid() const;
+	/**
 	 * Returns the referenced value as a specified type.
 	 */
 	template<class Type> Type& as();
@@ -71,6 +81,10 @@ private:
 	 */
 	union Reference {
 		/**
+		 * Instantiates a Reference object that does not reference any object.
+		 */
+		inline explicit Reference(std::nullptr_t);
+		/**
 		 * Instantiates a Reference object that references a specified object.
 		 */
 		inline explicit Reference(void* const value);
@@ -91,6 +105,11 @@ private:
 
 
 template<template<typename> class Validator>
+WeakVariant<Validator>::WeakVariant() :
+reference_(nullptr) {}
+
+
+template<template<typename> class Validator>
 WeakVariant<Validator>::WeakVariant(void* const value) :
 reference_(value) {}
 
@@ -101,6 +120,11 @@ reference_(value) {}
 
 
 template<template<typename> class Validator>
+WeakVariant<Validator>::Reference::Reference(std::nullptr_t) :
+value(nullptr) {}
+
+
+template<template<typename> class Validator>
 WeakVariant<Validator>::Reference::Reference(void* const v) :
 value(v) {}
 
@@ -108,6 +132,13 @@ value(v) {}
 template<template<typename> class Validator>
 WeakVariant<Validator>::Reference::Reference(const void* const v) :
 const_value(v) {}
+
+
+template<template<typename> class Validator>
+bool
+WeakVariant<Validator>::isValid() const {
+	return reference_.const_value != nullptr;
+}
 
 
 template<template<typename> class Validator>
