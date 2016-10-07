@@ -77,6 +77,8 @@ public:
 			// Primitive assembly.
 			auto& primitives = Implementation::assemble(context.primitiveMode, vertexShaderOutputs);
 
+			Implementation::clip(vertexShaderOutputs);
+
 			for (auto& primitive : primitives) {
 				// Perspective divide: Convert primitive positions from clipping
 				// coordinate space to normalized device coordinate (NDC) space.
@@ -137,6 +139,11 @@ public:
 	static VertexShaderOutputs& assemble(const Primitive, VertexShaderOutputs& outputs) {
 		return outputs;
 	}
+	/**
+	 * Removes vertex shader outputs that are not visible on the screen.
+	 * This function should be implemented in an explicit template specialization.
+	 */
+	static void clip(VertexShaderOutputs&) {}
 	/**
 	 * Returns an empty list of fragments.
 	 * This function should be implemented in an explicit template specialization.
