@@ -55,7 +55,7 @@ GraphicsEngine::render(const Scene& scene) {
 
 		context.framebuffer = &framebuffer_;
 		context.primitiveMode = viewer->getPrimitiveMode();
-		context.viewport = &viewer->getViewport();
+		context.viewportTransform = ViewportTransform(viewer->getViewport(), framebuffer_);
 		context.uniforms.insert("PROJECTION", Uniform::create<const Matrix4>(PROJECTION));
 		context.uniforms.insert("VIEW", Uniform::create<const Matrix4>(VIEW));
 		context.uniforms.insert("viewpoint", Uniform::create<const Point3>(viewer->getPosition()));

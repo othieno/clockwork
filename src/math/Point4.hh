@@ -30,6 +30,10 @@
 
 
 namespace clockwork {
+/*
+ * @see graphics/Viewport.hh.
+ */
+struct ViewportTransform;
 /**
  *
  */
@@ -67,6 +71,10 @@ struct Point4 {
 	 * Convert the homogeneous point into its affine representation.
 	 */
 	operator Point3() const;
+    /**
+     * Multiplies this point by a viewport transform.
+     */
+    Point4& operator*(const ViewportTransform&);
 };
 } // namespace clockwork
 

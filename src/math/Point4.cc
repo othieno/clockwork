@@ -23,6 +23,7 @@
  * THE SOFTWARE.
  */
 #include "Point4.hh"
+#include "Viewport.hh"
 
 using clockwork::Point4;
 
@@ -47,4 +48,14 @@ Point4::operator Point3() const {
 	} else {
 		return clockwork::Point3(0, 0, 0);
 	}
+}
+
+
+Point4&
+Point4::operator*(const ViewportTransform& transform) {
+	x = (x * transform.scale.x) + transform.translate.x;
+	y = (y * transform.scale.y) + transform.translate.y;
+	z = (z * transform.scale.z) + transform.translate.z;
+
+	return *this;
 }

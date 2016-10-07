@@ -25,6 +25,7 @@
 #ifndef CLOCKWORK_RENDERING_CONTEXT_HH
 #define CLOCKWORK_RENDERING_CONTEXT_HH
 
+#include "Viewport.hh"
 #include "Primitive.hh"
 #include "Uniform.hh"
 
@@ -35,10 +36,6 @@ namespace clockwork {
  */
 class Framebuffer;
 /**
- * @see graphics/Viewport.hh.
- */
-struct Viewport;
-/**
  *
  */
 struct RenderingContext {
@@ -47,9 +44,9 @@ struct RenderingContext {
 	 */
 	Framebuffer* framebuffer;
 	/**
-	 * The viewport.
+	 * The viewport transform.
 	 */
-	const Viewport* viewport;
+	ViewportTransform viewportTransform;
 	/**
 	 * The primitive mode.
 	 */
