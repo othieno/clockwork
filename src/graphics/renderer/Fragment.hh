@@ -60,7 +60,6 @@ struct Fragment {
 	Varying<algorithm> varying;
 };
 } // namespace detail
-#ifdef DEPRECATED
 /**
  * A fragment is the result of a per-vertex operation (vertex shader) applied to
  * a vertex, which then gets passed to the per-fragment operation (fragment shader).
@@ -110,7 +109,6 @@ struct Fragment {
 	 */
 	std::uint8_t stencil;
 };
-#endif
 } // namespace clockwork
 
 #endif // CLOCKWORK_FRAGMENT_HH
