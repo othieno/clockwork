@@ -25,15 +25,20 @@
 #ifndef CLOCKWORK_FRAGMENT_HH
 #define CLOCKWORK_FRAGMENT_HH
 
+#include "RenderingAlgorithm.hh"
 #include "Vector3.hh"
 #include "ColorARGB.hh"
 
 
 namespace clockwork {
+namespace detail {
 /**
- * @see Vertex.hh.
+ *
  */
-struct Vertex;
+template<RenderingAlgorithm>
+struct Fragment {
+};
+} // namespace detail
 /**
  * A fragment is the result of a per-vertex operation (vertex shader) applied to
  * a vertex, which then gets passed to the per-fragment operation (fragment shader).

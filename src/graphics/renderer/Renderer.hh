@@ -26,16 +26,13 @@
 #define CLOCKWORK_RENDERER_HH
 
 #include "RenderingContext.hh"
+#include "Fragment.hh"
 #include "Varying.hh"
 #include "VertexAttributes.hh"
 #include "VertexShaderOutput.hh"
 
 
 namespace clockwork {
-/**
- * see Fragment.hh.
- */
-class Fragment;
 /**
  * @see graphics/Mesh.hh.
  */
@@ -46,6 +43,7 @@ class Mesh;
 template<RenderingAlgorithm algorithm, class Implementation>
 class Renderer {
 public:
+	using Fragment = detail::Fragment<algorithm>;
 	using Varying = detail::Varying<algorithm>;
 	using VertexAttributes = detail::VertexAttributes<algorithm>;
 	using VertexShaderOutput = detail::VertexShaderOutput<algorithm>;
