@@ -27,7 +27,6 @@
 
 #include "RenderingContext.hh"
 #include "Fragment.hh"
-#include "Varying.hh"
 #include "VertexAttributes.hh"
 #include "VertexShaderOutput.hh"
 

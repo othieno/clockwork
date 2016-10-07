@@ -27,6 +27,7 @@
 
 #include "RenderingAlgorithm.hh"
 #include "Point4.hh"
+#include "Varying.hh"
 
 
 namespace clockwork {
@@ -41,6 +42,10 @@ struct VertexShaderOutput {
 	 * The vertex position in clip space.
 	 */
 	Point4 position;
+	/**
+	 * The vertex's varying variables.
+	 */
+	Varying<algorithm> varying;
 };
 } // namespace detail
 } // namespace clockwork
