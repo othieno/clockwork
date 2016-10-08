@@ -27,6 +27,7 @@
 
 #include "Framebuffer.hh"
 #include "RenderingAlgorithm.hh"
+#include "LineDrawingAlgorithm.hh"
 
 
 namespace clockwork {
@@ -80,6 +81,15 @@ public:
      * Returns the framebuffer instance.
      */
     Framebuffer& getFramebuffer();
+    /**
+     * Returns the line-drawing algorithm.
+     */
+    LineDrawingAlgorithm getLineDrawingAlgorithm() const;
+    /**
+     * Sets the line-drawing algorithm.
+     * @param algorithm the line-drawing algorithm to set.
+     */
+    void setLineDrawingAlgorithm(const LineDrawingAlgorithm algorithm);
 private:
     /**
      *
@@ -94,6 +104,10 @@ private:
      * The framebuffer.
      */
     Framebuffer framebuffer_;
+    /**
+     * The line-drawing algorithm to use.
+     */
+    LineDrawingAlgorithm lineDrawingAlgorithm_;
 };
 } // namespace clockwork
 #endif // CLOCKWORK_GRAPHICS_ENGINE_HH

@@ -31,7 +31,8 @@ using clockwork::GraphicsEngine;
 
 
 GraphicsEngine::GraphicsEngine() :
-framebuffer_() {}
+framebuffer_(),
+lineDrawingAlgorithm_(LineDrawingAlgorithm::Bresenham) {}
 
 
 GraphicsEngine::~GraphicsEngine() {}
@@ -55,6 +56,7 @@ GraphicsEngine::render(const Scene& scene) {
 
 		context.framebuffer = &framebuffer_;
 		context.primitiveMode = viewer->getPrimitiveMode();
+		context.lineDrawingAlgorithm = lineDrawingAlgorithm_;
 		context.viewportTransform = ViewportTransform(viewer->getViewport(), framebuffer_);
 		context.uniforms.insert("PROJECTION", Uniform::create<const Matrix4>(PROJECTION));
 		context.uniforms.insert("VIEW", Uniform::create<const Matrix4>(VIEW));
@@ -90,6 +92,18 @@ GraphicsEngine::render(const Scene& scene) {
 clockwork::Framebuffer&
 GraphicsEngine::getFramebuffer() {
 	return framebuffer_;
+}
+
+
+clockwork::LineDrawingAlgorithm
+GraphicsEngine::getLineDrawingAlgorithm() const {
+	return lineDrawingAlgorithm_;
+}
+
+
+void
+GraphicsEngine::setLineDrawingAlgorithm(const LineDrawingAlgorithm algorithm) {
+	lineDrawingAlgorithm_ = algorithm;
 }
 
 

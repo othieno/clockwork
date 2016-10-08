@@ -22,45 +22,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_RENDERING_CONTEXT_HH
-#define CLOCKWORK_RENDERING_CONTEXT_HH
-
-#include "Viewport.hh"
-#include "Primitive.hh"
-#include "LineDrawingAlgorithm.hh"
-#include "Uniform.hh"
+#ifndef CLOCKWORK_LINE_DRAWING_ALGORITHM_HH
+#define CLOCKWORK_LINE_DRAWING_ALGORITHM_HH
 
 
 namespace clockwork {
 /**
- * @see graphics/Framebuffer.hh.
+ * An enumeration of available line-drawing algorithms.
  */
-class Framebuffer;
-/**
- *
- */
-struct RenderingContext {
-	/**
-	 * The framebuffer.
-	 */
-	Framebuffer* framebuffer;
-	/**
-	 * The viewport transform.
-	 */
-	ViewportTransform viewportTransform;
-	/**
-	 * The primitive mode.
-	 */
-	Primitive primitiveMode;
-	/**
-	 * The line drawing algorithm used by the Wireframe renderer.
-	 */
-	LineDrawingAlgorithm lineDrawingAlgorithm;
-	/**
-	 * The set of uniform variables used by the shader programs.
-	 */
-	Uniforms uniforms;
+enum class LineDrawingAlgorithm {
+	Bresenham,
+	XiaolinWu,
 };
 } // namespace clockwork
 
-#endif // CLOCKWORK_RENDERING_CONTEXT_HH
+#endif // CLOCKWORK_LINE_DRAWING_ALGORITHM_HH

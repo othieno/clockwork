@@ -60,6 +60,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/filter/TextureFilter.hh \
 		src/graphics/filter/TextureFilterFactory.hh \
 		src/graphics/renderer/Fragment.hh \
+		src/graphics/renderer/LineDrawingAlgorithm.hh \
 		src/graphics/renderer/PointRenderer.hh \
 		src/graphics/renderer/PolygonRenderer.hh \
 		src/graphics/renderer/Primitive.hh \
