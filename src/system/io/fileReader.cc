@@ -29,8 +29,14 @@
 #include <QTextStream>
 #include <QtDebug>
 
+
 clockwork::Error
 clockwork::parseMATFile(QFile& file, const QString& materialName, Material& material) {
+	if (materialName.isEmpty()) {
+		qWarning() << "[parseMATFile] The .mat reader did not receive a material name.";
+		return Error::None;
+	}
+
 	// If the file is closed, it needs to be opened before it can be processed,
 	// and closed when parsing completes.
 	const bool fileOpened = file.isOpen();
@@ -40,11 +46,58 @@ clockwork::parseMATFile(QFile& file, const QString& materialName, Material& mate
 		}
 	}
 	file.reset();
+	material = Material(); // Reset the material.
 
-	// Parse the file.
-	Q_UNUSED(materialName);
-	Q_UNUSED(material);
+	bool parsing = false;
+	QTextStream stream(&file);
+	stream.skipWhiteSpace();
+	while (!stream.atEnd()) {
+		// Read a line and remove any leading and trailing spaces. Furthermore,
+		// ignore empty lines and comments.
+		const auto& line = stream.readLine().simplified();
+		if (line.isEmpty() || line[0] == '#') {
+			continue;
+		}
+		auto tokens = line.split(" ");
+		if (tokens.isEmpty()) {
+			continue;
+		}
 
+		const auto& command = tokens.takeFirst();
+		if (!QString::compare(command, "newmtl", Qt::CaseInsensitive)) {
+			// We've reached a new material section. If the material to parse has
+			// already been found, this means that there's nothing left to parse
+			// in the current material section. If no material was previously found,
+			// we can start parsing this new section if its material name matches
+			// the one being looked for.
+			if (parsing) {
+				break;
+			} else if (!parsing && materialName == tokens.takeFirst()) {
+				parsing = true;
+			}
+		} else if (parsing) {
+			if (!QString::compare(command, "Ka", Qt::CaseInsensitive)) {
+				material.Ka.red = tokens.takeFirst().toDouble();
+				material.Ka.green = tokens.takeFirst().toDouble();
+				material.Ka.blue = tokens.takeFirst().toDouble();
+			} else if (!QString::compare(command, "Kd", Qt::CaseInsensitive)) {
+				material.Kd.red = tokens.takeFirst().toDouble();
+				material.Kd.green = tokens.takeFirst().toDouble();
+				material.Kd.blue = tokens.takeFirst().toDouble();
+			} else if (!QString::compare(command, "Ks", Qt::CaseInsensitive)) {
+				material.Ks.red = tokens.takeFirst().toDouble();
+				material.Ks.green = tokens.takeFirst().toDouble();
+				material.Ks.blue = tokens.takeFirst().toDouble();
+			} else if (!QString::compare(command, "Tr", Qt::CaseInsensitive)) {
+				material.transparency = tokens.takeFirst().toDouble();
+			} else if (!QString::compare(command, "Ns", Qt::CaseInsensitive)) {
+				material.shininess = tokens.takeFirst().toDouble();
+			} else if (!QString::compare(command, "illum", Qt::CaseInsensitive)) {
+			} else {
+				qWarning() << "[parseMATFile] The .mat reader does not recognize the" << command << "command.";
+			}
+		}
+	}
 	// Close the file if it was opened in the parser.
 	if (!fileOpened) {
 		file.close();
