@@ -112,11 +112,10 @@ public:
 		return true;
 	}
 	/**
-	 * Returns a dummy VertexAttributes object.
-	 * This function should be implemented in an explicit template specialization.
+	 * Returns a default VertexAttributes object.
 	 */
-	static VertexAttributes createVertexAttributes(const Mesh::Face&, const std::size_t) {
-		return VertexAttributes();
+	static VertexAttributes createVertexAttributes(const Mesh::Face& face, const std::size_t i) {
+		return i < face.length ? VertexAttributes(*face.positions[i]) : VertexAttributes();
 	}
 	/**
 	 * Returns a dummy Varying object.
@@ -126,11 +125,15 @@ public:
 		return Varying();
 	}
 	/**
-	 * Returns a dummy VertexShaderOutput object.
-	 * This function should be implemented in an explicit template specialization.
+	 * Performs a basic per-vertex operation.
 	 */
-	static VertexShaderOutput vertexShader(const Uniforms&, Varying&, const VertexAttributes&) {
-		return VertexShaderOutput();
+	static VertexShaderOutput vertexShader(const Uniforms& uniforms, Varying&, const VertexAttributes& attributes) {
+		const auto& MVP = uniforms["MODELVIEWPROJECTION"].as<const Matrix4>();
+
+		VertexShaderOutput output;
+		output.position = MVP * Point4(attributes.position);
+
+		return output;
 	}
 	/**
 	 * Returns a list of primitives.

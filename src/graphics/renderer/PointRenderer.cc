@@ -30,27 +30,6 @@
 using clockwork::PointRenderer;
 
 
-PointRenderer::VertexAttributes
-PointRenderer::createVertexAttributes(const Mesh::Face& face, const std::size_t i) {
-	return VertexAttributes(*face.positions[i]);
-}
-
-
-PointRenderer::VertexShaderOutput
-PointRenderer::vertexShader(
-	const Uniforms& uniforms,
-	PointRenderer::Varying&,
-	const PointRenderer::VertexAttributes& attributes
-) {
-	const auto& MVP = uniforms["MODELVIEWPROJECTION"].as<const Matrix4>();
-
-	VertexShaderOutput output;
-	output.position = MVP * Point4(attributes.position);
-
-	return output;
-}
-
-
 void
 PointRenderer::clip(VertexShaderOutputs& outputs) {
 	static const auto& filter = [](const VertexShaderOutput& output) {
