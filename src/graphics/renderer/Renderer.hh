@@ -31,6 +31,7 @@
 #include "Mesh.hh"
 #include "VertexAttributes.hh"
 #include "VertexShaderOutput.hh"
+#include <cmath>
 
 
 namespace clockwork {

@@ -1,8 +1,9 @@
 /*
+ * This file is part of Clockwork.
+ *
+ * Copyright (c) 2014-2016 Jeremy Othieno.
+ *
  * The MIT License (MIT)
- *
- * Copyright (c) 2014 Jeremy Othieno.
- *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -21,38 +22,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#pragma once
+#ifndef CLOCKWORK_RANDOM_SHADING_RENDERER_HH
+#define CLOCKWORK_RANDOM_SHADING_RENDERER_HH
 
-#include "polygon.render.algorithm.hh"
+#include "PolygonRenderer.hh"
 
 
 namespace clockwork {
-namespace graphics {
-
 /**
- * @see render.algorithm.factory.hh.
+ *
  */
-class RenderAlgorithmFactory;
-
-/**
- * A random shading render algorithm.
- */
-class RandomShadingRenderAlgorithm: public PolygonRenderAlgorithm
-{
-friend class RenderAlgorithmFactory;
+class RandomShadingRenderer :
+public PolygonRenderer<RenderingAlgorithm::RandomShading, RandomShadingRenderer> {
 public:
-   /**
-    * @see RenderAlgorithm::geometryProgram.
-    */
-   VertexArray& geometryProgram(const RenderAlgorithm::Parameters&, VertexArray&) const override final;
+	/**
+	 * Returns a Varying object based on the specified face.
+	 */
+	static Varying createVarying(const Mesh::Face&, const std::size_t);
+	/**
+	 * Returns a pixel value.
+	 */
+	static std::uint32_t fragmentShader(const Uniforms&, const Varying&, const Fragment&);
+	/**
+	 * Creates a fragment from the specified VertexShaderOutput object.
+	 */
+	static Fragment createFragment(const VertexShaderOutput&);
+	/**
+	 *
+	 */
+	static VertexShaderOutput lerp(const VertexShaderOutput&, const VertexShaderOutput&, const double percentage);
+	/**
+	 *
+	 */
+	static Fragment lerp(const Fragment&, const Fragment&, const double percentage);
 private:
-   /**
-    * The RandomShadingRenderAlgorithm is a singleton, and only instantiable by the RenderAlgorithmFactory.
-    */
-   RandomShadingRenderAlgorithm();
-   RandomShadingRenderAlgorithm(const RandomShadingRenderAlgorithm&) = delete;
-   RandomShadingRenderAlgorithm& operator=(const RandomShadingRenderAlgorithm&) = delete;
+	/**
+	 *
+	 */
+	static Varying lerp(const Varying&, const Varying&, const double percentage);
 };
-
-} // namespace graphics
 } // namespace clockwork
+
+#endif // CLOCKWORK_RANDOM_SHADING_RENDERER_HH

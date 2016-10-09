@@ -26,6 +26,7 @@
 #include "Scene.hh"
 #include "PointRenderer.hh"
 #include "WireframeRenderer.hh"
+#include "RandomShadingRenderer.hh"
 
 using clockwork::GraphicsEngine;
 
@@ -111,7 +112,7 @@ std::function<void(clockwork::RenderingContext&, const clockwork::Mesh&)>
 GraphicsEngine::getDrawFunction(const RenderingAlgorithm algorithm) {
 	switch (algorithm) {
 		case RenderingAlgorithm::Wireframe: return WireframeRenderer::draw;
-		case RenderingAlgorithm::RandomShading: //return RandomShadingRenderer::draw;
+		case RenderingAlgorithm::RandomShading: return RandomShadingRenderer::draw;
 		case RenderingAlgorithm::FlatShading: //return FlatShadingRenderer::draw;
 		case RenderingAlgorithm::GouraudShading: //return GouraudShadingRenderer::draw;
 		case RenderingAlgorithm::PhongShading: //return PhongShadingRenderer::draw;

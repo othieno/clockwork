@@ -26,6 +26,7 @@
 #define CLOCKWORK_VARYING_HH
 
 #include "RenderingAlgorithm.hh"
+#include "Color.hh"
 
 
 namespace clockwork {
@@ -35,6 +36,16 @@ namespace detail {
  * vertex and fragment shaders.
  */
 template<RenderingAlgorithm> struct Varying {};
+/**
+ * Varying variables for the random shading renderer.
+ */
+template<>
+struct Varying<RenderingAlgorithm::RandomShading> {
+	/**
+	 * A random color shared by all vertices that belong to an identical face.
+	 */
+	Color faceColor;
+};
 } // namespace detail
 } // namespace clockwork
 

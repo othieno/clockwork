@@ -63,11 +63,6 @@ struct VertexAttributes : GenericVertexAttributes {
 	GenericVertexAttributes(position) {}
 };
 /**
- * Vertex attributes for the random shading renderer.
- */
-template<>
-struct VertexAttributes<RenderingAlgorithm::RandomShading> {};
-/**
  * Vertex attributes for the flat shading renderer.
  */
 template<>
