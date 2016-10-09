@@ -33,6 +33,28 @@ namespace clockwork {
  *
  */
 class WireframeRenderer : public Renderer<RenderingAlgorithm::Wireframe, WireframeRenderer> {
+public:
+	/**
+	 * Generates fragments from the specified collection of vertex shader outputs.
+	 */
+	static Fragments rasterize(const RenderingContext&, const VertexShaderOutputs&);
+private:
+	/**
+	 * Creates a fragment from the specified vertex shader output.
+	 */
+	static Fragment createFragment(const VertexShaderOutput&);
+	/**
+	 *
+	 */
+	static Fragment interpolate(const Fragment& f0, const Fragment& f1, const double percentage);
+	/**
+	 *
+	 */
+	static Fragments getBresenhamLineFragments(const Fragment&, const Fragment&);
+	/**
+	 *
+	 */
+	static Fragments getXiaolinWuLineFragments(const Fragment&, const Fragment&);
 };
 } // namespace clockwork
 

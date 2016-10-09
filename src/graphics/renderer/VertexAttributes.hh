@@ -56,7 +56,14 @@ struct VertexAttributes<RenderingAlgorithm::Point> {
  * Vertex attributes for the Wireframe renderer.
  */
 template<>
-struct VertexAttributes<RenderingAlgorithm::Wireframe> : VertexAttributes<RenderingAlgorithm::Point> {};
+struct VertexAttributes<RenderingAlgorithm::Wireframe> : VertexAttributes<RenderingAlgorithm::Point> {
+	/**
+	 * Instantiates the VertexAttributes object with the specified vertex position.
+	 * @param p a vertex's position.
+	 */
+	inline explicit VertexAttributes(const Point3& p = Point3()) :
+	VertexAttributes<RenderingAlgorithm::Point>(p) {}
+};
 /**
  * Vertex attributes for the random shading renderer.
  */
