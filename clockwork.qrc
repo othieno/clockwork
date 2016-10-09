@@ -1,8 +1,8 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
 	<qresource prefix="/asset">
-		<file alias="suzanne.mtl">resources/assets/models/suzanne/suzanne.mtl</file>
-		<file alias="suzanne.obj">resources/assets/models/suzanne/suzanne.obj</file>
+		<file alias="suzanne.mtl">resources/assets/models/suzanne.mtl</file>
+		<file alias="suzanne.obj">resources/assets/models/suzanne.obj</file>
 		<file alias="triangle.obj">resources/assets/models/triangle.obj</file>
 	</qresource>
 	<qresource prefix="/icon">
