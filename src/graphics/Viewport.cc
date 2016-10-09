@@ -75,6 +75,6 @@ ViewportTransform::ViewportTransform(const Viewport& viewport, const Framebuffer
 	scale.y = 0.5 * h;
 	scale.z = 0.5 * (f - n);
 	translate.x = x + scale.x;
-	translate.y = y + scale.z;
+	translate.y = y + scale.y;
 	translate.z = 0.5 * (f + n);
 }
