@@ -32,16 +32,23 @@
 
 namespace clockwork {
 namespace detail {
+namespace {
 /**
- * The VertexShaderOutput is the result of a per-vertex operation (vertex shader)
- * on a set of vertex attributes.
+ * The GenericVertexShaderOutput contains the minimum set of results obtained from
+ * a per-vertex operation (vertex shader) applied to a set of vertex attributes.
  */
-template<RenderingAlgorithm algorithm>
-struct VertexShaderOutput {
+struct GenericVertexShaderOutput {
 	/**
-	 * The vertex position in clip space.
+	 * The vertex position in clipping space.
 	 */
 	Point4 position;
+};
+} // namespace
+/**
+ *
+ */
+template<RenderingAlgorithm algorithm>
+struct VertexShaderOutput : GenericVertexShaderOutput {
 	/**
 	 * The vertex's varying variables.
 	 */
