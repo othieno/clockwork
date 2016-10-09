@@ -33,36 +33,34 @@
 
 namespace clockwork {
 namespace detail {
+namespace {
 /**
  *
  */
-template<RenderingAlgorithm algorithm> struct VertexAttributes {};
-/**
- * Vertex attributes for the point renderer.
- */
-template<>
-struct VertexAttributes<RenderingAlgorithm::Point> {
+struct GenericVertexAttributes {
 	/**
 	 * The vertex's position in object space.
 	 */
 	const Point3& position;
+protected:
 	/**
-	 * Instantiates the VertexAttributes object with the specified vertex position.
-	 * @param p a vertex's position.
+	 * Instantiates a GenericVertexAttributes object with the specified vertex position.
+	 * @param p the vertex's position.
 	 */
-	inline explicit VertexAttributes(const Point3& p = Point3()) : position(p) {}
+	inline explicit GenericVertexAttributes(const Point3& p) : position(p) {}
 };
+} // namespace
 /**
- * Vertex attributes for the Wireframe renderer.
+ *
  */
-template<>
-struct VertexAttributes<RenderingAlgorithm::Wireframe> : VertexAttributes<RenderingAlgorithm::Point> {
+template<RenderingAlgorithm algorithm>
+struct VertexAttributes : GenericVertexAttributes {
 	/**
-	 * Instantiates the VertexAttributes object with the specified vertex position.
-	 * @param p a vertex's position.
+	 * Instantiates a VertexAttributes object with the specified vertex position.
+	 * @param position the vertex's position.
 	 */
-	inline explicit VertexAttributes(const Point3& p = Point3()) :
-	VertexAttributes<RenderingAlgorithm::Point>(p) {}
+	inline explicit VertexAttributes(const Point3& position = Point3()) :
+	GenericVertexAttributes(position) {}
 };
 /**
  * Vertex attributes for the random shading renderer.
