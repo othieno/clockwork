@@ -22,62 +22,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "Scene.hh"
 #include "Triangle.hh"
-#include "Camera.hh"
 
-using clockwork::Scene;
-
-
-Scene::Scene() :
-viewer_(nullptr) {
-	//TODO Remove this when done debugging.
-	setViewer(SceneViewer::Type::Camera);
-	addNode(new asset::Triangle());
-}
+using clockwork::asset::Triangle;
 
 
-clockwork::SceneNode*
-Scene::getNode(const QString& name) {
-	return findChild<SceneNode*>(name, Qt::FindDirectChildrenOnly);
-}
-
-
-void
-Scene::addNode(SceneNode* const node) {
-	if (node != nullptr && node->parent() != this) {
-		node->setParent(this);
-	}
-}
-
-
-void
-Scene::removeNode(const QString&) {
-	qFatal("[Scene::removeNode] Implement me!");
-}
-
-
-clockwork::SceneViewer*
-Scene::getViewer() {
-	return viewer_.get();
-}
-
-
-const clockwork::SceneViewer*
-Scene::getViewer() const {
-	return viewer_.get();
-}
-
-
-void
-Scene::setViewer(const SceneViewer::Type type) {
-	switch (type) {
-		case SceneViewer::Type::Camera:
-			viewer_.reset(new Camera("Default Camera"));
-			break;
-		default:
-			qWarning("[Scene::setViewer] Unknown SceneViewer type!");
-			viewer_.reset(nullptr);
-			break;
-	}
+Triangle::Triangle() :
+SceneObject("Triangle") {
+	auto& appearance = addProperty<SceneObjectAppearance>(SceneObjectProperty::Type::Appearance);
+	appearance.setMesh(":/asset/triangle.obj");
 }

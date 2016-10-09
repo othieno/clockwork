@@ -22,62 +22,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "Scene.hh"
-#include "Triangle.hh"
-#include "Camera.hh"
+#ifndef CLOCKWORK_TRIANGLE_HH
+#define CLOCKWORK_TRIANGLE_HH
 
-using clockwork::Scene;
-
-
-Scene::Scene() :
-viewer_(nullptr) {
-	//TODO Remove this when done debugging.
-	setViewer(SceneViewer::Type::Camera);
-	addNode(new asset::Triangle());
-}
+#include "SceneObject.hh"
 
 
-clockwork::SceneNode*
-Scene::getNode(const QString& name) {
-	return findChild<SceneNode*>(name, Qt::FindDirectChildrenOnly);
-}
+namespace clockwork {
+namespace asset {
+/**
+ * A simple triangle.
+ */
+class Triangle : public SceneObject {
+public:
+	/**
+	 *
+	 */
+	Triangle(const Triangle&) = delete;
+	/**
+	 *
+	 */
+	Triangle(const Triangle&&) = delete;
+	/**
+	 *
+	 */
+	Triangle& operator=(const Triangle&) = delete;
+	/**
+	 *
+	 */
+	Triangle& operator=(const Triangle&&) = delete;
+	/**
+	 * Instantiates a Triangle object.
+	 */
+	Triangle();
+};
+} // namespace asset
+} // namespace clockwork
 
-
-void
-Scene::addNode(SceneNode* const node) {
-	if (node != nullptr && node->parent() != this) {
-		node->setParent(this);
-	}
-}
-
-
-void
-Scene::removeNode(const QString&) {
-	qFatal("[Scene::removeNode] Implement me!");
-}
-
-
-clockwork::SceneViewer*
-Scene::getViewer() {
-	return viewer_.get();
-}
-
-
-const clockwork::SceneViewer*
-Scene::getViewer() const {
-	return viewer_.get();
-}
-
-
-void
-Scene::setViewer(const SceneViewer::Type type) {
-	switch (type) {
-		case SceneViewer::Type::Camera:
-			viewer_.reset(new Camera("Default Camera"));
-			break;
-		default:
-			qWarning("[Scene::setViewer] Unknown SceneViewer type!");
-			viewer_.reset(nullptr);
-			break;
-	}
-}
+#endif // CLOCKWORK_TRIANGLE_HH

@@ -3,6 +3,7 @@
 	<qresource prefix="/asset">
 		<file alias="suzanne.mtl">resources/assets/models/suzanne/suzanne.mtl</file>
 		<file alias="suzanne.obj">resources/assets/models/suzanne/suzanne.obj</file>
+		<file alias="triangle.obj">resources/assets/models/triangle.obj</file>
 	</qresource>
 	<qresource prefix="/icon">
 		<file alias="action/info_outline">resources/icons/material-design/action/svg/production/ic_info_outline_48px.svg</file>
