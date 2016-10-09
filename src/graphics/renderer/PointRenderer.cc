@@ -57,7 +57,7 @@ PointRenderer::rasterize(const RenderingContext&, const VertexShaderOutputs& pri
 		Fragment fragment;
 		fragment.x = std::round(position.x);
 		fragment.y = std::round(position.y);
-		fragment.depth = position.z;
+		fragment.z = position.z;
 		fragment.stencil = 0xFF;
 
 		fragments.append(fragment);

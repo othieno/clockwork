@@ -97,7 +97,7 @@ public:
 				const int offset = context.framebuffer->getOffset(fragment.x, fragment.y);
 				if (offset >= 0 && fragmentPasses(context, fragment)) {
 					pixelBuffer[offset] = Implementation::fragmentShader(context.uniforms, fragment.varying, fragment);
-					depthBuffer[offset] = fragment.depth;
+					depthBuffer[offset] = fragment.z;
 					stencilBuffer[offset] = fragment.stencil;
 				}
 			}

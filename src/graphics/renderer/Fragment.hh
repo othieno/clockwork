@@ -33,11 +33,11 @@
 
 namespace clockwork {
 namespace detail {
+namespace {
 /**
  *
  */
-template<RenderingAlgorithm algorithm>
-struct Fragment {
+struct GenericFragment {
 	/**
 	 * The fragment's screen-space horizontal position.
 	 */
@@ -47,13 +47,20 @@ struct Fragment {
 	 */
 	std::uint32_t y;
 	/**
-	 * The fragment's depth.
+	 * The fragment's depth value.
 	 */
-	double depth;
+	double z;
 	/**
 	 * The fragment's stencil value.
 	 */
 	std::uint8_t stencil;
+};
+} // namespace
+/**
+ *
+ */
+template<RenderingAlgorithm algorithm>
+struct Fragment : GenericFragment {
 	/**
 	 * The fragment's varying variables.
 	 */
