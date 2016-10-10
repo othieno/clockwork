@@ -28,7 +28,7 @@
 #include "RenderingAlgorithm.hh"
 #include "Varying.hh"
 #include "Vector3.hh"
-#include "ColorARGB.hh"
+#include "Color.hh"
 
 
 namespace clockwork {
@@ -110,7 +110,7 @@ struct Fragment {
 	/**
 	 * The fragment's color.
 	 */
-	ColorARGB color;
+	Color color;
 	/**
 	 * The fragment's stencil value.
 	 */

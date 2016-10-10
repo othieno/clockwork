@@ -159,7 +159,7 @@ public:
 	 * This function should be implemented in an explicit template specialization.
 	 */
 	static std::uint32_t fragmentShader(const Uniforms&, const Varying&, const Fragment&) {
-		return 0xffffffff;
+		return 0xFFFFFFFF;
 	}
 };
 } // namespace clockwork

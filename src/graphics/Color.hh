@@ -22,61 +22,62 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_COLOR_ARGB_HH
-#define CLOCKWORK_COLOR_ARGB_HH
+#ifndef CLOCKWORK_COLOR_HH
+#define CLOCKWORK_COLOR_HH
 
 #include <cstdint>
 
 
 namespace clockwork {
 /**
- * A normalized ARGB color.
+ * A color representation that contains normalized values for a color's red,
+ * green, blue and alpha channels.
  */
-struct ColorARGB {
+struct Color {
 	/**
-	 * The color's normalised red channel.
+	 * Instantiates a Color object.
+	 */
+	Color();
+	/**
+	 * Instantiates a Color object with the specified channels.
+	 */
+	Color(const float red, const float green, const float blue, const float alpha = 1.0f);
+	/**
+	 * Instantiates a Color object from the specified 32-bit A8R8G8B8 integer representation.
+	 * @param ARGB a 32-bit integer that represents an A8R8G8B8 color.
+	 */
+	explicit Color(const std::uint32_t ARGB);
+	/**
+	 * Returns the Color object's 32-bit A8R8G8B8 integer representation.
+	 */
+	operator std::uint32_t() const;
+	/**
+	 * Returns the specified color's 32-bit A8R8G8B8 integer representation.
+	 * @param color the Color object to merge.
+	 */
+	static std::uint32_t merge(const Color& color);
+	/**
+	 * Creates a Color object from the specified 32-bit A8R8G8B8 integer representation.
+	 * @param ARGB a 32-bit integer that represents an A8R8G8B8 color.
+	 */
+	static Color split(const std::uint32_t& ARGB);
+	/**
+	 * The color's normalized red channel.
 	 */
 	float red;
 	/**
-	 * The color's normalised green channel.
+	 * The color's normalized green channel.
 	 */
 	float green;
 	/**
-	 * The color's normalised blue channel.
+	 * The color's normalized blue channel.
 	 */
 	float blue;
 	/**
-	 * The color's normalised alpha channel.
+	 * The color's normalized alpha channel.
 	 */
 	float alpha;
-	/**
-	 * Instantiate an ARGB color with normalised alpha, red, green and blue channels.
-	 * @param red the red channel.
-	 * @param green the green channel.
-	 * @param blue the blue channel.
-	 * @param alpha the alpha channel.
-	 */
-	ColorARGB(const float red = 0.0f, const float green = 0.0f, const float blue = 0.0f, const float alpha = 1.0f);
-	/**
-	 * Returns the color's 32-bit integer representation.
-	 */
-	operator std::uint32_t() const;
-public:
-	/**
-	 * Returns the specified ColorARGB's 32-bit integer representation.
-	 * @param color the ColorARGB instance to merge.
-	 */
-	static std::uint32_t merge(const ColorARGB& color);
-	/**
-	 * Creates a ColorARGB object from the specified 32-bit integer.
-	 * @param ARGB the 32-bit integer that represents an A8R8G8B8 color.
-	 */
-	static ColorARGB split(const std::uint32_t& ARGB);
-	/**
-	 * Returns a random color.
-	 */
-	static ColorARGB getRandom();
 };
 } // namespace clockwork
 
-#endif // CLOCKWORK_COLOR_ARGB_HH
+#endif // CLOCKWORK_COLOR_HH

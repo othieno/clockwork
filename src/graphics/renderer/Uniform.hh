@@ -32,7 +32,7 @@
 #include "Vector3.hh"
 #include "Vector4.hh"
 #include "Matrix4.hh"
-#include "ColorARGB.hh"
+#include "Color.hh"
 #include <QHash>
 
 
@@ -53,7 +53,7 @@ std::integral_constant<bool,
 	std::is_base_of<math::Vector4f, T>::value ||
 	std::is_base_of<math::Vector4d, T>::value ||
 	std::is_base_of<Matrix4, T>::value ||
-	std::is_base_of<ColorARGB, T>::value ||
+	std::is_base_of<Color, T>::value ||
 	std::is_arithmetic<T>::value> {};
 }
 /**

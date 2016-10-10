@@ -22,29 +22,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "ColorARGB.hh"
+#include "Color.hh"
 #include <algorithm>
 #include <cmath>
 #include <random>
 
-using clockwork::ColorARGB;
+using clockwork::Color;
 
 
-ColorARGB::ColorARGB(const float r, const float g, const float b, const float a) :
+Color::Color() :
+Color(0.0f, 0.0f, 0.0f, 1.0f) {}
+
+
+Color::Color(const float r, const float g, const float b, const float a) :
 red(r),
 green(g),
 blue(b),
 alpha(a) {}
 
 
-ColorARGB::operator std::uint32_t() const {
-	return ColorARGB::merge(*this);
+Color::Color(const std::uint32_t argb) {
+	*this = Color::split(argb);
+}
+
+
+Color::operator std::uint32_t() const {
+	return Color::merge(*this);
 }
 
 
 std::uint32_t
-ColorARGB::merge(const ColorARGB& color)
-{
+Color::merge(const Color& color) {
 	std::uint32_t output = 0;
 
 	// Convert the channels to integer values.
@@ -70,22 +78,12 @@ ColorARGB::merge(const ColorARGB& color)
 }
 
 
-ColorARGB
-ColorARGB::getRandom() {
-	static std::random_device device;
-	static std::mt19937 gen(device());
-	static std::uniform_real_distribution<double> distribution(0, 1);
-
-	return ColorARGB(distribution(gen), distribution(gen), distribution(gen));
-}
-
-
-ColorARGB
-ColorARGB::split(const std::uint32_t& ARGB) {
+Color
+Color::split(const std::uint32_t& ARGB) {
 	if (ARGB == 0) {
-		return ColorARGB(0, 0, 0, 0);
+		return Color();
 	} else {
-		return ColorARGB (
+		return Color (
 			((ARGB >> 16) & 0xFF) * 0.00392156862, // 0.00392156862 == (1/255).
 			((ARGB >>  8) & 0xFF) * 0.00392156862,
 			(ARGB         & 0xFF) * 0.00392156862,

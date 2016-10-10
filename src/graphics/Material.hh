@@ -25,7 +25,7 @@
 #ifndef CLOCKWORK_MATERIAL_HH
 #define CLOCKWORK_MATERIAL_HH
 
-#include "ColorARGB.hh"
+#include "Color.hh"
 
 
 namespace clockwork {
@@ -52,15 +52,15 @@ struct Material {
 	/**
 	 * The material's coefficient of reflection for ambient light.
 	 */
-	ColorARGB Ka;
+	Color Ka;
 	/**
 	 * The material's coefficient of reflection for diffuse light.
 	 */
-	ColorARGB Kd;
+	Color Kd;
 	/**
 	 * The material's coefficient of reflection for specular light.
 	 */
-	ColorARGB Ks;
+	Color Ks;
 	/**
 	 * The material's ambient map.
 	 */
