@@ -73,6 +73,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/VertexShaderOutput.hh \
 		src/graphics/renderer/WireframeRenderer.hh \
 		src/math/Frustum.hh \
+		src/math/lerp.hh \
 		src/math/Matrix4.hh \
 		src/math/Point.hh \
 		src/math/Point3.hh \
@@ -118,6 +119,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/WireframeRenderer.cc \
 		src/graphics/Viewport.cc \
 		src/math/Frustum.cc \
+		src/math/lerp.cc \
 		src/math/Matrix4.cc \
 		src/math/Point.cc \
 		src/math/Point3.cc \
