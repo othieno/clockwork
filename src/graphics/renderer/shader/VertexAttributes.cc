@@ -22,48 +22,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_VERTEX_ATTRIBUTES_HH
-#define CLOCKWORK_VERTEX_ATTRIBUTES_HH
+#include "VertexAttributes.hh"
+#include "Point.hh"
+#include "Point3.hh"
+#include "Vector3.hh"
+
+using clockwork::VertexAttributes;
 
 
-namespace clockwork {
-/**
- * @see math/Point.hh.
- */
-struct Point;
-/**
- * @see math/Point3.hh.
- */
-struct Point3;
-/**
- * @see math/Vector3.hh.
- */
-struct Vector3;
-/**
- *
- */
-struct VertexAttributes {
-	/**
-	 * Instantiates a VertexAttributes object.
-	 */
-	VertexAttributes(
-		const Point3* position = nullptr,
-		const Vector3* normal = nullptr,
-		const Point* textureCoordinates = nullptr
-	);
-	/**
-	 * A reference to a vertex position.
-	 */
-	const Point3* position;
-	/**
-	 * A reference to a vertex's normal vector.
-	 */
-	const Vector3* normal;
-	/**
-	 * A reference to a vertex's texture mapping coordinates.
-	 */
-	const Point* textureCoordinates;
-};
-} // namespace clockwork
-
-#endif // CLOCKWORK_VERTEX_ATTRIBUTES_HH
+VertexAttributes::VertexAttributes(
+	const Point3* p,
+	const Vector3* n,
+	const Point* uv
+) :
+position(p),
+normal(n),
+textureCoordinates(uv) {}
