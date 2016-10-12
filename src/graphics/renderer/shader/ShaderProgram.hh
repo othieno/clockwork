@@ -22,45 +22,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_RANDOM_SHADING_RENDERER_HH
-#define CLOCKWORK_RANDOM_SHADING_RENDERER_HH
+#ifndef CLOCKWORK_SHADER_PROGRAM_HH
+#define CLOCKWORK_SHADER_PROGRAM_HH
 
-#include "PolygonRenderer.hh"
+#include "RenderingAlgorithm.hh"
+#include "Fragment.hh"
+#include "VertexAttributes.hh"
+#include "VertexShaderOutput.hh"
 
 
 namespace clockwork {
+namespace detail {
 /**
  *
  */
-class RandomShadingRenderer :
-public PolygonRenderer<RenderingAlgorithm::RandomShading, RandomShadingRenderer> {
+template<RenderingAlgorithm algorithm>
+class ShaderProgram {
 public:
-	/**
-	 * Returns a Varying object based on the specified face.
-	 */
-	static Varying createVarying(const Mesh::Face&, const std::size_t);
-	/**
-	 * Returns a pixel value.
-	 */
-	static std::uint32_t fragmentShader(const Uniforms&, const Varying&, const Fragment&);
-	/**
-	 * Creates a fragment from the specified Vertex object.
-	 */
-	static Fragment createFragment(const Vertex&);
-	/**
-	 *
-	 */
-	static Vertex lerp(const Vertex&, const Vertex&, const double percentage);
-	/**
-	 *
-	 */
-	static Fragment lerp(const Fragment&, const Fragment&, const double percentage);
-private:
-	/**
-	 *
-	 */
-	static Varying lerp(const Varying&, const Varying&, const double percentage);
+	using Fragment = clockwork::detail::Fragment<algorithm>;
+	using Varying = clockwork::detail::Varying<algorithm>;
+	using Vertex = clockwork::detail::VertexShaderOutput<algorithm>;
+	using VertexAttributes = clockwork::detail::VertexAttributes<algorithm>;
 };
+} // namespace detail
 } // namespace clockwork
 
-#endif // CLOCKWORK_RANDOM_SHADING_RENDERER_HH
+#endif // CLOCKWORK_SHADER_PROGRAM_HH

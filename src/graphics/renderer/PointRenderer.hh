@@ -37,11 +37,11 @@ public:
 	/**
 	 * Removes invisible vertex shader outputs.
 	 */
-	static void clip(VertexShaderOutputs&);
+	static void clip(const RenderingContext&, VertexArray&);
 	/**
 	 * Converts the vertex shader output into a collection of fragments.
 	 */
-	static Fragments rasterize(const RenderingContext&, const VertexShaderOutputs&);
+	static FragmentArray rasterize(const RenderingContext&, const VertexArray&);
 };
 } // namespace clockwork
 

@@ -50,7 +50,7 @@ RandomShadingRenderer::fragmentShader(const Uniforms&, const Varying& varying, c
 
 
 RandomShadingRenderer::Fragment
-RandomShadingRenderer::createFragment(const VertexShaderOutput& output) {
+RandomShadingRenderer::createFragment(const Vertex& output) {
 	const auto& position = output.position;
 	Fragment fragment;
 	fragment.x = std::round(position.x);
@@ -61,9 +61,9 @@ RandomShadingRenderer::createFragment(const VertexShaderOutput& output) {
 }
 
 
-RandomShadingRenderer::VertexShaderOutput
-RandomShadingRenderer::lerp(const VertexShaderOutput& from, const VertexShaderOutput& to, const double p) {
-	VertexShaderOutput output;
+RandomShadingRenderer::Vertex
+RandomShadingRenderer::lerp(const Vertex& from, const Vertex& to, const double p) {
+	Vertex output;
 	output.position = clockwork::lerp(from.position, to.position, p);
 	output.varying = RandomShadingRenderer::lerp(from.varying, to.varying, p);
 

@@ -35,6 +35,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics \
 		src/graphics/filter \
 		src/graphics/renderer \
+		src/graphics/renderer/shader \
 		src/math \
 		src/scene \
 		src/scene/predefined \
@@ -73,6 +74,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/VertexAttributes.hh \
 		src/graphics/renderer/VertexShaderOutput.hh \
 		src/graphics/renderer/WireframeRenderer.hh \
+		src/graphics/renderer/shader/ShaderProgram.hh \
 		src/math/Frustum.hh \
 		src/math/lerp.hh \
 		src/math/Matrix4.hh \

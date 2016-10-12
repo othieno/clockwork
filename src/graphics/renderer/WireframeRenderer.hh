@@ -37,12 +37,12 @@ public:
 	/**
 	 * Generates fragments from the specified collection of vertex shader outputs.
 	 */
-	static Fragments rasterize(const RenderingContext&, const VertexShaderOutputs&);
+	static FragmentArray rasterize(const RenderingContext&, const VertexArray&);
 private:
 	/**
 	 * Creates a fragment from the specified vertex shader output.
 	 */
-	static Fragment createFragment(const VertexShaderOutput&);
+	static Fragment createFragment(const Vertex&);
 	/**
 	 *
 	 */
@@ -50,11 +50,11 @@ private:
 	/**
 	 *
 	 */
-	static Fragments getBresenhamLineFragments(const Fragment&, const Fragment&);
+	static FragmentArray getBresenhamLineFragments(const Fragment&, const Fragment&);
 	/**
 	 *
 	 */
-	static Fragments getXiaolinWuLineFragments(const Fragment&, const Fragment&);
+	static FragmentArray getXiaolinWuLineFragments(const Fragment&, const Fragment&);
 };
 } // namespace clockwork
 

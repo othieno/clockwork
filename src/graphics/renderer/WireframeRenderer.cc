@@ -28,11 +28,11 @@
 using clockwork::WireframeRenderer;
 
 
-WireframeRenderer::Fragments
-WireframeRenderer::rasterize(const RenderingContext& context, const VertexShaderOutputs& primitives) {
-	const std::size_t primitiveCount = primitives.size();
+WireframeRenderer::FragmentArray
+WireframeRenderer::rasterize(const RenderingContext& context, const VertexArray& vertices) {
+	const std::size_t primitiveCount = vertices.size();
 
-	std::function<Fragments(const Fragment&, const Fragment)> getLineFragments = nullptr;
+	std::function<FragmentArray(const Fragment&, const Fragment)> getLineFragments = nullptr;
 	switch (context.lineDrawingAlgorithm) {
 		case LineDrawingAlgorithm::XiaolinWu:
 			getLineFragments = &WireframeRenderer::getXiaolinWuLineFragments;
@@ -43,7 +43,7 @@ WireframeRenderer::rasterize(const RenderingContext& context, const VertexShader
 			break;
 	}
 
-	Fragments fragments;
+	FragmentArray fragments;
 	switch (context.primitiveMode) {
 		case Primitive::Line: {
 			// In the case of Line primitives, the number of primitves must be
@@ -53,8 +53,8 @@ WireframeRenderer::rasterize(const RenderingContext& context, const VertexShader
 			// to it.
 			constexpr auto MASK = std::numeric_limits<decltype(primitiveCount)>::max() - 1;
 			for (std::size_t i = 0; i < (primitiveCount & MASK); ++i) {
-				const auto& f0 = createFragment(primitives[i]);
-				const auto& f1 = createFragment(primitives[i + 1]);
+				const auto& f0 = createFragment(vertices[i]);
+				const auto& f1 = createFragment(vertices[i + 1]);
 				fragments.append(f0);
 				fragments.append(f1);
 				fragments.append(getLineFragments(f0, f1));
@@ -63,8 +63,8 @@ WireframeRenderer::rasterize(const RenderingContext& context, const VertexShader
 		}
 		case Primitive::LineStrip:
 			for (std::size_t i = 0; i < (primitiveCount - 1); ++i) {
-				const auto& f0 = createFragment(primitives[i]);
-				const auto& f1 = createFragment(primitives[i + 1]);
+				const auto& f0 = createFragment(vertices[i]);
+				const auto& f1 = createFragment(vertices[i + 1]);
 				fragments.append(f0);
 				fragments.append(f1);
 				fragments.append(getLineFragments(f0, f1));
@@ -73,8 +73,8 @@ WireframeRenderer::rasterize(const RenderingContext& context, const VertexShader
 		case Primitive::LineLoop:
 		default:
 			for (std::size_t i = 0; i < primitiveCount; ++i) {
-				const auto& f0 = createFragment(primitives[i]);
-				const auto& f1 = createFragment(primitives[(i + 1) % primitiveCount]);
+				const auto& f0 = createFragment(vertices[i]);
+				const auto& f1 = createFragment(vertices[(i + 1) % primitiveCount]);
 				fragments.append(f0);
 				fragments.append(f1);
 				fragments.append(getLineFragments(f0, f1));
@@ -86,7 +86,7 @@ WireframeRenderer::rasterize(const RenderingContext& context, const VertexShader
 
 
 WireframeRenderer::Fragment
-WireframeRenderer::createFragment(const VertexShaderOutput& primitive) {
+WireframeRenderer::createFragment(const Vertex& primitive) {
 	Fragment fragment;
 	const auto& position = primitive.position;
 
@@ -112,9 +112,9 @@ WireframeRenderer::interpolate(const Fragment& f0, const Fragment& f1, const dou
 }
 
 
-WireframeRenderer::Fragments
+WireframeRenderer::FragmentArray
 WireframeRenderer::getBresenhamLineFragments(const Fragment& f0, const Fragment& f1) {
-	Fragments fragments;
+	FragmentArray fragments;
 
 	const int x0 = f0.x;
 	const int y0 = f0.y;
@@ -155,7 +155,7 @@ WireframeRenderer::getBresenhamLineFragments(const Fragment& f0, const Fragment&
 }
 
 
-WireframeRenderer::Fragments
+WireframeRenderer::FragmentArray
 WireframeRenderer::getXiaolinWuLineFragments(const Fragment& f0, const Fragment& f1) {
 	return getBresenhamLineFragments(f0, f1);
 }

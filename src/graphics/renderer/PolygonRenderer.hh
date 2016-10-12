@@ -37,26 +37,26 @@ template<RenderingAlgorithm algorithm, class Implementation>
 class PolygonRenderer : public Renderer<algorithm, Implementation> {
 public:
 	using Fragment = typename Renderer<algorithm, Implementation>::Fragment;
-	using Fragments = typename Renderer<algorithm, Implementation>::Fragments;
+	using FragmentArray = typename Renderer<algorithm, Implementation>::FragmentArray;
 	using Varying = typename Renderer<algorithm, Implementation>::Varying;
-	using VertexShaderOutput = typename Renderer<algorithm, Implementation>::VertexShaderOutput;
-	using VertexShaderOutputs = typename Renderer<algorithm, Implementation>::VertexShaderOutputs;
+	using Vertex = typename Renderer<algorithm, Implementation>::Vertex;
+	using VertexArray = typename Renderer<algorithm, Implementation>::VertexArray;
 	/**
 	 *
 	 */
-	static VertexShaderOutputs& assemble(const Primitive, VertexShaderOutputs&);
+	static void primitiveAssembly(const RenderingContext&, VertexArray&);
 	/**
 	 *
 	 */
-	static Fragments rasterize(const RenderingContext&, const VertexShaderOutputs& outputs);
+	static FragmentArray rasterize(const RenderingContext&, const VertexArray&);
 };
 
 
-template<RenderingAlgorithm A, class T> typename PolygonRenderer<A, T>::VertexShaderOutputs&
-PolygonRenderer<A, T>::assemble(const Primitive, VertexShaderOutputs& outputs) {
+template<RenderingAlgorithm A, class T> void
+PolygonRenderer<A, T>::primitiveAssembly(const RenderingContext&, VertexArray& vertices) {
 	// TODO This will only generate triangle primitives. Implement TriangleStrip and
 	// TriangleLoop generation.
-	static const auto compare = [](const VertexShaderOutput& a, const VertexShaderOutput& b) {
+	static const auto compare = [](const Vertex& a, const Vertex& b) {
 		const auto& pa = a.position;
 		const auto& pb = b.position;
 		if (qFuzzyCompare(1.0 + pa.y, 1.0 + pb.y)) {
@@ -71,47 +71,46 @@ PolygonRenderer<A, T>::assemble(const Primitive, VertexShaderOutputs& outputs) {
 	};
 	// If the triangle primitive is not correctly formed for the scanline algorithm,
 	// then tessellate two triangle primitives that fit our needs.
-	for (auto it = outputs.begin(); it != outputs.end();) {
+	for (auto it = vertices.begin(); it != vertices.end();) {
 		const auto& from = it;
 		const auto& to = it + 3;
 
 		std::sort(from, to, compare); // Note: std::sort process the range [first, last).
 
 		// Tessellate the primitive, if need be.
-		const auto& O0 = it[0];
-		const auto& O1 = it[1];
-		const auto& O2 = it[2];
+		const auto& V0 = it[0];
+		const auto& V1 = it[1];
+		const auto& V2 = it[2];
 
-		const auto& p0 = O0.position;
-		const auto& p1 = O1.position;
-		const auto& p2 = O2.position;
+		const auto& p0 = V0.position;
+		const auto& p1 = V1.position;
+		const auto& p2 = V2.position;
 
 		//const bool tessellate = !qFuzzyCompare(1.0 + p0.y, 1.0 + p1.y) && !qFuzzyCompare(1.0 + p1.y, 1.0 + p2.y);
 		const bool tessellate = !qFuzzyCompare(1.0 + p0.y, 1.0 + p1.y) && !qFuzzyCompare(1.0 + p1.y, 1.0 + p2.y);
 		if (tessellate) {
 			// Create a new output that will be used to create two new primitives.
-			VertexShaderOutput O = T::lerp(O0, O2, (p1.y - p0.y) / (p2.y - p0.y));
-			O.position.y = p1.y;
-			//O.position.z = 0; //FIXME Depth needs to be interpolated between O1 and O3.
+			Vertex V = T::lerp(V0, V2, (p1.y - p0.y) / (p2.y - p0.y));
+			V.position.y = p1.y;
+			//V.position.z = 0; //FIXME Depth needs to be interpolated between V1 and O3.
 
-			// Create two new triangle primitives: {O0, O1, O} and {O1, O, O2}. Since the
-			// original array of outputs is {O0, O1, O2}, it becomes {O0, O1, O, O1, O, O2}.
-			it = outputs.insert(it + 2, O);
-			it = outputs.insert(it + 1, O1);
-			it = outputs.insert(it + 1, O);
+			// Create two new triangle primitives: {V0, V1, V} and {V1, V, V2}. Since the
+			// original array of outputs is {V0, V1, V2}, it becomes {V0, V1, V, V1, V, V2}.
+			it = vertices.insert(it + 2, V);
+			it = vertices.insert(it + 1, V1);
+			it = vertices.insert(it + 1, V);
 			it = std::next(it, 2);
 		} else {
 			it = to;
 		}
 	}
-	return outputs;
 }
 
 
-template<RenderingAlgorithm A, class T> typename PolygonRenderer<A, T>::Fragments
-PolygonRenderer<A, T>::rasterize(const RenderingContext&, const VertexShaderOutputs& outputs) {
-	Fragments fragments;
-	for (auto it = outputs.begin(); it != outputs.end();) {
+template<RenderingAlgorithm A, class T> typename PolygonRenderer<A, T>::FragmentArray
+PolygonRenderer<A, T>::rasterize(const RenderingContext&, const VertexArray& vertices) {
+	FragmentArray fragments;
+	for (auto it = vertices.begin(); it != vertices.end();) {
 		const Fragment f0 = T::createFragment(*it++);
 		const Fragment f1 = T::createFragment(*it++);
 		const Fragment f2 = T::createFragment(*it++);
