@@ -22,46 +22,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_FRAGMENT_HH
-#define CLOCKWORK_FRAGMENT_HH
+#include "Fragment.hh"
 
-#include "RenderingAlgorithm.hh"
-#include "Varying.hh"
-#include "Vector3.hh"
-#include "Color.hh"
+using clockwork::Fragment;
 
 
-namespace clockwork {
-/**
- *
- */
-struct Fragment {
-	/**
-	 * Instantiates a Fragment object.
-	 */
-	Fragment(
-		const std::uint32_t x = 0,
-		const std::uint32_t y = 0,
-		const double z = 0,
-		const std::uint8_t stencil = 0
-	);
-	/**
-	 * The fragment's screen-space horizontal position.
-	 */
-	std::uint32_t x;
-	/**
-	 * The fragment's screen-space vertical position.
-	 */
-	std::uint32_t y;
-	/**
-	 * The fragment's depth value.
-	 */
-	double z;
-	/**
-	 * The fragment's stencil value.
-	 */
-	std::uint8_t stencil;
-};
-} // namespace clockwork
-
-#endif // CLOCKWORK_FRAGMENT_HH
+Fragment::Fragment(const std::uint32_t X, const std::uint32_t Y, const double Z, const std::uint8_t S) :
+x(X),
+y(Y),
+z(Z),
+stencil(S) {}

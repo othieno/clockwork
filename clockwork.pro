@@ -120,6 +120,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/PolygonRenderer.cc \
 		src/graphics/renderer/RandomShadingRenderer.cc \
 		src/graphics/renderer/WireframeRenderer.cc \
+		src/graphics/renderer/shader/Fragment.cc \
 		src/graphics/renderer/shader/VertexAttributes.cc \
 		src/graphics/Viewport.cc \
 		src/math/Frustum.cc \
