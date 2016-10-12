@@ -42,8 +42,57 @@ public:
 	using Fragment = clockwork::detail::Fragment<algorithm>;
 	using Varying = clockwork::detail::Varying<algorithm>;
 	using Vertex = clockwork::detail::VertexShaderOutput<algorithm>;
-	using VertexAttributes = clockwork::detail::VertexAttributes<algorithm>;
+	using VertexAttributes = clockwork::VertexAttributes;
+	/**
+	 * Initializes the vertex attributes used by the vertex shader.
+	 */
+	static void setVertexAttributes(VertexAttributes&, const Mesh::Face&, const std::size_t);
+	/**
+	 * Initializes the varying variables used by the vertex and fragment shaders.
+	 */
+	static void setVarying(Varying&, const Mesh::Face&, const std::size_t);
+	/**
+	 * Performs a basic per-vertex operation on the specified set of vertex attributes.
+	 */
+	static Vertex vertexShader(const Uniforms&, Varying&, const VertexAttributes&);
+	/**
+	 * Returns a pixel value.
+	 */
+	static std::uint32_t fragmentShader(const Uniforms&, const Varying&, const Fragment&);
 };
+
+
+template<RenderingAlgorithm A> void
+ShaderProgram<A>::setVertexAttributes(VertexAttributes& attributes, const Mesh::Face& face, const std::size_t i) {
+	if (Q_UNLIKELY(i >= face.length)) {
+		return;
+	}
+	attributes.position = face.positions[i];
+	attributes.normal = face.normals[i];
+	attributes.textureCoordinates = face.textureCoordinates[i];
+}
+
+
+template<RenderingAlgorithm A> void
+ShaderProgram<A>::setVarying(Varying&, const Mesh::Face&, const std::size_t) {}
+
+
+template<RenderingAlgorithm A> typename ShaderProgram<A>::Vertex
+ShaderProgram<A>::vertexShader(const Uniforms& uniforms, Varying&, const VertexAttributes& attributes) {
+	const auto& MVP = uniforms["MODELVIEWPROJECTION"].as<const Matrix4>();
+	const auto& position = *attributes.position;
+
+	Vertex output;
+	output.position = MVP * Point4(position);
+
+	return output;
+}
+
+
+template<RenderingAlgorithm A> std::uint32_t
+ShaderProgram<A>::fragmentShader(const Uniforms&, const Varying&, const Fragment&) {
+	return 0xFFFFFFFF;
+}
 } // namespace detail
 } // namespace clockwork
 
