@@ -60,7 +60,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/filter/ImageFilterFactory.hh \
 		src/graphics/filter/TextureFilter.hh \
 		src/graphics/filter/TextureFilterFactory.hh \
-		src/graphics/renderer/Fragment.hh \
 		src/graphics/renderer/LineDrawingAlgorithm.hh \
 		src/graphics/renderer/PointRenderer.hh \
 		src/graphics/renderer/PolygonRenderer.hh \
@@ -69,12 +68,13 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/Renderer.hh \
 		src/graphics/renderer/RenderingAlgorithm.hh \
 		src/graphics/renderer/RenderingContext.hh \
-		src/graphics/renderer/Uniform.hh \
-		src/graphics/renderer/Varying.hh \
-		src/graphics/renderer/VertexAttributes.hh \
 		src/graphics/renderer/VertexShaderOutput.hh \
 		src/graphics/renderer/WireframeRenderer.hh \
+		src/graphics/renderer/shader/Fragment.hh \
 		src/graphics/renderer/shader/ShaderProgram.hh \
+		src/graphics/renderer/shader/Uniform.hh \
+		src/graphics/renderer/shader/Varying.hh \
+		src/graphics/renderer/shader/VertexAttributes.hh \
 		src/math/Frustum.hh \
 		src/math/lerp.hh \
 		src/math/Matrix4.hh \
@@ -116,7 +116,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/Texture.cc \
 		src/graphics/filter/ImageFilter.cc \
 		src/graphics/filter/TextureFilter.cc \
-		src/graphics/renderer/Fragment.cc \
 		src/graphics/renderer/PointRenderer.cc \
 		src/graphics/renderer/PolygonRenderer.cc \
 		src/graphics/renderer/RandomShadingRenderer.cc \
