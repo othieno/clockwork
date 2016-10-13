@@ -60,6 +60,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/filter/ImageFilterFactory.hh \
 		src/graphics/filter/TextureFilter.hh \
 		src/graphics/filter/TextureFilterFactory.hh \
+		src/graphics/renderer/Fragment.hh \
 		src/graphics/renderer/LineDrawingAlgorithm.hh \
 		src/graphics/renderer/PointRenderer.hh \
 		src/graphics/renderer/PolygonRenderer.hh \
@@ -67,8 +68,10 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/Renderer.hh \
 		src/graphics/renderer/RenderingAlgorithm.hh \
 		src/graphics/renderer/RenderingContext.hh \
+		src/graphics/renderer/Uniform.hh \
+		src/graphics/renderer/Vertex.hh \
+		src/graphics/renderer/VertexAttributes.hh \
 		src/graphics/renderer/WireframeRenderer.hh \
-		src/graphics/renderer/shader/Fragment.hh \
 		src/graphics/renderer/shader/BumpMapShaderProgram.hh \
 		src/graphics/renderer/shader/CelShadingShaderProgram.hh \
 		src/graphics/renderer/shader/DepthMapShaderProgram.hh \
@@ -79,9 +82,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/shader/RandomShadingShaderProgram.hh \
 		src/graphics/renderer/shader/ShaderProgram.hh \
 		src/graphics/renderer/shader/TextureMapShaderProgram.hh \
-		src/graphics/renderer/shader/Uniform.hh \
-		src/graphics/renderer/shader/Vertex.hh \
-		src/graphics/renderer/shader/VertexAttributes.hh \
 		src/math/Frustum.hh \
 		src/math/lerp.hh \
 		src/math/Matrix4.hh \
@@ -123,9 +123,11 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/Texture.cc \
 		src/graphics/filter/ImageFilter.cc \
 		src/graphics/filter/TextureFilter.cc \
+		src/graphics/renderer/Fragment.cc \
 		src/graphics/renderer/PointRenderer.cc \
+		src/graphics/renderer/Vertex.cc \
+		src/graphics/renderer/VertexAttributes.cc \
 		src/graphics/renderer/WireframeRenderer.cc \
-		src/graphics/renderer/shader/Fragment.cc \
 		src/graphics/renderer/shader/BumpMapShaderProgram.cc \
 		src/graphics/renderer/shader/CelShadingShaderProgram.cc \
 		src/graphics/renderer/shader/DepthMapShaderProgram.cc \
@@ -135,8 +137,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/shader/PhongShadingShaderProgram.cc \
 		src/graphics/renderer/shader/RandomShadingShaderProgram.cc \
 		src/graphics/renderer/shader/TextureMapShaderProgram.cc \
-		src/graphics/renderer/shader/Vertex.cc \
-		src/graphics/renderer/shader/VertexAttributes.cc \
 		src/graphics/Viewport.cc \
 		src/math/Frustum.cc \
 		src/math/lerp.cc \
