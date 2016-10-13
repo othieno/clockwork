@@ -25,7 +25,6 @@
 #include "PointRenderer.hh"
 #include "Framebuffer.hh"
 #include "Mesh.hh"
-#include <cmath>
 
 using clockwork::PointRenderer;
 
@@ -47,14 +46,14 @@ PointRenderer::primitiveAssembly(const RenderingContext&, VertexArray&) {}
 
 void
 PointRenderer::clip(const RenderingContext&, VertexArray& vertices) {
-	static const auto& filter = [](const Vertex& vertex) {
+	static const auto& filter = [](const PipelineVertex& vertex) {
 		// Use a normalized 2D viewing volume: [-1, 1] x [-1, 1].
 		constexpr double xmin = -1.0;
 		constexpr double xmax =  1.0;
 		constexpr double ymin = -1.0;
 		constexpr double ymax =  1.0;
 
-		const auto& p = vertex.position;
+		const auto& p = vertex.data.position;
 		return p.x < xmin || p.x > xmax || p.y < ymin || p.y > ymax;
 	};
 	const auto& begin = vertices.begin();
@@ -67,15 +66,8 @@ PointRenderer::clip(const RenderingContext&, VertexArray& vertices) {
 PointRenderer::FragmentArray
 PointRenderer::rasterize(const RenderingContext&, const VertexArray& vertices) {
 	FragmentArray fragments;
-	for (const auto& primitive : vertices) {
-		const auto& position = primitive.position;
-		Fragment fragment;
-		fragment.x = std::round(position.x);
-		fragment.y = std::round(position.y);
-		fragment.z = position.z;
-		fragment.stencil = 0xFF;
-
-		fragments.append(fragment);
+	for (const auto& vertex : vertices) {
+		fragments.append(PipelineFragment(vertex));
 	}
 	return fragments;
 }

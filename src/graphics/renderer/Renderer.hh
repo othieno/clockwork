@@ -38,16 +38,83 @@ namespace clockwork {
 template<RenderingAlgorithm algorithm, class Implementation>
 class Renderer {
 public:
+	/**
+	 *
+	 */
 	using ShaderProgram = detail::ShaderProgram<algorithm>;
-	using Fragment = typename ShaderProgram::Fragment;
-	using FragmentArray = QList<Fragment>;
+	/**
+	 *
+	 */
 	using Varying = typename ShaderProgram::Varying;
+	/**
+	 *
+	 */
 	using Vertex = typename ShaderProgram::Vertex;
-	using VertexArray = QList<Vertex>;
-	using VertexAttributes = typename ShaderProgram::VertexAttributes;
-	static_assert(std::is_base_of<clockwork::Fragment, Fragment>::value);
 	static_assert(std::is_base_of<clockwork::Vertex, Vertex>::value);
+	/**
+	 *
+	 */
+	struct PipelineVertex {
+		/**
+		 * Performs a linear interpolation to find the PipelineVertex at a specified
+		 * percentage between two PipelineVertex instances.
+		 */
+		static PipelineVertex lerp(const PipelineVertex& from, const PipelineVertex& to, const double percentage);
+		/**
+		 * The actual vertex data.
+		 */
+		Vertex data;
+		/**
+		 * The set of varying variables that accompany the vertex throughout
+		 * the rendering pipeline.
+		 */
+		Varying varying;
+	};
+	/**
+	 *
+	 */
+	using VertexArray = QList<PipelineVertex>;
+	/**
+	 *
+	 */
+	using VertexAttributes = typename ShaderProgram::VertexAttributes;
 	static_assert(std::is_base_of<clockwork::VertexAttributes, VertexAttributes>::value);
+	/**
+	 *
+	 */
+	using Fragment = typename ShaderProgram::Fragment;
+	static_assert(std::is_base_of<clockwork::Fragment, Fragment>::value);
+	/**
+	 *
+	 */
+	struct PipelineFragment {
+		/**
+		 * Instantiates a PipelineFragment object.
+		 */
+		PipelineFragment() = default;
+		/**
+		 * Instantiates a PipelineFragment object based on the specified PipelineVertex object.
+		 */
+		explicit PipelineFragment(const PipelineVertex& vertex);
+		/**
+		 * Performs a linear interpolation to find the PipelineFragment at a specified
+		 * percentage between two PipelineFragment instances.
+		 */
+		static PipelineFragment lerp(const PipelineFragment& from, const PipelineFragment& to, const double percentage);
+		/**
+		 * The actual fragment data.
+		 */
+		Fragment data;
+		/**
+		 * The set of varying variables that accompany the fragment throughout
+		 * the rendering pipeline.
+		 */
+		Varying varying;
+	};
+	/**
+	 *
+	 */
+	using FragmentArray = QList<PipelineFragment>;
 	/**
 	 * Renders the specified mesh in the given context.
 	 * @param context the rendering context.
@@ -80,15 +147,37 @@ private:
 };
 
 
+template<RenderingAlgorithm A, class T> typename Renderer<A, T>::PipelineVertex
+Renderer<A, T>::PipelineVertex::lerp(const PipelineVertex& from, const PipelineVertex& to, const double p) {
+	PipelineVertex vertex;
+	vertex.data = Vertex::lerp(from.data, to.data, p);
+	vertex.varying = Varying::lerp(from.varying, to.varying, p);
+	return vertex;
+}
+
+
+template<RenderingAlgorithm A, class T>
+Renderer<A, T>::PipelineFragment::PipelineFragment(const PipelineVertex& vertex) :
+data(vertex.data),
+varying(vertex.varying) {}
+
+
+template<RenderingAlgorithm A, class T> typename Renderer<A, T>::PipelineFragment
+Renderer<A, T>::PipelineFragment::lerp(const PipelineFragment& from, const PipelineFragment& to, const double p) {
+	PipelineFragment fragment;
+	fragment.data = Fragment::lerp(from.data, to.data, p);
+	fragment.varying = Varying::lerp(from.varying, to.varying, p);
+	return fragment;
+}
+
+
 template<RenderingAlgorithm A, class T> void
 Renderer<A, T>::draw(RenderingContext& context, const Mesh& mesh) {
 	auto* const framebuffer = context.framebuffer;
 	if (framebuffer == nullptr || mesh.faces.isEmpty()) {
 		return;
 	}
-
 	T::sanitizeContext(context);
-
 	for (const auto& face : mesh.faces) {
 		VertexArray vertices = vertexProcessing(context, face);
 		T::primitiveAssembly(context, vertices);
@@ -107,18 +196,13 @@ Renderer<A, T>::draw(RenderingContext& context, const Mesh& mesh) {
 template<RenderingAlgorithm A, class T> typename Renderer<A, T>::VertexArray
 Renderer<A, T>::vertexProcessing(const RenderingContext& context, const Mesh::Face& face) {
 	static VertexAttributes attributes;
-	static Varying varying;
-
 	VertexArray vertices;
 	for (std::size_t i = 0; i < face.length; ++i) {
 		T::ShaderProgram::setVertexAttributes(attributes, face, i);
-		T::ShaderProgram::setVarying(varying, face, i);
 
-		// Perform the per-vertex operation, after which the set of varying variables is
-		// attached to the output for use in later stages of the pipeline.
-		auto vertex = T::ShaderProgram::vertexShader(context.uniforms, varying, attributes);
-		vertex.varying = varying;
-
+		PipelineVertex vertex;
+		T::ShaderProgram::setVarying(vertex.varying, face, i);
+		vertex.data = std::move(T::ShaderProgram::vertexShader(context.uniforms, vertex.varying, attributes));
 		vertices.append(vertex);
 	}
 	return vertices;
@@ -134,7 +218,7 @@ Renderer<A, T>::toScreenSpace(const ViewportTransform& viewportTransform, Vertex
 	for (auto& vertex : vertices) {
 		// Perspective divide: Convert the vertex position from clipping
 		// coordinate space to normalized device coordinate (NDC) space.
-		auto& position = vertex.position;
+		auto& position = vertex.data.position;
 		position.x /= position.w;
 		position.y /= position.w;
 		position.z /= position.w;
@@ -155,11 +239,11 @@ Renderer<A, T>::fragmentProcessing(const RenderingContext& context, Framebuffer&
 	auto* const zbuffer = framebuffer.getDepthBuffer();
 	auto* const sbuffer = framebuffer.getStencilBuffer();
 	for (const auto& f : fragments) {
-		const int offset = framebuffer.getOffset(f.x, f.y);
-		if (offset >= 0 && fragmentPasses(context, f)) {
-			pbuffer[offset] = T::ShaderProgram::fragmentShader(context.uniforms, f.varying, f);
-			zbuffer[offset] = f.z;
-			sbuffer[offset] = f.stencil;
+		const int offset = framebuffer.getOffset(f.data.x, f.data.y);
+		if (offset >= 0 && fragmentPasses(context, f.data)) {
+			pbuffer[offset] = T::ShaderProgram::fragmentShader(context.uniforms, f.varying, f.data);
+			zbuffer[offset] = f.data.z;
+			sbuffer[offset] = f.data.stencil;
 		}
 	}
 }

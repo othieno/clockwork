@@ -26,7 +26,6 @@
 #define CLOCKWORK_POLYGON_RENDERER_HH
 
 #include "Renderer.hh"
-#include <cmath>
 
 
 namespace clockwork {
@@ -37,9 +36,11 @@ template<RenderingAlgorithm algorithm, class Implementation>
 class PolygonRenderer : public Renderer<algorithm, Implementation> {
 public:
 	using Fragment = typename Renderer<algorithm, Implementation>::Fragment;
+	using PipelineFragment = typename Renderer<algorithm, Implementation>::PipelineFragment;
 	using FragmentArray = typename Renderer<algorithm, Implementation>::FragmentArray;
 	using Varying = typename Renderer<algorithm, Implementation>::Varying;
 	using Vertex = typename Renderer<algorithm, Implementation>::Vertex;
+	using PipelineVertex = typename Renderer<algorithm, Implementation>::PipelineVertex;
 	using VertexArray = typename Renderer<algorithm, Implementation>::VertexArray;
 	/**
 	 * Sanitizes the rendering context and makes sure it is compatible with this renderer.
@@ -120,9 +121,9 @@ template<RenderingAlgorithm A, class T> void
 PolygonRenderer<A, T>::primitiveAssembly(const RenderingContext&, VertexArray& vertices) {
 	// TODO This will only generate triangle primitives. Implement TriangleStrip and
 	// TriangleLoop generation.
-	static const auto compare = [](const Vertex& a, const Vertex& b) {
-		const auto& pa = a.position;
-		const auto& pb = b.position;
+	static const auto compare = [](const PipelineVertex& a, const PipelineVertex& b) {
+		const auto& pa = a.data.position;
+		const auto& pb = b.data.position;
 		if (qFuzzyCompare(1.0 + pa.y, 1.0 + pb.y)) {
 			if (qFuzzyCompare(1.0 + pa.x, 1.0 + pb.x)) {
 				return pa.z < pb.z;
@@ -146,17 +147,16 @@ PolygonRenderer<A, T>::primitiveAssembly(const RenderingContext&, VertexArray& v
 		const auto& V1 = it[1];
 		const auto& V2 = it[2];
 
-		const auto& p0 = V0.position;
-		const auto& p1 = V1.position;
-		const auto& p2 = V2.position;
+		const auto& p0 = V0.data.position;
+		const auto& p1 = V1.data.position;
+		const auto& p2 = V2.data.position;
 
-		//const bool tessellate = !qFuzzyCompare(1.0 + p0.y, 1.0 + p1.y) && !qFuzzyCompare(1.0 + p1.y, 1.0 + p2.y);
 		const bool tessellate = !qFuzzyCompare(1.0 + p0.y, 1.0 + p1.y) && !qFuzzyCompare(1.0 + p1.y, 1.0 + p2.y);
 		if (tessellate) {
 			// Create a new output that will be used to create two new primitives.
-			Vertex V = Vertex::lerp(V0, V2, (p1.y - p0.y) / (p2.y - p0.y));
-			V.position.y = p1.y;
-			//V.position.z = 0; //FIXME Depth needs to be interpolated between V1 and O3.
+			auto V = PipelineVertex::lerp(V0, V2, (p1.y - p0.y) / (p2.y - p0.y));
+			V.data.position.y = p1.y;
+			//V.data.position.z = 0; //FIXME Depth needs to be interpolated between V1 and O3.
 
 			// Create two new triangle primitives: {V0, V1, V} and {V1, V, V2}. Since the
 			// original array of outputs is {V0, V1, V2}, it becomes {V0, V1, V, V1, V, V2}.
@@ -179,43 +179,43 @@ template<RenderingAlgorithm A, class T> typename PolygonRenderer<A, T>::Fragment
 PolygonRenderer<A, T>::rasterize(const RenderingContext&, const VertexArray& vertices) {
 	FragmentArray fragments;
 	for (auto it = vertices.begin(); it != vertices.end();) {
-		const Fragment f0(*it++);
-		const Fragment f1(*it++);
-		const Fragment f2(*it++);
+		const PipelineFragment f0(*it++);
+		const PipelineFragment f1(*it++);
+		const PipelineFragment f2(*it++);
 		fragments.append(f0);
 		fragments.append(f1);
 		fragments.append(f2);
 
-		const Fragment* a = &f1;
-		const Fragment* b = &f0;
-		const Fragment* c = &f2;
-		if (f0.y == f1.y) {
+		const PipelineFragment* a = &f1;
+		const PipelineFragment* b = &f0;
+		const PipelineFragment* c = &f2;
+		if (f0.data.y == f1.data.y) {
 			a = &f0;
 			b = &f2;
 			c = &f1;
 		}
 
-		const double dys = int(b->y - a->y);
-		const double dye = int(b->y - c->y);
+		const double dys = int(b->data.y - a->data.y);
+		const double dye = int(b->data.y - c->data.y);
 
 		// Remember that the outputs are sorted in the primitive assemlby step so f0.y <= f2.y.
-		for (std::uint32_t y = f0.y; y <= f2.y; ++y) {
-			const double ps = int(y - a->y) / dys;
-			const Fragment fs = Fragment::lerp(*a, *b, ps);
-			std::uint32_t xmin = std::round(((1.0 - ps) * a->x) + (ps * b->x));
+		for (std::uint32_t y = f0.data.y; y <= f2.data.y; ++y) {
+			const double ps = int(y - a->data.y) / dys;
+			const auto fs = PipelineFragment::lerp(*a, *b, ps);
+			std::uint32_t xmin = std::round(((1.0 - ps) * a->data.x) + (ps * b->data.x));
 
-			const double pe = int(y - c->y) / dye;
-			const Fragment fe = Fragment::lerp(*c, *b, pe);
-			std::uint32_t xmax = std::round(((1.0 - pe) * c->x) + (pe * b->x));
+			const double pe = int(y - c->data.y) / dye;
+			const auto fe = PipelineFragment::lerp(*c, *b, pe);
+			std::uint32_t xmax = std::round(((1.0 - pe) * c->data.x) + (pe * b->data.x));
 
 			if (xmin > xmax) {
 				std::swap(xmin, xmax);
 			}
 			for (std::uint32_t x = xmin; x <= xmax; ++x) {
-				const double p = (x - fs.x) / double(fe.x - fs.x);
-				Fragment f = Fragment::lerp(fs, fe, p);
-				f.x = x;
-				f.y = y;
+				const double p = (x - fs.data.x) / double(fe.data.x - fs.data.x);
+				auto f = PipelineFragment::lerp(fs, fe, p);
+				f.data.x = x;
+				f.data.y = y;
 				fragments.append(f);
 			}
 		}
