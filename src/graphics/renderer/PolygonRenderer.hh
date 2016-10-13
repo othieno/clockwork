@@ -58,6 +58,51 @@ public:
 	 */
 	static FragmentArray rasterize(const RenderingContext&, const VertexArray&);
 };
+/**
+ *
+ */
+class RandomShadingRenderer :
+public PolygonRenderer<RenderingAlgorithm::RandomShading, RandomShadingRenderer> {};
+/**
+ *
+ */
+class FlatShadingRenderer :
+public PolygonRenderer<RenderingAlgorithm::FlatShading, FlatShadingRenderer> {};
+/**
+ *
+ */
+class GouraudShadingRenderer :
+public PolygonRenderer<RenderingAlgorithm::GouraudShading, GouraudShadingRenderer> {};
+/**
+ *
+ */
+class PhongShadingRenderer :
+public PolygonRenderer<RenderingAlgorithm::PhongShading, PhongShadingRenderer> {};
+/**
+ *
+ */
+class CelShadingRenderer :
+public PolygonRenderer<RenderingAlgorithm::CelShading, CelShadingRenderer> {};
+/**
+ *
+ */
+class DepthMapRenderer :
+public PolygonRenderer<RenderingAlgorithm::DepthMapping, DepthMapRenderer> {};
+/**
+ *
+ */
+class NormalMapRenderer :
+public PolygonRenderer<RenderingAlgorithm::NormalMapping, NormalMapRenderer> {};
+/**
+ *
+ */
+class BumpMapRenderer :
+public PolygonRenderer<RenderingAlgorithm::BumpMapping, BumpMapRenderer> {};
+/**
+ *
+ */
+class TextureMapRenderer :
+public PolygonRenderer<RenderingAlgorithm::TextureMapping, TextureMapRenderer> {};
 
 
 template<RenderingAlgorithm A, class T> void
@@ -109,7 +154,7 @@ PolygonRenderer<A, T>::primitiveAssembly(const RenderingContext&, VertexArray& v
 		const bool tessellate = !qFuzzyCompare(1.0 + p0.y, 1.0 + p1.y) && !qFuzzyCompare(1.0 + p1.y, 1.0 + p2.y);
 		if (tessellate) {
 			// Create a new output that will be used to create two new primitives.
-			Vertex V = T::lerp(V0, V2, (p1.y - p0.y) / (p2.y - p0.y));
+			Vertex V = Vertex::lerp(V0, V2, (p1.y - p0.y) / (p2.y - p0.y));
 			V.position.y = p1.y;
 			//V.position.z = 0; //FIXME Depth needs to be interpolated between V1 and O3.
 
@@ -134,9 +179,9 @@ template<RenderingAlgorithm A, class T> typename PolygonRenderer<A, T>::Fragment
 PolygonRenderer<A, T>::rasterize(const RenderingContext&, const VertexArray& vertices) {
 	FragmentArray fragments;
 	for (auto it = vertices.begin(); it != vertices.end();) {
-		const Fragment f0 = T::createFragment(*it++);
-		const Fragment f1 = T::createFragment(*it++);
-		const Fragment f2 = T::createFragment(*it++);
+		const Fragment f0(*it++);
+		const Fragment f1(*it++);
+		const Fragment f2(*it++);
 		fragments.append(f0);
 		fragments.append(f1);
 		fragments.append(f2);
@@ -156,11 +201,11 @@ PolygonRenderer<A, T>::rasterize(const RenderingContext&, const VertexArray& ver
 		// Remember that the outputs are sorted in the primitive assemlby step so f0.y <= f2.y.
 		for (std::uint32_t y = f0.y; y <= f2.y; ++y) {
 			const double ps = int(y - a->y) / dys;
-			const Fragment fs = T::lerp(*a, *b, ps);
+			const Fragment fs = Fragment::lerp(*a, *b, ps);
 			std::uint32_t xmin = std::round(((1.0 - ps) * a->x) + (ps * b->x));
 
 			const double pe = int(y - c->y) / dye;
-			const Fragment fe = T::lerp(*c, *b, pe);
+			const Fragment fe = Fragment::lerp(*c, *b, pe);
 			std::uint32_t xmax = std::round(((1.0 - pe) * c->x) + (pe * b->x));
 
 			if (xmin > xmax) {
@@ -168,7 +213,7 @@ PolygonRenderer<A, T>::rasterize(const RenderingContext&, const VertexArray& ver
 			}
 			for (std::uint32_t x = xmin; x <= xmax; ++x) {
 				const double p = (x - fs.x) / double(fe.x - fs.x);
-				Fragment f = T::lerp(fs, fe, p);
+				Fragment f = Fragment::lerp(fs, fe, p);
 				f.x = x;
 				f.y = y;
 				fragments.append(f);
