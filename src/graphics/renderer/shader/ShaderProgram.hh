@@ -27,8 +27,10 @@
 
 #include "RenderingAlgorithm.hh"
 #include "Fragment.hh"
+#include "Vertex.hh"
 #include "VertexAttributes.hh"
-#include "VertexShaderOutput.hh"
+#include "lerp.hh"
+#include <cmath>
 
 
 namespace clockwork {
@@ -39,10 +41,48 @@ namespace detail {
 template<RenderingAlgorithm algorithm>
 class ShaderProgram {
 public:
-	using Fragment = clockwork::detail::Fragment<algorithm>;
-	using Varying = clockwork::detail::Varying<algorithm>;
-	using Vertex = clockwork::detail::VertexShaderOutput<algorithm>;
+	/**
+	 *
+	 */
+	struct Varying {};
+	/**
+	 *
+	 */
+	struct Vertex : clockwork::Vertex {
+		/**
+		 *
+		 */
+		static Vertex lerp(const Vertex& from, const Vertex& to, const double percentage);
+		/**
+		 * The attached set of varying variables to be passed on to the fragment shader.
+		 */
+		Varying varying;
+	};
+	/**
+	 *
+	 */
 	using VertexAttributes = clockwork::VertexAttributes;
+	/**
+	 *
+	 */
+	struct Fragment : clockwork::Fragment {
+		/**
+		 * Instantiates a Fragment object.
+		 */
+		Fragment() = default;
+		/**
+		 *
+		 */
+		explicit Fragment(const Vertex&);
+		/**
+		 *
+		 */
+		static Fragment lerp(const Fragment& from, const Fragment& to, const double percentage);
+		/**
+		 * The attached set of varying variables.
+		 */
+		Varying varying;
+	};
 	/**
 	 * Initializes the vertex attributes used by the vertex shader.
 	 */
@@ -60,6 +100,38 @@ public:
 	 */
 	static std::uint32_t fragmentShader(const Uniforms&, const Varying&, const Fragment&);
 };
+
+
+template<RenderingAlgorithm A> typename ShaderProgram<A>::Vertex
+ShaderProgram<A>::Vertex::lerp(const Vertex& from, const Vertex& to, const double p) {
+	Vertex vertex;
+	vertex.position = clockwork::lerp(from.position, to.position, p);
+	return vertex;
+}
+
+
+template<RenderingAlgorithm A>
+ShaderProgram<A>::Fragment::Fragment(const Vertex& v) {
+	x = std::round(v.position.x);
+	y = std::round(v.position.y);
+	z = v.position.z;
+	stencil = 0xFF;
+	varying = v.varying;
+}
+
+
+template<RenderingAlgorithm A> typename ShaderProgram<A>::Fragment
+ShaderProgram<A>::Fragment::lerp(const Fragment& from, const Fragment& to, const double p) {
+	const double pp = 1.0 - p;
+
+	Fragment fragment;
+//	fragment.x = 0;	// <x, y> are ignored because they are always set to some other value after
+//	fragment.y = 0;	// interpolation. For more info, please refer to any renderer's rasterize function.
+	fragment.z = (pp * from.z) + (p * to.z);
+	fragment.stencil = std::round((pp * from.stencil) + (p * to.stencil));
+
+	return fragment;
+}
 
 
 template<RenderingAlgorithm A> void

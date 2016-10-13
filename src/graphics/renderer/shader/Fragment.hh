@@ -25,10 +25,7 @@
 #ifndef CLOCKWORK_FRAGMENT_HH
 #define CLOCKWORK_FRAGMENT_HH
 
-#include "RenderingAlgorithm.hh"
-#include "Varying.hh"
-#include "Vector3.hh"
-#include "Color.hh"
+#include <cstdint>
 
 
 namespace clockwork {
