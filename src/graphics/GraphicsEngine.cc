@@ -64,7 +64,7 @@ GraphicsEngine::render(const Scene& scene) {
 		context.uniforms.insert("viewpoint", Uniform::create<const Point3>(viewer->getPosition()));
 		context.uniforms.insert("VIEWPROJECTION", Uniform::create<const Matrix4>(VIEWPROJECTION));
 
-		const auto& draw = getDrawFunction(viewer->getRenderingAlgorithm());
+		const auto draw = getDrawFunction(viewer->getRenderingAlgorithm());
 
 		for (const SceneObject* object : scene.getAllNodes<SceneObject>()) {
 			if (object != nullptr && !object->isPruned() && viewer->isObjectVisible(*object)) {
@@ -108,19 +108,19 @@ GraphicsEngine::setLineDrawingAlgorithm(const LineDrawingAlgorithm algorithm) {
 }
 
 
-std::function<void(clockwork::RenderingContext&, const clockwork::Mesh&)>
+GraphicsEngine::DrawFunction
 GraphicsEngine::getDrawFunction(const RenderingAlgorithm algorithm) {
 	switch (algorithm) {
-		case RenderingAlgorithm::Wireframe: return WireframeRenderer::draw;
-		case RenderingAlgorithm::RandomShading: return RandomShadingRenderer::draw;
-		case RenderingAlgorithm::FlatShading: return FlatShadingRenderer::draw;
-		case RenderingAlgorithm::GouraudShading: return GouraudShadingRenderer::draw;
-		case RenderingAlgorithm::PhongShading: return PhongShadingRenderer::draw;
-		case RenderingAlgorithm::CelShading: return CelShadingRenderer::draw;
-		case RenderingAlgorithm::DepthMapping: return DepthMapRenderer::draw;
-		case RenderingAlgorithm::NormalMapping: return NormalMapRenderer::draw;
-		case RenderingAlgorithm::BumpMapping: return BumpMapRenderer::draw;
-		case RenderingAlgorithm::TextureMapping: return TextureMapRenderer::draw;
-		case RenderingAlgorithm::Point: default: return PointRenderer::draw;
+		case RenderingAlgorithm::Wireframe: return &WireframeRenderer::draw;
+		case RenderingAlgorithm::RandomShading: return &RandomShadingRenderer::draw;
+		case RenderingAlgorithm::FlatShading: return &FlatShadingRenderer::draw;
+		case RenderingAlgorithm::GouraudShading: return &GouraudShadingRenderer::draw;
+		case RenderingAlgorithm::PhongShading: return &PhongShadingRenderer::draw;
+		case RenderingAlgorithm::CelShading: return &CelShadingRenderer::draw;
+		case RenderingAlgorithm::DepthMapping: return &DepthMapRenderer::draw;
+		case RenderingAlgorithm::NormalMapping: return &NormalMapRenderer::draw;
+		case RenderingAlgorithm::BumpMapping: return &BumpMapRenderer::draw;
+		case RenderingAlgorithm::TextureMapping: return &TextureMapRenderer::draw;
+		case RenderingAlgorithm::Point: default: return &PointRenderer::draw;
 	}
 }

@@ -92,14 +92,18 @@ public:
     void setLineDrawingAlgorithm(const LineDrawingAlgorithm algorithm);
 private:
     /**
-     *
+     * A pointer to a function that draws a mesh in a specified rendering context.
+     */
+    typedef void (*DrawFunction)(RenderingContext&, const Mesh&);
+    /**
+     * Instantiates a GraphicsEngine object.
      */
     GraphicsEngine();
     /**
      * Returns the specified rendering algorithm's draw function.
      * @param algorithm the rendering algorithm to query.
      */
-    std::function<void(RenderingContext&, const Mesh&)> getDrawFunction(const RenderingAlgorithm algorithm);
+    DrawFunction getDrawFunction(const RenderingAlgorithm algorithm);
     /**
      * The framebuffer.
      */

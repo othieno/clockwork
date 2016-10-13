@@ -51,7 +51,7 @@ WireframeRenderer::FragmentArray
 WireframeRenderer::rasterize(const RenderingContext& context, const VertexArray& vertices) {
 	const std::size_t primitiveCount = vertices.size();
 
-	std::function<FragmentArray(const Fragment&, const Fragment)> getLineFragments = nullptr;
+	FragmentArray (*getLineFragments)(const Fragment&, const Fragment&) = nullptr;
 	switch (context.lineDrawingAlgorithm) {
 		case LineDrawingAlgorithm::XiaolinWu:
 			getLineFragments = &WireframeRenderer::getXiaolinWuLineFragments;
