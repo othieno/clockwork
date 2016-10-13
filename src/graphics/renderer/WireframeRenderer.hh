@@ -52,14 +52,6 @@ public:
 	static FragmentArray rasterize(const RenderingContext&, const VertexArray&);
 private:
 	/**
-	 * Creates a fragment from the specified vertex shader output.
-	 */
-	static Fragment createFragment(const Vertex&);
-	/**
-	 *
-	 */
-	static Fragment interpolate(const Fragment& f0, const Fragment& f1, const double percentage);
-	/**
 	 *
 	 */
 	static FragmentArray getBresenhamLineFragments(const Fragment&, const Fragment&);
