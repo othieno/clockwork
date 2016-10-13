@@ -42,14 +42,33 @@ public:
 	using Vertex = typename Renderer<algorithm, Implementation>::Vertex;
 	using VertexArray = typename Renderer<algorithm, Implementation>::VertexArray;
 	/**
-	 *
+	 * Sanitizes the rendering context and makes sure it is compatible with this renderer.
+	 */
+	static void sanitizeContext(RenderingContext&);
+	/**
+	 * Rearranges the specified set of vertices into a collection of geometric primitives.
 	 */
 	static void primitiveAssembly(const RenderingContext&, VertexArray&);
 	/**
-	 *
+	 * Removes vertices that are not visible on the screen.
+	 */
+	static void clip(const RenderingContext&, VertexArray&);
+	/**
+	 * Generates fragments from the specified collection of vertices.
 	 */
 	static FragmentArray rasterize(const RenderingContext&, const VertexArray&);
 };
+
+
+template<RenderingAlgorithm A, class T> void
+PolygonRenderer<A, T>::sanitizeContext(RenderingContext& context) {
+	// The Polygon renderer only draws triangle primitives so if the primitive mode
+	// is not set to Triangle, TriangleStrip or TriangleFan, it will be set to TriangleStrip.
+	auto& mode = context.primitiveMode;
+	if (mode != Primitive::Triangle && mode != Primitive::TriangleStrip && mode != Primitive::TriangleFan) {
+		mode = Primitive::TriangleStrip;
+	}
+}
 
 
 template<RenderingAlgorithm A, class T> void
@@ -105,6 +124,10 @@ PolygonRenderer<A, T>::primitiveAssembly(const RenderingContext&, VertexArray& v
 		}
 	}
 }
+
+
+template<RenderingAlgorithm A, class T> void
+PolygonRenderer<A, T>::clip(const RenderingContext&, VertexArray&) {}
 
 
 template<RenderingAlgorithm A, class T> typename PolygonRenderer<A, T>::FragmentArray

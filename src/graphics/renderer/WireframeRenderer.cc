@@ -28,6 +28,25 @@
 using clockwork::WireframeRenderer;
 
 
+void
+WireframeRenderer::sanitizeContext(RenderingContext& context) {
+	// The Wireframe renderer only draws line primitives so if the primitive mode
+	// is not set to Line, LineStrip or LineLoop, it will be set to LineLoop.
+	auto& mode = context.primitiveMode;
+	if (mode != Primitive::Line && mode != Primitive::LineStrip && mode != Primitive::LineLoop) {
+		mode = Primitive::LineLoop;
+	}
+}
+
+
+void
+WireframeRenderer::primitiveAssembly(const RenderingContext&, VertexArray&) {}
+
+
+void
+WireframeRenderer::clip(const RenderingContext&, VertexArray&) {}
+
+
 WireframeRenderer::FragmentArray
 WireframeRenderer::rasterize(const RenderingContext& context, const VertexArray& vertices) {
 	const std::size_t primitiveCount = vertices.size();
@@ -71,7 +90,6 @@ WireframeRenderer::rasterize(const RenderingContext& context, const VertexArray&
 			}
 			break;
 		case Primitive::LineLoop:
-		default:
 			for (std::size_t i = 0; i < primitiveCount; ++i) {
 				const auto& f0 = createFragment(vertices[i]);
 				const auto& f1 = createFragment(vertices[(i + 1) % primitiveCount]);
@@ -79,6 +97,8 @@ WireframeRenderer::rasterize(const RenderingContext& context, const VertexArray&
 				fragments.append(f1);
 				fragments.append(getLineFragments(f0, f1));
 			}
+			break;
+		default:
 			break;
 	}
 	return fragments;

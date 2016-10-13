@@ -45,6 +45,9 @@ public:
 	using Vertex = typename ShaderProgram::Vertex;
 	using VertexArray = QList<Vertex>;
 	using VertexAttributes = typename ShaderProgram::VertexAttributes;
+	static_assert(std::is_base_of<clockwork::Fragment, Fragment>::value);
+	static_assert(std::is_base_of<clockwork::Vertex, Vertex>::value);
+	static_assert(std::is_base_of<clockwork::VertexAttributes, VertexAttributes>::value);
 	/**
 	 * Renders the specified mesh in the given context.
 	 * @param context the rendering context.
@@ -56,32 +59,17 @@ public:
 	 */
 	static VertexArray vertexProcessing(const RenderingContext& context, const Mesh::Face& face);
 	/**
-	 * Builds a list of geometric primitives.
-	 * This function should be implemented in an explicit template specialization.
-	 */
-	static void primitiveAssembly(const RenderingContext& context, VertexArray& vertices);
-	/**
 	 *
 	 */
 	static void cull(const RenderingContext& context, VertexArray& vertices);
-	/**
-	 * Removes vertex shader outputs that are not visible on the screen.
-	 * This function should be implemented in an explicit template specialization.
-	 */
-	static void clip(const RenderingContext& context, VertexArray& vertices);
 	/**
 	 *
 	 */
 	static void toScreenSpace(const ViewportTransform& transform, VertexArray& vertices);
 	/**
-	 * Generates a list of fragments from the specified vertex array.
-	 * This function should be implemented in an explicit template specialization.
-	 */
-	static FragmentArray rasterize(const RenderingContext& context, const VertexArray& vertices);
-	/**
 	 *
 	 */
-	static void fragmentProcessing(RenderingContext& context, const FragmentArray& fragments);
+	static void fragmentProcessing(const RenderingContext&, Framebuffer&, const FragmentArray&);
 private:
 	/**
 	 * Returns true if the specified fragment passes all fragment tests, false otherwise.
@@ -89,37 +77,6 @@ private:
 	 * @param fragment the fragment to test.
 	 */
 	static bool fragmentPasses(const RenderingContext& context, const Fragment& fragment);
-	/**
-	 * Returns a default VertexAttributes object.
-	 */
-	static VertexAttributes createVertexAttributes(const Mesh::Face& face, const std::size_t i) {
-		return i < face.length ? VertexAttributes(*face.positions[i]) : VertexAttributes();
-	}
-	/**
-	 * Returns a dummy Varying object.
-	 * This function should be implemented in an explicit template specialization.
-	 */
-	static Varying createVarying(const Mesh::Face&, const std::size_t) {
-		return Varying();
-	}
-	/**
-	 * Performs a basic per-vertex operation.
-	 */
-	static Vertex vertexShader(const Uniforms& uniforms, Varying&, const VertexAttributes& attributes) {
-		const auto& MVP = uniforms["MODELVIEWPROJECTION"].as<const Matrix4>();
-
-		Vertex output;
-		output.position = MVP * Point4(attributes.position);
-
-		return output;
-	}
-	/**
-	 * Returns a pixel value.
-	 * This function should be implemented in an explicit template specialization.
-	 */
-	static std::uint32_t fragmentShader(const Uniforms&, const Varying&, const Fragment&) {
-		return 0xFFFFFFFF;
-	}
 };
 
 
@@ -129,33 +86,38 @@ Renderer<A, T>::draw(RenderingContext& context, const Mesh& mesh) {
 	if (framebuffer == nullptr || mesh.faces.isEmpty()) {
 		return;
 	}
+
+	T::sanitizeContext(context);
+
 	for (const auto& face : mesh.faces) {
-		VertexArray vertices = T::vertexProcessing(context, face);
+		VertexArray vertices = vertexProcessing(context, face);
 		T::primitiveAssembly(context, vertices);
-		T::cull(context, vertices);
+		cull(context, vertices);
 		T::clip(context, vertices);
 		if (vertices.isEmpty()) {
 			continue;
 		}
-		T::toScreenSpace(context.viewportTransform, vertices);
+		toScreenSpace(context.viewportTransform, vertices);
 		const auto& fragments = T::rasterize(context, vertices);
-		T::fragmentProcessing(context, fragments);
+		fragmentProcessing(context, *context.framebuffer, fragments);
 	}
 }
 
 
 template<RenderingAlgorithm A, class T> typename Renderer<A, T>::VertexArray
 Renderer<A, T>::vertexProcessing(const RenderingContext& context, const Mesh::Face& face) {
+	static VertexAttributes attributes;
+	static Varying varying;
+
 	VertexArray vertices;
 	for (std::size_t i = 0; i < face.length; ++i) {
-		// Per-vertex operation.
-		auto varying = T::createVarying(face, i);
-		const auto& attributes = T::createVertexAttributes(face, i);
-		auto vertex = T::vertexShader(context.uniforms, varying, attributes);
+		T::ShaderProgram::setVertexAttributes(attributes, face, i);
+		T::ShaderProgram::setVarying(varying, face, i);
 
-		// Attach the varying variables to the vertex shader's output for use by the
-		// fragment shader later on.
-		vertex.varying = std::move(varying);
+		// Perform the per-vertex operation, after which the set of varying variables is
+		// attached to the output for use in later stages of the pipeline.
+		auto vertex = T::ShaderProgram::vertexShader(context.uniforms, varying, attributes);
+		vertex.varying = varying;
 
 		vertices.append(vertex);
 	}
@@ -164,15 +126,7 @@ Renderer<A, T>::vertexProcessing(const RenderingContext& context, const Mesh::Fa
 
 
 template<RenderingAlgorithm A, class T> void
-Renderer<A, T>::primitiveAssembly(const RenderingContext&, VertexArray&) {}
-
-
-template<RenderingAlgorithm A, class T> void
 Renderer<A, T>::cull(const RenderingContext&, VertexArray&) {}
-
-
-template<RenderingAlgorithm A, class T> void
-Renderer<A, T>::clip(const RenderingContext&, VertexArray&) {}
 
 
 template<RenderingAlgorithm A, class T> void
@@ -192,25 +146,18 @@ Renderer<A, T>::toScreenSpace(const ViewportTransform& viewportTransform, Vertex
 }
 
 
-template<RenderingAlgorithm A, class T> typename Renderer<A, T>::FragmentArray
-Renderer<A, T>::rasterize(const RenderingContext&, const VertexArray&) {
-	return FragmentArray();
-}
-
-
 template<RenderingAlgorithm A, class T> void
-Renderer<A, T>::fragmentProcessing(RenderingContext& context, const FragmentArray& fragments) {
-	auto* framebuffer = context.framebuffer;
-	if (framebuffer == nullptr || fragments.isEmpty()) {
+Renderer<A, T>::fragmentProcessing(const RenderingContext& context, Framebuffer& framebuffer, const FragmentArray& fragments) {
+	if (fragments.isEmpty()) {
 		return;
 	}
-	auto* const pbuffer = context.framebuffer->getPixelBuffer();
-	auto* const zbuffer = context.framebuffer->getDepthBuffer();
-	auto* const sbuffer = context.framebuffer->getStencilBuffer();
+	auto* const pbuffer = framebuffer.getPixelBuffer();
+	auto* const zbuffer = framebuffer.getDepthBuffer();
+	auto* const sbuffer = framebuffer.getStencilBuffer();
 	for (const auto& f : fragments) {
-		const int offset = framebuffer->getOffset(f.x, f.y);
+		const int offset = framebuffer.getOffset(f.x, f.y);
 		if (offset >= 0 && fragmentPasses(context, f)) {
-			pbuffer[offset] = T::fragmentShader(context.uniforms, f.varying, f);
+			pbuffer[offset] = T::ShaderProgram::fragmentShader(context.uniforms, f.varying, f);
 			zbuffer[offset] = f.z;
 			sbuffer[offset] = f.stencil;
 		}

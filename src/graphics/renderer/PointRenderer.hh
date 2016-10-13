@@ -35,11 +35,20 @@ namespace clockwork {
 class PointRenderer : public Renderer<RenderingAlgorithm::Point, PointRenderer> {
 public:
 	/**
-	 * Removes invisible vertex shader outputs.
+	 * Sanitizes the rendering context and makes sure it is compatible with this renderer.
+	 */
+	static void sanitizeContext(RenderingContext&);
+	/**
+	 * Rearranges the specified set of vertices into a collection of geometric primitives.
+	 * In the case of the Point renderer, no rearrangement is made.
+	 */
+	static void primitiveAssembly(const RenderingContext&, VertexArray&);
+	/**
+	 * Removes vertices that are not visible on the screen.
 	 */
 	static void clip(const RenderingContext&, VertexArray&);
 	/**
-	 * Converts the vertex shader output into a collection of fragments.
+	 * Generates fragments from the specified collection of vertices.
 	 */
 	static FragmentArray rasterize(const RenderingContext&, const VertexArray&);
 };

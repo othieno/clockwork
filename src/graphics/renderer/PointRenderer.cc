@@ -31,6 +31,21 @@ using clockwork::PointRenderer;
 
 
 void
+PointRenderer::sanitizeContext(RenderingContext& context) {
+	// The Point renderer only draws point primitives so if the primitive mode
+	// is not set to Point, it will be changed.
+	auto& mode = context.primitiveMode;
+	if (mode != Primitive::Point) {
+		mode = Primitive::Point;
+	}
+}
+
+
+void
+PointRenderer::primitiveAssembly(const RenderingContext&, VertexArray&) {}
+
+
+void
 PointRenderer::clip(const RenderingContext&, VertexArray& vertices) {
 	static const auto& filter = [](const Vertex& vertex) {
 		// Use a normalized 2D viewing volume: [-1, 1] x [-1, 1].
