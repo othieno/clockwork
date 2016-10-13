@@ -22,39 +22,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_VERTEX_SHADER_OUTPUT_HH
-#define CLOCKWORK_VERTEX_SHADER_OUTPUT_HH
+#ifndef CLOCKWORK_VERTEX_HH
+#define CLOCKWORK_VERTEX_HH
 
-#include "RenderingAlgorithm.hh"
 #include "Point4.hh"
-#include "Varying.hh"
 
 
 namespace clockwork {
-namespace detail {
-namespace {
-/**
- * The GenericVertexShaderOutput contains the minimum set of results obtained from
- * a per-vertex operation (vertex shader) applied to a set of vertex attributes.
- */
-struct GenericVertexShaderOutput {
-	/**
-	 * The vertex position in clipping space.
-	 */
-	Point4 position;
-};
-} // namespace
 /**
  *
  */
-template<RenderingAlgorithm algorithm>
-struct VertexShaderOutput : GenericVertexShaderOutput {
+struct Vertex {
 	/**
-	 * The vertex's varying variables.
+	 * The vertex's transformed position.
 	 */
-	Varying<algorithm> varying;
+	Point4 position;
 };
-} // namespace detail
 } // namespace clockwork
 
-#endif // CLOCKWORK_VERTEX_SHADER_OUTPUT_HH
+#endif // CLOCKWORK_VERTEX_HH
