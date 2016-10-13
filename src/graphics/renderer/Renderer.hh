@@ -201,7 +201,6 @@ Renderer<A, T>::vertexProcessing(const RenderingContext& context, const Mesh::Fa
 		T::ShaderProgram::setVertexAttributes(attributes, face, i);
 
 		PipelineVertex vertex;
-		T::ShaderProgram::setVarying(vertex.varying, face, i);
 		vertex.data = std::move(T::ShaderProgram::vertexShader(context.uniforms, vertex.varying, attributes));
 		vertices.append(vertex);
 	}

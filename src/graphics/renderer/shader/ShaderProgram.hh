@@ -88,10 +88,6 @@ public:
 	 */
 	static void setVertexAttributes(VertexAttributes&, const Mesh::Face&, const std::size_t);
 	/**
-	 * Initializes the varying variables used by the vertex and fragment shaders.
-	 */
-	static void setVarying(Varying&, const Mesh::Face&, const std::size_t);
-	/**
 	 * Performs a basic per-vertex operation on the specified set of vertex attributes.
 	 */
 	static Vertex vertexShader(const Uniforms&, Varying&, const VertexAttributes&);
@@ -143,10 +139,6 @@ ShaderProgram<A>::setVertexAttributes(VertexAttributes& attributes, const Mesh::
 	attributes.normal = face.normals[i];
 	attributes.textureCoordinates = face.textureCoordinates[i];
 }
-
-
-template<RenderingAlgorithm A> void
-ShaderProgram<A>::setVarying(Varying&, const Mesh::Face&, const std::size_t) {}
 
 
 template<RenderingAlgorithm A> typename ShaderProgram<A>::Vertex
