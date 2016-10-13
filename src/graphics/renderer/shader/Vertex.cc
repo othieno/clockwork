@@ -22,35 +22,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_VERTEX_HH
-#define CLOCKWORK_VERTEX_HH
+#include "Vertex.hh"
+#include "lerp.hh"
 
-#include "Point4.hh"
+using clockwork::Vertex;
 
 
-namespace clockwork {
-/**
- *
- */
-struct Vertex {
-	/**
-	 * Instantiates a Vertex object.
-	 */
-	Vertex() = default;
-	/**
-	 * Instantiates a Vertex object with the specified position.
-	 */
-	explicit Vertex(const Point4& position);
-	/**
-	 * Performs a linear interpolation to find the Vertex at a specified
-	 * percentage between two Vertex instances.
-	 */
-	static Vertex lerp(const Vertex& from, const Vertex& to, const double percentage);
-	/**
-	 * The vertex's transformed position.
-	 */
-	Point4 position;
-};
-} // namespace clockwork
+Vertex::Vertex(const Point4& p) :
+position(p) {}
 
-#endif // CLOCKWORK_VERTEX_HH
+
+Vertex
+Vertex::lerp(const Vertex& from, const Vertex& to, const double p) {
+	Vertex v;
+	v.position = clockwork::lerp(from.position, to.position, p);
+	return v;
+}
