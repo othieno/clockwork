@@ -26,6 +26,15 @@
 #define CLOCKWORK_POLYGON_RENDERER_HH
 
 #include "Renderer.hh"
+#include "RandomShadingShaderProgram.hh"
+#include "FlatShadingShaderProgram.hh"
+#include "GouraudShadingShaderProgram.hh"
+#include "PhongShadingShaderProgram.hh"
+#include "CelShadingShaderProgram.hh"
+#include "DepthMapShaderProgram.hh"
+#include "NormalMapShaderProgram.hh"
+#include "BumpMapShaderProgram.hh"
+#include "TextureMapShaderProgram.hh"
 
 
 namespace clockwork {
