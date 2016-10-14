@@ -67,6 +67,12 @@ Framebuffer::getPixelBuffer() {
 }
 
 
+const std::uint32_t*
+Framebuffer::getPixelBuffer() const {
+	return pixelBuffer_.get();
+}
+
+
 std::uint32_t
 Framebuffer::getPixelBufferClearValue() const {
 	return pixelBufferClearValue_;
@@ -85,6 +91,12 @@ Framebuffer::getDepthBuffer() {
 }
 
 
+const double*
+Framebuffer::getDepthBuffer() const {
+	return depthBuffer_.get();
+}
+
+
 double
 Framebuffer::getDepthBufferClearValue() const {
 	return depthBufferClearValue_;
@@ -99,6 +111,12 @@ Framebuffer::setDepthBufferClearValue(const double value) {
 
 std::uint8_t*
 Framebuffer::getStencilBuffer() {
+	return stencilBuffer_.get();
+}
+
+
+const std::uint8_t*
+Framebuffer::getStencilBuffer() const {
 	return stencilBuffer_.get();
 }
 
@@ -137,7 +155,7 @@ Framebuffer::clear() {
 
 
 void
-Framebuffer::discard(const unsigned int x, const unsigned int y) {
+Framebuffer::discard(const std::uint32_t x, const std::uint32_t y) {
 	const int offset = getOffset(x, y);
 	if (offset >= 0) {
 		pixelBuffer_[offset] = pixelBufferClearValue_;
@@ -148,12 +166,12 @@ Framebuffer::discard(const unsigned int x, const unsigned int y) {
 
 
 int
-Framebuffer::getOffset(const unsigned int x, const unsigned int y) const {
+Framebuffer::getOffset(const std::uint32_t x, const std::uint32_t y) const {
 	int offset = -1;
 	const auto& resolution = getResolutionSize();
 	if (resolution.isValid()) {
-		const unsigned int w = resolution.width();
-		const unsigned int h = resolution.height();
+		const std::uint32_t w = resolution.width();
+		const std::uint32_t h = resolution.height();
 		if (x < w && y < h) {
 			offset = x + (y * w);
 		}

@@ -91,6 +91,10 @@ public:
 	 */
 	std::uint32_t* getPixelBuffer();
 	/**
+	 * Returns the pixel buffer.
+	 */
+	const std::uint32_t* getPixelBuffer() const;
+	/**
 	 * Returns the pixel buffer's clear value.
 	 */
 	std::uint32_t getPixelBufferClearValue() const;
@@ -104,6 +108,10 @@ public:
 	 */
 	double* getDepthBuffer();
 	/**
+	 * Returns the depth buffer.
+	 */
+	const double* getDepthBuffer() const;
+	/**
 	 * Returns the depth buffer's clear value.
 	 */
 	double getDepthBufferClearValue() const;
@@ -116,6 +124,10 @@ public:
 	 * Returns the stencil buffer.
 	 */
 	std::uint8_t* getStencilBuffer();
+	/**
+	 * Returns the stencil buffer.
+	 */
+	const std::uint8_t* getStencilBuffer() const;
 	/**
 	 * Returns the stencil buffer's clear value.
 	 */
@@ -132,14 +144,14 @@ public:
 	/**
 	 * Discards (clears) the framebuffer element at the specified <x, y> coordinate.
 	 */
-	void discard(const unsigned int x, const unsigned int y);
+	void discard(const std::uint32_t x, const std::uint32_t y);
 	/**
 	 * Return the buffer offset for a given <x, y> coordinate. If the coordinate
 	 * is out of range, then -1 is returned.
 	 * @param x the buffer element's row position.
 	 * @param y the buffer element's column position.
 	 */
-	int getOffset(const unsigned int x, const unsigned int y) const;
+	int getOffset(const std::uint32_t x, const std::uint32_t y) const;
 	/**
 	 * Returns all available framebuffer resolutions.
 	 */
