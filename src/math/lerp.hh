@@ -29,6 +29,7 @@
 #include "Point3.hh"
 #include "Point4.hh"
 #include "Vector3.hh"
+#include "Vector4.hh"
 #include "Color.hh"
 
 
@@ -58,6 +59,11 @@ Point4 lerp(const Point4& from, const Point4& to, const double percentage);
  * percentage between two Vector3 instances.
  */
 Vector3 lerp(const Vector3& from, const Vector3& to, const double percentage);
+/**
+ * Performs a linear interpolation to find the Vector4d at a specified
+ * percentage between two Vector4d instances.
+ */
+math::Vector4d lerp(const math::Vector4d& from, const math::Vector4d& to, const double percentage);
 /**
  * Performs a linear interpolation to find the Color at a specified
  * percentage between two Color instances.

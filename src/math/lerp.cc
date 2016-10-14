@@ -75,6 +75,18 @@ clockwork::lerp(const Vector3& from, const Vector3& to, const double p) {
 }
 
 
+clockwork::math::Vector4d
+clockwork::lerp(const math::Vector4d& from, const math::Vector4d& to, const double p) {
+	const double pp = 1.0 - p;
+	return math::Vector4d(
+		(pp * from.i) + (p * to.i),
+		(pp * from.j) + (p * to.j),
+		(pp * from.k) + (p * to.k),
+		(pp * from.l) + (p * to.l)
+	);
+}
+
+
 clockwork::Color
 clockwork::lerp(const Color& from, const Color& to, const double p) {
 	const double pp = 1.0 - p;
