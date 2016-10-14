@@ -49,7 +49,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 	HEADERS += \
 		src/graphics/Camera.hh \
 		src/graphics/Color.hh \
-		src/graphics/Framebuffer.hh \
 		src/graphics/GraphicsEngine.hh \
 		src/graphics/Material.hh \
 		src/graphics/Mesh.hh \
@@ -61,6 +60,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/filter/TextureFilter.hh \
 		src/graphics/filter/TextureFilterFactory.hh \
 		src/graphics/renderer/Fragment.hh \
+		src/graphics/renderer/Framebuffer.hh \
 		src/graphics/renderer/LineDrawingAlgorithm.hh \
 		src/graphics/renderer/PointRenderer.hh \
 		src/graphics/renderer/PolygonRenderer.hh \
@@ -116,7 +116,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 	SOURCES += \
 		src/graphics/Camera.cc \
 		src/graphics/Color.cc \
-		src/graphics/Framebuffer.cc \
 		src/graphics/GraphicsEngine.cc \
 		src/graphics/Material.cc \
 		src/graphics/Mesh.cc \
@@ -124,6 +123,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/filter/ImageFilter.cc \
 		src/graphics/filter/TextureFilter.cc \
 		src/graphics/renderer/Fragment.cc \
+		src/graphics/renderer/Framebuffer.cc \
 		src/graphics/renderer/PointRenderer.cc \
 		src/graphics/renderer/Vertex.cc \
 		src/graphics/renderer/VertexAttributes.cc \
