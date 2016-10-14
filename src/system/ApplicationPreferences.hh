@@ -39,6 +39,7 @@ class Application;
 class ApplicationPreferences : public QSettings {
 	Q_OBJECT
 	Q_PROPERTY(bool showFramesPerSecond READ isFpsCounterVisible WRITE showFpsCounter NOTIFY fpsCounterVisibilityChanged)
+	Q_PROPERTY(bool enableDepthTesting READ isDepthTestingEnabled WRITE enableDepthTesting NOTIFY depthTestingChanged)
 	Q_PROPERTY(QString fileLocation READ fileName CONSTANT)
 	Q_PROPERTY(QStringList availableLanguages READ getAvailableLanguages CONSTANT)
 	Q_PROPERTY(QStringList availableFramebufferResolutions READ getAvailableFramebufferResolutions CONSTANT)
@@ -54,6 +55,15 @@ public:
 	 */
 	void showFpsCounter(const bool visible);
 	/**
+     * Returns true if depth testing is enabled, false otherwise.
+	 */
+	bool isDepthTestingEnabled() const;
+	/**
+     * Toggles depth testing.
+     * @param enable enables depth testing if set to true, disables it otherwise.
+	 */
+	void enableDepthTesting(const bool enabled);
+	/**
 	 * Returns the list of available languages.
 	 */
 	static QStringList getAvailableLanguages();
@@ -66,12 +76,17 @@ signals:
 	 * A signal that is raised when the FPS counter's visibility is changed.
 	 */
 	void fpsCounterVisibilityChanged(const bool visible);
+	/**
+	 * A signal that is raised when depth testing is toggled.
+	 */
+	void depthTestingChanged(const bool enabled);
 private:
 	/**
 	 * An enumeration of available configuration keys.
 	 */
 	enum class Key {
 		ShowFramesPerSecond,
+		EnableDepthTesting,
 	};
 	/**
 	 * Instantiates an ApplicationPreferences object.

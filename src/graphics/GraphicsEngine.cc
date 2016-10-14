@@ -33,7 +33,8 @@ using clockwork::GraphicsEngine;
 
 GraphicsEngine::GraphicsEngine() :
 framebuffer_(),
-lineDrawingAlgorithm_(LineDrawingAlgorithm::Bresenham) {}
+lineDrawingAlgorithm_(LineDrawingAlgorithm::Bresenham),
+enableDepthTesting_(true) {}
 
 
 GraphicsEngine::~GraphicsEngine() {}
@@ -58,6 +59,7 @@ GraphicsEngine::render(const Scene& scene) {
 		context.framebuffer = &framebuffer_;
 		context.primitiveMode = viewer->getPrimitiveMode();
 		context.lineDrawingAlgorithm = lineDrawingAlgorithm_;
+		context.enableDepthTesting = enableDepthTesting_;
 		context.viewportTransform = ViewportTransform(viewer->getViewport(), framebuffer_);
 		context.uniforms.insert("PROJECTION", Uniform::create<const Matrix4>(PROJECTION));
 		context.uniforms.insert("VIEW", Uniform::create<const Matrix4>(VIEW));
@@ -105,6 +107,18 @@ GraphicsEngine::getLineDrawingAlgorithm() const {
 void
 GraphicsEngine::setLineDrawingAlgorithm(const LineDrawingAlgorithm algorithm) {
 	lineDrawingAlgorithm_ = algorithm;
+}
+
+
+bool
+GraphicsEngine::isDepthTestingEnabled() const {
+	return enableDepthTesting_;
+}
+
+
+void
+GraphicsEngine::enableDepthTesting(const bool enable) {
+	enableDepthTesting_ = enable;
 }
 
 

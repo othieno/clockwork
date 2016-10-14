@@ -60,6 +60,11 @@ struct RenderingContext {
 	 * The set of uniform variables used by the shader programs.
 	 */
 	Uniforms uniforms;
+	/**
+	 * If set to true, depth testing will be performed on fragments
+	 * before being written to the framebuffer.
+	 */
+	bool enableDepthTesting;
 };
 } // namespace clockwork
 

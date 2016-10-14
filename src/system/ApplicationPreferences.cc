@@ -25,6 +25,7 @@
 #include "ApplicationPreferences.hh"
 #include "Application.hh"
 #include "Framebuffer.hh"
+#include "Service.hh"
 #include "toString.hh"
 #include <QStandardPaths>
 
@@ -51,6 +52,22 @@ ApplicationPreferences::showFpsCounter(const bool visible) {
 	if (isFpsCounterVisible() != visible) {
 		setValue(Key::ShowFramesPerSecond, visible);
 		emit fpsCounterVisibilityChanged(visible);
+	}
+}
+
+
+bool
+ApplicationPreferences::isDepthTestingEnabled() const {
+	const bool defaultValue = Service::Graphics.isDepthTestingEnabled();
+	return value(Key::EnableDepthTesting, defaultValue).toBool();
+}
+
+
+void
+ApplicationPreferences::enableDepthTesting(const bool enable) {
+	if (isDepthTestingEnabled() != enable) {
+		setValue(Key::ShowFramesPerSecond, enable);
+		emit depthTestingChanged(enable);
 	}
 }
 
@@ -98,6 +115,8 @@ ApplicationPreferences::keyToString(const Key key) {
 	switch (key) {
 		case Key::ShowFramesPerSecond:
 			return "showFramesPerSecond";
+		case Key::EnableDepthTesting:
+			return "enableDepthTesting";
 		default:
 			qFatal("[ApplicationPreferences::keyToString] Undefined key!");
 	}

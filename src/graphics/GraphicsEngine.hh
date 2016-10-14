@@ -90,6 +90,15 @@ public:
      * @param algorithm the line-drawing algorithm to set.
      */
     void setLineDrawingAlgorithm(const LineDrawingAlgorithm algorithm);
+    /**
+     * Returns true if depth testing is enabled, false otherwise.
+     */
+    bool isDepthTestingEnabled() const;
+    /**
+     * Toggles depth testing.
+     * @param enable enables depth testing if set to true, disables it otherwise.
+     */
+    void enableDepthTesting(const bool enable);
 private:
     /**
      * A pointer to a function that draws a mesh in a specified rendering context.
@@ -112,6 +121,11 @@ private:
      * The line-drawing algorithm to use.
      */
     LineDrawingAlgorithm lineDrawingAlgorithm_;
+    /**
+     * If set to true, depth testing will be performed on fragments
+     * before being written to the framebuffer.
+     */
+    bool enableDepthTesting_;
 };
 } // namespace clockwork
 #endif // CLOCKWORK_GRAPHICS_ENGINE_HH

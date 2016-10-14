@@ -56,9 +56,24 @@ Page {
 				}
 				onClicked: toggleFramesPerSecond.checked = !toggleFramesPerSecond.checked
 			}
+			ListItem.Subheader {
+				text: qsTr("Per-sample processing operations")
+			}
+			ListItem.Subtitled {
+				enabled: false
+				text: qsTr("Enable depth testing")
+				subText: qsTr("Discards fragments that fail the depth test.")
+				secondaryItem: Switch {
+					id: toggleDepthTesting
+					checked: preferences.enableDepthTesting
+					anchors.verticalCenter: parent.verticalCenter
+				}
+				onClicked: toggleDepthTesting.checked = !toggleDepthTesting.checked
+			}
 		}
 	}
 	Component.onDestruction: {
 		preferences.showFramesPerSecond = toggleFramesPerSecond.checked
+		preferences.enableDepthTesting = toggleDepthTesting.checked
 	}
 }

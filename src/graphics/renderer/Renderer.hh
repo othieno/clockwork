@@ -139,11 +139,14 @@ public:
 	static void fragmentProcessing(const RenderingContext&, Framebuffer&, const FragmentArray&);
 private:
 	/**
-	 * Returns true if the specified fragment passes all fragment tests, false otherwise.
+	 * Tests whether the specified fragment can be written to the framebuffer. If
+	 * the specified fragment passes all tests, the function will return a framebuffer
+	 * offset indicating a location where the fragment data can be written to.
+	 * If a fragment test fails, -1 will be returned.
 	 * @param context the rendering context.
 	 * @param fragment the fragment to test.
 	 */
-	static bool fragmentPasses(const RenderingContext& context, const Fragment& fragment);
+	static int fragmentPasses(const RenderingContext& context, const Fragment& fragment);
 };
 
 
@@ -238,19 +241,32 @@ Renderer<A, T>::fragmentProcessing(const RenderingContext& context, Framebuffer&
 	auto* const zbuffer = framebuffer.getDepthBuffer();
 	auto* const sbuffer = framebuffer.getStencilBuffer();
 	for (const auto& f : fragments) {
-		const int offset = framebuffer.getOffset(f.data.x, f.data.y);
-		if (offset >= 0 && fragmentPasses(context, f.data)) {
-			pbuffer[offset] = T::ShaderProgram::fragmentShader(context.uniforms, f.varying, f.data);
-			zbuffer[offset] = f.data.z;
-			sbuffer[offset] = f.data.stencil;
+		const auto& fragment = f.data;
+		const auto& varying = f.varying;
+		const int offset = fragmentPasses(context, fragment);
+		if (offset >= 0) {
+			pbuffer[offset] = T::ShaderProgram::fragmentShader(context.uniforms, varying, fragment);
+			zbuffer[offset] = fragment.z;
+			sbuffer[offset] = fragment.stencil;
 		}
 	}
 }
 
 
-template<RenderingAlgorithm A, class T> bool
-Renderer<A, T>::fragmentPasses(const RenderingContext&, const Fragment&) {
-	return true;
+template<RenderingAlgorithm A, class T> int
+Renderer<A, T>::fragmentPasses(const RenderingContext& context, const Fragment& fragment) {
+	const int offset = context.framebuffer->getOffset(fragment.x, fragment.y);
+	if (offset >= 0) {
+		if (context.enableDepthTesting) {
+			const double depthBufferValue = context.framebuffer->getDepthBuffer()[offset];
+			if (qFuzzyCompare(1.0 + fragment.z, 1.0 + depthBufferValue) || fragment.z > depthBufferValue) {
+				return -1;
+			}
+		}
+		// TODO Implement more fragment tests.
+		// @see https://www.opengl.org/wiki/Per-Sample_Processing
+	}
+	return offset;
 }
 } // namespace clockwork
 
