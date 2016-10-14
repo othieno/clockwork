@@ -27,4 +27,63 @@
 
 #include "ShaderProgram.hh"
 
+
+namespace clockwork {
+namespace detail {
+/**
+ *
+ */
+template<>
+struct ShaderProgram<RenderingAlgorithm::NormalMapping>::Vertex : clockwork::Vertex {
+	/**
+	 * Performs a linear interpolation to find the Vertex at a specified
+	 * percentage between two Vertex instances.
+	 */
+	static Vertex lerp(const Vertex& from, const Vertex& to, const double percentage);
+	/**
+	 *
+	 */
+	math::Vector4d normal;
+};
+/**
+ *
+ */
+template<>
+struct ShaderProgram<RenderingAlgorithm::NormalMapping>::Fragment : clockwork::Fragment {
+	/**
+	 * Instantiates a Fragment object.
+	 */
+	Fragment() = default;
+	/**
+	 *
+	 */
+	explicit Fragment(const Vertex&);
+	/**
+	 * Performs a linear interpolation to find the Fragment at a specified
+	 * percentage between two Fragment instances.
+	 */
+	static Fragment lerp(const Fragment& from, const Fragment& to, const double percentage);
+	/**
+	 *
+	 */
+	math::Vector4d normal;
+};
+/**
+ * Initializes the vertex attributes used by the vertex shader.
+ */
+template<> void
+ShaderProgram<RenderingAlgorithm::NormalMapping>::setVertexAttributes(VertexAttributes&, const Mesh::Face&, const std::size_t);
+/**
+ * The vertex shader used by the normal mapping renderer.
+ */
+template<> ShaderProgram<RenderingAlgorithm::NormalMapping>::Vertex
+ShaderProgram<RenderingAlgorithm::NormalMapping>::vertexShader(const Uniforms&, Varying&, const VertexAttributes&);
+/**
+ * The fragment shader used by the normal mapping renderer.
+ */
+template<> std::uint32_t
+ShaderProgram<RenderingAlgorithm::NormalMapping>::fragmentShader(const Uniforms&, const Varying&, const Fragment&);
+} // namespace detail
+} // namespace clockwork
+
 #endif // CLOCKWORK_NORMAL_MAP_SHADER_PROGRAM_HH

@@ -23,3 +23,72 @@
  * THE SOFTWARE.
  */
 #include "NormalMapShaderProgram.hh"
+
+using clockwork::RenderingAlgorithm;
+using ShaderProgram = clockwork::detail::ShaderProgram<RenderingAlgorithm::NormalMapping>;
+
+
+ShaderProgram::Vertex
+ShaderProgram::Vertex::lerp(const Vertex& from, const Vertex& to, const double p) {
+	Vertex vertex;
+	vertex.position = clockwork::lerp(from.position, to.position, p);
+	vertex.normal = clockwork::lerp(from.normal, to.normal, p);
+	return vertex;
+}
+
+
+ShaderProgram::Fragment::Fragment(const Vertex& vertex) {
+	x = std::round(vertex.position.x);
+	y = std::round(vertex.position.y);
+	z = vertex.position.z;
+	stencil = 0xFF;
+	normal = vertex.normal;
+}
+
+
+ShaderProgram::Fragment
+ShaderProgram::Fragment::lerp(const Fragment& from, const Fragment& to, const double p) {
+	const double pp = 1.0 - p;
+
+	Fragment fragment;
+//	fragment.x = 0;	// <x, y> are ignored because they are always set to some other value after
+//	fragment.y = 0;	// interpolation. For more info, please refer to any renderer's rasterize function.
+	fragment.z = (pp * from.z) + (p * to.z);
+	fragment.stencil = std::round((pp * from.stencil) + (p * to.stencil));
+	fragment.normal = clockwork::lerp(from.normal, to.normal, p);
+	return fragment;
+}
+
+
+template<> void
+ShaderProgram::setVertexAttributes(VertexAttributes& attributes, const Mesh::Face& face, const std::size_t i) {
+	if (Q_UNLIKELY(i >= face.length)) {
+		return;
+	}
+	attributes.position = face.positions[i];
+	attributes.normal = face.normals[i];
+}
+
+
+template<> ShaderProgram::Vertex
+ShaderProgram::vertexShader(const Uniforms& uniforms, Varying&, const VertexAttributes& attributes) {
+	const auto& MVP = uniforms["MODELVIEWPROJECTION"].as<const Matrix4>();
+	const auto& N = uniforms["NORMAL"].as<const Matrix4>();
+	const auto& position = *attributes.position;
+	const auto& normal = *attributes.normal;
+
+	Vertex vertex;
+	vertex.position = MVP * Point4(position);
+	vertex.normal = math::Vector4d::normalize(N * math::Vector4d(normal));
+	return vertex;
+}
+
+
+template<> std::uint32_t
+ShaderProgram::fragmentShader(const Uniforms&, const Varying&, const Fragment& fragment) {
+	return Color(
+		(fragment.normal.i + 1.0) * 0.5,
+		(fragment.normal.j + 1.0) * 0.5,
+		(fragment.normal.k + 1.0) * 0.5
+	);
+}

@@ -67,6 +67,6 @@ ShaderProgram::vertexShader(const Uniforms& uniforms, Varying& varying, const Ve
 
 
 template<> std::uint32_t
-ShaderProgram::fragmentShader(const Uniforms&, const Varying& varying, const Fragment&){
+ShaderProgram::fragmentShader(const Uniforms&, const Varying& varying, const Fragment&) {
 	return varying.faceColor;
 }

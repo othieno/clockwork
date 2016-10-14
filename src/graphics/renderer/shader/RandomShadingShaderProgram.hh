@@ -67,7 +67,7 @@ ShaderProgram<RenderingAlgorithm::RandomShading>::setVertexAttributes(VertexAttr
 template<> ShaderProgram<RenderingAlgorithm::RandomShading>::Vertex
 ShaderProgram<RenderingAlgorithm::RandomShading>::vertexShader(const Uniforms&, Varying&, const VertexAttributes&);
 /**
- *
+ * The fragment shader used by the random shading renderer.
  */
 template<> std::uint32_t
 ShaderProgram<RenderingAlgorithm::RandomShading>::fragmentShader(const Uniforms&, const Varying&, const Fragment&);
