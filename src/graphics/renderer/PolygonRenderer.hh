@@ -210,22 +210,29 @@ PolygonRenderer<A, T>::rasterize(const RenderingContext&, const VertexArray& ver
 		// Remember that the outputs are sorted in the primitive assemlby step so f0.y <= f2.y.
 		for (std::uint32_t y = f0.data.y; y <= f2.data.y; ++y) {
 			const double ps = int(y - a->data.y) / dys;
-			const auto fs = PipelineFragment::lerp(*a, *b, ps);
-			std::uint32_t xmin = std::round(((1.0 - ps) * a->data.x) + (ps * b->data.x));
+			auto fs = PipelineFragment::lerp(*a, *b, ps);
+			fs.data.x = std::round(((1.0 - ps) * a->data.x) + (ps * b->data.x));
 
 			const double pe = int(y - c->data.y) / dye;
-			const auto fe = PipelineFragment::lerp(*c, *b, pe);
-			std::uint32_t xmax = std::round(((1.0 - pe) * c->data.x) + (pe * b->data.x));
+			auto fe = PipelineFragment::lerp(*c, *b, pe);
+			fe.data.x = std::round(((1.0 - pe) * c->data.x) + (pe * b->data.x));
 
-			if (xmin > xmax) {
-				std::swap(xmin, xmax);
-			}
-			for (std::uint32_t x = xmin; x <= xmax; ++x) {
-				const double p = (x - fs.data.x) / double(fe.data.x - fs.data.x);
-				auto f = PipelineFragment::lerp(fs, fe, p);
-				f.data.x = x;
-				f.data.y = y;
-				fragments.append(f);
+			std::uint32_t xmin = fs.data.x;
+			std::uint32_t xmax = fe.data.x;
+			if (xmin == xmax) {
+				fs.data.y = y;
+				fragments.append(fs);
+			} else {
+				if (xmin > xmax) {
+					std::swap(xmin, xmax);
+				}
+				for (std::uint32_t x = xmin; x <= xmax; ++x) {
+					const double p = (x - fs.data.x) / double(fe.data.x - fs.data.x);
+					auto f = PipelineFragment::lerp(fs, fe, p);
+					f.data.x = x;
+					f.data.y = y;
+					fragments.append(f);
+				}
 			}
 		}
 	}
