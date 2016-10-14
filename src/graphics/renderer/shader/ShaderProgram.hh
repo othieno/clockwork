@@ -29,6 +29,8 @@
 #include "Fragment.hh"
 #include "Vertex.hh"
 #include "VertexAttributes.hh"
+#include "Mesh.hh"
+#include "Uniform.hh"
 #include "lerp.hh"
 #include <cmath>
 
@@ -44,24 +46,27 @@ public:
 	/**
 	 *
 	 */
-	struct Varying {};
+	struct Varying {
+		/**
+		 * Performs a linear interpolation to find the Varying at a specified
+		 * percentage between two Varying instances.
+		 */
+		static Varying lerp(const Varying& from, const Varying& to, const double percentage);
+	};
 	/**
 	 *
 	 */
 	struct Vertex : clockwork::Vertex {
 		/**
-		 *
+		 * Performs a linear interpolation to find the Vertex at a specified
+		 * percentage between two Vertex instances.
 		 */
 		static Vertex lerp(const Vertex& from, const Vertex& to, const double percentage);
-		/**
-		 * The attached set of varying variables to be passed on to the fragment shader.
-		 */
-		Varying varying;
 	};
 	/**
 	 *
 	 */
-	using VertexAttributes = clockwork::VertexAttributes;
+	struct VertexAttributes : clockwork::VertexAttributes {};
 	/**
 	 *
 	 */
@@ -75,13 +80,10 @@ public:
 		 */
 		explicit Fragment(const Vertex&);
 		/**
-		 *
+		 * Performs a linear interpolation to find the Fragment at a specified
+		 * percentage between two Fragment instances.
 		 */
 		static Fragment lerp(const Fragment& from, const Fragment& to, const double percentage);
-		/**
-		 * The attached set of varying variables.
-		 */
-		Varying varying;
 	};
 	/**
 	 * Initializes the vertex attributes used by the vertex shader.
@@ -98,6 +100,12 @@ public:
 };
 
 
+template<RenderingAlgorithm A> typename ShaderProgram<A>::Varying
+ShaderProgram<A>::Varying::lerp(const Varying&, const Varying&, const double) {
+	return Varying();
+}
+
+
 template<RenderingAlgorithm A> typename ShaderProgram<A>::Vertex
 ShaderProgram<A>::Vertex::lerp(const Vertex& from, const Vertex& to, const double p) {
 	Vertex vertex;
@@ -112,7 +120,6 @@ ShaderProgram<A>::Fragment::Fragment(const Vertex& v) {
 	y = std::round(v.position.y);
 	z = v.position.z;
 	stencil = 0xFF;
-	varying = v.varying;
 }
 
 
@@ -136,8 +143,6 @@ ShaderProgram<A>::setVertexAttributes(VertexAttributes& attributes, const Mesh::
 		return;
 	}
 	attributes.position = face.positions[i];
-	attributes.normal = face.normals[i];
-	attributes.textureCoordinates = face.textureCoordinates[i];
 }
 
 

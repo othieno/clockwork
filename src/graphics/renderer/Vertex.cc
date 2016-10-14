@@ -30,11 +30,3 @@ using clockwork::Vertex;
 
 Vertex::Vertex(const Point4& p) :
 position(p) {}
-
-
-Vertex
-Vertex::lerp(const Vertex& from, const Vertex& to, const double p) {
-	Vertex v;
-	v.position = clockwork::lerp(from.position, to.position, p);
-	return v;
-}

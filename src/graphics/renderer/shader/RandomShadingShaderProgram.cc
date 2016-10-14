@@ -23,3 +23,50 @@
  * THE SOFTWARE.
  */
 #include "RandomShadingShaderProgram.hh"
+
+using clockwork::RenderingAlgorithm;
+using ShaderProgram = clockwork::detail::ShaderProgram<RenderingAlgorithm::RandomShading>;
+
+
+ShaderProgram::Varying
+ShaderProgram::Varying::lerp(const Varying& from, const Varying&, const double) {
+	// Since vertices of a same face share an identical color, and both the fragments
+	// belong to the same face, the result of the interpolation is the same color as
+	// that of both fragments.
+	Varying varying;
+	varying.faceColor = from.faceColor;
+
+	return varying;
+}
+
+
+template<> void
+ShaderProgram::setVertexAttributes(VertexAttributes& attributes, const Mesh::Face& face, const std::size_t i) {
+	if (Q_UNLIKELY(i >= face.length)) {
+		return;
+	}
+	attributes.position = face.positions[i];
+	attributes.faceAddress = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(&face));
+}
+
+
+template<> ShaderProgram::Vertex
+ShaderProgram::vertexShader(const Uniforms& uniforms, Varying& varying, const VertexAttributes& attributes) {
+	const auto& MVP = uniforms["MODELVIEWPROJECTION"].as<const Matrix4>();
+	const auto& position = *attributes.position;
+
+	Vertex vertex;
+	vertex.position = MVP * Point4(position);
+
+	// Note that 0xFF000000 is OR'd to the address to make sure the generated color's
+	// alpha channel is equal to 1.0.
+	varying.faceColor = Color(attributes.faceAddress | 0xFF000000);
+
+	return vertex;
+}
+
+
+template<> std::uint32_t
+ShaderProgram::fragmentShader(const Uniforms&, const Varying& varying, const Fragment&){
+	return varying.faceColor;
+}

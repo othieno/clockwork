@@ -27,4 +27,51 @@
 
 #include "ShaderProgram.hh"
 
+
+namespace clockwork {
+namespace detail {
+/**
+ * The set of varying variables used by the random shading renderer.
+ */
+template<>
+struct ShaderProgram<RenderingAlgorithm::RandomShading>::Varying {
+	/**
+	 *
+	 */
+	static Varying lerp(const Varying& from, const Varying& to, const double percentage);
+	/**
+	 * A random color shared by all vertices that belong to an identical face.
+	 */
+	Color faceColor;
+};
+/**
+ * The set of vertex attributes used by the random shading renderer.
+ */
+template<>
+struct ShaderProgram<RenderingAlgorithm::RandomShading>::VertexAttributes : clockwork::VertexAttributes {
+	/**
+	 * The address of the face that the vertex belongs to. The memory address
+	 * is sufficiently random and can be converted into a 32-bit ARGB color
+	 * value that can in turn be transformed into a Color object.
+	 */
+	std::uint32_t faceAddress;
+};
+/**
+ * Initializes the vertex attributes used by the vertex shader.
+ */
+template<> void
+ShaderProgram<RenderingAlgorithm::RandomShading>::setVertexAttributes(VertexAttributes&, const Mesh::Face&, const std::size_t);
+/**
+ * The vertex shader used by the random shading renderer.
+ */
+template<> ShaderProgram<RenderingAlgorithm::RandomShading>::Vertex
+ShaderProgram<RenderingAlgorithm::RandomShading>::vertexShader(const Uniforms&, Varying&, const VertexAttributes&);
+/**
+ *
+ */
+template<> std::uint32_t
+ShaderProgram<RenderingAlgorithm::RandomShading>::fragmentShader(const Uniforms&, const Varying&, const Fragment&);
+} // namespace detail
+} // namespace clockwork
+
 #endif // CLOCKWORK_RANDOM_SHADING_SHADER_PROGRAM_HH

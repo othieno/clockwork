@@ -42,11 +42,6 @@ struct Vertex {
 	 */
 	explicit Vertex(const Point4& position);
 	/**
-	 * Performs a linear interpolation to find the Vertex at a specified
-	 * percentage between two Vertex instances.
-	 */
-	static Vertex lerp(const Vertex& from, const Vertex& to, const double percentage);
-	/**
 	 * The vertex's transformed position.
 	 */
 	Point4 position;
