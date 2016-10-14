@@ -112,6 +112,20 @@ Matrix4::operator*(const Vector3& v) const {
 }
 
 
+clockwork::math::Vector4d
+Matrix4::operator*(const math::Vector4d& v) const {
+	const std::array<double, 4> olddata = {v.i, v.j, v.k, v.l};
+	std::array<double, 4> newdata = {0, 0, 0, 0};
+
+	for (unsigned int i = 0; i < 4; ++i) {
+		for (unsigned int j = 0; j < 4; ++j) {
+			newdata[i] += get(i, j) * olddata[j];
+		}
+	}
+	return math::Vector4d(newdata[0], newdata[1], newdata[2], newdata[3]);
+}
+
+
 Matrix4
 Matrix4::zeros() {
 	return Matrix4({0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0});

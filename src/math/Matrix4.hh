@@ -27,6 +27,7 @@
 
 #include "Point3.hh"
 #include "Point4.hh"
+#include "Vector4.hh"
 #include "Quaternion.hh"
 #include <array>
 
@@ -88,6 +89,11 @@ public:
 	 * @param v the vector to multiply this matrix by.
 	 */
 	Vector3 operator*(const Vector3& v) const;
+	/**
+	 * Multiply this matrix with a 4D vector.
+	 * @param v the vector to multiply this matrix by.
+	 */
+	math::Vector4d operator*(const math::Vector4d& v) const;
 	/**
 	 * Return a 4x4 matrix filled with zeros.
 	 */

@@ -146,6 +146,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/math/Point4.cc \
 		src/math/Quaternion.cc \
 		src/math/Vector3.cc \
+		src/math/Vector4.cc \
 		src/scene/predefined/Suzanne.cc \
 		src/scene/predefined/TexturedCube.cc \
 		src/scene/predefined/Triangle.cc \
