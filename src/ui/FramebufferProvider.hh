@@ -2,7 +2,7 @@
  * This file is part of Clockwork.
  * https://github.com/othieno/clockwork.
  *
- * Copyright (c) 2014-2016 Jeremy Othieno.
+ * Copyright (c) 2013-2016 Jeremy Othieno.
  *
  * The MIT License (MIT)
  * Permission is hereby granted, free of charge, to any person obtaining a copy
