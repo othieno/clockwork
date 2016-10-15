@@ -47,85 +47,85 @@ struct RenderingContext;
  *
  */
 class GraphicsEngine {
-    friend class Service;
+	friend class Service;
 public:
-    /**
-     *
-     */
-    GraphicsEngine(const GraphicsEngine&) = delete;
-    /**
-     *
-     */
-    GraphicsEngine(GraphicsEngine&&) = delete;
-    /**
-     *
-     */
-    ~GraphicsEngine();
-    /**
-     *
-     */
-    GraphicsEngine& operator=(const GraphicsEngine&) = delete;
-    /**
-     *
-     */
-    GraphicsEngine& operator=(GraphicsEngine&&) = delete;
-    /**
-     * Clears the framebuffer.
-     */
-    void clear();
-    /**
-     * Renders the specified scene.
-     */
-    void render(const Scene& scene);
-    /**
-     * Returns the framebuffer instance.
-     */
-    Framebuffer& getFramebuffer();
-    /**
-     * Returns the line-drawing algorithm.
-     */
-    LineDrawingAlgorithm getLineDrawingAlgorithm() const;
-    /**
-     * Sets the line-drawing algorithm.
-     * @param algorithm the line-drawing algorithm to set.
-     */
-    void setLineDrawingAlgorithm(const LineDrawingAlgorithm algorithm);
-    /**
-     * Returns true if depth testing is enabled, false otherwise.
-     */
-    bool isDepthTestingEnabled() const;
-    /**
-     * Toggles depth testing.
-     * @param enable enables depth testing if set to true, disables it otherwise.
-     */
-    void enableDepthTesting(const bool enable);
+	/**
+	 *
+	 */
+	GraphicsEngine(const GraphicsEngine&) = delete;
+	/**
+	 *
+	 */
+	GraphicsEngine(GraphicsEngine&&) = delete;
+	/**
+	 *
+	 */
+	~GraphicsEngine();
+	/**
+	 *
+	 */
+	GraphicsEngine& operator=(const GraphicsEngine&) = delete;
+	/**
+	 *
+	 */
+	GraphicsEngine& operator=(GraphicsEngine&&) = delete;
+	/**
+	 * Clears the framebuffer.
+	 */
+	void clear();
+	/**
+	 * Renders the specified scene.
+	 */
+	void render(const Scene& scene);
+	/**
+	 * Returns the framebuffer instance.
+	 */
+	Framebuffer& getFramebuffer();
+	/**
+	 * Returns the line-drawing algorithm.
+	 */
+	LineDrawingAlgorithm getLineDrawingAlgorithm() const;
+	/**
+	 * Sets the line-drawing algorithm.
+	 * @param algorithm the line-drawing algorithm to set.
+	 */
+	void setLineDrawingAlgorithm(const LineDrawingAlgorithm algorithm);
+	/**
+	 * Returns true if depth testing is enabled, false otherwise.
+	 */
+	bool isDepthTestingEnabled() const;
+	/**
+	 * Toggles depth testing.
+	 * @param enable enables depth testing if set to true, disables it otherwise.
+	 */
+	void enableDepthTesting(const bool enable);
 private:
-    /**
-     * A pointer to a function that draws a mesh in a specified rendering context.
-     */
-    typedef void (*DrawFunction)(RenderingContext&, const Mesh&);
-    /**
-     * Instantiates a GraphicsEngine object.
-     */
-    GraphicsEngine();
-    /**
-     * Returns the specified rendering algorithm's draw function.
-     * @param algorithm the rendering algorithm to query.
-     */
-    DrawFunction getDrawFunction(const RenderingAlgorithm algorithm);
-    /**
-     * The framebuffer.
-     */
-    Framebuffer framebuffer_;
-    /**
-     * The line-drawing algorithm to use.
-     */
-    LineDrawingAlgorithm lineDrawingAlgorithm_;
-    /**
-     * If set to true, depth testing will be performed on fragments
-     * before being written to the framebuffer.
-     */
-    bool enableDepthTesting_;
+	/**
+	 * A pointer to a function that draws a mesh in a specified rendering context.
+	 */
+	typedef void (*DrawFunction)(RenderingContext&, const Mesh&);
+	/**
+	 * Instantiates a GraphicsEngine object.
+	 */
+	GraphicsEngine();
+	/**
+	 * Returns the specified rendering algorithm's draw function.
+	 * @param algorithm the rendering algorithm to query.
+	 */
+	DrawFunction getDrawFunction(const RenderingAlgorithm algorithm);
+	/**
+	 * The framebuffer.
+	 */
+	Framebuffer framebuffer_;
+	/**
+	 * The line-drawing algorithm to use.
+	 */
+	LineDrawingAlgorithm lineDrawingAlgorithm_;
+	/**
+	 * If set to true, depth testing will be performed on fragments
+	 * before being written to the framebuffer.
+	 */
+	bool enableDepthTesting_;
 };
 } // namespace clockwork
 #endif // CLOCKWORK_GRAPHICS_ENGINE_HH

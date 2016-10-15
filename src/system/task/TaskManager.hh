@@ -27,9 +27,7 @@
 
 namespace clockwork {
 
-class TaskManager
-{};
-
+class TaskManager {};
 } // namespace clockwork
 
 #endif // CLOCKWORK_TASK_MANAGER_HH

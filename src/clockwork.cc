@@ -28,12 +28,12 @@
 
 
 int main(int argc, char** argv) {
-    clockwork::Application application(argc, argv);
+	clockwork::Application application(argc, argv);
 
-    const auto error = application.initialize();
-    if (error != clockwork::Error::None) {
-        std::cerr << clockwork::toString(error).toStdString() << std::endl;
-        return static_cast<int>(error);
-    }
-    return application.exec();
+	const auto error = application.initialize();
+	if (error != clockwork::Error::None) {
+		std::cerr << clockwork::toString(error).toStdString() << std::endl;
+		return static_cast<int>(error);
+	}
+	return application.exec();
 }
