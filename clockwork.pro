@@ -29,6 +29,8 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 	# Setup the compiler arguments.
 	TEMPLATE = app
 	TARGET = clockwork
+	VERSION = 0.0.0
+	REPOSITORY = "https://github.com/othieno/clockwork"
 	CONFIG += c++14
 	QMAKE_CXXFLAGS += -Wextra
 	INCLUDEPATH += \
@@ -168,6 +170,9 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/ui/FramebufferProvider.cc \
 		src/ui/UserInterface.cc \
 		src/clockwork.cc
+	DEFINES += \
+		APPLICATION_VERSION=\\\"$$VERSION\\\" \
+		APPLICATION_REPOSITORY=\\\"$$REPOSITORY\\\"
 
 	# Add resource file configurations.
 	RESOURCES += clockwork.qrc

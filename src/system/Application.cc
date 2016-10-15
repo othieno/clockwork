@@ -33,7 +33,7 @@ QGuiApplication(argc, argv),
 preferences_(*this),
 userInterface_() {
 	setApplicationName("Clockwork");
-	setApplicationVersion("0.0.0");
+	setApplicationVersion(APPLICATION_VERSION);
 	parseCommandLineArguments(argc, argv);
 }
 
@@ -52,7 +52,7 @@ Application::initialize() {
 
 QString
 Application::applicationRepository() const {
-	return QString("https://github.com/othieno/clockwork");
+	return QString(APPLICATION_REPOSITORY);
 }
 
 
