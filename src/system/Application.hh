@@ -97,6 +97,11 @@ private:
 	 * The application's scene.
 	 */
 	Scene scene_;
+signals:
+	/**
+	 * A signal that is emitted when the update process is completed.
+	 */
+	void updateCompleted();
 };
 } // namespace clockwork
 

@@ -64,6 +64,7 @@ void
 Application::update() {
 	Service::Graphics.clear();
 	Service::Graphics.render(scene_);
+	emit updateCompleted();
 }
 
 
