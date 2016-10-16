@@ -44,10 +44,15 @@ stencilBufferImage_(nullptr) {
 
 
 QImage
-FramebufferProvider::requestImage(const QString& id, QSize* const size, const QSize&)
+FramebufferProvider::requestImage(const QString& imageId, QSize* const size, const QSize&)
 {
 	if (size != nullptr)
 		*size = framebuffer_.getResolutionSize();
+
+	// The image id is of the form "<frame><attachment>" where <frame> is
+	// a single digit number and <attachment> is the actual id to one of
+	// the available framebuffer attachments, e.g. "8pixel".
+	const auto& id = imageId.mid(1);
 
 	if (id == "pixel" && pixelBufferImage_ != nullptr) {
 		return *pixelBufferImage_;

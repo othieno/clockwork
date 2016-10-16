@@ -52,14 +52,19 @@ Rectangle {
 			 * The framebuffer's currently selected attachment.
 			 */
 			property var attachment: "pixel"
+			/**
+			 * A value used to force image requests from the image provider.
+			 */
+			property var frame: 0
 
 			id: framebuffer
 			cache: false
+			smooth: false
 			visible: true
 			width: parent.width
 			height: parent.height
 			//fillMode: Image.PreserveAspectFit
-			source: "image://framebuffer/%1".arg(attachment)
+			source: "image://framebuffer/" + frame + attachment
 			Row {
 				/**
 				 * Framebuffer attachment toggles.
@@ -89,6 +94,15 @@ Rectangle {
 						}
 					}
 				}
+			}
+			Component.onCompleted: {
+				application.updateCompleted.connect(function(){
+					// As there's no proper way of explicitly updating the
+					// image, the workaround is to update the frame number, which
+					// updates the image's source attribute, thereby triggering a
+					// request for a "new" image from the image provider.
+					framebuffer.frame = (framebuffer.frame + 1) % 10
+				})
 			}
 		}
 	}
