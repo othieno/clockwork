@@ -58,13 +58,18 @@ public:
 	UserInterface& operator=(UserInterface&&) = delete;
 private:
 	/**
-	 * Instantiates a UserInterface object.
+	 * Instantiates a UserInterface object that is bound to a specified application.
+	 * @param application the application that this user interface will be bound to.
 	 */
-	UserInterface() = default;
+	explicit UserInterface(Application& application);
 	/**
 	 * Initializes the user interface.
 	 */
-	Error initialize(Application&);
+	Error initialize();
+	/**
+	 * The application that this user interface is bound to.
+	 */
+	Application& application_;
 	/**
 	 *
 	 */

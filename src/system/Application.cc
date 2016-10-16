@@ -31,7 +31,7 @@ using clockwork::Application;
 Application::Application(int& argc, char** argv) :
 QGuiApplication(argc, argv),
 preferences_(*this),
-userInterface_() {
+userInterface_(*this) {
 	setApplicationName("Clockwork");
 	setApplicationVersion(APPLICATION_VERSION);
 	parseCommandLineArguments(argc, argv);
@@ -44,7 +44,7 @@ Application::~Application() {}
 clockwork::Error
 Application::initialize() {
 	Service::Graphics.setResolution(Framebuffer::Resolution::VGA);
-	return userInterface_.initialize(*this);
+	return userInterface_.initialize();
 }
 
 

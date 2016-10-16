@@ -31,14 +31,18 @@
 using clockwork::UserInterface;
 
 
+UserInterface::UserInterface(Application& application) :
+application_(application) {}
+
+
 clockwork::Error
-UserInterface::initialize(Application& application) {
+UserInterface::initialize() {
 	engine_.addImageProvider("framebuffer", new FramebufferProvider(Service::Graphics.getFramebuffer()));
 
 	auto* const qmlContext = engine_.rootContext();
 	if (qmlContext != nullptr) {
-		qmlContext->setContextProperty("application", &application);
-		qmlContext->setContextProperty("preferences", &application.getPreferences());
+		qmlContext->setContextProperty("application", &application_);
+		qmlContext->setContextProperty("preferences", &application_.getPreferences());
 	} else {
 		return Error::InvalidQmlContext;
 	}
