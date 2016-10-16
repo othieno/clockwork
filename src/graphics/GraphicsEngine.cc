@@ -40,6 +40,18 @@ enableDepthTesting_(true) {}
 GraphicsEngine::~GraphicsEngine() {}
 
 
+clockwork::Framebuffer::Resolution
+GraphicsEngine::getResolution() const {
+	return framebuffer_.getResolution();
+}
+
+
+void
+GraphicsEngine::setResolution(const Framebuffer::Resolution resolution) {
+	framebuffer_.setResolution(resolution);
+}
+
+
 void
 GraphicsEngine::clear() {
 	framebuffer_.clear();

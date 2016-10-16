@@ -43,9 +43,7 @@ Application::~Application() {}
 
 clockwork::Error
 Application::initialize() {
-	Framebuffer& framebuffer = Service::Graphics.getFramebuffer();
-	framebuffer.setResolution(Framebuffer::Resolution::VGA);
-
+	Service::Graphics.setResolution(Framebuffer::Resolution::VGA);
 	return userInterface_.initialize(*this);
 }
 

@@ -70,6 +70,15 @@ public:
 	 */
 	GraphicsEngine& operator=(GraphicsEngine&&) = delete;
 	/**
+	 * Returns the framebuffer's current resolution.
+	 */
+	Framebuffer::Resolution getResolution() const;
+	/**
+	 * Sets the framebuffer's resolution.
+	 * @param resolution the resolution to set.
+	 */
+	void setResolution(const Framebuffer::Resolution resolution);
+	/**
 	 * Clears the framebuffer.
 	 */
 	void clear();
