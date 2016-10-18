@@ -56,15 +56,15 @@ Page {
 				text: qsTr("Legal information")
 			}
 			ListItem.Subtitled {
-				text: qsTr("Source code license")
-				subText: qsTr("The MIT License (MIT).")
-				onClicked: pageStack.push("qrc:/view/MITLicense")
+				text: qsTr("Software license")
+				subText: qsTr("The MIT License.")
+				onClicked: pageStack.push("qrc:/view/SoftwareLicense")
 			}
 			ListItem.Divider {}
 			ListItem.Subtitled {
 				text: qsTr("Documentation license")
 				subText: qsTr("Creative Commons License (CC BY-NC-SA).")
-				onClicked: pageStack.push("qrc:/view/CreativeCommonsLicense")
+				onClicked: pageStack.push("qrc:/view/DocumentationLicense")
 			}
 			ListItem.Divider {}
 			ListItem.Subtitled {
