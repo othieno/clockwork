@@ -187,51 +187,59 @@ PolygonRenderer<A, T>::clip(const RenderingContext&, VertexArray&) {}
 template<RenderingAlgorithm A, class T> typename PolygonRenderer<A, T>::FragmentArray
 PolygonRenderer<A, T>::rasterize(const RenderingContext&, const VertexArray& vertices) {
 	FragmentArray fragments;
-	for (auto it = vertices.begin(); it != vertices.end();) {
-		const PipelineFragment f0(*it++);
-		const PipelineFragment f1(*it++);
-		const PipelineFragment f2(*it++);
-		fragments.append(f0);
-		fragments.append(f1);
-		fragments.append(f2);
-
-		const PipelineFragment* a = &f1;
-		const PipelineFragment* b = &f0;
-		const PipelineFragment* c = &f2;
-		if (f0.data.y == f1.data.y) {
-			a = &f0;
-			b = &f2;
-			c = &f1;
+	for (auto it = vertices.begin(); it != vertices.end(); it += 3) {
+		const auto* a = &it[1];
+		const auto* b = &it[0];
+		const auto* c = &it[2];
+		if (qFuzzyCompare(1.0 + a->data.position.y, 1.0 + b->data.position.y)) {
+			a = &it[0];
+			b = &it[2];
+			c = &it[1];
 		}
 
-		const double dys = int(b->data.y - a->data.y);
-		const double dye = int(b->data.y - c->data.y);
+		const double ay = std::round(a->data.position.y);
+		const double by = std::round(b->data.position.y);
+		//const double cy = ay; // since a and c are colinear.
+		const double dy = by - ay; // or by - cy.
 
-		// Remember that the outputs are sorted in the primitive assemlby step so f0.y <= f2.y.
-		for (std::uint32_t y = f0.data.y; y <= f2.data.y; ++y) {
-			const double ps = int(y - a->data.y) / dys;
-			auto fs = PipelineFragment::lerp(*a, *b, ps);
-			fs.data.x = std::round(((1.0 - ps) * a->data.x) + (ps * b->data.x));
+		// If the dy is relatively small, all 3 points are considered colinear.
+		constexpr double EPSILON = 1e-5;
+		if (std::abs(dy) < EPSILON) {
+			// TODO Handle cases where all 3 vertices are colinear.
+		} else {
+			auto ymin = static_cast<std::uint32_t>(ay);
+			auto ymax = static_cast<std::uint32_t>(by);
+			if (ymin > ymax) {
+				std::swap(ymin, ymax);
+			}
+			for (auto y = ymin; y <= ymax; ++y) {
+				const double p = (y - ay) / dy;
+				const auto from = PipelineVertex::lerp(*a, *b, p);
+				const auto to = PipelineVertex::lerp(*c, *b, p);
 
-			const double pe = int(y - c->data.y) / dye;
-			auto fe = PipelineFragment::lerp(*c, *b, pe);
-			fe.data.x = std::round(((1.0 - pe) * c->data.x) + (pe * b->data.x));
+				const double Fx = std::round(from.data.position.x);
+				const double Tx = std::round(to.data.position.x);
+				const double dx = Tx - Fx;
 
-			std::uint32_t xmin = fs.data.x;
-			std::uint32_t xmax = fe.data.x;
-			if (xmin == xmax) {
-				fs.data.y = y;
-				fragments.append(fs);
-			} else {
-				if (xmin > xmax) {
-					std::swap(xmin, xmax);
-				}
-				for (std::uint32_t x = xmin; x <= xmax; ++x) {
-					const double p = (x - fs.data.x) / double(fe.data.x - fs.data.x);
-					auto f = PipelineFragment::lerp(fs, fe, p);
-					f.data.x = x;
-					f.data.y = y;
-					fragments.append(f);
+				// If dx is relatively small, the 'from' and 'to' vertices are
+				// considered identical so there's no need to interpolate any
+				// new vertices between them.
+				if (std::abs(dx) < EPSILON) {
+					fragments.append(PipelineFragment(from));
+				} else {
+					auto xmin = static_cast<std::uint32_t>(Fx);
+					auto xmax = static_cast<std::uint32_t>(Tx);
+					if (xmin > xmax) {
+						std::swap(xmin, xmax);
+					}
+					for (auto x = xmin; x <= xmax; ++x) {
+						const double p = (x - Fx) / dx;
+						const auto vertex = PipelineVertex::lerp(from, to, p);
+						PipelineFragment fragment(vertex);
+						fragment.data.x = x;
+						fragment.data.y = y;
+						fragments.append(fragment);
+					}
 				}
 			}
 		}
