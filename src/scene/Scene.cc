@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 #include "Scene.hh"
-#include "Triangle.hh"
+#include "Suzanne.hh"
 #include "Camera.hh"
 
 using clockwork::Scene;
@@ -33,7 +33,7 @@ Scene::Scene() :
 viewer_(nullptr) {
 	//TODO Remove this when done debugging.
 	setViewer(SceneViewer::Type::Camera);
-	addNode(new asset::Triangle());
+	addNode(new asset::Suzanne());
 }
 
 

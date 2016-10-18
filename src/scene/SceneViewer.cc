@@ -33,7 +33,7 @@ type_(type),
 projection_(Projection::Perspective),
 updateCachedViewTransform_(true),
 updateCachedProjectionTransform_(true),
-renderingAlgorithm_(RenderingAlgorithm::Point),
+renderingAlgorithm_(RenderingAlgorithm::NormalMapping),
 primitiveMode_(Primitive::Triangle),
 textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {}
 
