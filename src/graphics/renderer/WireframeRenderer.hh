@@ -37,7 +37,7 @@ public:
 	/**
 	 * Sanitizes the rendering context and makes sure it is compatible with this renderer.
 	 */
-	static void sanitizeContext(RenderingContext&);
+	static void sanitizeRenderingContext(RenderingContext&);
 	/**
 	 * Rearranges the specified set of vertices into a collection of geometric primitives.
 	 */

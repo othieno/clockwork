@@ -29,7 +29,7 @@ using clockwork::WireframeRenderer;
 
 
 void
-WireframeRenderer::sanitizeContext(RenderingContext& context) {
+WireframeRenderer::sanitizeRenderingContext(RenderingContext& context) {
 	// The Wireframe renderer only draws line primitives so if the primitive mode
 	// is not set to Line, LineStrip or LineLoop, it will be set to LineLoop.
 	auto& mode = context.primitiveMode;

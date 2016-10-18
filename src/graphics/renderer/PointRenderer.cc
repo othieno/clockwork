@@ -30,7 +30,7 @@ using clockwork::PointRenderer;
 
 
 void
-PointRenderer::sanitizeContext(RenderingContext& context) {
+PointRenderer::sanitizeRenderingContext(RenderingContext& context) {
 	// The Point renderer only draws point primitives so if the primitive mode
 	// is not set to Point, it will be changed.
 	auto& mode = context.primitiveMode;

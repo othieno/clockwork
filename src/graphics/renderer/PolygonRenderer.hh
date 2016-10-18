@@ -54,7 +54,7 @@ public:
 	/**
 	 * Sanitizes the rendering context and makes sure it is compatible with this renderer.
 	 */
-	static void sanitizeContext(RenderingContext&);
+	static void sanitizeRenderingContext(RenderingContext&);
 	/**
 	 * Rearranges the specified set of vertices into a collection of geometric primitives.
 	 */
@@ -116,7 +116,7 @@ public PolygonRenderer<RenderingAlgorithm::TextureMapping, TextureMapRenderer> {
 
 
 template<RenderingAlgorithm A, class T> void
-PolygonRenderer<A, T>::sanitizeContext(RenderingContext& context) {
+PolygonRenderer<A, T>::sanitizeRenderingContext(RenderingContext& context) {
 	// The Polygon renderer only draws triangle primitives so if the primitive mode
 	// is not set to Triangle, TriangleStrip or TriangleFan, it will be set to TriangleStrip.
 	auto& mode = context.primitiveMode;

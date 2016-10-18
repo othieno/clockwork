@@ -180,7 +180,7 @@ Renderer<A, T>::draw(RenderingContext& context, const Mesh& mesh) {
 	if (framebuffer == nullptr || mesh.faces.isEmpty()) {
 		return;
 	}
-	T::sanitizeContext(context);
+	T::sanitizeRenderingContext(context);
 	for (const auto& face : mesh.faces) {
 		VertexArray vertices = vertexProcessing(context, face);
 		T::primitiveAssembly(context, vertices);
