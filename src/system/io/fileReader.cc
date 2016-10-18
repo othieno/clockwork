@@ -125,6 +125,10 @@ clockwork::parseOBJFile(QFile& file, Mesh& mesh) {
 	auto& normals = mesh.normals;
 	auto& faces = mesh.faces;
 
+	std::size_t positionCount = 0;
+	std::size_t uvCount = 0;
+	std::size_t normalCount = 0;
+
 	QTextStream stream(&file);
 	stream.skipWhiteSpace();
 	while (!stream.atEnd()) {
@@ -153,12 +157,14 @@ clockwork::parseOBJFile(QFile& file, Mesh& mesh) {
 			}
 */
 			positions.append(Point3(x, y, z));
+			++positionCount;
 		} else if (command == "vt") {
 			const double u = tokens.takeFirst().toDouble();
 			const double v = 1.0 - tokens.takeFirst().toDouble();
 			//double w = tokens.isEmpty() ? 0.0 : tokens.takeFirst().toDouble();
 
 			textureCoordinates.append(Point(u, v));
+			++uvCount;
 		} else if (command == "vn") {
 			const double i = tokens.takeFirst().toDouble();
 			const double j = tokens.takeFirst().toDouble();
@@ -166,10 +172,8 @@ clockwork::parseOBJFile(QFile& file, Mesh& mesh) {
 
 			// Since the normal isn't always a unit vector, normalize it just in case.
 			normals.append(Vector3::normalize(Vector3(i, j, k)));
+			++normalCount;
 		} else if (command == "f") {
-			const std::size_t positionCount = positions.size();
-			const std::size_t uvCount = textureCoordinates.size();
-			const std::size_t normalCount = normals.size();
 			const std::size_t tokenCount = tokens.size();
 
 			QList<const Point3*> parsedPositions;
