@@ -57,7 +57,7 @@ Page {
 			}
 			ListItem.Subtitled {
 				text: qsTr("Software license")
-				subText: qsTr("The MIT License.")
+				subText: qsTr("MIT License.")
 				onClicked: pageStack.push("qrc:/view/SoftwareLicense")
 			}
 			ListItem.Divider {}
@@ -68,8 +68,9 @@ Page {
 			}
 			ListItem.Divider {}
 			ListItem.Subtitled {
+				enabled: false
 				text: qsTr("Copyright notice")
-				subText: qsTr("Copyright (c) 2013 - 2016, Jeremy Othieno.")
+				subText: qsTr("Copyright (c) 2013-2016 Jeremy Othieno.")
 			}
 		}
 	}
