@@ -63,7 +63,7 @@ Page {
 			ListItem.Divider {}
 			ListItem.Subtitled {
 				text: qsTr("Documentation license")
-				subText: qsTr("Creative Commons License (CC BY-NC-SA).")
+				subText: qsTr("Creative Commons License (CC BY-NC-SA 4.0).")
 				onClicked: pageStack.push("qrc:/view/DocumentationLicense")
 			}
 			ListItem.Divider {}
