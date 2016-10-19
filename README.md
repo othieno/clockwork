@@ -1,9 +1,9 @@
 Clockwork
 =========
 
-Clockwork is a software renderer written to understand the nitty-gritties of the graphics pipeline, from raw input data to pixels on a screen.
+Clockwork is a software renderer written to understand the nitty-gritties of the graphics pipeline.
 
-<p align="center"><img src="/documentation/showcase.png?raw=true" alt="Blender's Suzanne rendered in Clockwork"></p>
+<p align="center"><img src="/documentation/showcase.png?raw=true" alt="Blender's Suzanne rendered in Clockwork."></p>
 
 
 Requirements
