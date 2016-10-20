@@ -27,8 +27,7 @@
 using clockwork::Fragment;
 
 
-Fragment::Fragment(const std::uint32_t X, const std::uint32_t Y, const double Z, const std::uint8_t S) :
+Fragment::Fragment(const std::uint32_t X, const std::uint32_t Y, const double Z) :
 x(X),
 y(Y),
-z(Z),
-stencil(S) {}
+z(Z) {}

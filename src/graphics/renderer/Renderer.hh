@@ -247,7 +247,7 @@ Renderer<A, T>::fragmentProcessing(const RenderingContext& context, Framebuffer&
 		if (offset >= 0) {
 			pbuffer[offset] = T::ShaderProgram::fragmentShader(context.uniforms, varying, fragment);
 			zbuffer[offset] = fragment.z;
-			sbuffer[offset] = fragment.stencil;
+			sbuffer[offset] = 0xFF;
 		}
 	}
 }

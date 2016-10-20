@@ -41,20 +41,16 @@ ShaderProgram::Fragment::Fragment(const Vertex& vertex) {
 	x = std::round(vertex.position.x);
 	y = std::round(vertex.position.y);
 	z = vertex.position.z;
-	stencil = 0xFF;
 	normal = vertex.normal;
 }
 
 
 ShaderProgram::Fragment
 ShaderProgram::Fragment::lerp(const Fragment& from, const Fragment& to, const double p) {
-	const double pp = 1.0 - p;
-
 	Fragment fragment;
 //	fragment.x = 0;	// <x, y> are ignored because they are always set to some other value after
 //	fragment.y = 0;	// interpolation. For more info, please refer to any renderer's rasterize function.
-	fragment.z = (pp * from.z) + (p * to.z);
-	fragment.stencil = std::round((pp * from.stencil) + (p * to.stencil));
+	fragment.z = ((1.0 - p) * from.z) + (p * to.z);
 	fragment.normal = clockwork::lerp(from.normal, to.normal, p);
 	return fragment;
 }
