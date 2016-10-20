@@ -81,6 +81,7 @@ ApplicationWindow {
 		Repeater {
 			model: [
 				"Scene",
+				"PipelineConfiguration",
 				"Documentation",
 			]
 			delegate: Tab {
