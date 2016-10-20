@@ -28,9 +28,10 @@
 
 namespace clockwork {
 /**
- * An enumeration of available primitives.
+ * An enumeration of available primitive topologies that determine how
+ * consecutive vertices are organized into geometric primitives.
  */
-enum class Primitive {
+enum class PrimitiveTopology {
 	Point,
 	Line,
 	LineStrip,
@@ -39,6 +40,7 @@ enum class Primitive {
 	TriangleStrip,
 	TriangleFan
 };
+using Primitive = PrimitiveTopology;
 } // namespace clockwork
 
 #endif // CLOCKWORK_PRIMITIVE_HH
