@@ -38,6 +38,14 @@ depthBufferImage_(nullptr),
 stencilBufferImage_(nullptr) {
 	using std::placeholders::_1;
 
+	// Generate a color for each possible stencil value. When this color table was
+	// initially implemented, only two stencil values were used (0x00 and 0xFF),
+	// making it a little bit overkill to generate all 255 values. Since I don't
+	// know what the future may hold, I've erred on the side of caution.
+	for (std::uint8_t i = 0; i < std::numeric_limits<std::uint8_t>::max(); ++i) {
+		stencilBufferImageColorTable_.push_back(qRgb(i, i, i));
+	}
+
 	onFramebufferResized(framebuffer.getResolutionSize());
 	QObject::connect(&framebuffer, &Framebuffer::resized, std::bind(&FramebufferProvider::onFramebufferResized, this, _1));
 }
@@ -78,5 +86,6 @@ FramebufferProvider::onFramebufferResized(const QSize& resolution) {
 	depthBufferImage_.reset(new QImage(reinterpret_cast<uchar*>(depthBufferImageData_.get()), width, height, QImage::Format_RGB32));
 */
 	uchar* const sb = reinterpret_cast<uchar*>(framebuffer_.getStencilBuffer());
-	stencilBufferImage_.reset(new QImage(sb, w, h, QImage::Format_Mono));
+	stencilBufferImage_.reset(new QImage(sb, w, h, QImage::Format_Indexed8));
+	stencilBufferImage_->setColorTable(stencilBufferImageColorTable_);
 }

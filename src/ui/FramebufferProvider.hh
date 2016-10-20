@@ -74,6 +74,10 @@ private:
 	 * An image representation of the framebuffer's stencil buffer attachment.
 	 */
 	std::unique_ptr<QImage> stencilBufferImage_;
+	/**
+	 * The stencil buffer image's color table.
+	 */
+	QVector<QRgb> stencilBufferImageColorTable_;
 };
 } // namespace clockwork
 
