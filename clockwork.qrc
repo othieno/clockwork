@@ -13,11 +13,15 @@
 		<file alias="action/framebuffer/pixel">resources/icons/material-design/image/svg/production/ic_looks_one_48px.svg</file>
 		<file alias="action/framebuffer/stencil">resources/icons/material-design/image/svg/production/ic_looks_3_48px.svg</file>
 		<file alias="action/settings">resources/icons/material-design/action/svg/production/ic_settings_48px.svg</file>
+		<file alias="action/showDocumentationView">resources/icons/material-design/action/svg/production/ic_book_48px.svg</file>
+		<file alias="action/showPipelineConfigurationView">resources/icons/material-design/image/svg/production/ic_tune_48px.svg</file>
+		<file alias="action/showSceneRenderView">resources/icons/material-design/av/svg/production/ic_videocam_48px.svg</file>
 		<file alias="action/translate">resources/icons/material-design/action/svg/production/ic_translate_48px.svg</file>
 		<file alias="file/folder_open">resources/icons/material-design/file/svg/production/ic_folder_open_48px.svg</file>
 		<file alias="image/palette">resources/icons/material-design/image/svg/production/ic_palette_48px.svg</file>
 		<file alias="image/timer">resources/icons/material-design/image/svg/production/ic_timer_48px.svg</file>
 		<file alias="navigation/close">resources/icons/material-design/navigation/svg/production/ic_close_48px.svg</file>
+		<file alias="navigation/menu">resources/icons/material-design/navigation/svg/production/ic_menu_48px.svg</file>
 		<file alias="navigation/refresh">resources/icons/material-design/navigation/svg/production/ic_refresh_48px.svg</file>
 		<file alias="navigation/fullscreen">resources/icons/material-design/navigation/svg/production/ic_fullscreen_48px.svg</file>
 		<file alias="navigation/fullscreen_exit">resources/icons/material-design/navigation/svg/production/ic_fullscreen_exit_48px.svg</file>
@@ -25,12 +29,12 @@
 	<qresource prefix="/view">
 		<file alias="AboutClockwork">src/ui/views/AboutClockwork.qml</file>
 		<file alias="ApplicationWindow">src/ui/views/ApplicationWindow.qml</file>
+		<file alias="Documentation">src/ui/views/Documentation.qml</file>
 		<file alias="DocumentationLicense">src/ui/views/DocumentationLicense.qml</file>
-		<file alias="DocumentationViewer">src/ui/views/DocumentationViewer.qml</file>
 		<file alias="PerformanceSettings">src/ui/views/PerformanceSettings.qml</file>
-		<file alias="PipelineConfigurationViewer">src/ui/views/PipelineConfigurationViewer.qml</file>
-		<file alias="Preferences">src/ui/views/Preferences.qml</file>
-		<file alias="SceneViewer">src/ui/views/SceneViewer.qml</file>
+		<file alias="PipelineConfiguration">src/ui/views/PipelineConfiguration.qml</file>
+		<file alias="SceneRender">src/ui/views/SceneRender.qml</file>
+		<file alias="Settings">src/ui/views/Settings.qml</file>
 		<file alias="SoftwareLicense">src/ui/views/SoftwareLicense.qml</file>
 		<file alias="ThemeSettings">src/ui/views/ThemeSettings.qml</file>
 	</qresource>

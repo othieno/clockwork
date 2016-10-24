@@ -28,7 +28,7 @@ import Material.ListItems 0.1 as ListItem
 
 
 Page {
-	id: pipelineConfigurationViewer
+	id: pipelineConfigurationView
 	/**
 	 * The page's content.
 	 */
@@ -68,7 +68,7 @@ Page {
 			ListItem.Subtitled {
 				enabled: false
 				text: qsTr("Enable contribution culling")
-				subText: qsTr("Discards objects that are too far away to contribute significantly to the final render.")
+				subText: qsTr("Discards objects that are too far away or too small to contribute significantly to the final render.")
 				secondaryItem: Switch {
 					id: toggleContributionCulling
 					checked: true

@@ -29,81 +29,63 @@ import QtQuick.Layouts 1.0
 import Material 0.2
 
 
-Rectangle {
-	id: sceneViewer
-	color: Theme.backgroundColor
-	Rectangle {
+Page {
+	id: sceneRenderView
+	Image {
 		/**
-		 * The welcome panel.
+		 * The framebuffer's currently selected attachment.
 		 */
-		anchors.top: parent.top
-		anchors.left: parent.left
-		anchors.right: parent.right
-		anchors.bottom: footer.top
-		color: Theme.backgroundColor
-		visible: !framebuffer.visible
-	}
-	Rectangle {
-		anchors.fill: parent
-		color: Palette.colors["grey"]["900"]
-		//visible: framebuffer.visible
-		Image {
-			/**
-			 * The framebuffer's currently selected attachment.
-			 */
-			property var attachment: "pixel"
-			/**
-			 * A value used to force image requests from the image provider.
-			 */
-			property var frame: 0
+		property var attachment: "pixel"
+		/**
+		 * A value used to force image requests from the image provider.
+		 */
+		property var frame: 0
 
-			id: framebuffer
-			cache: false
-			smooth: false
-			visible: true
-			width: parent.width
-			height: parent.height
-			//fillMode: Image.PreserveAspectFit
-			source: "image://framebuffer/" + frame + attachment
-			Row {
-				/**
-				 * Framebuffer attachment toggles.
-				 */
-				anchors {
-					top: parent.top
-					right: parent.right
-					topMargin: dp(8)
-					rightMargin: dp(8)
-				}
-				spacing: dp(8)
-				Repeater {
-					model: [
-						"pixel",
-						"depth",
-						"stencil",
-					]
-					delegate: IconButton {
-						readonly property bool selected: framebuffer.attachment === modelData
-						iconSource: "qrc:/icon/action/framebuffer/%1".arg(modelData)
-						size: dp(32)
-						color: selected ? Theme.accentColor : Theme.backgroundColor
-						opacity: selected ? 1 : 0.1
-						action: Action {
-							iconName: "framebuffer-attachment-%1".arg(modelData)
-							onTriggered: framebuffer.attachment = modelData
-						}
+		id: framebuffer
+		cache: false
+		smooth: false
+		width: parent.width
+		height: parent.height
+		//fillMode: Image.PreserveAspectFit
+		source: "image://framebuffer/" + frame + attachment
+		Row {
+			/**
+			 * Framebuffer attachment toggles.
+			 */
+			anchors {
+				top: parent.top
+				right: parent.right
+				topMargin: dp(8)
+				rightMargin: dp(8)
+			}
+			spacing: dp(8)
+			Repeater {
+				model: [
+					"pixel",
+					"depth",
+					"stencil",
+				]
+				delegate: IconButton {
+					readonly property bool selected: framebuffer.attachment === modelData
+					iconSource: "qrc:/icon/action/framebuffer/%1".arg(modelData)
+					size: dp(32)
+					color: selected ? Theme.accentColor : Theme.backgroundColor
+					opacity: selected ? 1 : 0.1
+					action: Action {
+						iconName: "framebuffer-attachment-%1".arg(modelData)
+						onTriggered: framebuffer.attachment = modelData
 					}
 				}
 			}
-			Component.onCompleted: {
-				application.updateCompleted.connect(function(){
-					// As there's no proper way of explicitly updating the
-					// image, the workaround is to update the frame number, which
-					// updates the image's source attribute, thereby triggering a
-					// request for a "new" image from the image provider.
-					framebuffer.frame = (framebuffer.frame + 1) % 10
-				})
-			}
+		}
+		Component.onCompleted: {
+			application.updateCompleted.connect(function(){
+				// As there's no proper way of explicitly updating the
+				// image, the workaround is to update the frame number, which
+				// updates the image's source attribute, thereby triggering a
+				// request for a "new" image from the image provider.
+				framebuffer.frame = (framebuffer.frame + 1) % 10
+			})
 		}
 	}
 	/**
@@ -139,7 +121,6 @@ Rectangle {
 			anchors.centerIn: parent
 			Repeater {
 				model: [
-					"X"
 				]
 				delegate: IconButton {
 					IconButton {

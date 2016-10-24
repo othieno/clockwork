@@ -29,12 +29,11 @@ import Material.Extras 0.1
 
 
 Page {
-	title: qsTr("Preferences")
+	title: qsTr("Settings")
 	/**
 	 * Set up the page when it's been completely loaded.
 	 */
 	Component.onCompleted: {
-		applicationWindow.title = title + " - " + application.applicationName
 	}
 	/**
 	 * The page's content.

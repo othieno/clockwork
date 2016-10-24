@@ -24,7 +24,6 @@
  */
 import QtQuick 2.4
 import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 import Material 0.2
@@ -34,7 +33,7 @@ ApplicationWindow {
 	id: applicationWindow
 	visible: true
 	visibility: Window.Maximized
-	initialPage: page
+	title: "%1%2".arg(pageStack.currentItem !== null ? pageStack.currentItem.title + " - " : "").arg(application.applicationName)
 	theme {
 		accentColor: Palette.colors["blueGrey"]["700"]
 		primaryColor: Palette.colors["blue"]["700"]
@@ -47,52 +46,83 @@ ApplicationWindow {
 		if (preferences.showBorderlessWindow) {
 			flags = Qt.FramelessWindowHint
 		}
-		application.update();
+		application.update()
 	}
 	/**
 	 * The application's page content.
 	 */
-	TabbedPage {
+	initialPage: Page {
+		/**
+		 * The page's available sections.
+		 */
+		property var sections: [
+			{
+				viewId: "SceneRender",
+				title: qsTr("Scene"),
+			},
+			{
+				viewId: "PipelineConfiguration",
+				title: qsTr("Pipeline Configuration"),
+			},
+			{
+				viewId: "Documentation",
+				title: qsTr("Documentation"),
+			},
+		]
+		/**
+		 * The main page's current section.
+		 */
+		property var currentSection: sections[0]
+		/**
+		 * The main page's title.
+		 */
+		property var pageTitle: qsTr("Renderer")
+		/**
+		 * The main page's subtitle, which is the current section's title.
+		 */
+		property var pageSubtitle: currentSection.title
+
 		id: page
-		title: application.applicationName
+		title: "%1 – %2".arg(pageSubtitle).arg(pageTitle)
+		actionBar.title: "%1 – %2".arg(pageTitle).arg(pageSubtitle)
+		backAction: Action {
+			iconSource: navigation.expanded ? "qrc:/icon/navigation/close" : "qrc:/icon/navigation/menu"
+			onTriggered: navigation.expanded = !navigation.expanded
+		}
 		actions: [
 			Action {
-				name: qsTr("Preferences")
 				iconSource: "qrc:/icon/action/settings"
-				onTriggered: pageStack.push("qrc:/view/Preferences")
+				onTriggered: pageStack.push("qrc:/view/Settings")
 				hoverAnimation: true
-			},
-			Action {
-				property var oldVisibility
-
-				name: qsTr("Toggle full screen")
-				iconSource: "qrc:/icon/navigation/fullscreen%1".arg(applicationWindow.visibility !== Window.FullScreen ? "" : "_exit")
-				onTriggered: {
-					var visibility = applicationWindow.visibility
-					if (visibility !== Window.FullScreen) {
-						oldVisibility = visibility
-						applicationWindow.visibility = Window.FullScreen
-					} else {
-						applicationWindow.visibility = oldVisibility === undefined ? Window.Maximized : oldVisibility
-					}
-				}
 			}
 		]
-		Repeater {
-			model: [
-				"Scene",
-				"PipelineConfiguration",
-				"Documentation",
-			]
-			delegate: Tab {
-				title: qsTr(modelData)
-				source: "qrc:view/%1Viewer".arg(modelData)
-				onVisibleChanged: {
-					if (visible) {
-						applicationWindow.title = title + " - " + application.applicationName
+		Sidebar {
+			id: navigation
+			expanded: true
+			width: dp(55)
+			ColumnLayout {
+				Repeater {
+					model: page.sections
+					delegate: IconButton {
+						Layout.alignment: Qt.AlignCenter
+						Layout.preferredWidth: navigation.width
+						Layout.preferredHeight: navigation.width
+						iconSource: "qrc:/icon/action/show%1View".arg(modelData.viewId)
+						enabled: page.currentSection.viewId != modelData.viewId
+						onClicked: page.currentSection = page.sections[index]
+						color: Theme.accentColor
 					}
 				}
 			}
+		}
+		Loader {
+			source: "qrc:/view/%1".arg(page.currentSection.viewId)
+			visible: status == Loader.Ready
+			asynchronous: true
+			anchors.top: parent.top
+			anchors.left: navigation.right
+			anchors.right: parent.right
+			anchors.bottom: parent.bottom
 		}
 	}
 	/**

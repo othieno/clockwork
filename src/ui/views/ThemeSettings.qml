@@ -29,9 +29,8 @@ import Material.Extras 0.1
 
 
 Page {
-	title: qsTr("Theme")
-	Component.onCompleted: {
-	}
+	id: themeSettingsView
+	title: qsTr("Theme Settings")
 	Flickable {
 		anchors.fill: parent
 		contentWidth: parent.width

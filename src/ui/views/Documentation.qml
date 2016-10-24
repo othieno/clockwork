@@ -30,5 +30,5 @@ import Material 0.2
 
 
 Rectangle {
-	id: documentationViewer
+	id: documentationView
 }
