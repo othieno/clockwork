@@ -102,7 +102,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/scene/SceneViewer.hh \
 		src/scene/property/SceneObjectAppearance.hh \
 		src/system/Application.hh \
-		src/system/ApplicationPreferences.hh \
+		src/system/ApplicationSettings.hh \
 		src/system/Error.hh \
 		src/system/Service.hh \
 		src/system/io/fileReader.hh \
@@ -159,7 +159,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/scene/SceneViewer.cc \
 		src/scene/property/SceneObjectAppearance.cc \
 		src/system/Application.cc \
-		src/system/ApplicationPreferences.cc \
+		src/system/ApplicationSettings.cc \
 		src/system/Service.cc \
 		src/system/io/fileReader.cc \
 		src/system/io/Resource.cc \

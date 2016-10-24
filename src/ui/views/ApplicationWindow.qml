@@ -43,7 +43,7 @@ ApplicationWindow {
 	 *
 	 */
 	Component.onCompleted: {
-		if (preferences.showBorderlessWindow) {
+		if (settings.showBorderlessWindow) {
 			flags = Qt.FramelessWindowHint
 		}
 		application.update()

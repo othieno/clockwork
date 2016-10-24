@@ -22,8 +22,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_APPLICATION_PREFERENCES_HH
-#define CLOCKWORK_APPLICATION_PREFERENCES_HH
+#ifndef CLOCKWORK_APPLICATION_SETTINGS_HH
+#define CLOCKWORK_APPLICATION_SETTINGS_HH
 
 #include <QSettings>
 
@@ -36,7 +36,7 @@ class Application;
 /**
  *
  */
-class ApplicationPreferences : public QSettings {
+class ApplicationSettings : public QSettings {
 	Q_OBJECT
 	Q_PROPERTY(bool showFramesPerSecond READ isFpsCounterVisible WRITE showFpsCounter NOTIFY fpsCounterVisibilityChanged)
 	Q_PROPERTY(bool enableDepthTesting READ isDepthTestingEnabled WRITE enableDepthTesting NOTIFY depthTestingChanged)
@@ -89,9 +89,9 @@ private:
 		EnableDepthTesting,
 	};
 	/**
-	 * Instantiates an ApplicationPreferences object.
+	 * Instantiates an ApplicationSettings object.
 	 */
-	ApplicationPreferences(Application&);
+	ApplicationSettings(Application&);
 	/**
 	 * Returns true if a value with the specified key exists in the configuration, false otherwise.
 	 * @param key the key to query.
@@ -115,4 +115,4 @@ private:
 };
 } // namespace clockwork
 
-#endif // CLOCKWORK_APPLICATION_PREFERENCES_HH
+#endif // CLOCKWORK_APPLICATION_SETTINGS_HH

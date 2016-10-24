@@ -30,7 +30,7 @@ using clockwork::Application;
 
 Application::Application(int& argc, char** argv) :
 QGuiApplication(argc, argv),
-preferences_(*this),
+settings_(*this),
 userInterface_(*this) {
 	setApplicationName("Clockwork");
 	setApplicationVersion(APPLICATION_VERSION);
@@ -54,9 +54,9 @@ Application::applicationRepository() const {
 }
 
 
-clockwork::ApplicationPreferences&
-Application::getPreferences() {
-	return preferences_;
+clockwork::ApplicationSettings&
+Application::getSettings() {
+	return settings_;
 }
 
 

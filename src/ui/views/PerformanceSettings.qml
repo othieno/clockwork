@@ -41,7 +41,7 @@ Page {
 			ListItem.SimpleMenu {
 				enabled: false
 				text: qsTr("Framebuffer resolution")
-				model: preferences.availableFramebufferResolutions
+				model: settings.availableFramebufferResolutions
 			}
 			ListItem.Divider {}
 			ListItem.Subtitled {
@@ -50,7 +50,7 @@ Page {
 				subText: qsTr("Displays the number of frames rendered per second.")
 				secondaryItem: Switch {
 					id: toggleFramesPerSecond
-					checked: preferences.showFramesPerSecond
+					checked: settings.showFramesPerSecond
 					anchors.verticalCenter: parent.verticalCenter
 				}
 				onClicked: toggleFramesPerSecond.checked = !toggleFramesPerSecond.checked
@@ -58,6 +58,6 @@ Page {
 		}
 	}
 	Component.onDestruction: {
-		preferences.showFramesPerSecond = toggleFramesPerSecond.checked
+		settings.showFramesPerSecond = toggleFramesPerSecond.checked
 	}
 }

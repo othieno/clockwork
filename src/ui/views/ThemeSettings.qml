@@ -83,8 +83,8 @@ Page {
 		}
 	}
 	Component.onDestruction: {
-		preferences.enableLargerText = toggleLargerText.checked
-		preferences.enableNightMode = toggleNightMode.checked
-		preferences.enableBorderlessWindow = toggleBorderlessWindow.checked
+		settings.enableLargerText = toggleLargerText.checked
+		settings.enableNightMode = toggleNightMode.checked
+		settings.enableBorderlessWindow = toggleBorderlessWindow.checked
 	}
 }

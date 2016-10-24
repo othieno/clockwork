@@ -58,7 +58,7 @@ Page {
 			ListItem.SimpleMenu {
 				enabled: false
 				text: qsTr("Language")
-				model: preferences.availableLanguages
+				model: settings.availableLanguages
 				action: Icon {
 					anchors.centerIn: parent
 					source: "qrc:/icon/action/translate"
@@ -91,7 +91,7 @@ Page {
 			ListItem.Subtitled {
 				enabled: false
 				text: qsTr("Configuration file location")
-				subText: preferences.fileLocation
+				subText: settings.fileLocation
 				action: Icon {
 					anchors.centerIn: parent
 					source: "qrc:/icon/file/folder_open"

@@ -22,17 +22,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "ApplicationPreferences.hh"
+#include "ApplicationSettings.hh"
 #include "Application.hh"
 #include "Framebuffer.hh"
 #include "Service.hh"
 #include "toString.hh"
 #include <QStandardPaths>
 
-using clockwork::ApplicationPreferences;
+using clockwork::ApplicationSettings;
 
 
-ApplicationPreferences::ApplicationPreferences(Application& application) :
+ApplicationSettings::ApplicationSettings(Application& application) :
 QSettings(QString("./clockwork-preferences.pro.user"), Format::IniFormat) {
 //FIXME QStandardPaths::AppConfigLocation requires Qt 5.5 at least.
 //TODO Add requirement to clockwork.pro file.
@@ -42,13 +42,13 @@ QSettings(QString("./clockwork-preferences.pro.user"), Format::IniFormat) {
 
 
 bool
-ApplicationPreferences::isFpsCounterVisible() const {
+ApplicationSettings::isFpsCounterVisible() const {
 	return value(Key::ShowFramesPerSecond, false).toBool();
 }
 
 
 void
-ApplicationPreferences::showFpsCounter(const bool visible) {
+ApplicationSettings::showFpsCounter(const bool visible) {
 	if (isFpsCounterVisible() != visible) {
 		setValue(Key::ShowFramesPerSecond, visible);
 		emit fpsCounterVisibilityChanged(visible);
@@ -57,14 +57,14 @@ ApplicationPreferences::showFpsCounter(const bool visible) {
 
 
 bool
-ApplicationPreferences::isDepthTestingEnabled() const {
+ApplicationSettings::isDepthTestingEnabled() const {
 	const bool defaultValue = Service::Graphics.isDepthTestingEnabled();
 	return value(Key::EnableDepthTesting, defaultValue).toBool();
 }
 
 
 void
-ApplicationPreferences::enableDepthTesting(const bool enable) {
+ApplicationSettings::enableDepthTesting(const bool enable) {
 	if (isDepthTestingEnabled() != enable) {
 		setValue(Key::ShowFramesPerSecond, enable);
 		emit depthTestingChanged(enable);
@@ -73,7 +73,7 @@ ApplicationPreferences::enableDepthTesting(const bool enable) {
 
 
 QStringList
-ApplicationPreferences::getAvailableLanguages() {
+ApplicationSettings::getAvailableLanguages() {
 	QStringList languages;
 	languages.append("English");
 
@@ -83,7 +83,7 @@ ApplicationPreferences::getAvailableLanguages() {
 
 
 QStringList
-ApplicationPreferences::getAvailableFramebufferResolutions() {
+ApplicationSettings::getAvailableFramebufferResolutions() {
 	QStringList resolutions;
 	for (const auto resolution : Framebuffer::getAvailableResolutions()) {
 		resolutions.append(toString(resolution));
@@ -93,31 +93,31 @@ ApplicationPreferences::getAvailableFramebufferResolutions() {
 
 
 bool
-ApplicationPreferences::contains(const Key key) const {
-	return QSettings::contains(ApplicationPreferences::keyToString(key));
+ApplicationSettings::contains(const Key key) const {
+	return QSettings::contains(ApplicationSettings::keyToString(key));
 }
 
 
 QVariant
-ApplicationPreferences::value(const Key key, const QVariant& defaultValue) const {
-	return QSettings::value(ApplicationPreferences::keyToString(key), defaultValue);
+ApplicationSettings::value(const Key key, const QVariant& defaultValue) const {
+	return QSettings::value(ApplicationSettings::keyToString(key), defaultValue);
 }
 
 
 void
-ApplicationPreferences::setValue(const Key key, const QVariant& value) {
-	QSettings::setValue(ApplicationPreferences::keyToString(key), value);
+ApplicationSettings::setValue(const Key key, const QVariant& value) {
+	QSettings::setValue(ApplicationSettings::keyToString(key), value);
 }
 
 
 QString
-ApplicationPreferences::keyToString(const Key key) {
+ApplicationSettings::keyToString(const Key key) {
 	switch (key) {
 		case Key::ShowFramesPerSecond:
 			return "showFramesPerSecond";
 		case Key::EnableDepthTesting:
 			return "enableDepthTesting";
 		default:
-			qFatal("[ApplicationPreferences::keyToString] Undefined key!");
+			qFatal("[ApplicationSettings::keyToString] Undefined key!");
 	}
 }

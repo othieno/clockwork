@@ -26,7 +26,7 @@
 #define CLOCKWORK_APPLICATION_HH
 
 #include <QGuiApplication>
-#include "ApplicationPreferences.hh"
+#include "ApplicationSettings.hh"
 #include "Error.hh"
 #include "UserInterface.hh"
 #include "Scene.hh"
@@ -73,9 +73,9 @@ public:
 	 */
 	Error initialize();
 	/**
-	 * Returns the application's preferences.
+	 * Returns the application's configuration settings.
 	 */
-	ApplicationPreferences& getPreferences();
+	ApplicationSettings& getSettings();
 	/**
 	 * Updates the application's state.
 	 */
@@ -86,9 +86,9 @@ private:
 	 */
 	void parseCommandLineArguments(int& argc, char** argv);
 	/**
-	 * The application's preferences.
+	 * The application's configuration settings.
 	 */
-	ApplicationPreferences preferences_;
+	ApplicationSettings settings_;
 	/**
 	 * The application's user interface.
 	 */

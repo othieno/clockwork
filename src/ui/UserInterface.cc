@@ -42,7 +42,7 @@ UserInterface::initialize() {
 	auto* const qmlContext = engine_.rootContext();
 	if (qmlContext != nullptr) {
 		qmlContext->setContextProperty("application", &application_);
-		qmlContext->setContextProperty("preferences", &application_.getPreferences());
+		qmlContext->setContextProperty("settings", &application_.getSettings());
 	} else {
 		return Error::InvalidQmlContext;
 	}
