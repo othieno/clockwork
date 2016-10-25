@@ -57,12 +57,20 @@ ApplicationWindow {
 		 */
 		property var sections: [
 			{
-				viewId: "SceneRender",
-				title: qsTr("Scene"),
+				viewId: "Output",
+				title: qsTr("Output"),
 			},
 			{
 				viewId: "PipelineConfiguration",
 				title: qsTr("Pipeline Configuration"),
+			},
+			{
+				viewId: "ScissorConfiguration",
+				title: qsTr("Scissor Configuration"),
+			},
+			{
+				viewId: "StencilConfiguration",
+				title: qsTr("Stencil Configuration"),
 			},
 			{
 				viewId: "Documentation",
