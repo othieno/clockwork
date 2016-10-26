@@ -77,6 +77,10 @@ public:
 	 */
 	ApplicationSettings& getSettings();
 	/**
+	 * Returns the application's scene.
+	 */
+	Scene& getScene();
+	/**
 	 * Updates the application's state.
 	 */
 	Q_INVOKABLE void update();

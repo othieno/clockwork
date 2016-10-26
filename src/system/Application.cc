@@ -60,6 +60,12 @@ Application::getSettings() {
 }
 
 
+clockwork::Scene&
+Application::getScene() {
+	return scene_;
+}
+
+
 void
 Application::update() {
 	Service::Graphics.clear();

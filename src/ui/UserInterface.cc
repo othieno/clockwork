@@ -43,6 +43,7 @@ UserInterface::initialize() {
 	if (qmlContext != nullptr) {
 		qmlContext->setContextProperty("application", &application_);
 		qmlContext->setContextProperty("settings", &application_.getSettings());
+		qmlContext->setContextProperty("scene", &application_.getScene());
 	} else {
 		return Error::InvalidQmlContext;
 	}
