@@ -33,6 +33,7 @@ type_(type),
 projection_(Projection::Perspective),
 updateCachedViewTransform_(true),
 updateCachedProjectionTransform_(true),
+scissor_(QPointF(0.0f, 0.0f), QPointF(1.0f, 1.0f)),
 renderingAlgorithm_(RenderingAlgorithm::NormalMapping),
 primitiveMode_(Primitive::Triangle),
 textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {}
@@ -99,6 +100,19 @@ SceneViewer::getViewport() const {
 void
 SceneViewer::setViewport(const Viewport& viewport) {
 	viewport_ = viewport;
+}
+
+
+const QRectF&
+SceneViewer::getScissor() const {
+	return scissor_;
+}
+
+
+void
+SceneViewer::setScissor(const QRectF& scissor) {
+	scissor_ = scissor;
+	emit scissorChanged(scissor_);
 }
 
 

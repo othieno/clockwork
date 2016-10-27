@@ -34,6 +34,7 @@
 #include "Renderer.hh"
 #include "ImageFilter.hh"
 #include "TextureFilter.hh"
+#include <QRectF>
 
 
 namespace clockwork {
@@ -41,6 +42,8 @@ namespace clockwork {
  *
  */
 class SceneViewer : public SceneObject {
+	Q_OBJECT
+	Q_PROPERTY(QRectF scissor READ getScissor WRITE setScissor NOTIFY scissorChanged)
 public:
 	/**
 	 * An enumeration of available scene viewers.
@@ -98,6 +101,15 @@ public:
 	 * @param viewport the viewport to set.
 	 */
 	void setViewport(const Viewport& viewport);
+	/**
+	 * Returns the viewer's scissor.
+	 */
+	const QRectF& getScissor() const;
+	/**
+	 * Sets the viewer's scissor.
+	 * @param scissor the scissor to set.
+	 */
+	void setScissor(const QRectF& scissor);
 	/**
 	 * Returns the viewer's view frustum.
 	 */
@@ -210,6 +222,10 @@ private:
 	 */
 	Viewport viewport_;
 	/**
+	 * The viewer's scissor.
+	 */
+	QRectF scissor_;
+	/**
 	 * The viewer's view frustum.
 	 */
 	Frustum viewFrustum_;
@@ -229,6 +245,11 @@ private:
 	 * A list of identifiers of the viewer's post-processing image filters.
 	 */
 	QList<ImageFilter::Identifier> imageFilterIdentifiers_;
+signals:
+	/**
+	 * A signal that is emitted when the viewer's scissor is changed.
+	 */
+	void scissorChanged(const QRectF& scissor);
 };
 } // namespace clockwork
 

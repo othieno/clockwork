@@ -37,6 +37,8 @@ class Application;
  *
  */
 class Scene : public QObject {
+	Q_OBJECT
+	Q_PROPERTY(SceneViewer* viewer READ getViewer NOTIFY viewerChanged)
 	friend class Application;
 public:
 	/**
@@ -109,6 +111,11 @@ private:
 	 * The scene viewer.
 	 */
 	std::unique_ptr<SceneViewer> viewer_;
+signals:
+	/**
+	 * A signal that is emitted when the scene's viewer changes.
+	 */
+	void viewerChanged(SceneViewer* const viewer);
 };
 } // namespace clockwork
 

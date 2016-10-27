@@ -80,4 +80,5 @@ Scene::setViewer(const SceneViewer::Type type) {
 			viewer_.reset(nullptr);
 			break;
 	}
+	emit viewerChanged(viewer_.get());
 }

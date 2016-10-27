@@ -47,6 +47,9 @@ UserInterface::initialize() {
 	} else {
 		return Error::InvalidQmlContext;
 	}
+
+	qRegisterMetaType<SceneViewer*>("SceneViewer*");
+
 	engine_.load(QUrl("qrc:/view/ApplicationWindow"));
 	return Error::None;
 }
