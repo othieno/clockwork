@@ -4,14 +4,14 @@ Clockwork
 Clockwork is a software renderer written to understand the nitty-gritties of the graphics pipeline.
 
 <p align="center"><img src="/documentation/showcase/figure.1.png?raw=true" alt="Blender's Suzanne rendered in Clockwork."></p>
-
 <p align="center"><img src="/documentation/showcase/figure.2.png?raw=true" alt="Customizing Clockwork's rendering pipeline."></p>
+<p align="center"><img src="/documentation/showcase/figure.3.png?raw=true" alt="Adjusting the renderer's scissor box."></p>
 
 
 Requirements
 ------------
 
-Clockwork requires [Qt](https://qt.io/) version __5.5__ and above, as well as a C++ compiler that implements the __C++14__ standard at least.
+Clockwork requires [Qt](https://qt.io/) version 5.5 and above, as well as a compiler that implements the C++14 standard, at least.
 
 
 Compiling and Execution
