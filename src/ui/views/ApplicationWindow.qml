@@ -37,7 +37,6 @@ ApplicationWindow {
 	theme {
 		accentColor: Palette.colors["blueGrey"]["700"]
 		primaryColor: Palette.colors["blue"]["700"]
-		tabHighlightColor: "white"
 	}
 	/**
 	 *
@@ -133,8 +132,4 @@ ApplicationWindow {
 			anchors.bottom: parent.bottom
 		}
 	}
-	/**
-	 *
-	 */
-	//Component.onDestruction: {}
 }
