@@ -98,6 +98,10 @@ private:
 	 */
 	Scene scene_;
 	/**
+	 * Has the rendering context been modified since the last render?
+	 */
+	std::atomic<bool> renderingContextChanged_;
+	/**
 	 * The application's user interface.
 	 */
 	UserInterface userInterface_;

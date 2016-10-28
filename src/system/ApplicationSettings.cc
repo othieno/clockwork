@@ -35,6 +35,9 @@ using clockwork::ApplicationSettings;
 ApplicationSettings::ApplicationSettings() :
 QSettings(QString("./clockwork-preferences.pro.user"), Format::IniFormat) {
 //QSettings(QString("%1/configuration.ini").arg(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)), Format::IniFormat) {
+	connect(this, SIGNAL(scissorTestChanged(const bool)), this, SIGNAL(renderingContextChanged()));
+	connect(this, SIGNAL(stencilTestChanged(const bool)), this, SIGNAL(renderingContextChanged()));
+	connect(this, SIGNAL(depthTestChanged(const bool)), this, SIGNAL(renderingContextChanged()));
 }
 
 

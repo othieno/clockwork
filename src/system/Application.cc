@@ -30,7 +30,8 @@ using clockwork::Application;
 
 Application::Application(int& argc, char** argv) :
 QGuiApplication(argc, argv),
-settings_(*this),
+settings_(),
+renderingContextChanged_(false),
 userInterface_(*this) {
 	setApplicationName("Clockwork");
 	setApplicationVersion(APPLICATION_VERSION);
@@ -43,10 +44,15 @@ Application::~Application() {}
 
 clockwork::Error
 Application::initialize() {
+	connect(&settings_, &ApplicationSettings::renderingContextChanged, [this](){
+		renderingContextChanged_ = true;
+	});
 	Service::Graphics.enableScissorTest(settings_.isScissorTestEnabled());
 	Service::Graphics.enableStencilTest(settings_.isStencilTestEnabled());
 	Service::Graphics.enableDepthTest(settings_.isDepthTestEnabled());
 	Service::Graphics.setResolution(Framebuffer::Resolution::XGA);
+
+	renderingContextChanged_ = true;
 
 	return userInterface_.initialize();
 }
@@ -72,9 +78,12 @@ Application::getScene() {
 
 void
 Application::update() {
-	Service::Graphics.clear();
-	Service::Graphics.render(scene_);
-	emit updateCompleted();
+	if (renderingContextChanged_) {
+		renderingContextChanged_ = false;
+		Service::Graphics.clear();
+		Service::Graphics.render(scene_);
+		emit updateCompleted();
+	}
 }
 
 
