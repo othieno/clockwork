@@ -25,6 +25,7 @@
 #ifndef CLOCKWORK_RENDERING_CONTEXT_HH
 #define CLOCKWORK_RENDERING_CONTEXT_HH
 
+#include "Framebuffer.hh"
 #include "Viewport.hh"
 #include "Primitive.hh"
 #include "LineDrawingAlgorithm.hh"
@@ -33,17 +34,13 @@
 
 namespace clockwork {
 /**
- * @see graphics/Framebuffer.hh.
- */
-class Framebuffer;
-/**
  *
  */
 struct RenderingContext {
 	/**
 	 * The framebuffer.
 	 */
-	Framebuffer* framebuffer;
+	Framebuffer framebuffer;
 	/**
 	 * The viewport transform.
 	 */
@@ -61,10 +58,20 @@ struct RenderingContext {
 	 */
 	Uniforms uniforms;
 	/**
-	 * If set to true, depth testing will be performed on fragments
-	 * before being written to the framebuffer.
+	 * If set to true, a scissor test will be performed on each fragment before
+	 * it's written to the framebuffer.
 	 */
-	bool enableDepthTesting;
+	bool enableScissorTest;
+	/**
+	 * If set to true, a stencil test will be performed on each fragment before
+	 * it's written to the framebuffer.
+	 */
+	bool enableStencilTest;
+	/**
+	 * If set to true, a depth test will be performed on each fragment before
+	 * it's written to the framebuffer.
+	 */
+	bool enableDepthTest;
 };
 } // namespace clockwork
 

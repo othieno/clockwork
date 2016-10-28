@@ -31,10 +31,12 @@
 using clockwork::GraphicsEngine;
 
 
-GraphicsEngine::GraphicsEngine() :
-framebuffer_(),
-lineDrawingAlgorithm_(LineDrawingAlgorithm::Bresenham),
-enableDepthTesting_(true) {}
+GraphicsEngine::GraphicsEngine() {
+	renderingContext_.lineDrawingAlgorithm = LineDrawingAlgorithm::Bresenham;
+	renderingContext_.enableScissorTest = !true;
+	renderingContext_.enableStencilTest = !true;
+	renderingContext_.enableDepthTest = !true;
+}
 
 
 GraphicsEngine::~GraphicsEngine() {}
@@ -42,19 +44,19 @@ GraphicsEngine::~GraphicsEngine() {}
 
 clockwork::Framebuffer::Resolution
 GraphicsEngine::getResolution() const {
-	return framebuffer_.getResolution();
+	return renderingContext_.framebuffer.getResolution();
 }
 
 
 void
 GraphicsEngine::setResolution(const Framebuffer::Resolution resolution) {
-	framebuffer_.setResolution(resolution);
+	renderingContext_.framebuffer.setResolution(resolution);
 }
 
 
 void
 GraphicsEngine::clear() {
-	framebuffer_.clear();
+	renderingContext_.framebuffer.clear();
 }
 
 
@@ -62,21 +64,16 @@ void
 GraphicsEngine::render(const Scene& scene) {
 	const auto* const viewer = scene.getViewer();
 	if (viewer != nullptr) {
-		RenderingContext context;
-
 		const Matrix4& VIEW = viewer->getViewTransform();
 		const Matrix4& PROJECTION = viewer->getProjectionTransform();
 		const Matrix4& VIEWPROJECTION = viewer->getViewProjectionTransform();
 
-		context.framebuffer = &framebuffer_;
-		context.primitiveMode = viewer->getPrimitiveMode();
-		context.lineDrawingAlgorithm = lineDrawingAlgorithm_;
-		context.enableDepthTesting = enableDepthTesting_;
-		context.viewportTransform = ViewportTransform(viewer->getViewport(), framebuffer_);
-		context.uniforms.insert("PROJECTION", Uniform::create<const Matrix4>(PROJECTION));
-		context.uniforms.insert("VIEW", Uniform::create<const Matrix4>(VIEW));
-		context.uniforms.insert("viewpoint", Uniform::create<const Point3>(viewer->getPosition()));
-		context.uniforms.insert("VIEWPROJECTION", Uniform::create<const Matrix4>(VIEWPROJECTION));
+		renderingContext_.primitiveMode = viewer->getPrimitiveMode();
+		renderingContext_.viewportTransform = ViewportTransform(viewer->getViewport(), renderingContext_.framebuffer);
+		renderingContext_.uniforms.insert("PROJECTION", Uniform::create<const Matrix4>(PROJECTION));
+		renderingContext_.uniforms.insert("VIEW", Uniform::create<const Matrix4>(VIEW));
+		renderingContext_.uniforms.insert("viewpoint", Uniform::create<const Point3>(viewer->getPosition()));
+		renderingContext_.uniforms.insert("VIEWPROJECTION", Uniform::create<const Matrix4>(VIEWPROJECTION));
 
 		const auto draw = getDrawFunction(viewer->getRenderingAlgorithm());
 
@@ -90,13 +87,13 @@ GraphicsEngine::render(const Scene& scene) {
 					const auto& INVERSE_MODEL = Matrix4::inverse(MODEL);
 					const auto& NORMAL = Matrix4::transpose(Matrix4::inverse(MODELVIEW));
 
-					context.uniforms.insert("MODEL", Uniform::create<const Matrix4>(MODEL));
-					context.uniforms.insert("MODELVIEW", Uniform::create<const Matrix4>(MODELVIEW));
-					context.uniforms.insert("MODELVIEWPROJECTION", Uniform::create<const Matrix4>(MODELVIEWPROJECTION));
-					context.uniforms.insert("INVERSE_MODEL", Uniform::create<const Matrix4>(INVERSE_MODEL));
-					context.uniforms.insert("NORMAL", Uniform::create<const Matrix4>(NORMAL));
+					renderingContext_.uniforms.insert("MODEL", Uniform::create<const Matrix4>(MODEL));
+					renderingContext_.uniforms.insert("MODELVIEW", Uniform::create<const Matrix4>(MODELVIEW));
+					renderingContext_.uniforms.insert("MODELVIEWPROJECTION", Uniform::create<const Matrix4>(MODELVIEWPROJECTION));
+					renderingContext_.uniforms.insert("INVERSE_MODEL", Uniform::create<const Matrix4>(INVERSE_MODEL));
+					renderingContext_.uniforms.insert("NORMAL", Uniform::create<const Matrix4>(NORMAL));
 
-					draw(context, *appearance->getMesh());
+					draw(renderingContext_, *appearance->getMesh());
 				}
 			}
 		}
@@ -106,31 +103,55 @@ GraphicsEngine::render(const Scene& scene) {
 
 clockwork::Framebuffer&
 GraphicsEngine::getFramebuffer() {
-	return framebuffer_;
+	return renderingContext_.framebuffer;
 }
 
 
 clockwork::LineDrawingAlgorithm
 GraphicsEngine::getLineDrawingAlgorithm() const {
-	return lineDrawingAlgorithm_;
+	return renderingContext_.lineDrawingAlgorithm;
 }
 
 
 void
 GraphicsEngine::setLineDrawingAlgorithm(const LineDrawingAlgorithm algorithm) {
-	lineDrawingAlgorithm_ = algorithm;
+	renderingContext_.lineDrawingAlgorithm = algorithm;
 }
 
 
 bool
-GraphicsEngine::isDepthTestingEnabled() const {
-	return enableDepthTesting_;
+GraphicsEngine::isScissorTestEnabled() const {
+	return renderingContext_.enableScissorTest;
 }
 
 
 void
-GraphicsEngine::enableDepthTesting(const bool enable) {
-	enableDepthTesting_ = enable;
+GraphicsEngine::enableScissorTest(const bool enable) {
+	renderingContext_.enableScissorTest = enable;
+}
+
+
+bool
+GraphicsEngine::isStencilTestEnabled() const {
+	return renderingContext_.enableStencilTest;
+}
+
+
+void
+GraphicsEngine::enableStencilTest(const bool enable) {
+	renderingContext_.enableStencilTest = enable;
+}
+
+
+bool
+GraphicsEngine::isDepthTestEnabled() const {
+	return renderingContext_.enableDepthTest;
+}
+
+
+void
+GraphicsEngine::enableDepthTest(const bool enable) {
+	renderingContext_.enableDepthTest = enable;
 }
 
 

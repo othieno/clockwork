@@ -176,8 +176,7 @@ Renderer<A, T>::PipelineFragment::lerp(const PipelineFragment& from, const Pipel
 
 template<RenderingAlgorithm A, class T> void
 Renderer<A, T>::draw(RenderingContext& context, const Mesh& mesh) {
-	auto* const framebuffer = context.framebuffer;
-	if (framebuffer == nullptr || mesh.faces.isEmpty()) {
+	if (mesh.faces.isEmpty()) {
 		return;
 	}
 	T::sanitizeRenderingContext(context);
@@ -191,7 +190,7 @@ Renderer<A, T>::draw(RenderingContext& context, const Mesh& mesh) {
 		}
 		toScreenSpace(context.viewportTransform, vertices);
 		const auto& fragments = T::rasterize(context, vertices);
-		fragmentProcessing(context, *context.framebuffer, fragments);
+		fragmentProcessing(context, context.framebuffer, fragments);
 	}
 }
 
@@ -255,10 +254,10 @@ Renderer<A, T>::fragmentProcessing(const RenderingContext& context, Framebuffer&
 
 template<RenderingAlgorithm A, class T> int
 Renderer<A, T>::fragmentPasses(const RenderingContext& context, const Fragment& fragment) {
-	const int offset = context.framebuffer->getOffset(fragment.x, fragment.y);
+	const int offset = context.framebuffer.getOffset(fragment.x, fragment.y);
 	if (offset >= 0) {
-		if (context.enableDepthTesting) {
-			const double depthBufferValue = context.framebuffer->getDepthBuffer()[offset];
+		if (context.enableDepthTest) {
+			const double depthBufferValue = context.framebuffer.getDepthBuffer()[offset];
 			if (qFuzzyCompare(1.0 + fragment.z, 1.0 + depthBufferValue) || fragment.z > depthBufferValue) {
 				return -1;
 			}
@@ -269,5 +268,4 @@ Renderer<A, T>::fragmentPasses(const RenderingContext& context, const Fragment& 
 	return offset;
 }
 } // namespace clockwork
-
 #endif // CLOCKWORK_RENDERER_HH

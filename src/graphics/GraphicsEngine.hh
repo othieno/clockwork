@@ -25,9 +25,8 @@
 #ifndef CLOCKWORK_GRAPHICS_ENGINE_HH
 #define CLOCKWORK_GRAPHICS_ENGINE_HH
 
-#include "Framebuffer.hh"
+#include "RenderingContext.hh"
 #include "RenderingAlgorithm.hh"
-#include "LineDrawingAlgorithm.hh"
 
 
 namespace clockwork {
@@ -100,14 +99,32 @@ public:
 	 */
 	void setLineDrawingAlgorithm(const LineDrawingAlgorithm algorithm);
 	/**
-	 * Returns true if depth testing is enabled, false otherwise.
+	 * Returns true if the scissor test is enabled, false otherwise.
 	 */
-	bool isDepthTestingEnabled() const;
+	bool isScissorTestEnabled() const;
 	/**
-	 * Toggles depth testing.
-	 * @param enable enables depth testing if set to true, disables it otherwise.
+	 * Toggles the scissor test.
+	 * @param enable enables the scissor test if set to true, disables it otherwise.
 	 */
-	void enableDepthTesting(const bool enable);
+	void enableScissorTest(const bool enable);
+	/**
+	 * Returns true if the stencil test is enabled, false otherwise.
+	 */
+	bool isStencilTestEnabled() const;
+	/**
+	 * Toggles the stencil test.
+	 * @param enable enables the stencil test if set to true, disables it otherwise.
+	 */
+	void enableStencilTest(const bool enable);
+	/**
+	 * Returns true if the depth test is enabled, false otherwise.
+	 */
+	bool isDepthTestEnabled() const;
+	/**
+	 * Toggles the depth test.
+	 * @param enable enables the depth test if set to true, disables it otherwise.
+	 */
+	void enableDepthTest(const bool enable);
 private:
 	/**
 	 * A pointer to a function that draws a mesh in a specified rendering context.
@@ -123,18 +140,9 @@ private:
 	 */
 	DrawFunction getDrawFunction(const RenderingAlgorithm algorithm);
 	/**
-	 * The framebuffer.
+	 * The rendering context.
 	 */
-	Framebuffer framebuffer_;
-	/**
-	 * The line-drawing algorithm to use.
-	 */
-	LineDrawingAlgorithm lineDrawingAlgorithm_;
-	/**
-	 * If set to true, depth testing will be performed on fragments
-	 * before being written to the framebuffer.
-	 */
-	bool enableDepthTesting_;
+	RenderingContext renderingContext_;
 };
 } // namespace clockwork
 #endif // CLOCKWORK_GRAPHICS_ENGINE_HH
