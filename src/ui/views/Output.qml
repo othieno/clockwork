@@ -32,6 +32,7 @@ import Material 0.2
 Page {
 	id: sceneRenderView
 	Image {
+		id: framebuffer
 		/**
 		 * The framebuffer's currently selected attachment.
 		 */
@@ -40,14 +41,50 @@ Page {
 		 * A value used to force image requests from the image provider.
 		 */
 		property var frame: 0
-
-		id: framebuffer
+		/**
+		 * Disables image caching as the framebuffer changes frequently.
+		 */
 		cache: false
+		/**
+		 * Disables the smoothing filter as this alters the renderer's actual output.
+		 */
 		smooth: false
+		/**
+		 * Fills the viewport horizontally.
+		 */
 		width: parent.width
+		/**
+		 * Fills the viewport vertically.
+		 */
 		height: parent.height
-		//fillMode: Image.PreserveAspectFit
+		/**
+		 * The image's source.
+		 */
 		source: "image://framebuffer/" + frame + attachment
+		/**
+		 * A handler that is called when an update is completed to refresh the
+		 * framebuffer image.
+		 */
+		function onUpdateCompleted() {
+			// As there's no proper way of explicitly updating the image, the
+			// workaround is to update the frame number, which updates the image's
+			// source attribute, which forces a request for a "new" image from
+			// the image provider.
+			framebuffer.frame = (framebuffer.frame + 1) % 10
+		}
+		/**
+		 *
+		 */
+		Component.onCompleted: {
+			application.updateCompleted.connect(onUpdateCompleted)
+			application.update()
+		}
+		/**
+		 *
+		 */
+		Component.onDestruction: {
+			application.updateCompleted.disconnect(onUpdateCompleted)
+		}
 		Row {
 			/**
 			 * Framebuffer attachment toggles.
@@ -77,15 +114,6 @@ Page {
 					}
 				}
 			}
-		}
-		Component.onCompleted: {
-			application.updateCompleted.connect(function(){
-				// As there's no proper way of explicitly updating the
-				// image, the workaround is to update the frame number, which
-				// updates the image's source attribute, thereby triggering a
-				// request for a "new" image from the image provider.
-				framebuffer.frame = (framebuffer.frame + 1) % 10
-			})
 		}
 	}
 	/**

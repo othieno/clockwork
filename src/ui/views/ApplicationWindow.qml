@@ -46,7 +46,6 @@ ApplicationWindow {
 		if (settings.showBorderlessWindow) {
 			flags = Qt.FramelessWindowHint
 		}
-		application.update()
 	}
 	/**
 	 * The application's page content.
