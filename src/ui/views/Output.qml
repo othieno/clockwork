@@ -34,10 +34,6 @@ Page {
 	Image {
 		id: framebuffer
 		/**
-		 * The framebuffer's currently selected attachment.
-		 */
-		property var attachment: "pixel"
-		/**
 		 * A value used to force image requests from the image provider.
 		 */
 		property var frame: 0
@@ -60,7 +56,7 @@ Page {
 		/**
 		 * The image's source.
 		 */
-		source: "image://framebuffer/" + frame + attachment
+		source: "image://framebuffer/%1pixel".arg(frame)
 		/**
 		 * A handler that is called when an update is completed to refresh the
 		 * framebuffer image.
@@ -84,36 +80,6 @@ Page {
 		 */
 		Component.onDestruction: {
 			application.updateCompleted.disconnect(onUpdateCompleted)
-		}
-		Row {
-			/**
-			 * Framebuffer attachment toggles.
-			 */
-			anchors {
-				top: parent.top
-				right: parent.right
-				topMargin: dp(8)
-				rightMargin: dp(8)
-			}
-			spacing: dp(8)
-			Repeater {
-				model: [
-					"pixel",
-					"depth",
-					"stencil",
-				]
-				delegate: IconButton {
-					readonly property bool selected: framebuffer.attachment === modelData
-					iconSource: "qrc:/icon/action/framebuffer/%1".arg(modelData)
-					size: dp(32)
-					color: selected ? Theme.accentColor : Theme.backgroundColor
-					opacity: selected ? 1 : 0.1
-					action: Action {
-						iconName: "framebuffer-attachment-%1".arg(modelData)
-						onTriggered: framebuffer.attachment = modelData
-					}
-				}
-			}
 		}
 	}
 	/**
