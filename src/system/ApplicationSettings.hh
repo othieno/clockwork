@@ -39,7 +39,9 @@ class Application;
 class ApplicationSettings : public QSettings {
 	Q_OBJECT
 	Q_PROPERTY(bool showFramesPerSecond READ isFpsCounterVisible WRITE showFpsCounter NOTIFY fpsCounterVisibilityChanged)
-	Q_PROPERTY(bool enableDepthTesting READ isDepthTestingEnabled WRITE enableDepthTesting NOTIFY depthTestingChanged)
+	Q_PROPERTY(bool enableScissorTest READ isScissorTestEnabled WRITE enableScissorTest NOTIFY scissorTestChanged)
+	Q_PROPERTY(bool enableStencilTest READ isStencilTestEnabled WRITE enableStencilTest NOTIFY stencilTestChanged)
+	Q_PROPERTY(bool enableDepthTest READ isDepthTestEnabled WRITE enableDepthTest NOTIFY depthTestChanged)
 	Q_PROPERTY(QString fileLocation READ fileName CONSTANT)
 	Q_PROPERTY(QStringList availableLanguages READ getAvailableLanguages CONSTANT)
 	Q_PROPERTY(QStringList availableFramebufferResolutions READ getAvailableFramebufferResolutions CONSTANT)
@@ -55,14 +57,32 @@ public:
 	 */
 	void showFpsCounter(const bool visible);
 	/**
-     * Returns true if depth testing is enabled, false otherwise.
+	 * Returns true if the scissor test is enabled, false otherwise.
 	 */
-	bool isDepthTestingEnabled() const;
+	bool isScissorTestEnabled() const;
 	/**
-     * Toggles depth testing.
-     * @param enable enables depth testing if set to true, disables it otherwise.
+	 * Toggles the scissor test.
+	 * @param enable enables the scissor test if set to true, disables it otherwise.
 	 */
-	void enableDepthTesting(const bool enabled);
+	void enableScissorTest(const bool enable);
+	/**
+	 * Returns true if the stencil test is enabled, false otherwise.
+	 */
+	bool isStencilTestEnabled() const;
+	/**
+	 * Toggles the stencil test.
+	 * @param enable enables the stencil test if set to true, disables it otherwise.
+	 */
+	void enableStencilTest(const bool enable);
+	/**
+	 * Returns true if the depth test is enabled, false otherwise.
+	 */
+	bool isDepthTestEnabled() const;
+	/**
+	 * Toggles the depth test.
+	 * @param enable enables the depth test if set to true, disables it otherwise.
+	 */
+	void enableDepthTest(const bool enable);
 	/**
 	 * Returns the list of available languages.
 	 */
@@ -77,16 +97,26 @@ signals:
 	 */
 	void fpsCounterVisibilityChanged(const bool visible);
 	/**
-	 * A signal that is raised when depth testing is toggled.
+	 * A signal that is raised when the scissor test is toggled.
 	 */
-	void depthTestingChanged(const bool enabled);
+	void scissorTestChanged(const bool enabled);
+	/**
+	 * A signal that is raised when the stencil test is toggled.
+	 */
+	void stencilTestChanged(const bool enabled);
+	/**
+	 * A signal that is raised when the depth test is toggled.
+	 */
+	void depthTestChanged(const bool enabled);
 private:
 	/**
 	 * An enumeration of available configuration keys.
 	 */
 	enum class Key {
 		ShowFramesPerSecond,
-		EnableDepthTesting,
+		EnableScissorTest,
+		EnableStencilTest,
+		EnableDepthTest,
 	};
 	/**
 	 * Instantiates an ApplicationSettings object.

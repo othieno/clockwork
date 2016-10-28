@@ -99,36 +99,33 @@ Page {
 				text: qsTr("Fragment processing")
 			}
 			ListItem.Subtitled {
-				enabled: false
 				text: qsTr("Enable scissor test")
-				subText: qsTr("Discards fragments that fail the scissor test.")
+				subText: qsTr("Discards fragments that fall outside of the scissor's bounding box.")
 				secondaryItem: Switch {
 					id: toggleScissorTest
-					checked: true
+					checked: settings.enableScissorTest
 					anchors.verticalCenter: parent.verticalCenter
 				}
 				onClicked: toggleScissorTest.checked = !toggleScissorTest.checked
 			}
 			ListItem.Divider {}
 			ListItem.Subtitled {
-				enabled: false
 				text: qsTr("Enable stencil test")
-				subText: qsTr("Discards fragments that fail the stencil test.")
+				subText: qsTr("Discards fragments that fall outside of the stencil's cut-out.")
 				secondaryItem: Switch {
 					id: toggleStencilTest
-					checked: true
+					checked: settings.enableStencilTest
 					anchors.verticalCenter: parent.verticalCenter
 				}
 				onClicked: toggleStencilTest.checked = !toggleStencilTest.checked
 			}
 			ListItem.Divider {}
 			ListItem.Subtitled {
-				enabled: false
 				text: qsTr("Enable depth test")
-				subText: qsTr("Discards fragments that fail the depth test.")
+				subText: qsTr("Discards fragments that are not visible based on how close they are to the viewer.")
 				secondaryItem: Switch {
 					id: toggleDepthTest
-					checked: true
+					checked: settings.enableDepthTest
 					anchors.verticalCenter: parent.verticalCenter
 				}
 				onClicked: toggleDepthTest.checked = !toggleDepthTest.checked
@@ -139,5 +136,10 @@ Page {
 				text: qsTr("Framebuffer post-processing")
 			}
 		}
+	}
+	Component.onDestruction: {
+		settings.enableScissorTest = toggleScissorTest.checked;
+		settings.enableStencilTest = toggleStencilTest.checked;
+		settings.enableDepthTest = toggleDepthTest.checked;
 	}
 }

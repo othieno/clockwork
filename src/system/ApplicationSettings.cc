@@ -57,17 +57,49 @@ ApplicationSettings::showFpsCounter(const bool visible) {
 
 
 bool
-ApplicationSettings::isDepthTestingEnabled() const {
-	const bool defaultValue = Service::Graphics.isDepthTestingEnabled();
-	return value(Key::EnableDepthTesting, defaultValue).toBool();
+ApplicationSettings::isScissorTestEnabled() const {
+	return value(Key::EnableScissorTest, false).toBool();
 }
 
 
 void
-ApplicationSettings::enableDepthTesting(const bool enable) {
-	if (isDepthTestingEnabled() != enable) {
-		setValue(Key::ShowFramesPerSecond, enable);
-		emit depthTestingChanged(enable);
+ApplicationSettings::enableScissorTest(const bool enable) {
+	if (isScissorTestEnabled() != enable) {
+		setValue(Key::EnableScissorTest, enable);
+		Service::Graphics.enableScissorTest(enable);
+		emit scissorTestChanged(enable);
+	}
+}
+
+
+bool
+ApplicationSettings::isStencilTestEnabled() const {
+	return value(Key::EnableStencilTest, false).toBool();
+}
+
+
+void
+ApplicationSettings::enableStencilTest(const bool enable) {
+	if (isStencilTestEnabled() != enable) {
+		setValue(Key::EnableStencilTest, enable);
+		Service::Graphics.enableStencilTest(enable);
+		emit stencilTestChanged(enable);
+	}
+}
+
+
+bool
+ApplicationSettings::isDepthTestEnabled() const {
+	return value(Key::EnableDepthTest, true).toBool();
+}
+
+
+void
+ApplicationSettings::enableDepthTest(const bool enable) {
+	if (isDepthTestEnabled() != enable) {
+		setValue(Key::EnableDepthTest, enable);
+		Service::Graphics.enableDepthTest(enable);
+		emit depthTestChanged(enable);
 	}
 }
 
@@ -115,8 +147,12 @@ ApplicationSettings::keyToString(const Key key) {
 	switch (key) {
 		case Key::ShowFramesPerSecond:
 			return "showFramesPerSecond";
-		case Key::EnableDepthTesting:
-			return "enableDepthTesting";
+		case Key::EnableScissorTest:
+			return "enableScissorTest";
+		case Key::EnableStencilTest:
+			return "enableStencilTest";
+		case Key::EnableDepthTest:
+			return "enableDepthTest";
 		default:
 			qFatal("[ApplicationSettings::keyToString] Undefined key!");
 	}
