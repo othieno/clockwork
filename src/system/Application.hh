@@ -94,13 +94,13 @@ private:
 	 */
 	ApplicationSettings settings_;
 	/**
-	 * The application's user interface.
-	 */
-	UserInterface userInterface_;
-	/**
 	 * The application's scene.
 	 */
 	Scene scene_;
+	/**
+	 * The application's user interface.
+	 */
+	UserInterface userInterface_;
 signals:
 	/**
 	 * A signal that is emitted when the update process is completed.
