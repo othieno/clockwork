@@ -54,6 +54,21 @@ ApplicationSettings::showFpsCounter(const bool visible) {
 
 
 bool
+ApplicationSettings::isWindowBorderless() const {
+	return value(Key::ShowBorderlessWindow, false).toBool();
+}
+
+
+void
+ApplicationSettings::showBorderlessWindow(const bool visible) {
+	if (isWindowBorderless() != visible) {
+		setValue(Key::ShowBorderlessWindow, visible);
+		emit windowBorderVisibilityChanged(visible);
+	}
+}
+
+
+bool
 ApplicationSettings::isScissorTestEnabled() const {
 	return value(Key::EnableScissorTest, false).toBool();
 }
@@ -142,6 +157,8 @@ ApplicationSettings::setValue(const Key key, const QVariant& value) {
 QString
 ApplicationSettings::keyToString(const Key key) {
 	switch (key) {
+		case Key::ShowBorderlessWindow:
+			return "showBorderlessWindow";
 		case Key::ShowFramesPerSecond:
 			return "showFramesPerSecond";
 		case Key::EnableScissorTest:

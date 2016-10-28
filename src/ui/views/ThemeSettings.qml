@@ -68,16 +68,21 @@ Page {
 				text: qsTr("Window")
 			}
 			ListItem.Subtitled {
-				enabled: false
 				text: qsTr("Show borderless window")
-				subText: qsTr("Removes the borders around the application's window.")
+				subText: qsTr("Toggles the visibility of the application window's client side decorations.")
 				secondaryItem: Switch {
 					id: toggleBorderlessWindow
+					checked: settings.showBorderlessWindow
 					anchors.verticalCenter: parent.verticalCenter
 				}
 				onClicked: {
 					toggleBorderlessWindow.checked = !toggleBorderlessWindow.checked
-					applicationWindow.flags = toggleBorderlessWindow.checked ? Qt.FramelessWindowHint : Qt.Window
+					applicationWindow.clientSideDecorations = toggleBorderlessWindow.checked
+					if (toggleBorderlessWindow.checked) {
+						flags |= Qt.FramelessWindowHint;
+					} else {
+						flags &= ~Qt.FramelessWindowHint;
+					}
 				}
 			}
 		}
@@ -85,6 +90,6 @@ Page {
 	Component.onDestruction: {
 		settings.enableLargerText = toggleLargerText.checked
 		settings.enableNightMode = toggleNightMode.checked
-		settings.enableBorderlessWindow = toggleBorderlessWindow.checked
+		settings.showBorderlessWindow = toggleBorderlessWindow.checked
 	}
 }

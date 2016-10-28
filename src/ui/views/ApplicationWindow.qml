@@ -44,7 +44,8 @@ ApplicationWindow {
 	 */
 	Component.onCompleted: {
 		if (settings.showBorderlessWindow) {
-			flags = Qt.FramelessWindowHint
+			flags |= Qt.FramelessWindowHint
+			applicationWindow.clientSideDecorations = true
 		}
 	}
 	/**

@@ -39,6 +39,7 @@ class Application;
 class ApplicationSettings : public QSettings {
 	Q_OBJECT
 	Q_PROPERTY(bool showFramesPerSecond READ isFpsCounterVisible WRITE showFpsCounter NOTIFY fpsCounterVisibilityChanged)
+	Q_PROPERTY(bool showBorderlessWindow READ isWindowBorderless WRITE showBorderlessWindow NOTIFY windowBorderVisibilityChanged)
 	Q_PROPERTY(bool enableScissorTest READ isScissorTestEnabled WRITE enableScissorTest NOTIFY scissorTestChanged)
 	Q_PROPERTY(bool enableStencilTest READ isStencilTestEnabled WRITE enableStencilTest NOTIFY stencilTestChanged)
 	Q_PROPERTY(bool enableDepthTest READ isDepthTestEnabled WRITE enableDepthTest NOTIFY depthTestChanged)
@@ -56,6 +57,15 @@ public:
 	 * @param visible makes the FPS counter visible if set to true, hides it otherwise.
 	 */
 	void showFpsCounter(const bool visible);
+	/**
+	 * Returns true if the window borders are visible, false otherwise.
+	 */
+	bool isWindowBorderless() const;
+	/**
+	 * Sets the visibility of the window's borders.
+	 * @param visible makes the borders visible if set to true, hides them otherwise.
+	 */
+	void showBorderlessWindow(const bool visible);
 	/**
 	 * Returns true if the scissor test is enabled, false otherwise.
 	 */
@@ -91,28 +101,12 @@ public:
 	 * Returns the list of available framebuffer resolutions.
 	 */
 	static QStringList getAvailableFramebufferResolutions();
-signals:
-	/**
-	 * A signal that is raised when the FPS counter's visibility is changed.
-	 */
-	void fpsCounterVisibilityChanged(const bool visible);
-	/**
-	 * A signal that is raised when the scissor test is toggled.
-	 */
-	void scissorTestChanged(const bool enabled);
-	/**
-	 * A signal that is raised when the stencil test is toggled.
-	 */
-	void stencilTestChanged(const bool enabled);
-	/**
-	 * A signal that is raised when the depth test is toggled.
-	 */
-	void depthTestChanged(const bool enabled);
 private:
 	/**
 	 * An enumeration of available configuration keys.
 	 */
 	enum class Key {
+		ShowBorderlessWindow,
 		ShowFramesPerSecond,
 		EnableScissorTest,
 		EnableStencilTest,
@@ -142,6 +136,27 @@ private:
 	 * @param key the configuration key to convert.
 	 */
 	static QString keyToString(const Key key);
+signals:
+	/**
+	 * A signal that is raised when the FPS counter's visibility is changed.
+	 */
+	void fpsCounterVisibilityChanged(const bool visible);
+	/**
+	 * A signal that is raised when the visibility of the window's borders changes.
+	 */
+	void windowBorderVisibilityChanged(const bool visible);
+	/**
+	 * A signal that is raised when the scissor test is toggled.
+	 */
+	void scissorTestChanged(const bool enabled);
+	/**
+	 * A signal that is raised when the stencil test is toggled.
+	 */
+	void stencilTestChanged(const bool enabled);
+	/**
+	 * A signal that is raised when the depth test is toggled.
+	 */
+	void depthTestChanged(const bool enabled);
 };
 } // namespace clockwork
 
