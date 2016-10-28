@@ -32,12 +32,9 @@
 using clockwork::ApplicationSettings;
 
 
-ApplicationSettings::ApplicationSettings(Application& application) :
+ApplicationSettings::ApplicationSettings() :
 QSettings(QString("./clockwork-preferences.pro.user"), Format::IniFormat) {
-//FIXME QStandardPaths::AppConfigLocation requires Qt 5.5 at least.
-//TODO Add requirement to clockwork.pro file.
-//QSettings(QString("%1/preferences.ini").arg(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)), Format::IniFormat) {
-	Q_UNUSED(application);
+//QSettings(QString("%1/configuration.ini").arg(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)), Format::IniFormat) {
 }
 
 

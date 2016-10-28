@@ -121,7 +121,7 @@ private:
 	/**
 	 * Instantiates an ApplicationSettings object.
 	 */
-	ApplicationSettings(Application&);
+	ApplicationSettings();
 	/**
 	 * Returns true if a value with the specified key exists in the configuration, false otherwise.
 	 * @param key the key to query.
