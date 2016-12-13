@@ -50,6 +50,7 @@ UserInterface::initialize() {
 
 	qRegisterMetaType<SceneViewer*>("SceneViewer*");
 
+	QPM_INIT(engine_);
 	engine_.load(QUrl("qrc:/view/ApplicationWindow"));
 	return Error::None;
 }

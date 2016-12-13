@@ -170,9 +170,14 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/ui/FramebufferProvider.cc \
 		src/ui/UserInterface.cc \
 		src/clockwork.cc
+
 	DEFINES += \
 		APPLICATION_VERSION=\\\"$$VERSION\\\" \
-		APPLICATION_REPOSITORY=\\\"$$REPOSITORY\\\"
+		APPLICATION_REPOSITORY=\\\"$$REPOSITORY\\\" \
+		QPM_INIT\\(E\\)=\"E.addImportPath(QStringLiteral(\\\"qrc:/\\\"));\"
+
+	# Add roboto fonts.
+	OPTIONS += roboto
 
 	# Add resource file configurations.
 	RESOURCES += clockwork.qrc

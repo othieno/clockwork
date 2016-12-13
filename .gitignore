@@ -9,5 +9,8 @@ Makefile
 # Ignore Qt Creator configuration files.
 *.pro.user*
 
+# Ignore qmake configuration files.
+.qmake*
+
 # Ignore design documentation (for now).
 documentation/design
