@@ -132,12 +132,15 @@ public:
 	/**
 	 *
 	 */
-	static void toScreenSpace(const ViewportTransform& transform, VertexArray& vertices);
-	/**
-	 *
-	 */
 	static void fragmentProcessing(const RenderingContext&, Framebuffer&, const FragmentArray&);
 private:
+	/**
+	 * Converts the coordinates for each of the specified vertices from clipping space to
+	 * normalized device coordinate space to screen space.
+	 * @param transform the viewport transform information.
+	 * @param vertices the collection of vertices to convert.
+	 */
+	static void toScreenSpace(const ViewportTransform& transform, VertexArray& vertices);
 	/**
 	 * Tests whether the specified fragment can be written to the framebuffer. If
 	 * the specified fragment passes all tests, the function will return a framebuffer
