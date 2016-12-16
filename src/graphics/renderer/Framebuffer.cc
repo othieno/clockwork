@@ -27,8 +27,8 @@
 using clockwork::Framebuffer;
 
 
-Framebuffer::Framebuffer() :
-resolution_(Resolution::ZERO),
+Framebuffer::Framebuffer(const Resolution resolution) :
+resolution_(resolution),
 pixelBuffer_(nullptr),
 pixelBufferClearValue_(0xFF000000),
 depthBuffer_(nullptr),
@@ -52,12 +52,6 @@ Framebuffer::setResolution(const Resolution resolution) {
 		resolution_ = resolution;
 		resize();
 	}
-}
-
-
-QSize
-Framebuffer::getResolutionSize() const {
-	return Framebuffer::getResolutionSize(resolution_);
 }
 
 

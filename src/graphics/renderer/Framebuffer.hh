@@ -51,27 +51,28 @@ public:
 		UHD8K    // 7680 x 4320
 	};
 	/**
-	 *
+	 * Instantiates a Framebuffer object with the specified resolution.
+	 * @param resolution the framebuffer's resolution.
 	 */
-	Framebuffer();
+	explicit Framebuffer(const Resolution resolution = Resolution::ZERO);
 	/**
-	 *
+	 * Deleted copy constructor.
 	 */
 	Framebuffer(const Framebuffer&) = delete;
 	/**
-	 *
+	 * Deleted move constructor.
 	 */
 	Framebuffer(Framebuffer&&) = delete;
 	/**
-	 *
+	 * Destroys this Framebuffer instance.
 	 */
 	~Framebuffer();
 	/**
-	 *
+	 * Deleted copy operator.
 	 */
 	Framebuffer& operator=(const Framebuffer&) = delete;
 	/**
-	 *
+	 * Deleted move operator.
 	 */
 	Framebuffer& operator=(Framebuffer&&) = delete;
 	/**
@@ -79,13 +80,16 @@ public:
 	 */
 	Resolution getResolution() const;
 	/**
-	 * Sets the framebuffer's resolution.
+	 * Resizes the framebuffer to the specified resolution.
+	 * @param resolution the framebuffer's new resolution.
 	 */
-	void setResolution(const Framebuffer::Resolution resolution);
+	void setResolution(const Resolution resolution);
 	/**
-	 * Returns the framebuffer's width and height.
+	 * Returns the framebuffer's actual width and height.
 	 */
-	QSize getResolutionSize() const;
+	inline QSize getResolutionSize() const {
+		return Framebuffer::getResolutionSize(resolution_);
+	}
 	/**
 	 * Returns the pixel buffer.
 	 */
@@ -143,11 +147,14 @@ public:
 	void clear();
 	/**
 	 * Discards (clears) the framebuffer element at the specified <x, y> coordinate.
+	 * @param x the buffer element's row position.
+	 * @param y the buffer element's column position.
 	 */
 	void discard(const std::uint32_t x, const std::uint32_t y);
 	/**
 	 * Return the buffer offset for a given <x, y> coordinate. If the coordinate
-	 * is out of range, then -1 is returned.
+	 * is out of the range <[0, width), [0, height)>, where width and height are the
+	 * framebuffer's current width and height respectively, -1 is returned.
 	 * @param x the buffer element's row position.
 	 * @param y the buffer element's column position.
 	 */
@@ -158,11 +165,12 @@ public:
 	static QList<Resolution> getAvailableResolutions();
 	/**
 	 * Returns the specified resolution's actual size.
+	 * @param resolution the resolution to query.
 	 */
 	static QSize getResolutionSize(const Resolution resolution);
 private:
 	/**
-	 * Resizes the framebuffer's attachments.
+	 * Resizes the framebuffer's attachments to the current resolution.
 	 */
 	void resize();
 	/**
