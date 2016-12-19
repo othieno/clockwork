@@ -41,14 +41,14 @@ SceneObject::getPosition() const {
 void
 SceneObject::setPosition(const QVector3D& p) {
 	position_ = p;
+	emit positionChanged(position_);
 }
 
 
 void
 SceneObject::setPosition(const qreal x, const qreal y, const qreal z) {
-	position_.setX(x);
-	position_.setY(y);
-	position_.setZ(z);
+	position_ = QVector3D(x, y, z);
+	emit positionChanged(position_);
 }
 
 
@@ -61,12 +61,14 @@ SceneObject::getRotation() const {
 void
 SceneObject::setRotation(const QQuaternion& r) {
 	rotation_ = r;
+	emit rotationChanged(rotation_);
 }
 
 
 void
 SceneObject::setRotation(const float pitch, const float yaw, const float roll) {
 	rotation_ = QQuaternion::fromEulerAngles(pitch, yaw, roll);
+	emit rotationChanged(rotation_);
 }
 
 
@@ -79,14 +81,14 @@ SceneObject::getScale() const {
 void
 SceneObject::setScale(const QVector3D& s) {
 	scale_ = s;
+	emit scaleChanged(scale_);
 }
 
 
 void
 SceneObject::setScale(const qreal x, const qreal y, const qreal z) {
-	scale_.setX(x);
-	scale_.setY(y);
-	scale_.setZ(z);
+	scale_ = QVector3D(x, y, z);
+	emit scaleChanged(scale_);
 }
 
 

@@ -38,6 +38,10 @@ namespace clockwork {
  * and scale, as well as other properties.
  */
 class SceneObject : public SceneNode {
+	Q_OBJECT
+	Q_PROPERTY(QVector3D position READ getPosition WRITE setPosition NOTIFY positionChanged)
+	Q_PROPERTY(QQuaternion rotation READ getRotation WRITE setRotation NOTIFY rotationChanged)
+	Q_PROPERTY(QVector3D scale READ getScale WRITE setScale NOTIFY scaleChanged)
 public:
 	/**
 	 * Instantiates a named scene object.
@@ -52,7 +56,7 @@ public:
 	 * Set the scene object's position.
 	 * @param position the position to set.
 	 */
-	void setPosition(const QVector3D& position);
+	Q_INVOKABLE void setPosition(const QVector3D& position);
 	/**
 	 * Set the scene object's position.
 	 * @param x the scene object's position on the X axis.
@@ -169,6 +173,22 @@ private:
 	 * grand-parent, great great grand-parent, ...), with its own transformation matrix.
 	 */
 	QMatrix4x4 cumulativeModelTransform_;
+signals:
+	/**
+	 * A signal that is emitted when the scene object's position changes.
+	 * @param position the scene object's new position.
+	 */
+	void positionChanged(const QVector3D& position);
+	/**
+	 * A signal that is emitted when the scene object's rotation changes.
+	 * @param rotation the scene object's new rotation.
+	 */
+	void rotationChanged(const QQuaternion& rotation);
+	/**
+	 * A signal that is emitted when the scene object's scale changes.
+	 * @param scale the scene object's new scale.
+	 */
+	void scaleChanged(const QVector3D& scale);
 };
 } // namespace clockwork
 
