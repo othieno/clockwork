@@ -86,12 +86,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/shader/TextureMapShaderProgram.hh \
 		src/math/Frustum.hh \
 		src/math/lerp.hh \
-		src/math/Matrix4.hh \
-		src/math/Point.hh \
-		src/math/Point3.hh \
-		src/math/Quaternion.hh \
-		src/math/Vector3.hh \
-		src/math/Vector4.hh \
 		src/scene/predefined/Suzanne.hh \
 		src/scene/predefined/TexturedCube.hh \
 		src/scene/predefined/Triangle.hh \
@@ -142,13 +136,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/Viewport.cc \
 		src/math/Frustum.cc \
 		src/math/lerp.cc \
-		src/math/Matrix4.cc \
-		src/math/Point.cc \
-		src/math/Point3.cc \
-		src/math/Point4.cc \
-		src/math/Quaternion.cc \
-		src/math/Vector3.cc \
-		src/math/Vector4.cc \
 		src/scene/predefined/Suzanne.cc \
 		src/scene/predefined/TexturedCube.cc \
 		src/scene/predefined/Triangle.cc \

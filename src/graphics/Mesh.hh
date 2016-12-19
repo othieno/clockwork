@@ -26,10 +26,10 @@
 #define CLOCKWORK_MESH_HH
 
 #include "Resource.hh"
-#include "Point.hh"
-#include "Point3.hh"
 #include "Material.hh"
 #include <QList>
+#include <QVector3D>
+#include <QPointF>
 
 
 namespace clockwork {
@@ -50,15 +50,15 @@ public:
 		/**
 		 * An array of pointers to geometric positions.
 		 */
-		using Positions = std::array<const Point3*, Face::length>;
+		using Positions = std::array<const QVector3D*, Face::length>;
 		/**
 		 * An array of pointers to 2D texture coordinates.
 		 */
-		using TextureCoordinates = std::array<const Point*, Face::length>;
+		using TextureCoordinates = std::array<const QPointF*, Face::length>;
 		/**
 		 * An array of pointers to 3D normal vectors.
 		 */
-		using Normals = std::array<const Vector3*, Face::length>;
+		using Normals = std::array<const QVector3D*, Face::length>;
 		/**
 		 * Instantiates a Face object with references to the specified positions,
 		 * texture coordinates and normal vectors.
@@ -79,7 +79,7 @@ public:
 		/**
 		 * The surface normal.
 		 */
-		const Vector3 surfaceNormal;
+		const QVector3D surfaceNormal;
 	};
 	/**
 	 *
@@ -104,15 +104,15 @@ public:
 	/**
 	 * The polygon mesh's vertex positions.
 	 */
-	QList<Point3> positions;
+	QList<QVector3D> positions;
 	/**
 	 * The polygon mesh's texture coordinates.
 	 */
-	QList<Point> textureCoordinates;
+	QList<QPointF> textureCoordinates;
 	/**
 	 * The polygon mesh's vertex normals.
 	 */
-	QList<Vector3> normals;
+	QList<QVector3D> normals;
 	/**
 	 * The polygon mesh's faces.
 	 */

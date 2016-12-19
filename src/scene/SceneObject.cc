@@ -29,78 +29,79 @@ using clockwork::SceneObject;
 
 SceneObject::SceneObject(const QString& name) :
 SceneNode(SceneNode::Type::Object, name),
-position_(0, 0, 0),
-rotation_(0, 0, 0),
 scale_(1, 1, 1) {}
 
 
-const clockwork::Point3&
+const QVector3D&
 SceneObject::getPosition() const {
 	return position_;
 }
 
 
 void
-SceneObject::setPosition(const clockwork::Point3& p) {
-	setPosition(p.x, p.y, p.z);
+SceneObject::setPosition(const QVector3D& p) {
+	position_ = p;
 }
 
 
 void
-SceneObject::setPosition(const double x, const double y, const double z) {
-	position_.x = x;
-	position_.y = y;
-	position_.z = z;
+SceneObject::setPosition(const qreal x, const qreal y, const qreal z) {
+	position_.setX(x);
+	position_.setY(y);
+	position_.setZ(z);
 }
 
 
-const clockwork::Vector3&
+const QQuaternion&
 SceneObject::getRotation() const {
 	return rotation_;
 }
 
 
 void
-SceneObject::setRotation(const clockwork::Vector3& r) {
-	setRotation(r.i, r.j, r.k);
+SceneObject::setRotation(const QQuaternion& r) {
+	rotation_ = r;
 }
 
 
 void
-SceneObject::setRotation(const double pitch, const double yaw, const double roll) {
-	rotation_.i = pitch;
-	rotation_.j = yaw;
-	rotation_.k = roll;
+SceneObject::setRotation(const float pitch, const float yaw, const float roll) {
+	rotation_ = QQuaternion::fromEulerAngles(pitch, yaw, roll);
 }
 
 
-const clockwork::Vector3&
+const QVector3D&
 SceneObject::getScale() const {
 	return scale_;
 }
 
 
 void
-SceneObject::setScale(const clockwork::Vector3& s) {
-	setScale(s.i, s.j, s.k);
+SceneObject::setScale(const QVector3D& s) {
+	scale_ = s;
 }
 
 
 void
-SceneObject::setScale(const double x, const double y, const double z) {
-	scale_.i = x;
-	scale_.j = y;
-	scale_.k = z;
+SceneObject::setScale(const qreal x, const qreal y, const qreal z) {
+	scale_.setX(x);
+	scale_.setY(y);
+	scale_.setZ(z);
 }
 
 
-clockwork::Matrix4
+QMatrix4x4
 SceneObject::getModelTransform() const {
-	return Matrix4::model(position_, rotation_, scale_);
+	QMatrix4x4 model;
+	model.translate(position_);
+	model.rotate(rotation_);
+	model.scale(scale_);
+
+	return model;
 }
 
 
-const clockwork::Matrix4&
+const QMatrix4x4&
 SceneObject::getCumulativeModelTransform() const {
 	return cumulativeModelTransform_;
 }

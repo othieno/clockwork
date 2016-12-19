@@ -26,15 +26,13 @@
 #include "fileReader.hh"
 
 using clockwork::Mesh;
-using clockwork::Point3;
-using clockwork::Vector3;
 
 
 /**
  * TODO Implement me.
  * Calculates a surface normal.
  */
-static Vector3
+static QVector3D
 calculateSurfaceNormal(const Mesh::Face::Positions& positions) {
 	const auto& p0 = *positions[0];
 	const auto& p1 = *positions[1];
@@ -43,7 +41,7 @@ calculateSurfaceNormal(const Mesh::Face::Positions& positions) {
 	Q_UNUSED(p0);
 	Q_UNUSED(p1);
 	Q_UNUSED(p2);
-	return Vector3(0, 0, 0);
+	return QVector3D(0, 0, 0);
 }
 
 

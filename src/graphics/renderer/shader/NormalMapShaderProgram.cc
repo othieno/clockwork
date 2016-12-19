@@ -38,9 +38,9 @@ ShaderProgram::Vertex::lerp(const Vertex& from, const Vertex& to, const double p
 
 
 ShaderProgram::Fragment::Fragment(const Vertex& vertex) {
-	x = std::round(vertex.position.x);
-	y = std::round(vertex.position.y);
-	z = vertex.position.z;
+	x = std::round(vertex.position.x());
+	y = std::round(vertex.position.y());
+	z = vertex.position.z();
 	normal = vertex.normal;
 }
 
@@ -68,23 +68,24 @@ ShaderProgram::setVertexAttributes(VertexAttributes& attributes, const Mesh::Fac
 
 template<> ShaderProgram::Vertex
 ShaderProgram::vertexShader(const Uniforms& uniforms, Varying&, const VertexAttributes& attributes) {
-	const auto& MVP = uniforms["MODELVIEWPROJECTION"].as<const Matrix4>();
-	const auto& N = uniforms["NORMAL"].as<const Matrix4>();
-	const auto& position = *attributes.position;
-	const auto& normal = *attributes.normal;
+	const auto& MVP = uniforms["MODELVIEWPROJECTION"].as<const QMatrix4x4>();
+	const auto& N = uniforms["NORMAL"].as<const QMatrix4x4>();
+	const auto& position = QVector4D(*attributes.position, 1.0);
+	const auto& normal = QVector4D(*attributes.normal).normalized();
 
-	Vertex vertex;
-	vertex.position = MVP * Point4(position);
-	vertex.normal = math::Vector4d::normalize(N * math::Vector4d(normal));
-	return vertex;
+	Vertex output;
+	output.position = MVP * QVector4D(position);
+	output.normal = N * normal;
+
+	return output;
 }
 
 
 template<> std::uint32_t
 ShaderProgram::fragmentShader(const Uniforms&, const Varying&, const Fragment& fragment) {
 	return Color(
-		(fragment.normal.i + 1.0) * 0.5,
-		(fragment.normal.j + 1.0) * 0.5,
-		(fragment.normal.k + 1.0) * 0.5
+		(fragment.normal.x() + 1.0) * 0.5,
+		(fragment.normal.y() + 1.0) * 0.5,
+		(fragment.normal.z() + 1.0) * 0.5
 	);
 }

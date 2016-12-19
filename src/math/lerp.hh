@@ -25,11 +25,9 @@
 #ifndef CLOCKWORK_LERP_HH
 #define CLOCKWORK_LERP_HH
 
-#include "Point.hh"
-#include "Point3.hh"
-#include "Point4.hh"
-#include "Vector3.hh"
-#include "Vector4.hh"
+#include <QPointF>
+#include <QVector3D>
+#include <QVector4D>
 #include "Color.hh"
 
 
@@ -40,30 +38,20 @@ namespace clockwork {
  */
 double lerp(const double from, const double to, const double percentage);
 /**
- * Performs a linear interpolation to find the Point at a specified
- * percentage between two Point instances.
+ * Performs a linear interpolation to find the QPointF at a specified
+ * percentage between two QPointF instances.
  */
-Point lerp(const Point& from, const Point& to, const double percentage);
+QPointF lerp(const QPointF& from, const QPointF& to, const double percentage);
 /**
- * Performs a linear interpolation to find the Point3 at a specified
- * percentage between two Point3 instances.
+ * Performs a linear interpolation to find the QVector3D at a specified
+ * percentage between two QVector3D instances.
  */
-Point3 lerp(const Point3& from, const Point3& to, const double percentage);
+QVector3D lerp(const QVector3D& from, const QVector3D& to, const double percentage);
 /**
- * Performs a linear interpolation to find the Point4 at a specified
- * percentage between two Point4 instances.
+ * Performs a linear interpolation to find the QVector4D at a specified
+ * percentage between two QVector4D instances.
  */
-Point4 lerp(const Point4& from, const Point4& to, const double percentage);
-/**
- * Performs a linear interpolation to find the Vector3 at a specified
- * percentage between two Vector3 instances.
- */
-Vector3 lerp(const Vector3& from, const Vector3& to, const double percentage);
-/**
- * Performs a linear interpolation to find the Vector4d at a specified
- * percentage between two Vector4d instances.
- */
-math::Vector4d lerp(const math::Vector4d& from, const math::Vector4d& to, const double percentage);
+QVector4D lerp(const QVector4D& from, const QVector4D& to, const double percentage);
 /**
  * Performs a linear interpolation to find the Color at a specified
  * percentage between two Color instances.

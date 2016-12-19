@@ -25,7 +25,7 @@
 #ifndef CLOCKWORK_VIEWPORT_HH
 #define CLOCKWORK_VIEWPORT_HH
 
-#include "Point3.hh"
+#include <QVector3D>
 
 
 namespace clockwork {
@@ -33,10 +33,6 @@ namespace clockwork {
  * @see Framebuffer.hh.
  */
 class Framebuffer;
-/**
- * @see math/Point4.hh.
- */
-struct Point4;
 /**
  * A normalised viewport with values that range from 0.0 (minimum) to 1.0 (maximum).
  */
@@ -104,11 +100,11 @@ struct ViewportTransform {
 	/**
 	 * The scaling factor.
 	 */
-	Point3 scale;
+	QVector3D scale;
 	/**
 	 * The translation factor.
 	 */
-	Point3 translate;
+	QVector3D translate;
 };
 } // namespace clockwork
 

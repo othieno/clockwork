@@ -218,18 +218,28 @@ Renderer<A, T>::cull(const RenderingContext&, VertexArray&) {}
 
 
 template<RenderingAlgorithm A, class T> void
-Renderer<A, T>::toScreenSpace(const ViewportTransform& viewportTransform, VertexArray& vertices) {
+Renderer<A, T>::toScreenSpace(const ViewportTransform& transform, VertexArray& vertices) {
 	for (auto& vertex : vertices) {
-		// Perspective divide: Convert the vertex position from clipping
-		// coordinate space to normalized device coordinate (NDC) space.
 		auto& position = vertex.data.position;
-		position.x /= position.w;
-		position.y /= position.w;
-		position.z /= position.w;
-		position.w /= 1.0;
 
-		// Then convert the position from NDC space to screen space.
-		position = position * viewportTransform;
+		qreal x = position.x();
+		qreal y = position.y();
+		qreal z = position.z();
+		const qreal w = position.w();
+		const qreal Sx = transform.scale.x();
+		const qreal Sy = transform.scale.y();
+		const qreal Sz = transform.scale.z();
+		const qreal Tx = transform.translate.x();
+		const qreal Ty = transform.translate.y();
+		const qreal Tz = transform.translate.y();
+
+		// Convert the vertex position from clipping coordinate space to
+		// normalized device coordinate (NDC) space (perspective divide),
+		// then to screen space.
+		position.setX(((x / w) * Sx) + Tx);
+		position.setY(((y / w) * Sy) + Ty);
+		position.setZ(((z / w) * Sz) + Tz);
+		position.setW(1.0);
 	}
 }
 

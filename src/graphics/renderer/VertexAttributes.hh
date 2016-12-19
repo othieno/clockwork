@@ -24,21 +24,17 @@
  */
 #ifndef CLOCKWORK_VERTEX_ATTRIBUTES_HH
 #define CLOCKWORK_VERTEX_ATTRIBUTES_HH
+/**
+ * @see <QVector3D>
+ */
+class QVector3D;
+/**
+ * @see <QPointF>
+ */
+class QPointF;
 
 
 namespace clockwork {
-/**
- * @see math/Point.hh.
- */
-struct Point;
-/**
- * @see math/Point3.hh.
- */
-struct Point3;
-/**
- * @see math/Vector3.hh.
- */
-struct Vector3;
 /**
  *
  */
@@ -47,22 +43,22 @@ struct VertexAttributes {
 	 * Instantiates a VertexAttributes object.
 	 */
 	VertexAttributes(
-		const Point3* position = nullptr,
-		const Vector3* normal = nullptr,
-		const Point* textureCoordinates = nullptr
+		const QVector3D* position = nullptr,
+		const QVector3D* normal = nullptr,
+		const QPointF* textureCoordinates = nullptr
 	);
 	/**
 	 * A reference to a vertex position.
 	 */
-	const Point3* position;
+	const QVector3D* position;
 	/**
 	 * A reference to a vertex's normal vector.
 	 */
-	const Vector3* normal;
+	const QVector3D* normal;
 	/**
 	 * A reference to a vertex's texture mapping coordinates.
 	 */
-	const Point* textureCoordinates;
+	const QPointF* textureCoordinates;
 };
 } // namespace clockwork
 

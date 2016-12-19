@@ -23,17 +23,14 @@
  * THE SOFTWARE.
  */
 #include "VertexAttributes.hh"
-#include "Point.hh"
-#include "Point3.hh"
-#include "Vector3.hh"
 
 using clockwork::VertexAttributes;
 
 
 VertexAttributes::VertexAttributes(
-	const Point3* p,
-	const Vector3* n,
-	const Point* uv
+	const QVector3D* p,
+	const QVector3D* n,
+	const QPointF* uv
 ) :
 position(p),
 normal(n),

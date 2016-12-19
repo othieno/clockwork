@@ -31,58 +31,35 @@ clockwork::lerp(const double from, const double to, const double p) {
 }
 
 
-clockwork::Point
-clockwork::lerp(const Point& from, const Point& to, const double p) {
+QPointF
+clockwork::lerp(const QPointF& from, const QPointF& to, const double p) {
 	const double pp = 1.0 - p;
-	return Point(
-		(pp * from.x) + (p * to.x),
-		(pp * from.y) + (p * to.y)
+	return QPointF(
+		(pp * from.x()) + (p * to.x()),
+		(pp * from.y()) + (p * to.y())
 	);
 }
 
 
-clockwork::Point3
-clockwork::lerp(const Point3& from, const Point3& to, const double p) {
+QVector3D
+clockwork::lerp(const QVector3D& from, const QVector3D& to, const double p) {
 	const double pp = 1.0 - p;
-	return Point3(
-		(pp * from.x) + (p * to.x),
-		(pp * from.y) + (p * to.y),
-		(pp * from.z) + (p * to.z)
+	return QVector3D(
+		(pp * from.x()) + (p * to.x()),
+		(pp * from.y()) + (p * to.y()),
+		(pp * from.z()) + (p * to.z())
 	);
 }
 
 
-clockwork::Point4
-clockwork::lerp(const Point4& from, const Point4& to, const double p) {
+QVector4D
+clockwork::lerp(const QVector4D& from, const QVector4D& to, const double p) {
 	const double pp = 1.0 - p;
-	return Point4(
-		(pp * from.x) + (p * to.x),
-		(pp * from.y) + (p * to.y),
-		(pp * from.z) + (p * to.z),
-		(pp * from.w) + (p * to.w)
-	);
-}
-
-
-clockwork::Vector3
-clockwork::lerp(const Vector3& from, const Vector3& to, const double p) {
-	const double pp = 1.0 - p;
-	return Vector3(
-		(pp * from.i) + (p * to.i),
-		(pp * from.j) + (p * to.j),
-		(pp * from.k) + (p * to.k)
-	);
-}
-
-
-clockwork::math::Vector4d
-clockwork::lerp(const math::Vector4d& from, const math::Vector4d& to, const double p) {
-	const double pp = 1.0 - p;
-	return math::Vector4d(
-		(pp * from.i) + (p * to.i),
-		(pp * from.j) + (p * to.j),
-		(pp * from.k) + (p * to.k),
-		(pp * from.l) + (p * to.l)
+	return QVector4D(
+		(pp * from.x()) + (p * to.x()),
+		(pp * from.y()) + (p * to.y()),
+		(pp * from.z()) + (p * to.z()),
+		(pp * from.w()) + (p * to.w())
 	);
 }
 
@@ -91,9 +68,9 @@ clockwork::Color
 clockwork::lerp(const Color& from, const Color& to, const double p) {
 	const double pp = 1.0 - p;
 	return Color(
-		(pp * from.red) + (p * to.red),
+		(pp * from.red)   + (p * to.red),
 		(pp * from.green) + (p * to.green),
-		(pp * from.blue) + (p * to.blue),
+		(pp * from.blue)  + (p * to.blue),
 		(pp * from.alpha) + (p * to.alpha)
 	);
 }

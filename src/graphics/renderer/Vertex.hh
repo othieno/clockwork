@@ -25,7 +25,7 @@
 #ifndef CLOCKWORK_VERTEX_HH
 #define CLOCKWORK_VERTEX_HH
 
-#include "Point4.hh"
+#include <QVector4D>
 
 
 namespace clockwork {
@@ -38,13 +38,13 @@ struct Vertex {
 	 */
 	Vertex() = default;
 	/**
-	 * Instantiates a Vertex object with the specified position.
+	 * Instantiates a Vertex object with the specified homogeneous position.
 	 */
-	explicit Vertex(const Point4& position);
+	explicit Vertex(const QVector4D& position);
 	/**
-	 * The vertex's transformed position.
+	 * The vertex's homogeneous position.
 	 */
-	Point4 position;
+	QVector4D position;
 };
 } // namespace clockwork
 

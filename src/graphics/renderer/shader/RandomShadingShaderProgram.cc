@@ -52,17 +52,17 @@ ShaderProgram::setVertexAttributes(VertexAttributes& attributes, const Mesh::Fac
 
 template<> ShaderProgram::Vertex
 ShaderProgram::vertexShader(const Uniforms& uniforms, Varying& varying, const VertexAttributes& attributes) {
-	const auto& MVP = uniforms["MODELVIEWPROJECTION"].as<const Matrix4>();
-	const auto& position = *attributes.position;
+	const auto& MVP = uniforms["MODELVIEWPROJECTION"].as<const QMatrix4x4>();
+	const auto& position = QVector4D(*attributes.position, 1.0);
 
-	Vertex vertex;
-	vertex.position = MVP * Point4(position);
+	Vertex output;
+	output.position = MVP * position;
 
 	// Note that 0xFF000000 is OR'd to the address to make sure the generated color's
 	// alpha channel is equal to 1.0.
 	varying.faceColor = Color(attributes.faceAddress | 0xFF000000);
 
-	return vertex;
+	return output;
 }
 
 

@@ -116,9 +116,9 @@ ShaderProgram<A>::Vertex::lerp(const Vertex& from, const Vertex& to, const doubl
 
 template<RenderingAlgorithm A>
 ShaderProgram<A>::Fragment::Fragment(const Vertex& v) {
-	x = std::round(v.position.x);
-	y = std::round(v.position.y);
-	z = v.position.z;
+	x = std::round(v.position.x());
+	y = std::round(v.position.y());
+	z = v.position.z();
 }
 
 
@@ -146,11 +146,11 @@ ShaderProgram<A>::setVertexAttributes(VertexAttributes& attributes, const Mesh::
 
 template<RenderingAlgorithm A> typename ShaderProgram<A>::Vertex
 ShaderProgram<A>::vertexShader(const Uniforms& uniforms, Varying&, const VertexAttributes& attributes) {
-	const auto& MVP = uniforms["MODELVIEWPROJECTION"].as<const Matrix4>();
-	const auto& position = *attributes.position;
+	const auto& MVP = uniforms["MODELVIEWPROJECTION"].as<const QMatrix4x4>();
+	const auto& position = QVector4D(*attributes.position, 1.0);
 
 	Vertex output;
-	output.position = MVP * Point4(position);
+	output.position = MVP * position;
 
 	return output;
 }

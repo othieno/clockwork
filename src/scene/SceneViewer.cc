@@ -60,7 +60,7 @@ SceneViewer::setProjection(const Projection projection) {
 }
 
 
-const clockwork::Matrix4&
+const QMatrix4x4&
 SceneViewer::getViewTransform() const {
 	if (updateCachedViewTransform_) {
 		updateCachedViewTransform_ = false;
@@ -70,7 +70,7 @@ SceneViewer::getViewTransform() const {
 }
 
 
-const clockwork::Matrix4&
+const QMatrix4x4&
 SceneViewer::getProjectionTransform() const {
 	if (updateCachedProjectionTransform_) {
 		updateCachedProjectionTransform_ = false;
@@ -80,7 +80,7 @@ SceneViewer::getProjectionTransform() const {
 }
 
 
-const clockwork::Matrix4&
+const QMatrix4x4&
 SceneViewer::getViewProjectionTransform() const {
 	if (updateCachedViewTransform_ || updateCachedProjectionTransform_) {
 		const auto& P = getProjectionTransform();
@@ -192,17 +192,17 @@ SceneViewer::removeAllImageFilters() {
 }
 
 
-clockwork::Matrix4
+QMatrix4x4
 SceneViewer::calculateViewTransform() const {
 	//TODO Implement me.
-	return Matrix4();
+	return QMatrix4x4();
 }
 
 
-clockwork::Matrix4
+QMatrix4x4
 SceneViewer::calculateProjectionTransform() const {
 	//TODO Implement me.
-	return Matrix4();
+	return QMatrix4x4();
 }
 
 

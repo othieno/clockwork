@@ -57,12 +57,12 @@ ViewportTransform::ViewportTransform(const Viewport& viewport, const Framebuffer
 
 	// The actual viewport size based on the normalized viewport's parameters
 	// and the framebuffer's resolution.
-	const double x = viewport.x * fbw;
-	const double y = viewport.y * fbh;
-	const double w = viewport.width * fbw;
-	const double h = viewport.height * fbh;
-	const double n = viewport.near;
-	const double f = viewport.far;
+	const qreal x = viewport.x * fbw;
+	const qreal y = viewport.y * fbh;
+	const qreal w = viewport.width * fbw;
+	const qreal h = viewport.height * fbh;
+	const qreal n = viewport.near;
+	const qreal f = viewport.far;
 
 	// The viewport transformation is defined as:
 	// P'  = (scale                                 P)    + (translate)
@@ -71,10 +71,13 @@ ViewportTransform::ViewportTransform(const Viewport& viewport, const Framebuffer
 	// z_w = ((viewport_far - viewport_near) / 2) * z_ndc + ((viewport_near + viewport_far) / 2)
 	// where the 3D point <x_ndc, y_ndc and z_ndc> is in the normalized device
 	// coordinate (NDC) space.
-	scale.x = 0.5 * w;
-	scale.y = 0.5 * h;
-	scale.z = 0.5 * (f - n);
-	translate.x = x + scale.x;
-	translate.y = y + scale.y;
-	translate.z = 0.5 * (f + n);
+	const qreal Sx = 0.5 * w;
+	const qreal Sy = 0.5 * h;
+	const qreal Sz = 0.5 * (f - n);
+	const qreal Tx = x + Sx;
+	const qreal Ty = y + Sy;
+	const qreal Tz = 0.5 * (f + n);
+
+	scale = QVector3D(Sx, Sy, Sz);
+	translate = QVector3D(Tx, Ty, Tz);
 }

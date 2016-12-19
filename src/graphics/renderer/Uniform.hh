@@ -26,13 +26,9 @@
 #define CLOCKWORK_UNIFORM_HH
 
 #include "WeakVariant.hh"
-#include "Point.hh"
-#include "Point3.hh"
-#include "Point4.hh"
-#include "Vector3.hh"
-#include "Vector4.hh"
-#include "Matrix4.hh"
 #include "Color.hh"
+#include <QVector3D>
+#include <QMatrix4x4>
 #include <QHash>
 
 
@@ -44,18 +40,11 @@ namespace {
 template<class T>
 struct UniformValidator :
 std::integral_constant<bool,
-	std::is_base_of<Point, T>::value ||
-	std::is_base_of<Point3, T>::value ||
-	std::is_base_of<Point4, T>::value ||
-	std::is_base_of<Vector3, T>::value ||
-	std::is_base_of<math::Vector4i, T>::value ||
-	std::is_base_of<math::Vector4u, T>::value ||
-	std::is_base_of<math::Vector4f, T>::value ||
-	std::is_base_of<math::Vector4d, T>::value ||
-	std::is_base_of<Matrix4, T>::value ||
 	std::is_base_of<Color, T>::value ||
+	std::is_base_of<QVector3D, T>::value ||
+	std::is_base_of<QMatrix4x4, T>::value ||
 	std::is_arithmetic<T>::value> {};
-}
+} // namespace
 /**
  *
  */

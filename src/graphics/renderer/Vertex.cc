@@ -23,10 +23,9 @@
  * THE SOFTWARE.
  */
 #include "Vertex.hh"
-#include "lerp.hh"
 
 using clockwork::Vertex;
 
 
-Vertex::Vertex(const Point4& p) :
+Vertex::Vertex(const QVector4D& p) :
 position(p) {}

@@ -25,8 +25,10 @@
 #ifndef CLOCKWORK_SCENE_OBJECT_HH
 #define CLOCKWORK_SCENE_OBJECT_HH
 
+#include <QVector3D>
+#include <QQuaternion>
+#include <QMatrix4x4>
 #include "SceneObjectAppearance.hh"
-#include "Matrix4.hh"
 #include "toString.hh"
 
 
@@ -45,62 +47,61 @@ public:
 	/**
 	 * Return the scene object's position in the scene.
 	 */
-	const Point3& getPosition() const;
+	const QVector3D& getPosition() const;
 	/**
 	 * Set the scene object's position.
 	 * @param position the position to set.
 	 */
-	void setPosition(const Point3& position);
+	void setPosition(const QVector3D& position);
 	/**
 	 * Set the scene object's position.
 	 * @param x the scene object's position on the X axis.
 	 * @param y the scene object's position on the Y axis.
 	 * @param z the scene object's position on the Z axis.
 	 */
-	void setPosition(const double x, const double y, const double z);
+	void setPosition(const qreal x, const qreal y, const qreal z);
 	/**
-	 * Return the scene object's rotation vector.
+	 * Return the scene object's rotation quaternion.
 	 */
-	const Vector3& getRotation() const;
+	const QQuaternion& getRotation() const;
 	/**
-	 * Set the scene object's rotation vector. The vector should contain
-	 * angles (in degrees) for rotations around the X axis (pitch),
-	 * Y axis (yaw) and Z axis (roll).
-	 * @param rotation the rotation vector to set.
+	 * Set the scene object's rotation quaternion.
+	 * @param rotation the rotation quaternion to set.
 	 */
-	void setRotation(const Vector3& rotation);
+	void setRotation(const QQuaternion& rotation);
 	/**
-	 * Set the scene object's rotation angles (in degrees).
-	 * @param pitch the scene object's pitch angle (rotation around the X axis).
-	 * @param yaw the scene object's yaw angle  (rotation around the Y axis).
-	 * @param roll the scene object's roll angle (rotation around the Z axis).
+	 * Set the scene object's rotation quaternion based on the specified
+	 * Euler angles in degrees.
+	 * @param pitch the scene object's rotation around the X axis.
+	 * @param yaw the scene object's rotation around the Y axis.
+	 * @param roll the scene object's rotation around the Z axis.
 	 */
-	void setRotation(const double pitch, const double yaw, const double roll);
+	void setRotation(const float pitch, const float yaw, const float roll);
 	/**
 	 * Return the scene object's scaling vector.
 	 */
-	const Vector3& getScale() const;
+	const QVector3D& getScale() const;
 	/**
 	 * Set the scene object's scale defined by a given scaling vector.
 	 * The vector should contain scale factors for the X, Y and Z axes.
 	 * @param scaling the vector containing the scaling factors to set.
 	 */
-	void setScale(const Vector3& scaling);
+	void setScale(const QVector3D& scaling);
 	/**
 	 * Set the scene object's scale.
 	 * @param x the scene object's scale factor on the X axis.
 	 * @param y the scene object's scale factor on the Y axis.
 	 * @param z the scene object's scale factor on the Z axis.
 	 */
-	void setScale(const double x, const double y, const double z);
+	void setScale(const qreal x, const qreal y, const qreal z);
 	/**
 	 * Returns the scene object's model transformation matrix.
 	 */
-	Matrix4 getModelTransform() const;
+	QMatrix4x4 getModelTransform() const;
 	/**
 	 * Returns the scene object's cumulative (composite) model transformation matrix.
 	 */
-	const Matrix4& getCumulativeModelTransform() const;
+	const QMatrix4x4& getCumulativeModelTransform() const;
 	/**
 	 * Updates the scene object's cumulative (composite) model transformation matrix.
 	 */
@@ -153,21 +154,21 @@ private:
 	/**
 	 * The scene object's position in the world.
 	 */
-	Point3 position_;
+	QVector3D position_;
 	/**
-	 * The scene object's rotation vector holds rotation angles (in degrees) for the X, Y and Z axes.
+	 * The scene object's rotation.
 	 */
-	Vector3 rotation_;    //TODO Use quaternions
+	QQuaternion rotation_;
 	/**
 	 * The scene object's scaling vector.
 	 */
-	Vector3 scale_;
+	QVector3D scale_;
 	/**
 	 * The scene object's cumulative (composite) model transformation matrix. This is a concatenation
 	 * of the model transformation matrices of this node's ancestors (parent, grand-parent, great
 	 * grand-parent, great great grand-parent, ...), with its own transformation matrix.
 	 */
-	Matrix4 cumulativeModelTransform_;
+	QMatrix4x4 cumulativeModelTransform_;
 };
 } // namespace clockwork
 

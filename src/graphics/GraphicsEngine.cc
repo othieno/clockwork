@@ -64,16 +64,16 @@ void
 GraphicsEngine::render(const Scene& scene) {
 	const auto* const viewer = scene.getViewer();
 	if (viewer != nullptr) {
-		const Matrix4& VIEW = viewer->getViewTransform();
-		const Matrix4& PROJECTION = viewer->getProjectionTransform();
-		const Matrix4& VIEWPROJECTION = viewer->getViewProjectionTransform();
+		const QMatrix4x4& VIEW = viewer->getViewTransform();
+		const QMatrix4x4& PROJECTION = viewer->getProjectionTransform();
+		const QMatrix4x4& VIEWPROJECTION = viewer->getViewProjectionTransform();
 
 		renderingContext_.primitiveMode = viewer->getPrimitiveMode();
 		renderingContext_.viewportTransform = ViewportTransform(viewer->getViewport(), renderingContext_.framebuffer);
-		renderingContext_.uniforms.insert("PROJECTION", Uniform::create<const Matrix4>(PROJECTION));
-		renderingContext_.uniforms.insert("VIEW", Uniform::create<const Matrix4>(VIEW));
-		renderingContext_.uniforms.insert("viewpoint", Uniform::create<const Point3>(viewer->getPosition()));
-		renderingContext_.uniforms.insert("VIEWPROJECTION", Uniform::create<const Matrix4>(VIEWPROJECTION));
+		renderingContext_.uniforms.insert("PROJECTION", Uniform::create<const QMatrix4x4>(PROJECTION));
+		renderingContext_.uniforms.insert("VIEW", Uniform::create<const QMatrix4x4>(VIEW));
+		renderingContext_.uniforms.insert("viewpoint", Uniform::create<const QVector3D>(viewer->getPosition()));
+		renderingContext_.uniforms.insert("VIEWPROJECTION", Uniform::create<const QMatrix4x4>(VIEWPROJECTION));
 
 		const auto draw = getDrawFunction(viewer->getRenderingAlgorithm());
 
@@ -84,14 +84,14 @@ GraphicsEngine::render(const Scene& scene) {
 					const auto& MODEL = object->getModelTransform();
 					const auto& MODELVIEW = VIEW * MODEL;
 					const auto& MODELVIEWPROJECTION = VIEWPROJECTION * MODEL;
-					const auto& INVERSE_MODEL = Matrix4::inverse(MODEL);
-					const auto& NORMAL = Matrix4::transpose(Matrix4::inverse(MODELVIEW));
+					const auto& INVERSE_MODEL = MODEL.inverted();
+					const auto& NORMAL = MODELVIEW.inverted().transposed();
 
-					renderingContext_.uniforms.insert("MODEL", Uniform::create<const Matrix4>(MODEL));
-					renderingContext_.uniforms.insert("MODELVIEW", Uniform::create<const Matrix4>(MODELVIEW));
-					renderingContext_.uniforms.insert("MODELVIEWPROJECTION", Uniform::create<const Matrix4>(MODELVIEWPROJECTION));
-					renderingContext_.uniforms.insert("INVERSE_MODEL", Uniform::create<const Matrix4>(INVERSE_MODEL));
-					renderingContext_.uniforms.insert("NORMAL", Uniform::create<const Matrix4>(NORMAL));
+					renderingContext_.uniforms.insert("MODEL", Uniform::create<const QMatrix4x4>(MODEL));
+					renderingContext_.uniforms.insert("MODELVIEW", Uniform::create<const QMatrix4x4>(MODELVIEW));
+					renderingContext_.uniforms.insert("MODELVIEWPROJECTION", Uniform::create<const QMatrix4x4>(MODELVIEWPROJECTION));
+					renderingContext_.uniforms.insert("INVERSE_MODEL", Uniform::create<const QMatrix4x4>(INVERSE_MODEL));
+					renderingContext_.uniforms.insert("NORMAL", Uniform::create<const QMatrix4x4>(NORMAL));
 
 					draw(renderingContext_, *appearance->getMesh());
 				}

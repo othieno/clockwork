@@ -43,7 +43,7 @@ struct ShaderProgram<RenderingAlgorithm::NormalMapping>::Vertex : clockwork::Ver
 	/**
 	 *
 	 */
-	math::Vector4d normal;
+	QVector4D normal;
 };
 /**
  *
@@ -66,7 +66,7 @@ struct ShaderProgram<RenderingAlgorithm::NormalMapping>::Fragment : clockwork::F
 	/**
 	 *
 	 */
-	math::Vector4d normal;
+	QVector4D normal;
 };
 /**
  * Initializes the vertex attributes used by the vertex shader.

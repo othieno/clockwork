@@ -130,17 +130,17 @@ template<RenderingAlgorithm A, class T> void
 PolygonRenderer<A, T>::primitiveAssembly(const RenderingContext&, VertexArray& vertices) {
 	// TODO This will only generate triangle primitives. Implement TriangleStrip and
 	// TriangleLoop generation.
-	static const auto compare = [](const PipelineVertex& a, const PipelineVertex& b) {
+	static const auto lessThan = [](const PipelineVertex& a, const PipelineVertex& b) {
 		const auto& pa = a.data.position;
 		const auto& pb = b.data.position;
-		if (qFuzzyCompare(1.0 + pa.y, 1.0 + pb.y)) {
-			if (qFuzzyCompare(1.0 + pa.x, 1.0 + pb.x)) {
-				return pa.z < pb.z;
+		if (qFuzzyCompare(1.0 + pa.y(), 1.0 + pb.y())) {
+			if (qFuzzyCompare(1.0 + pa.x(), 1.0 + pb.x())) {
+				return pa.z() < pb.z();
 			} else {
-				return pa.x < pb.x;
+				return pa.x() < pb.x();
 			}
 		} else {
-			return pa.y < pb.y;
+			return pa.y() < pb.y();
 		}
 	};
 	// If the triangle primitive is not correctly formed for the scanline algorithm,
@@ -149,7 +149,7 @@ PolygonRenderer<A, T>::primitiveAssembly(const RenderingContext&, VertexArray& v
 		const auto& from = it;
 		const auto& to = it + 3;
 
-		std::sort(from, to, compare); // Note: std::sort process the range [first, last).
+		std::sort(from, to, lessThan); // Note: std::sort processes the range [first, last[.
 
 		// Tessellate the primitive, if need be.
 		const auto& V0 = it[0];
@@ -160,11 +160,11 @@ PolygonRenderer<A, T>::primitiveAssembly(const RenderingContext&, VertexArray& v
 		const auto& p1 = V1.data.position;
 		const auto& p2 = V2.data.position;
 
-		const bool tessellate = !qFuzzyCompare(1.0 + p0.y, 1.0 + p1.y) && !qFuzzyCompare(1.0 + p1.y, 1.0 + p2.y);
+		const bool tessellate = !qFuzzyCompare(1.0 + p0.y(), 1.0 + p1.y()) && !qFuzzyCompare(1.0 + p1.y(), 1.0 + p2.y());
 		if (tessellate) {
 			// Create a new output that will be used to create two new primitives.
-			auto V = PipelineVertex::lerp(V0, V2, (p1.y - p0.y) / (p2.y - p0.y));
-			V.data.position.y = p1.y;
+			auto V = PipelineVertex::lerp(V0, V2, (p1.y() - p0.y()) / (p2.y() - p0.y()));
+			V.data.position.setY(p1.y());
 			//V.data.position.z = 0; //FIXME Depth needs to be interpolated between V1 and O3.
 
 			// Create two new triangle primitives: {V0, V1, V} and {V1, V, V2}. Since the
@@ -191,14 +191,14 @@ PolygonRenderer<A, T>::rasterize(const RenderingContext&, const VertexArray& ver
 		const auto* a = &it[1];
 		const auto* b = &it[0];
 		const auto* c = &it[2];
-		if (qFuzzyCompare(1.0 + a->data.position.y, 1.0 + b->data.position.y)) {
+		if (qFuzzyCompare(1.0 + a->data.position.y(), 1.0 + b->data.position.y())) {
 			a = &it[0];
 			b = &it[2];
 			c = &it[1];
 		}
 
-		const double ay = std::round(a->data.position.y);
-		const double by = std::round(b->data.position.y);
+		const double ay = std::round(a->data.position.y());
+		const double by = std::round(b->data.position.y());
 		//const double cy = ay; // since a and c are colinear.
 		const double dy = by - ay; // or by - cy.
 
@@ -217,8 +217,8 @@ PolygonRenderer<A, T>::rasterize(const RenderingContext&, const VertexArray& ver
 				const auto from = PipelineVertex::lerp(*a, *b, p);
 				const auto to = PipelineVertex::lerp(*c, *b, p);
 
-				const double Fx = std::round(from.data.position.x);
-				const double Tx = std::round(to.data.position.x);
+				const double Fx = std::round(from.data.position.x());
+				const double Tx = std::round(to.data.position.x());
 				const double dx = Tx - Fx;
 
 				// If dx is relatively small, the 'from' and 'to' vertices are

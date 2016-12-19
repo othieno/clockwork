@@ -156,36 +156,36 @@ clockwork::parseOBJFile(QFile& file, Mesh& mesh) {
 				z /= w;
 			}
 */
-			positions.append(Point3(x, y, z));
+			positions.append(QVector3D(x, y, z));
 			++positionCount;
 		} else if (command == "vt") {
 			const double u = tokens.takeFirst().toDouble();
 			const double v = 1.0 - tokens.takeFirst().toDouble();
 			//double w = tokens.isEmpty() ? 0.0 : tokens.takeFirst().toDouble();
 
-			textureCoordinates.append(Point(u, v));
+			textureCoordinates.append(QPointF(u, v));
 			++uvCount;
 		} else if (command == "vn") {
-			const double i = tokens.takeFirst().toDouble();
-			const double j = tokens.takeFirst().toDouble();
-			const double k = tokens.takeFirst().toDouble();
+			const double x = tokens.takeFirst().toDouble();
+			const double y = tokens.takeFirst().toDouble();
+			const double z = tokens.takeFirst().toDouble();
 
 			// Since the normal isn't always a unit vector, normalize it just in case.
-			normals.append(Vector3::normalize(Vector3(i, j, k)));
+			normals.append(QVector3D(x, y, z).normalized());
 			++normalCount;
 		} else if (command == "f") {
 			const std::size_t tokenCount = tokens.size();
 
-			QList<const Point3*> parsedPositions;
-			QList<const Point*> parsedTextureCoordinates;
-			QList<const Vector3*> parsedNormals;
+			QList<const QVector3D*> parsedPositions;
+			QList<const QPointF*> parsedTextureCoordinates;
+			QList<const QVector3D*> parsedNormals;
 
 			while (!tokens.isEmpty()) {
 				auto subtokens = tokens.takeFirst().split("/");
 
-				const Point3* p = nullptr;
-				const Point* uv = nullptr;
-				const Vector3* n = nullptr;
+				const QVector3D* p = nullptr;
+				const QPointF* uv = nullptr;
+				const QVector3D* n = nullptr;
 
 				// Parse the vertex position.
 				const int positionIndex = subtokens.takeFirst().toInt();

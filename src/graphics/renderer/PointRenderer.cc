@@ -54,7 +54,7 @@ PointRenderer::clip(const RenderingContext&, VertexArray& vertices) {
 		constexpr double ymax =  1.0;
 
 		const auto& p = vertex.data.position;
-		return p.x < xmin || p.x > xmax || p.y < ymin || p.y > ymax;
+		return p.x() < xmin || p.x() > xmax || p.y() < ymin || p.y() > ymax;
 	};
 	const auto& begin = vertices.begin();
 	const auto& end = vertices.end();

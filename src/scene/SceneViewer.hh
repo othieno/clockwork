@@ -83,15 +83,15 @@ public:
 	/**
 	 * Returns the viewer's view transform matrix.
 	 */
-	const Matrix4& getViewTransform() const;
+	const QMatrix4x4& getViewTransform() const;
 	/**
 	 * Returns the viewer's projection transform matrix.
 	 */
-	const Matrix4& getProjectionTransform() const;
+	const QMatrix4x4& getProjectionTransform() const;
 	/**
 	 * Returns the viewer's view-projection transform matrix.
 	 */
-	const Matrix4& getViewProjectionTransform() const;
+	const QMatrix4x4& getViewProjectionTransform() const;
 	/**
 	 * Returns the viewer's viewport.
 	 */
@@ -182,11 +182,11 @@ private:
 	/**
 	 * Calculates and returns the viewer's view transform.
 	 */
-	Matrix4 calculateViewTransform() const;
+	QMatrix4x4 calculateViewTransform() const;
 	/**
 	 * Calculates and returns the viewer's projection transform.
 	 */
-	Matrix4 calculateProjectionTransform() const;
+	QMatrix4x4 calculateProjectionTransform() const;
 	/**
 	 * The type of viewer.
 	 */
@@ -198,7 +198,7 @@ private:
 	/**
 	 * The view transformation matrix.
 	 */
-	mutable Matrix4 cachedViewTransform_;
+	mutable QMatrix4x4 cachedViewTransform_;
 	/**
 	 * When true, this signals that the cached view transformation matrix needs
 	 * to be updated before being accessed.
@@ -207,7 +207,7 @@ private:
 	/**
 	 * The projection transformation matrix.
 	 */
-	mutable Matrix4 cachedProjectionTransform_;
+	mutable QMatrix4x4 cachedProjectionTransform_;
 	/**
 	 * When true, this signals that the cached projection transformation matrix
 	 * needs to be updated before being accessed.
@@ -216,7 +216,7 @@ private:
 	/**
 	 * The view-projection transformation matrix.
 	 */
-	mutable Matrix4 cachedViewProjectionTransform_;
+	mutable QMatrix4x4 cachedViewProjectionTransform_;
 	/**
 	 * The viewer's viewport.
 	 */
