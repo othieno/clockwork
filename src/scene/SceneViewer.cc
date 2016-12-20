@@ -194,8 +194,14 @@ SceneViewer::removeAllImageFilters() {
 
 QMatrix4x4
 SceneViewer::calculateViewTransform() const {
-	//TODO Implement me.
-	return QMatrix4x4();
+	const auto& eye = getPosition();
+	const auto& center = eye + getRotation().toEulerAngles();
+	const auto& up = QVector3D(0.0, 1.0, 0.0);
+
+	QMatrix4x4 transform;
+	transform.lookAt(eye, center, up);
+
+	return transform;
 }
 
 
