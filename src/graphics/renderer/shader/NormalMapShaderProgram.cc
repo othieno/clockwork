@@ -71,7 +71,7 @@ ShaderProgram::vertexShader(const Uniforms& uniforms, Varying&, const VertexAttr
 	const auto& MVP = uniforms["MODELVIEWPROJECTION"].as<const QMatrix4x4>();
 	const auto& N = uniforms["NORMAL"].as<const QMatrix4x4>();
 	const auto& position = QVector4D(*attributes.position, 1.0);
-	const auto& normal = QVector4D(*attributes.normal).normalized();
+	const auto& normal = *attributes.normal;
 
 	Vertex output;
 	output.position = MVP * QVector4D(position);
