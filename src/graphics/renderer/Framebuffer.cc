@@ -67,6 +67,12 @@ Framebuffer::getPixelBuffer() const {
 }
 
 
+const QImage&
+Framebuffer::getPixelBufferImage() const {
+	return pixelBufferImage_;
+}
+
+
 std::uint32_t
 Framebuffer::getPixelBufferClearValue() const {
 	return pixelBufferClearValue_;
@@ -216,7 +222,12 @@ Framebuffer::getResolutionSize(const Resolution resolution) {
 void
 Framebuffer::resize() {
 	const QSize& resolution = getResolutionSize();
-	const std::size_t bufferSize = resolution.width() * resolution.height();
+	const auto w = resolution.width();
+	const auto h = resolution.height();
+	const auto bufferSize = w * h;
+
+	// Destroy the reference to the previous pixel buffer before the buffer itself is destroyed.
+	pixelBufferImage_ = QImage();
 
 	if (bufferSize == 0) {
 		pixelBuffer_.reset(nullptr);
@@ -226,6 +237,7 @@ Framebuffer::resize() {
 		pixelBuffer_.reset(new std::uint32_t[bufferSize]);
 		depthBuffer_.reset(new double[bufferSize]);
 		stencilBuffer_.reset(new std::uint8_t[bufferSize]);
+		pixelBufferImage_ = QImage(reinterpret_cast<uchar*>(pixelBuffer_.get()), w, h, QImage::Format_ARGB32);
 	}
 
 	clear();

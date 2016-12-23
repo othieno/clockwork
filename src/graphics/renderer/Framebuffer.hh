@@ -27,6 +27,7 @@
 
 #include <QObject>
 #include <QSize>
+#include <QImage>
 #include <memory>
 
 
@@ -98,6 +99,10 @@ public:
 	 * Returns the pixel buffer.
 	 */
 	const std::uint32_t* getPixelBuffer() const;
+	/**
+	 * Returns the pixel buffer as a QImage.
+	 */
+	const QImage& getPixelBufferImage() const;
 	/**
 	 * Returns the pixel buffer's clear value.
 	 */
@@ -181,6 +186,13 @@ private:
 	 * The framebuffer's pixel buffer attachment.
 	 */
 	std::unique_ptr<std::uint32_t[]> pixelBuffer_;
+	/**
+	 * The framebuffer's pixel buffer encapsulated in a QImage.
+	 * Note that the QImage instance does not create a copy of the pixel buffer
+	 * but instead uses the pixel buffer as its own underlying data.
+	 * For more information, please refer to http://doc.qt.io/qt-5/qimage.html#QImage-5
+	 */
+	QImage pixelBufferImage_;
 	/**
 	 * The pixel buffer's clear value.
 	 */
