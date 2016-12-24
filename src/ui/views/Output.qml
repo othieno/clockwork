@@ -27,59 +27,27 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.0
 import Material 0.2
+import Clockwork 0.1
 
 
 Page {
-	id: sceneRenderView
-	Image {
-		id: framebuffer
+	/**
+	 *
+	 */
+	FramebufferView {
+		anchors.fill: parent
 		/**
-		 * A value used to force image requests from the image provider.
+		 *
 		 */
-		property var frame: 0
-		/**
-		 * Disables image caching as the framebuffer changes frequently.
-		 */
-		cache: false
-		/**
-		 * Disables the smoothing filter as this alters the renderer's actual output.
-		 */
-		smooth: false
-		/**
-		 * Fills the viewport horizontally.
-		 */
-		width: parent.width
-		/**
-		 * Fills the viewport vertically.
-		 */
-		height: parent.height
-		/**
-		 * The image's source.
-		 */
-		source: "image://framebuffer/%1pixel".arg(frame)
-		/**
-		 * A handler that is called when an update is completed to refresh the
-		 * framebuffer image.
-		 */
-		function onUpdateCompleted() {
-			// As there's no proper way of explicitly updating the image, the
-			// workaround is to update the frame number, which updates the image's
-			// source attribute, which forces a request for a "new" image from
-			// the image provider.
-			framebuffer.frame = (framebuffer.frame + 1) % 10
+		Component.onCompleted: function() {
+			application.updateCompleted.connect(this.update);
+			application.update();
 		}
 		/**
 		 *
 		 */
-		Component.onCompleted: {
-			application.updateCompleted.connect(onUpdateCompleted)
-			application.update()
-		}
-		/**
-		 *
-		 */
-		Component.onDestruction: {
-			application.updateCompleted.disconnect(onUpdateCompleted)
+		Component.onDestruction: function() {
+			application.updateCompleted.disconnect(this.update);
 		}
 	}
 	/**

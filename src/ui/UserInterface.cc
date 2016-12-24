@@ -24,6 +24,7 @@
  */
 #include "UserInterface.hh"
 #include "Application.hh"
+#include "FramebufferView.hh"
 #include "FramebufferProvider.hh"
 #include "Service.hh"
 #include <QQmlContext>
@@ -49,6 +50,7 @@ UserInterface::initialize() {
 	}
 
 	qRegisterMetaType<SceneViewer*>("SceneViewer*");
+	qmlRegisterType<FramebufferView>("Clockwork", 0, 1, "FramebufferView");
 
 	QPM_INIT(engine_);
 	engine_.load(QUrl("qrc:/view/ApplicationWindow"));

@@ -34,18 +34,19 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 	CONFIG += c++14
 	QMAKE_CXXFLAGS += -Wextra
 	INCLUDEPATH += \
-		src/graphics \
 		src/graphics/filter \
-		src/graphics/renderer \
 		src/graphics/renderer/shader \
+		src/graphics/renderer \
+		src/graphics \
 		src/math \
-		src/scene \
 		src/scene/predefined \
 		src/scene/property \
-		src/system \
+		src/scene \
 		src/system/io \
 		src/system/task \
+		src/system \
 		src/types \
+		src/ui/components \
 		src/ui \
 		src
 	HEADERS += \
@@ -107,6 +108,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/system/task/TaskManager.hh \
 		src/types/Factory.hh \
 		src/types/WeakVariant.hh \
+		src/ui/components/FramebufferView.hh \
 		src/ui/FramebufferProvider.hh \
 		src/ui/UserInterface.hh
 	SOURCES += \
@@ -154,6 +156,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/system/io/toString.cc \
 		src/system/task/Task.cc \
 		src/system/task/TaskManager.cc \
+		src/ui/components/FramebufferView.cc \
 		src/ui/FramebufferProvider.cc \
 		src/ui/UserInterface.cc \
 		src/clockwork.cc
