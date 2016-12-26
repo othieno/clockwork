@@ -57,7 +57,7 @@ Page {
 		smooth: false
 		width: parent.width
 		height: parent.height
-		source: "image://framebuffer/0pixel"
+		source: "image://framebuffer/pixel"
 	}
 	Rectangle {
 		anchors {
