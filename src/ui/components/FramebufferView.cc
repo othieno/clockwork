@@ -200,13 +200,24 @@ FramebufferView::MaterialShader::vertexShader() const {
 
 const char*
 FramebufferView::MaterialShader::fragmentShader() const {
+	// This is a very basic fragment shader except for one simple quirk:
+	// The color buffer's pixels are in a 32-bit ARGB format however when
+	// they are uploaded to the GPU render target, they are assumed to be
+	// in RGBA format which is not the case. This means that the texel's
+	// color channels are mismatched like so:
+	// Expected format | Actual format
+	//               R | A
+	//               G | R
+	//               B | G
+	//               A | B
+	// So Red actually contains the Alpha channel, Green contains Red, etc.
+	// The solution is to simply swizzle the texel to GBAR.
 	return
 	"uniform lowp sampler2D texture;\n"
 	"uniform lowp float qt_Opacity;\n"
 	"varying highp vec2 texCoord;\n"
 	"void main() {\n"
-		"vec3 tex = texture2D(texture, texCoord).rgb;\n"
-		"gl_FragColor = vec4(tex, 1.0) * qt_Opacity;\n"
+		"gl_FragColor = texture2D(texture, texCoord).gbar * qt_Opacity;\n"
 	"}";
 }
 
