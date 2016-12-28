@@ -33,6 +33,7 @@ type_(type),
 projection_(Projection::Perspective),
 updateCachedViewTransform_(true),
 updateCachedProjectionTransform_(true),
+center_(0, 0, 0),
 scissor_(QPointF(0.0f, 0.0f), QPointF(1.0f, 1.0f)),
 renderingAlgorithm_(RenderingAlgorithm::NormalMapping),
 primitiveMode_(Primitive::Triangle),
@@ -103,6 +104,21 @@ SceneViewer::setViewport(const Viewport& viewport) {
 }
 
 
+const QVector3D&
+SceneViewer::getCenter() const {
+	return center_;
+}
+
+
+void
+SceneViewer::setCenter(const QVector3D& center) {
+	if (center_ != center) {
+		center_ = center;
+		emit centerChanged(center_);
+	}
+}
+
+
 const QRectF&
 SceneViewer::getScissor() const {
 	return scissor_;
@@ -111,8 +127,10 @@ SceneViewer::getScissor() const {
 
 void
 SceneViewer::setScissor(const QRectF& scissor) {
-	scissor_ = scissor;
-	emit scissorChanged(scissor_);
+	if (scissor_ != scissor) {
+		scissor_ = scissor;
+		emit scissorChanged(scissor_);
+	}
 }
 
 
@@ -194,12 +212,8 @@ SceneViewer::removeAllImageFilters() {
 
 QMatrix4x4
 SceneViewer::calculateViewTransform() const {
-	const auto& eye = getPosition();
-	const auto& center = eye + getRotation().toEulerAngles();
-	const auto& up = QVector3D(0.0, 1.0, 0.0);
-
 	QMatrix4x4 transform;
-	transform.lookAt(eye, center, up);
+	transform.lookAt(getPosition(), center_, QVector3D(0, 1, 0));
 
 	return transform;
 }

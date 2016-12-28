@@ -43,6 +43,7 @@ namespace clockwork {
  */
 class SceneViewer : public SceneObject {
 	Q_OBJECT
+	Q_PROPERTY(QVector3D center READ getCenter WRITE setCenter NOTIFY centerChanged)
 	Q_PROPERTY(QRectF scissor READ getScissor WRITE setScissor NOTIFY scissorChanged)
 public:
 	/**
@@ -101,6 +102,15 @@ public:
 	 * @param viewport the viewport to set.
 	 */
 	void setViewport(const Viewport& viewport);
+	/**
+	 * Returns the viewer's reference point.
+	 */
+	const QVector3D& getCenter() const;
+	/**
+	 * Sets the viewer's reference point.
+	 * @param center the reference point to set.
+	 */
+	void setCenter(const QVector3D& center);
 	/**
 	 * Returns the viewer's scissor.
 	 */
@@ -218,6 +228,10 @@ private:
 	 */
 	mutable QMatrix4x4 cachedViewProjectionTransform_;
 	/**
+	 * The viewer's reference point, i.e. the position that is being looked at.
+	 */
+	QVector3D center_;
+	/**
 	 * The viewer's viewport.
 	 */
 	Viewport viewport_;
@@ -246,6 +260,10 @@ private:
 	 */
 	QList<ImageFilter::Identifier> imageFilterIdentifiers_;
 signals:
+	/**
+	 * A signal that is emitted when the viewer's reference point is changed.
+	 */
+	void centerChanged(const QVector3D& center);
 	/**
 	 * A signal that is emitted when the viewer's scissor is changed.
 	 */
