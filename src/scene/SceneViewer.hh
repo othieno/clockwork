@@ -82,13 +82,13 @@ public:
 	 */
 	void setProjection(const Projection projection);
 	/**
-	 * Returns the viewer's view transform matrix.
-	 */
-	const QMatrix4x4& getViewTransform() const;
-	/**
 	 * Returns the viewer's projection transform matrix.
 	 */
 	const QMatrix4x4& getProjectionTransform() const;
+	/**
+	 * Returns the viewer's view transform matrix.
+	 */
+	const QMatrix4x4& getViewTransform() const;
 	/**
 	 * Returns the viewer's view-projection transform matrix.
 	 */
@@ -190,13 +190,17 @@ protected:
 	SceneViewer(const Type type, const QString& name);
 private:
 	/**
-	 * Calculates and returns the viewer's view transform.
+	 * Updates the viewer's view transformation matrix.
 	 */
-	QMatrix4x4 calculateViewTransform() const;
+	void updateViewTransform();
 	/**
-	 * Calculates and returns the viewer's projection transform.
+	 * Updates the viewer's projection transformation matrix.
 	 */
-	QMatrix4x4 calculateProjectionTransform() const;
+	void updateProjectionTransform();
+	/**
+	 * Updates the viewer's view-projection transformation matrix.
+	 */
+	void updateViewProjectionTransform();
 	/**
 	 * The type of viewer.
 	 */
@@ -206,27 +210,17 @@ private:
 	 */
 	Projection projection_;
 	/**
-	 * The view transformation matrix.
+	 * The viewer's projection transformation matrix.
 	 */
-	mutable QMatrix4x4 cachedViewTransform_;
+	QMatrix4x4 projectionTransform_;
 	/**
-	 * When true, this signals that the cached view transformation matrix needs
-	 * to be updated before being accessed.
+	 * The viewer's view transformation matrix.
 	 */
-	mutable bool updateCachedViewTransform_;
+	QMatrix4x4 viewTransform_;
 	/**
-	 * The projection transformation matrix.
+	 * The viewer's view-projection transformation matrix.
 	 */
-	mutable QMatrix4x4 cachedProjectionTransform_;
-	/**
-	 * When true, this signals that the cached projection transformation matrix
-	 * needs to be updated before being accessed.
-	 */
-	mutable bool updateCachedProjectionTransform_;
-	/**
-	 * The view-projection transformation matrix.
-	 */
-	mutable QMatrix4x4 cachedViewProjectionTransform_;
+	QMatrix4x4 viewProjectionTransform_;
 	/**
 	 * The viewer's reference point, i.e. the position that is being looked at.
 	 */
@@ -236,7 +230,7 @@ private:
 	 */
 	Viewport viewport_;
 	/**
-	 * The viewer's scissor.
+	 * The viewer's viewport scissor.
 	 */
 	QRectF scissor_;
 	/**

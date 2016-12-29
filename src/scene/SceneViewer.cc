@@ -31,13 +31,15 @@ SceneViewer::SceneViewer(const Type type, const QString& name) :
 SceneObject(name),
 type_(type),
 projection_(Projection::Perspective),
-updateCachedViewTransform_(true),
-updateCachedProjectionTransform_(true),
 center_(0, 0, 0),
 scissor_(QPointF(0.0f, 0.0f), QPointF(1.0f, 1.0f)),
 renderingAlgorithm_(RenderingAlgorithm::NormalMapping),
 primitiveMode_(Primitive::Triangle),
-textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {}
+textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {
+	updateViewTransform();
+	updateProjectionTransform();
+	updateViewProjectionTransform();
+}
 
 
 SceneViewer::Type
@@ -56,39 +58,26 @@ void
 SceneViewer::setProjection(const Projection projection) {
 	if (projection_ != projection) {
 		projection_ = projection;
-		updateCachedProjectionTransform_ = true;
+		updateProjectionTransform();
 	}
-}
-
-
-const QMatrix4x4&
-SceneViewer::getViewTransform() const {
-	if (updateCachedViewTransform_) {
-		updateCachedViewTransform_ = false;
-		cachedViewTransform_ = calculateViewTransform();
-	}
-	return cachedViewTransform_;
 }
 
 
 const QMatrix4x4&
 SceneViewer::getProjectionTransform() const {
-	if (updateCachedProjectionTransform_) {
-		updateCachedProjectionTransform_ = false;
-		cachedProjectionTransform_ = calculateProjectionTransform();
-	}
-	return cachedProjectionTransform_;
+	return projectionTransform_;
+}
+
+
+const QMatrix4x4&
+SceneViewer::getViewTransform() const {
+	return viewTransform_;
 }
 
 
 const QMatrix4x4&
 SceneViewer::getViewProjectionTransform() const {
-	if (updateCachedViewTransform_ || updateCachedProjectionTransform_) {
-		const auto& P = getProjectionTransform();
-		const auto& V = getViewTransform();
-		cachedViewProjectionTransform_ = P * V; // The order is important: PROJECTION * VIEW!
-	}
-	return cachedViewProjectionTransform_;
+	return viewProjectionTransform_;
 }
 
 
@@ -145,7 +134,7 @@ SceneViewer::setViewFrustum(const Frustum& viewFrustum) {
 //TODO Implement the comparison operator.
 //	if (viewFrustum_ != viewFrustum) {
 		viewFrustum_ = viewFrustum;
-		updateCachedProjectionTransform_ = true;
+		updateProjectionTransform();
 //	}
 }
 
@@ -210,24 +199,27 @@ SceneViewer::removeAllImageFilters() {
 }
 
 
-QMatrix4x4
-SceneViewer::calculateViewTransform() const {
-	QMatrix4x4 transform;
-	transform.lookAt(getPosition(), center_, QVector3D(0, 1, 0));
-
-	return transform;
-}
-
-
-QMatrix4x4
-SceneViewer::calculateProjectionTransform() const {
-	//TODO Implement me.
-	return QMatrix4x4();
-}
-
-
 bool
 SceneViewer::isObjectVisible(const SceneObject&) const {
 	//TODO Implement me.
 	return true;
+}
+
+
+void
+SceneViewer::updateViewTransform() {
+	viewTransform_.setToIdentity();
+	viewTransform_.lookAt(getPosition(), center_, QVector3D(0, 1, 0));
+}
+
+
+void
+SceneViewer::updateProjectionTransform() {
+	projectionTransform_.setToIdentity();
+}
+
+
+void
+SceneViewer::updateViewProjectionTransform() {
+	viewProjectionTransform_ = projectionTransform_ * viewTransform_;
 }
