@@ -28,13 +28,13 @@
 using clockwork::Viewport;
 
 
-static constexpr double
-clamp(const double d) {
+static constexpr qreal
+clamp(const qreal d) {
 	return std::max(0.0, std::min(d, 1.0));
 }
 
 
-Viewport::Viewport(const double X, const double Y, const double W, const double H, const double N, const double F) :
+Viewport::Viewport(const qreal X, const qreal Y, const qreal W, const qreal H, const qreal N, const qreal F) :
 x(clamp(X)),
 y(clamp(Y)),
 width(clamp(W)),

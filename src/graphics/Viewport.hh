@@ -25,6 +25,8 @@
 #ifndef CLOCKWORK_VIEWPORT_HH
 #define CLOCKWORK_VIEWPORT_HH
 
+#include <QtGlobal>
+
 
 namespace clockwork {
 /**
@@ -39,29 +41,29 @@ struct Viewport
 	/**
 	 * The viewport's horizontal origin.
 	 */
-	double x;
+	qreal x;
 	/**
 	 * The viewport's vertical origin.
 	 */
-	double y;
+	qreal y;
 	/**
 	 * The viewport's width.
 	 */
-	double width;
+	qreal width;
 	/**
 	 * The viewport's height.
 	 */
-	double height;
+	qreal height;
 	/**
 	 * The linear mapping of the near clipping plane to the window coordinates.
 	 * @see glDepthRange documentation
 	 */
-	double near;
+	qreal near;
 	/**
 	 * The linear mapping of the far clipping plane to the window coordinates.
 	 * @see glDepthRange documentation
 	 */
-	double far;
+	qreal far;
 	/**
 	 * Instantiate a viewport with a given origin, width and height.
 	 * @param x the viewport's origin on the horizontal axis.
@@ -72,12 +74,12 @@ struct Viewport
 	 * @param far the linear mapping of the far clipping plane to the window coordinates.
 	 */
 	Viewport(
-		const double x = 0.0,
-		const double y = 0.0,
-		const double width = 1.0,
-		const double height = 1.0,
-		const double near = 0.0,
-		const double far = 1.0
+		const qreal x = 0.0,
+		const qreal y = 0.0,
+		const qreal width = 1.0,
+		const qreal height = 1.0,
+		const qreal near = 0.0,
+		const qreal far = 1.0
 	);
 };
 } // namespace clockwork
