@@ -137,10 +137,10 @@ private:
 	/**
 	 * Converts the coordinates for each of the specified vertices from clipping space to
 	 * normalized device coordinate space to screen space.
-	 * @param transform the viewport transform information.
+	 * @param viewportTransform the viewport transformation matrix.
 	 * @param vertices the collection of vertices to convert.
 	 */
-	static void toScreenSpace(const ViewportTransform& transform, VertexArray& vertices);
+	static void toScreenSpace(const QMatrix2x3& viewportTransform, VertexArray& vertices);
 	/**
 	 * Tests whether the specified fragment can be written to the framebuffer. If
 	 * the specified fragment passes all tests, the function will return a framebuffer
@@ -182,6 +182,8 @@ Renderer<A, T>::draw(RenderingContext& context, const Mesh& mesh) {
 	if (mesh.faces.isEmpty()) {
 		return;
 	}
+	const auto& viewportTransform = context.uniforms["VIEWPORT"].as<const QMatrix2x3>();
+
 	T::sanitizeRenderingContext(context);
 	for (const auto& face : mesh.faces) {
 		VertexArray vertices = vertexProcessing(context, face);
@@ -191,7 +193,7 @@ Renderer<A, T>::draw(RenderingContext& context, const Mesh& mesh) {
 		if (vertices.isEmpty()) {
 			continue;
 		}
-		toScreenSpace(context.viewportTransform, vertices);
+		toScreenSpace(viewportTransform, vertices);
 		const auto& fragments = T::rasterize(context, vertices);
 		fragmentProcessing(context, context.framebuffer, fragments);
 	}
@@ -218,27 +220,29 @@ Renderer<A, T>::cull(const RenderingContext&, VertexArray&) {}
 
 
 template<RenderingAlgorithm A, class T> void
-Renderer<A, T>::toScreenSpace(const ViewportTransform& transform, VertexArray& vertices) {
+Renderer<A, T>::toScreenSpace(const QMatrix2x3& transform, VertexArray& vertices) {
+	const qreal Sx = transform(0, 0);
+	const qreal Sy = transform(1, 0);
+	const qreal Sz = transform(2, 0);
+
+	const qreal Tx = transform(0, 1);
+	const qreal Ty = transform(1, 1);
+	const qreal Tz = transform(2, 1);
+
 	for (auto& vertex : vertices) {
 		auto& position = vertex.data.position;
 
-		qreal x = position.x();
-		qreal y = position.y();
-		qreal z = position.z();
+		// Convert the vertex position from clipping space to normalized
+		// device coordinate (NDC) space ...
 		const qreal w = position.w();
-		const qreal Sx = transform.scale.x();
-		const qreal Sy = transform.scale.y();
-		const qreal Sz = transform.scale.z();
-		const qreal Tx = transform.translate.x();
-		const qreal Ty = transform.translate.y();
-		const qreal Tz = transform.translate.y();
+		const qreal x = position.x() / w;
+		const qreal y = position.y() / w;
+		const qreal z = position.z() / w;
 
-		// Convert the vertex position from clipping coordinate space to
-		// normalized device coordinate (NDC) space (perspective divide),
-		// then to screen space.
-		position.setX(((x / w) * Sx) + Tx);
-		position.setY(((y / w) * Sy) + Ty);
-		position.setZ(((z / w) * Sz) + Tz);
+		// ... then to screen space.
+		position.setX((x * Sx) + Tx);
+		position.setY((y * Sy) + Ty);
+		position.setZ((z * Sz) + Tz);
 		position.setW(1.0);
 	}
 }

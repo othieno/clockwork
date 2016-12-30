@@ -23,11 +23,9 @@
  * THE SOFTWARE.
  */
 #include "Viewport.hh"
-#include "Framebuffer.hh"
 #include <algorithm>
 
 using clockwork::Viewport;
-using clockwork::ViewportTransform;
 
 
 static constexpr double
@@ -43,41 +41,3 @@ width(clamp(W)),
 height(clamp(H)),
 near(clamp(N)),
 far(clamp(F)) {}
-
-
-ViewportTransform::ViewportTransform() :
-scale(1.0, 1.0, 1.0),
-translate(0.0, 0.0, 0.0) {}
-
-
-ViewportTransform::ViewportTransform(const Viewport& viewport, const Framebuffer& framebuffer) {
-	const auto& resolution = framebuffer.getResolutionSize();
-	const auto fbw = resolution.width();
-	const auto fbh = resolution.height();
-
-	// The actual viewport size based on the normalized viewport's parameters
-	// and the framebuffer's resolution.
-	const qreal x = viewport.x * fbw;
-	const qreal y = viewport.y * fbh;
-	const qreal w = viewport.width * fbw;
-	const qreal h = viewport.height * fbh;
-	const qreal n = viewport.near;
-	const qreal f = viewport.far;
-
-	// The viewport transformation is defined as:
-	// P'  = (scale                                 P)    + (translate)
-	// x_w = (viewport_width / 2)                 * x_ndc + (viewport_x + (viewport_width / 2))
-	// y_w = (viewport_height / 2)                * y_ndc + (viewport_y + (viewport_height / 2))
-	// z_w = ((viewport_far - viewport_near) / 2) * z_ndc + ((viewport_near + viewport_far) / 2)
-	// where the 3D point <x_ndc, y_ndc and z_ndc> is in the normalized device
-	// coordinate (NDC) space.
-	const qreal Sx = 0.5 * w;
-	const qreal Sy = 0.5 * h;
-	const qreal Sz = 0.5 * (f - n);
-	const qreal Tx = x + Sx;
-	const qreal Ty = y + Sy;
-	const qreal Tz = 0.5 * (f + n);
-
-	scale = QVector3D(Sx, Sy, Sz);
-	translate = QVector3D(Tx, Ty, Tz);
-}

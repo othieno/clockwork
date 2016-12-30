@@ -42,6 +42,7 @@ struct UniformValidator :
 std::integral_constant<bool,
 	std::is_base_of<Color, T>::value ||
 	std::is_base_of<QVector3D, T>::value ||
+	std::is_base_of<QMatrix2x3, T>::value ||
 	std::is_base_of<QMatrix4x4, T>::value ||
 	std::is_arithmetic<T>::value> {};
 } // namespace

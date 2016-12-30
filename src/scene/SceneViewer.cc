@@ -23,6 +23,7 @@
  * THE SOFTWARE.
  */
 #include "SceneViewer.hh"
+#include "Service.hh"
 
 using clockwork::SceneViewer;
 
@@ -32,13 +33,15 @@ SceneObject(name),
 type_(type),
 projection_(Projection::Perspective),
 center_(0, 0, 0),
-scissor_(QPointF(0.0f, 0.0f), QPointF(1.0f, 1.0f)),
+scissor_(0.0, 0.0, 1.0, 1.0),
 renderingAlgorithm_(RenderingAlgorithm::NormalMapping),
 primitiveMode_(Primitive::Triangle),
 textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {
 	updateViewTransform();
 	updateProjectionTransform();
 	updateViewProjectionTransform();
+
+	connect(&Service::Graphics.getFramebuffer(), &Framebuffer::resized, this, &SceneViewer::updateViewportTransform);
 }
 
 
@@ -81,6 +84,12 @@ SceneViewer::getViewProjectionTransform() const {
 }
 
 
+const QMatrix2x3&
+SceneViewer::getViewportTransform() const {
+	return viewportTransform_;
+}
+
+
 const clockwork::Viewport&
 SceneViewer::getViewport() const {
 	return viewport_;
@@ -90,6 +99,7 @@ SceneViewer::getViewport() const {
 void
 SceneViewer::setViewport(const Viewport& viewport) {
 	viewport_ = viewport;
+	updateViewportTransform(Service::Graphics.getFramebuffer().getResolutionSize());
 }
 
 
@@ -222,4 +232,35 @@ SceneViewer::updateProjectionTransform() {
 void
 SceneViewer::updateViewProjectionTransform() {
 	viewProjectionTransform_ = projectionTransform_ * viewTransform_;
+}
+
+
+void
+SceneViewer::updateViewportTransform(const QSize& resolution) {
+	const qreal x = viewport_.x * resolution.width();
+	const qreal y = viewport_.y * resolution.height();
+	const qreal w = viewport_.width * resolution.width();
+	const qreal h = viewport_.height * resolution.height();
+
+	// TODO Make these member variables.
+	const qreal nearClippingPlaneDistance_ = 1.0;
+	const qreal farClippingPlaneDistance_ = 1000.0;
+
+	// The viewport transformation is defined as:
+	// P'  = (scale                                 P)    + (translate)
+	// x_w = (viewport_width / 2)                 * x_ndc + (viewport_x + (viewport_width / 2))
+	// y_w = (viewport_height / 2)                * y_ndc + (viewport_y + (viewport_height / 2))
+	// z_w = ((viewport_far - viewport_near) / 2) * z_ndc + ((viewport_near + viewport_far) / 2)
+	// where the 3D point <x_ndc, y_ndc and z_ndc> is in the normalized device
+	// coordinate (NDC) space.
+
+	// The first column vector contains the scaling factor.
+	viewportTransform_(0, 0) = 0.5 * w;
+	viewportTransform_(1, 0) = 0.5 * h;
+	viewportTransform_(2, 0) = 0.5 * (farClippingPlaneDistance_ - nearClippingPlaneDistance_);
+
+	// The second contains the translation factor.
+	viewportTransform_(0, 1) = x + (0.5 * w);
+	viewportTransform_(1, 1) = y + (0.5 * h);
+	viewportTransform_(2, 1) = 0.5 * (farClippingPlaneDistance_ + nearClippingPlaneDistance_);
 }

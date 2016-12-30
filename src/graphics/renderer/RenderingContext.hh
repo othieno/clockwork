@@ -26,7 +26,6 @@
 #define CLOCKWORK_RENDERING_CONTEXT_HH
 
 #include "Framebuffer.hh"
-#include "Viewport.hh"
 #include "Primitive.hh"
 #include "LineDrawingAlgorithm.hh"
 #include "Uniform.hh"
@@ -41,10 +40,6 @@ struct RenderingContext {
 	 * The framebuffer.
 	 */
 	Framebuffer framebuffer;
-	/**
-	 * The viewport transform.
-	 */
-	ViewportTransform viewportTransform;
 	/**
 	 * The primitive mode.
 	 */

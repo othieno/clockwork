@@ -25,8 +25,6 @@
 #ifndef CLOCKWORK_VIEWPORT_HH
 #define CLOCKWORK_VIEWPORT_HH
 
-#include <QVector3D>
-
 
 namespace clockwork {
 /**
@@ -81,30 +79,6 @@ struct Viewport
 		const double near = 0.0,
 		const double far = 1.0
 	);
-};
-/**
- * The viewport transform converts points in normalized device coordinates space
- * to window space, thereby scaling and translating the coordinates to fit into
- * the rendering screen.
- */
-struct ViewportTransform {
-	/**
-	 * Instantiates a ViewportTransform object.
-	 */
-	ViewportTransform();
-	/**
-	 * Instantiates a ViewportTransform object based on the parameters of the
-	 * specified normalized viewport and framebuffer.
-	 */
-	ViewportTransform(const Viewport&, const Framebuffer&);
-	/**
-	 * The scaling factor.
-	 */
-	QVector3D scale;
-	/**
-	 * The translation factor.
-	 */
-	QVector3D translate;
 };
 } // namespace clockwork
 

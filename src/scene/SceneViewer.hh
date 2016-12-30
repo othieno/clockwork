@@ -94,6 +94,10 @@ public:
 	 */
 	const QMatrix4x4& getViewProjectionTransform() const;
 	/**
+	 * Returns the viewer's viewport transform matrix.
+	 */
+	const QMatrix2x3& getViewportTransform() const;
+	/**
 	 * Returns the viewer's viewport.
 	 */
 	const Viewport& getViewport() const;
@@ -202,6 +206,11 @@ private:
 	 */
 	void updateViewProjectionTransform();
 	/**
+	 * Updates the viewer's viewport transformation matrix.
+	 * @param resolution the framebuffer's resolution.
+	 */
+	void updateViewportTransform(const QSize& resolution);
+	/**
 	 * The type of viewer.
 	 */
 	const Type type_;
@@ -221,6 +230,12 @@ private:
 	 * The viewer's view-projection transformation matrix.
 	 */
 	QMatrix4x4 viewProjectionTransform_;
+	/**
+	 * The viewer's viewport transformation matrix.
+	 * The matrix is comprised of two 3D column vectors, a scaling and translation vector,
+	 * that convert a coordinate in normalized device coordinate space to screen space.
+	 */
+	QMatrix2x3 viewportTransform_;
 	/**
 	 * The viewer's reference point, i.e. the position that is being looked at.
 	 */
