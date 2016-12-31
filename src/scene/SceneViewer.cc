@@ -32,11 +32,11 @@ SceneViewer::SceneViewer(const Type type, const QString& name) :
 SceneObject(name),
 type_(type),
 projection_(Projection::Perspective),
-center_(0, 0, 0),
 scissor_(0.0, 0.0, 1.0, 1.0),
-renderingAlgorithm_(RenderingAlgorithm::NormalMapping),
+renderingAlgorithm_(RenderingAlgorithm::Wireframe),
 primitiveMode_(Primitive::Triangle),
 textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {
+	setPosition(0, 0, -3);
 	updateViewTransform();
 	updateProjectionTransform();
 	updateViewProjectionTransform();
@@ -105,15 +105,15 @@ SceneViewer::setViewport(const Viewport& viewport) {
 
 const QVector3D&
 SceneViewer::getCenter() const {
-	return center_;
+	return viewFrustum_.center;
 }
 
 
 void
 SceneViewer::setCenter(const QVector3D& center) {
-	if (center_ != center) {
-		center_ = center;
-		emit centerChanged(center_);
+	if (viewFrustum_.center != center) {
+		viewFrustum_.center = center;
+		emit centerChanged(viewFrustum_.center);
 	}
 }
 
@@ -133,19 +133,9 @@ SceneViewer::setScissor(const QRectF& scissor) {
 }
 
 
-const clockwork::Frustum&
+const clockwork::ViewFrustum&
 SceneViewer::getViewFrustum() const {
 	return viewFrustum_;
-}
-
-
-void
-SceneViewer::setViewFrustum(const Frustum& viewFrustum) {
-//TODO Implement the comparison operator.
-//	if (viewFrustum_ != viewFrustum) {
-		viewFrustum_ = viewFrustum;
-		updateProjectionTransform();
-//	}
 }
 
 
@@ -219,13 +209,23 @@ SceneViewer::isObjectVisible(const SceneObject&) const {
 void
 SceneViewer::updateViewTransform() {
 	viewTransform_.setToIdentity();
-	viewTransform_.lookAt(getPosition(), center_, QVector3D(0, 1, 0));
+	viewTransform_.lookAt(
+		getPosition(),
+		viewFrustum_.center,
+		viewFrustum_.up
+	);
 }
 
 
 void
 SceneViewer::updateProjectionTransform() {
 	projectionTransform_.setToIdentity();
+	projectionTransform_.perspective(
+		viewFrustum_.fieldOfView,
+		viewFrustum_.aspectRatio,
+		viewFrustum_.nearClippingPlaneDistance,
+		viewFrustum_.farClippingPlaneDistance
+	);
 }
 
 
@@ -241,10 +241,8 @@ SceneViewer::updateViewportTransform(const QSize& resolution) {
 	const qreal y = viewport_.y * resolution.height();
 	const qreal w = viewport_.width * resolution.width();
 	const qreal h = viewport_.height * resolution.height();
-
-	// TODO Make these member variables.
-	const qreal nearClippingPlaneDistance_ = 1.0;
-	const qreal farClippingPlaneDistance_ = 1000.0;
+	const qreal n = viewFrustum_.nearClippingPlaneDistance;
+	const qreal f = viewFrustum_.farClippingPlaneDistance;
 
 	// The viewport transformation is defined as:
 	// P'  = (scale                                 P)    + (translate)
@@ -257,10 +255,10 @@ SceneViewer::updateViewportTransform(const QSize& resolution) {
 	// The first column vector contains the scaling factor.
 	viewportTransform_(0, 0) = 0.5 * w;
 	viewportTransform_(1, 0) = 0.5 * h;
-	viewportTransform_(2, 0) = 0.5 * (farClippingPlaneDistance_ - nearClippingPlaneDistance_);
+	viewportTransform_(2, 0) = 0.5 * (f - n);
 
 	// The second contains the translation factor.
 	viewportTransform_(0, 1) = x + (0.5 * w);
 	viewportTransform_(1, 1) = y + (0.5 * h);
-	viewportTransform_(2, 1) = 0.5 * (farClippingPlaneDistance_ + nearClippingPlaneDistance_);
+	viewportTransform_(2, 1) = 0.5 * (f + n);
 }

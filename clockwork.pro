@@ -57,6 +57,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/Mesh.hh \
 		src/graphics/Projection.hh \
 		src/graphics/Texture.hh \
+		src/graphics/ViewFrustum.hh \
 		src/graphics/Viewport.hh \
 		src/graphics/filter/ImageFilter.hh \
 		src/graphics/filter/ImageFilterFactory.hh \
@@ -85,7 +86,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/shader/RandomShadingShaderProgram.hh \
 		src/graphics/renderer/shader/ShaderProgram.hh \
 		src/graphics/renderer/shader/TextureMapShaderProgram.hh \
-		src/math/Frustum.hh \
 		src/math/lerp.hh \
 		src/scene/predefined/Suzanne.hh \
 		src/scene/predefined/TexturedCube.hh \
@@ -135,8 +135,8 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/shader/PhongShadingShaderProgram.cc \
 		src/graphics/renderer/shader/RandomShadingShaderProgram.cc \
 		src/graphics/renderer/shader/TextureMapShaderProgram.cc \
+		src/graphics/ViewFrustum.cc \
 		src/graphics/Viewport.cc \
-		src/math/Frustum.cc \
 		src/math/lerp.cc \
 		src/scene/predefined/Suzanne.cc \
 		src/scene/predefined/TexturedCube.cc \

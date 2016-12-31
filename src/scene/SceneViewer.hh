@@ -27,7 +27,7 @@
 
 #include "SceneObject.hh"
 #include "Projection.hh"
-#include "Frustum.hh"
+#include "ViewFrustum.hh"
 #include "Viewport.hh"
 #include "RenderingAlgorithm.hh"
 #include "Primitive.hh"
@@ -127,12 +127,7 @@ public:
 	/**
 	 * Returns the viewer's view frustum.
 	 */
-	const Frustum& getViewFrustum() const;
-	/**
-	 * Sets the viewer's view frustum.
-	 * @param viewFrustum the view frustum to set.
-	 */
-	void setViewFrustum(const Frustum& viewFrustum);
+	const ViewFrustum& getViewFrustum() const;
 	/**
 	 * Returns the viewer's rendering algorithm.
 	 */
@@ -237,9 +232,9 @@ private:
 	 */
 	QMatrix2x3 viewportTransform_;
 	/**
-	 * The viewer's reference point, i.e. the position that is being looked at.
+	 * The viewer's view frustum.
 	 */
-	QVector3D center_;
+	ViewFrustum viewFrustum_;
 	/**
 	 * The viewer's viewport.
 	 */
@@ -248,10 +243,6 @@ private:
 	 * The viewer's viewport scissor.
 	 */
 	QRectF scissor_;
-	/**
-	 * The viewer's view frustum.
-	 */
-	Frustum viewFrustum_;
 	/**
 	 * The viewer's rendering algorithm.
 	 */

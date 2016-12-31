@@ -22,15 +22,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_FRUSTUM_HH
-#define CLOCKWORK_FRUSTUM_HH
+#include "ViewFrustum.hh"
+
+using clockwork::ViewFrustum;
 
 
-namespace clockwork {
-/**
- *
- */
-class Frustum {};
-} // namespace clockwork
-
-#endif // CLOCKWORK_FRUSTUM_HH
+ViewFrustum::ViewFrustum() :
+center(0, 0, 0),
+fieldOfView(60.0),
+aspectRatio(1.0),
+up(0, 1, 0),
+nearClippingPlaneDistance(1.0),
+farClippingPlaneDistance(100.0)
+{}

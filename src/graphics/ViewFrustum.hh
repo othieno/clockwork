@@ -22,6 +22,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "Frustum.hh"
+#ifndef CLOCKWORK_VIEW_FRUSTUM_HH
+#define CLOCKWORK_VIEW_FRUSTUM_HH
 
-using clockwork::Frustum;
+#include <QVector3D>
+
+
+namespace clockwork {
+/**
+ *
+ */
+struct ViewFrustum {
+	/**
+	 * Instantiates a ViewFrustum object.
+	 */
+	ViewFrustum();
+	/**
+	 * The frustum's origin which is also a viewer's reference point, i.e. the
+	 * position that it is looking at.
+	 */
+	QVector3D center;
+	/**
+	 * The field of view angle, in degrees, in the Y direction.
+	 */
+	qreal fieldOfView;
+	/**
+	 * The ratio of width to height that determines the field of view in the X direction.
+	 */
+	qreal aspectRatio;
+	/**
+	 * The vector on the view plane that indicates the upward direction.
+	 */
+	QVector3D up;
+	/**
+	 * The distance to the near depth clipping plane.
+	 */
+	qreal nearClippingPlaneDistance;
+	/**
+	 * The distance to the far depth clipping plane.
+	 */
+	qreal farClippingPlaneDistance;
+};
+} // namespace clockwork
+
+#endif // CLOCKWORK_VIEW_FRUSTUM_HH
