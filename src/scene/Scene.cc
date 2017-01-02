@@ -47,6 +47,7 @@ void
 Scene::addNode(SceneNode* const node) {
 	if (node != nullptr && node->parent() != this) {
 		node->setParent(this);
+		connect(node, &SceneNode::nodeChanged, this, &Scene::update);
 	}
 }
 
@@ -81,4 +82,9 @@ Scene::setViewer(const SceneViewer::Type type) {
 			break;
 	}
 	emit viewerChanged(viewer_.get());
+}
+
+
+void
+Scene::update() {
 }

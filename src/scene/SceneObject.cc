@@ -29,7 +29,11 @@ using clockwork::SceneObject;
 
 SceneObject::SceneObject(const QString& name) :
 SceneNode(SceneNode::Type::Object, name),
-scale_(1, 1, 1) {}
+scale_(1, 1, 1) {
+	connect(this, &SceneObject::positionChanged, this, &SceneObject::nodeChanged);
+	connect(this, &SceneObject::rotationChanged, this, &SceneObject::nodeChanged);
+	connect(this, &SceneObject::scaleChanged,    this, &SceneObject::nodeChanged);
+}
 
 
 const QVector3D&
@@ -40,15 +44,16 @@ SceneObject::getPosition() const {
 
 void
 SceneObject::setPosition(const QVector3D& p) {
-	position_ = p;
-	emit positionChanged(position_);
+	if (position_ != p) {
+		position_ = p;
+		emit positionChanged(position_);
+	}
 }
 
 
 void
 SceneObject::setPosition(const qreal x, const qreal y, const qreal z) {
-	position_ = QVector3D(x, y, z);
-	emit positionChanged(position_);
+	setPosition(QVector3D(x, y, z));
 }
 
 
@@ -60,15 +65,16 @@ SceneObject::getRotation() const {
 
 void
 SceneObject::setRotation(const QQuaternion& r) {
-	rotation_ = r;
-	emit rotationChanged(rotation_);
+	if (rotation_ != r) {
+		rotation_ = r;
+		emit rotationChanged(rotation_);
+	}
 }
 
 
 void
 SceneObject::setRotation(const float pitch, const float yaw, const float roll) {
-	rotation_ = QQuaternion::fromEulerAngles(pitch, yaw, roll);
-	emit rotationChanged(rotation_);
+	setRotation(QQuaternion::fromEulerAngles(pitch, yaw, roll));
 }
 
 
@@ -80,15 +86,16 @@ SceneObject::getScale() const {
 
 void
 SceneObject::setScale(const QVector3D& s) {
-	scale_ = s;
-	emit scaleChanged(scale_);
+	if (scale_ != s) {
+		scale_ = s;
+		emit scaleChanged(scale_);
+	}
 }
 
 
 void
 SceneObject::setScale(const qreal x, const qreal y, const qreal z) {
-	scale_ = QVector3D(x, y, z);
-	emit scaleChanged(scale_);
+	setScale(QVector3D(x, y, z));
 }
 
 

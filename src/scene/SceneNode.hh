@@ -33,8 +33,8 @@ namespace clockwork {
 /**
  *
  */
-class SceneNode : public QObject
-{
+class SceneNode : public QObject {
+	Q_OBJECT
 public:
 	/**
 	 * An enumeration of available node types.
@@ -91,6 +91,16 @@ private:
 	 * that the renderer does not waste time on an otherwise invisible object.
 	 */
 	bool isPruned_;
+signals:
+	/**
+	 * A signal that is emitted when the scene node changes.
+	 */
+	void nodeChanged();
+	/**
+	 * A signal that is emitted when the scene node's "pruned" state changes.
+	 * @param pruned true if the scene node is pruned, false otherwise.
+	 */
+	void nodePruned(const bool pruned);
 };
 } // namespace clockwork
 

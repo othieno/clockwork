@@ -108,6 +108,10 @@ private:
 	 */
 	Scene();
 	/**
+	 * Updates the scene's nodes.
+	 */
+	void update();
+	/**
 	 * The scene viewer.
 	 */
 	std::unique_ptr<SceneViewer> viewer_;

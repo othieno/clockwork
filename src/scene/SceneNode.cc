@@ -32,6 +32,9 @@ identifier_(QUuid::createUuid()),
 type_(type),
 isPruned_(false) {
 	setObjectName(name);
+
+	connect(this, &QObject::objectNameChanged, this, &SceneNode::nodeChanged);
+	connect(this, &SceneNode::nodePruned,      this, &SceneNode::nodeChanged);
 }
 
 
@@ -67,5 +70,8 @@ SceneNode::isPruned() const {
 
 void
 SceneNode::setPruned(const bool pruned) {
-    isPruned_ = pruned;
+	if (isPruned_ != pruned) {
+		isPruned_ = pruned;
+		emit nodePruned(isPruned_);
+	}
 }
