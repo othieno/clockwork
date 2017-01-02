@@ -80,11 +80,11 @@ public:
 	 * Returns the application's scene.
 	 */
 	Scene& getScene();
-	/**
-	 * Updates the application's state.
-	 */
-	Q_INVOKABLE void update();
 private:
+	/**
+	 * Renders the application's scene.
+	 */
+	void renderScene();
 	/**
 	 * Parses the specified command line arguments.
 	 */
@@ -98,18 +98,14 @@ private:
 	 */
 	Scene scene_;
 	/**
-	 * Has the rendering context been modified since the last render?
-	 */
-	std::atomic<bool> renderingContextChanged_;
-	/**
 	 * The application's user interface.
 	 */
 	UserInterface userInterface_;
 signals:
 	/**
-	 * A signal that is emitted when the update process is completed.
+	 * A signal that is emitted when a frame has been successfully rendered.
 	 */
-	void updateCompleted();
+	void frameRendered();
 };
 } // namespace clockwork
 

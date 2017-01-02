@@ -40,14 +40,13 @@ Page {
 		 *
 		 */
 		Component.onCompleted: function() {
-			application.updateCompleted.connect(this.update);
-			application.update();
+			application.frameRendered.connect(this.update);
 		}
 		/**
 		 *
 		 */
 		Component.onDestruction: function() {
-			application.updateCompleted.disconnect(this.update);
+			application.frameRendered.disconnect(this.update);
 		}
 	}
 	/**
