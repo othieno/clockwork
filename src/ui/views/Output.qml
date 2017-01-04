@@ -39,6 +39,88 @@ Page {
 		/**
 		 *
 		 */
+		MouseArea {
+			id: framebufferViewMouseArea
+			anchors.fill: parent
+			/**
+			 * The mouse's position when the MouseArea is clicked for the first time.
+			 */
+			property var mouseOrigin: Qt.point(0, 0)
+			/**
+			 * The mouse's acceleration along the X axis.
+			 */
+			property var mouseAccelerationX: 0
+			/**
+			 * The mouse's acceleration along the Y axis.
+			 */
+			property var mouseAccelerationY: 0
+			/**
+			 *
+			 */
+			property var mouseSpeed: 0.05
+
+			acceptedButtons: Qt.AllButtons
+			onPressed: function(e) {
+				if (e.button == Qt.MiddleButton) {
+					// TODO Implement reset functionality here.
+				} else {
+					mouseOrigin.x = e.x;
+					mouseOrigin.y = e.y;
+					mouseAccelerationX = 0;
+					mouseAccelerationY = 0;
+
+					framebufferViewTimer.start();
+				}
+			}
+			onReleased: {
+				if (framebufferViewTimer.running) {
+					framebufferViewTimer.stop();
+				}
+			}
+			onPositionChanged: function(e) {
+				var deadzone = 10;
+				var step = 0.0025;
+				var dx = e.x - mouseOrigin.x;
+				if (Math.abs(dx) < deadzone) {
+					mouseAccelerationX = 0;
+				} else {
+					mouseAccelerationX = Math.max(-1.0, Math.min(dx * step, 1.0));
+				}
+/*
+				var dy = e.y - mouseOrigin.y;
+				if (Math.abs(dy) < deadzone) {
+					mouseAccelerationY = 0;
+				} else {
+					mouseAccelerationY = Math.max(-1.0, Math.min(dy * step, 1.0));
+				}
+*/
+			}
+		}
+		Timer {
+			id: framebufferViewTimer
+			interval: 16
+			repeat: true
+			onTriggered: {
+				var speed = framebufferViewMouseArea.mouseSpeed;
+				var distance = {
+					x: framebufferViewMouseArea.mouseAccelerationX * speed,
+					y: framebufferViewMouseArea.mouseAccelerationY * speed
+				};
+				var position = scene.viewer.position;
+				if (position) {
+					position.x += distance.x;
+					position.y += distance.y;
+				}
+				var center = scene.viewer.center;
+				if (center) {
+					center.x += distance.x;
+					center.y += distance.y;
+				}
+			}
+		}
+		/**
+		 *
+		 */
 		Component.onCompleted: function() {
 			application.frameRendered.connect(this.update);
 		}
