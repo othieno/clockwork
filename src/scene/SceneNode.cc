@@ -75,3 +75,35 @@ SceneNode::setPruned(const bool pruned) {
 		emit nodePruned(isPruned_);
 	}
 }
+
+
+void
+SceneNode::update() {
+	for (SceneNode* const node : getChildren<SceneNode>()) {
+		node->update();
+	}
+}
+
+
+void
+SceneNode::addChild(SceneNode* const node) {
+	if (node != nullptr) {
+		node->setParent(this);
+	}
+}
+
+
+void
+SceneNode::removeChild(SceneNode* const node) {
+	if (isChild(node)) {
+		node->setParent(nullptr);
+		node->disconnect();
+		node->deleteLater();
+	}
+}
+
+
+bool
+SceneNode::isChild(const SceneNode* const node) const {
+	return node != nullptr && node->parent() == this;
+}

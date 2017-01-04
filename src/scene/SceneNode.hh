@@ -69,6 +69,10 @@ public:
 	 * @param pruned true if this node is to be pruned, false otherwise.
 	 */
 	void setPruned(const bool pruned);
+	/**
+	 * Updates the node.
+	 */
+	virtual void update();
 protected:
 	/**
 	 * Instantiates a named scene node.
@@ -76,6 +80,51 @@ protected:
 	 * @param name the scene node's name.
 	 */
 	SceneNode(const Type type, const QString& name);
+	/**
+	 * Adds a child node.
+	 * @param child the child node to add.
+	 */
+	void addChild(SceneNode* const child);
+	/**
+	 * Removes the specified child node.
+	 * @param child the child node to remove.
+	 */
+	void removeChild(SceneNode* const child);
+	/**
+	 * Returns true if the specified node is a direct child of this node, false otherwise.
+	 * @param node the node to query.
+	 */
+	bool isChild(const SceneNode* const node) const;
+	/**
+	 * Returns the direct child with the specified name if it exists, nullptr otherwise.
+	 * @param name the name of the child node to return.
+	 */
+	template<class Node> Node* getChild(const QString& name) {
+		static_assert(std::is_base_of<SceneNode, Node>::value);
+		return findChild<Node*>(name, Qt::FindDirectChildrenOnly);
+	}
+	/**
+	 * Returns the direct child with the specified name if it exists, nullptr otherwise.
+	 * @param name the name of the child node to return.
+	 */
+	template<class Node> const Node* getChild(const QString& name) const {
+		static_assert(std::is_base_of<SceneNode, Node>::value);
+		return findChild<const Node*>(name, Qt::FindDirectChildrenOnly);
+	}
+	/**
+	 * Returns all direct children of a given type.
+	 */
+	template<class Node> QList<Node*> getChildren() {
+		static_assert(std::is_base_of<SceneNode, Node>::value);
+		return findChildren<Node*>(QString(), Qt::FindDirectChildrenOnly);
+	}
+	/**
+	 * Returns all direct children of a given type.
+	 */
+	template<class Node> QList<const Node*> getChildren() const {
+		static_assert(std::is_base_of<SceneNode, Node>::value);
+		return findChildren<const Node*>(QString(), Qt::FindDirectChildrenOnly);
+	}
 private:
 	/**
 	 * The scene node's unique identifier.
