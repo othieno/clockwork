@@ -29,62 +29,76 @@
 using clockwork::Scene;
 
 
-Scene::Scene() :
-viewer_(nullptr) {
+Scene::Scene(const QString& name) :
+SceneNode(SceneNode::Type::Root, name) {
 	//TODO Remove this when done debugging.
 	setViewer(SceneViewer::Type::Camera);
 	addNode(new asset::Suzanne());
 }
 
 
+void
+Scene::update() {
+	SceneNode::update();
+	emit updated();
+}
+
+
 clockwork::SceneNode*
 Scene::getNode(const QString& name) {
-	return findChild<SceneNode*>(name, Qt::FindDirectChildrenOnly);
+	return getChild<SceneNode>(name);
 }
 
 
 void
 Scene::addNode(SceneNode* const node) {
-	if (node != nullptr && node->parent() != this) {
-		node->setParent(this);
+	if (node != nullptr && !isChild(node)) {
+		addChild(node);
 		connect(node, &SceneNode::nodeChanged, this, &Scene::update);
 	}
 }
 
 
 void
-Scene::removeNode(const QString&) {
-	qFatal("[Scene::removeNode] Implement me!");
+Scene::removeNode(const QString& name) {
+	SceneNode* const node = getNode(name);
+	if (node != nullptr) {
+		removeChild(node);
+	}
 }
 
 
 clockwork::SceneViewer*
 Scene::getViewer() {
-	return viewer_.get();
+	return getChild<SceneViewer>(QString());
 }
 
 
 const clockwork::SceneViewer*
 Scene::getViewer() const {
-	return viewer_.get();
+	return getChild<const SceneViewer>(QString());
 }
 
 
 void
 Scene::setViewer(const SceneViewer::Type type) {
+	SceneViewer* const oldViewer = getViewer();
+	if (oldViewer != nullptr) {
+		if (oldViewer->getType() == type) {
+			return;
+		}
+		removeChild(oldViewer);
+	}
+
+	SceneViewer* newViewer = nullptr;
 	switch (type) {
 		case SceneViewer::Type::Camera:
-			viewer_.reset(new Camera("Default Camera"));
+			newViewer = new Camera("Default Camera");
 			break;
 		default:
-			qWarning("[Scene::setViewer] Unknown SceneViewer type!");
-			viewer_.reset(nullptr);
-			break;
+			qFatal("[Scene::setViewer] Unknown SceneViewer type!");
 	}
-	emit viewerChanged(viewer_.get());
-}
 
-
-void
-Scene::update() {
+	addNode(newViewer);
+	emit viewerChanged(newViewer);
 }

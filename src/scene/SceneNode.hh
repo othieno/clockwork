@@ -40,6 +40,7 @@ public:
 	 * An enumeration of available node types.
 	 */
 	enum class Type {
+		Root,
 		Object,
 		Property,
 	};

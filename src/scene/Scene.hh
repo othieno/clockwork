@@ -36,7 +36,7 @@ class Application;
 /**
  *
  */
-class Scene : public QObject {
+class Scene : public SceneNode {
 	Q_OBJECT
 	Q_PROPERTY(SceneViewer* viewer READ getViewer NOTIFY viewerChanged)
 	friend class Application;
@@ -58,6 +58,10 @@ public:
 	 */
 	Scene& operator=(Scene&&) = delete;
 	/**
+	 * Updates the scene.
+	 */
+	void update() Q_DECL_OVERRIDE;
+	/**
 	 * Returns the instance of the SceneNode with the specified name if it exists,
 	 * nullptr otherwise.
 	 * @param name a node's name.
@@ -66,16 +70,14 @@ public:
 	/**
 	 * Returns all scene nodes of a given Node type.
 	 */
-	template<class Node> QList<Node*> getAllNodes() {
-		static_assert(std::is_base_of<SceneNode, Node>::value);
-		return findChildren<Node*>(QString(), Qt::FindDirectChildrenOnly);
+	template<class Node> QList<Node*> getNodes() {
+		return getChildren<Node>();
 	}
 	/**
 	 * Returns all scene nodes of a given Node type.
 	 */
-	template<class Node> QList<const Node*> getAllNodes() const {
-		static_assert(std::is_base_of<SceneNode, Node>::value);
-		return findChildren<const Node*>(QString(), Qt::FindDirectChildrenOnly);
+	template<class Node> QList<const Node*> getNodes() const {
+		return getChildren<const Node>();
 	}
 	/**
 	 * Adds the specified node to the scene.
@@ -106,16 +108,12 @@ private:
 	/**
 	 * Instantiates a Scene object.
 	 */
-	Scene();
-	/**
-	 * Updates the scene's nodes.
-	 */
-	void update();
-	/**
-	 * The scene viewer.
-	 */
-	std::unique_ptr<SceneViewer> viewer_;
+	explicit Scene(const QString& name = QString());
 signals:
+	/**
+	 * A signal that is emitted when the scene has been updated.
+	 */
+	void updated();
 	/**
 	 * A signal that is emitted when the scene's viewer changes.
 	 */

@@ -66,7 +66,7 @@ GraphicsEngine::render(const Scene& scene) {
 	if (viewer != nullptr) {
 		const QMatrix4x4& VIEW = viewer->getViewTransform();
 		const QMatrix4x4& PROJECTION = viewer->getProjectionTransform();
-		const QMatrix4x4& VIEWPROJECTION = viewer->getViewProjectionTransform();
+		const QMatrix4x4& VIEWPROJECTION = PROJECTION * VIEW;//viewer->getViewProjectionTransform();
 		const QMatrix2x3& VIEWPORT = viewer->getViewportTransform();
 
 		renderingContext_.primitiveMode = viewer->getPrimitiveMode();
@@ -78,7 +78,7 @@ GraphicsEngine::render(const Scene& scene) {
 
 		const auto draw = getDrawFunction(viewer->getRenderingAlgorithm());
 
-		for (const SceneObject* object : scene.getAllNodes<SceneObject>()) {
+		for (const SceneObject* object : scene.getNodes<SceneObject>()) {
 			if (object != nullptr && !object->isPruned() && viewer->isObjectVisible(*object)) {
 				const auto* appearance = object->getAppearanceProperty();
 				if (appearance != nullptr && appearance->hasMesh()) {
