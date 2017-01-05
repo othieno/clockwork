@@ -62,6 +62,12 @@ SceneNode::setName(const QString& name) {
 }
 
 
+const SceneNode*
+SceneNode::getParent() const {
+	return static_cast<const SceneNode*>(parent());
+}
+
+
 bool
 SceneNode::isPruned() const {
     return isPruned_;

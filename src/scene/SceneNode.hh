@@ -62,6 +62,10 @@ public:
 	 */
 	void setName(const QString& name);
 	/**
+	 * Returns the scene node's parent.
+	 */
+	const SceneNode* getParent() const;
+	/**
 	 * Returns true if this node is pruned, false otherwise.
 	 */
 	bool isPruned() const;
