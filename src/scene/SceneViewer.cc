@@ -32,16 +32,32 @@ SceneViewer::SceneViewer(const Type type, const QString& name) :
 SceneObject(name),
 type_(type),
 projection_(Projection::Perspective),
+isProjectionTransformDirty_(true),
+isViewTransformDirty_(true),
+isViewProjectionTransformDirty_(true),
 scissor_(0.0, 0.0, 1.0, 1.0),
 renderingAlgorithm_(RenderingAlgorithm::Wireframe),
 primitiveMode_(Primitive::Triangle),
 textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {
 	setPosition(0, 0, -3);
+
+	const auto& markViewTransformDirty = [this]() {
+		isViewTransformDirty_ = true;
+	};
+	connect(this, &SceneObject::positionChanged, markViewTransformDirty);
+	connect(this, &SceneObject::rotationChanged, markViewTransformDirty);
+
+	connect(&Service::Graphics.getFramebuffer(), &Framebuffer::resized, this, &SceneViewer::updateViewportTransform);
+}
+
+
+void
+SceneViewer::update() {
 	updateViewTransform();
 	updateProjectionTransform();
 	updateViewProjectionTransform();
 
-	connect(&Service::Graphics.getFramebuffer(), &Framebuffer::resized, this, &SceneViewer::updateViewportTransform);
+	SceneObject::update(); // Update CMTM and children.
 }
 
 
@@ -61,7 +77,7 @@ void
 SceneViewer::setProjection(const Projection projection) {
 	if (projection_ != projection) {
 		projection_ = projection;
-		updateProjectionTransform();
+		isProjectionTransformDirty_ = true;
 	}
 }
 
@@ -113,6 +129,7 @@ void
 SceneViewer::setCenter(const QVector3D& center) {
 	if (viewFrustum_.center != center) {
 		viewFrustum_.center = center;
+		isViewTransformDirty_ = true;
 		emit centerChanged(viewFrustum_.center);
 	}
 }
@@ -208,30 +225,43 @@ SceneViewer::isObjectVisible(const SceneObject&) const {
 
 void
 SceneViewer::updateViewTransform() {
-	viewTransform_.setToIdentity();
-	viewTransform_.lookAt(
-		getPosition(),
-		viewFrustum_.center,
-		viewFrustum_.up
-	);
+	if (isViewTransformDirty_) {
+		isViewTransformDirty_ = false;
+		isViewProjectionTransformDirty_ = true;
+
+		viewTransform_.setToIdentity();
+		viewTransform_.lookAt(
+			getPosition(),
+			viewFrustum_.center,
+			viewFrustum_.up
+		);
+	}
 }
 
 
 void
 SceneViewer::updateProjectionTransform() {
-	projectionTransform_.setToIdentity();
-	projectionTransform_.perspective(
-		viewFrustum_.fieldOfView,
-		viewFrustum_.aspectRatio,
-		viewFrustum_.nearClippingPlaneDistance,
-		viewFrustum_.farClippingPlaneDistance
-	);
+	if (isProjectionTransformDirty_) {
+		isProjectionTransformDirty_ = false;
+		isViewProjectionTransformDirty_ = true;
+
+		projectionTransform_.setToIdentity();
+		projectionTransform_.perspective(
+			viewFrustum_.fieldOfView,
+			viewFrustum_.aspectRatio,
+			viewFrustum_.nearClippingPlaneDistance,
+			viewFrustum_.farClippingPlaneDistance
+		);
+	}
 }
 
 
 void
 SceneViewer::updateViewProjectionTransform() {
-	viewProjectionTransform_ = projectionTransform_ * viewTransform_;
+	if (isViewProjectionTransformDirty_) {
+		isViewProjectionTransformDirty_ = false;
+		viewProjectionTransform_ = projectionTransform_ * viewTransform_;
+	}
 }
 
 

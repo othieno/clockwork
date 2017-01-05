@@ -49,6 +49,10 @@ public:
 	 */
 	explicit SceneObject(const QString& name);
 	/**
+	 * Updates the scene object.
+	 */
+	void update() Q_DECL_OVERRIDE;
+	/**
 	 * Return the scene object's position in the scene.
 	 */
 	const QVector3D& getPosition() const;
@@ -107,10 +111,6 @@ public:
 	 */
 	const QMatrix4x4& getCumulativeModelTransform() const;
 	/**
-	 * Updates the scene object's cumulative (composite) model transformation matrix.
-	 */
-	void updateCumulativeModelTransform();
-	/**
 	 * Returns the property with the specified type, if one exists.
 	 * @param type the type of property to return.
 	 */
@@ -154,6 +154,10 @@ public:
 	const SceneObjectAppearance* getAppearance() const;
 private:
 	/**
+	 * Updates the scene object's cumulative (composite) model transformation matrix.
+	 */
+	void updateCumulativeModelTransform();
+	/**
 	 * The scene object's position in the world.
 	 */
 	QVector3D position_;
@@ -171,6 +175,11 @@ private:
 	 * grand-parent, great great grand-parent, ...), with its own transformation matrix.
 	 */
 	QMatrix4x4 cumulativeModelTransform_;
+	/**
+	 * A flag that signals whether or not the composite model transformation matrix needs to be
+	 * recalculated before it can be used.
+	 */
+	bool isCumulativeModelTransformDirty_;
 signals:
 	/**
 	 * A signal that is emitted when the scene object's position changes.

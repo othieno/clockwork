@@ -69,6 +69,10 @@ public:
 	 */
 	SceneViewer& operator=(SceneViewer&&) = delete;
 	/**
+	 * Updates the viewer.
+	 */
+	void update() Q_DECL_OVERRIDE;
+	/**
 	 * Returns the viewer's type.
 	 */
 	Type getType() const;
@@ -218,13 +222,28 @@ private:
 	 */
 	QMatrix4x4 projectionTransform_;
 	/**
+	 * A flag that signals whether or not the projection transformation matrix needs to be
+	 * recalculated before it can be used.
+	 */
+	bool isProjectionTransformDirty_;
+	/**
 	 * The viewer's view transformation matrix.
 	 */
 	QMatrix4x4 viewTransform_;
 	/**
+	 * A flag that signals whether or not the view transformation matrix needs to be recalculated
+	 * before it can be used.
+	 */
+	bool isViewTransformDirty_;
+	/**
 	 * The viewer's view-projection transformation matrix.
 	 */
 	QMatrix4x4 viewProjectionTransform_;
+	/**
+	 * A flag that signals whether or not the view-projection transformation matrix needs to be
+	 * recalculated before it can be used.
+	 */
+	bool isViewProjectionTransformDirty_;
 	/**
 	 * The viewer's viewport transformation matrix.
 	 * The matrix is comprised of two 3D column vectors, a scaling and translation vector,

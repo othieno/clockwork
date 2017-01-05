@@ -29,10 +29,18 @@ using clockwork::SceneObject;
 
 SceneObject::SceneObject(const QString& name) :
 SceneNode(SceneNode::Type::Object, name),
-scale_(1, 1, 1) {
+scale_(1, 1, 1),
+isCumulativeModelTransformDirty_(true) {
 	connect(this, &SceneObject::positionChanged, this, &SceneObject::nodeChanged);
 	connect(this, &SceneObject::rotationChanged, this, &SceneObject::nodeChanged);
 	connect(this, &SceneObject::scaleChanged,    this, &SceneObject::nodeChanged);
+}
+
+
+void
+SceneObject::update() {
+	updateCumulativeModelTransform();
+	SceneNode::update(); // Update the node's children.
 }
 
 
@@ -46,6 +54,7 @@ void
 SceneObject::setPosition(const QVector3D& p) {
 	if (position_ != p) {
 		position_ = p;
+		isCumulativeModelTransformDirty_ = true;
 		emit positionChanged(position_);
 	}
 }
@@ -67,6 +76,7 @@ void
 SceneObject::setRotation(const QQuaternion& r) {
 	if (rotation_ != r) {
 		rotation_ = r;
+		isCumulativeModelTransformDirty_ = true;
 		emit rotationChanged(rotation_);
 	}
 }
@@ -88,6 +98,7 @@ void
 SceneObject::setScale(const QVector3D& s) {
 	if (scale_ != s) {
 		scale_ = s;
+		isCumulativeModelTransformDirty_ = true;
 		emit scaleChanged(scale_);
 	}
 }
@@ -117,15 +128,6 @@ SceneObject::getCumulativeModelTransform() const {
 
 
 void
-SceneObject::updateCumulativeModelTransform() {
-	cumulativeModelTransform_ = getModelTransform();
-	const auto* const parentObject = static_cast<SceneObject*>(parent());
-	if (parentObject != nullptr)
-		cumulativeModelTransform_ = parentObject->getCumulativeModelTransform() * cumulativeModelTransform_;
-}
-
-
-void
 SceneObject::removeProperty(const SceneObjectProperty::Type type) {
 	auto* const property = getProperty<SceneObjectProperty>(type);
 	if (property != nullptr) {
@@ -139,4 +141,20 @@ SceneObject::removeProperty(const SceneObjectProperty::Type type) {
 const clockwork::SceneObjectAppearance*
 SceneObject::getAppearance() const {
 	return getProperty<const SceneObjectAppearance>(SceneObjectProperty::Type::Appearance);
+}
+
+
+void
+SceneObject::updateCumulativeModelTransform() {
+	if (isCumulativeModelTransformDirty_) {
+		isCumulativeModelTransformDirty_ = false;
+
+		cumulativeModelTransform_ = getModelTransform();
+
+		const SceneNode* const parent = getParent();
+		if (parent != nullptr && parent->getNodeType() == SceneNode::Type::Object) {
+			const auto& parentCMTM = static_cast<const SceneObject*>(parent)->getCumulativeModelTransform();
+			cumulativeModelTransform_ = parentCMTM * cumulativeModelTransform_;
+		}
+	}
 }

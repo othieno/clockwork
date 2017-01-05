@@ -66,7 +66,7 @@ GraphicsEngine::render(const Scene& scene) {
 	if (viewer != nullptr) {
 		const QMatrix4x4& VIEW = viewer->getViewTransform();
 		const QMatrix4x4& PROJECTION = viewer->getProjectionTransform();
-		const QMatrix4x4& VIEWPROJECTION = PROJECTION * VIEW;//viewer->getViewProjectionTransform();
+		const QMatrix4x4& VIEWPROJECTION = viewer->getViewProjectionTransform();
 		const QMatrix2x3& VIEWPORT = viewer->getViewportTransform();
 
 		renderingContext_.primitiveMode = viewer->getPrimitiveMode();
