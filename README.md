@@ -44,8 +44,8 @@ This is a work in progress and while I've done my best to make sure the code is 
 or create a pull request!
 
 
-References
-----------
+Further Reading
+---------------
 
 - [__Graphics Programming Black Book__][abrash], Michael Abrash.
 - [__Designing the Framework of a Parallel Game Engine__][intel] [PDF], Intel (R) Developer Zone.
