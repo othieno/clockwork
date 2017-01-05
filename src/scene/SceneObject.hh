@@ -116,7 +116,7 @@ public:
 	 */
 	template<class Property> Property* getProperty(const SceneObjectProperty::Type type) {
 		static_assert(std::is_base_of<SceneObjectProperty, Property>::value);
-		return findChild<Property*>(toString(type), Qt::FindDirectChildrenOnly);
+		return getChild<Property>(toString(type));
 	}
 	/**
 	 * Returns the property with the specified type, if one exists.
@@ -124,7 +124,7 @@ public:
 	 */
 	template<class Property> const Property* getProperty(const SceneObjectProperty::Type type) const {
 		static_assert(std::is_base_of<SceneObjectProperty, Property>::value);
-		return findChild<const Property*>(toString(type), Qt::FindDirectChildrenOnly);
+		return getChild<const Property>(toString(type));
 	}
 	/**
 	 * Adds a property to the SceneObject and returns its instance.
@@ -149,11 +149,9 @@ public:
 	 */
 	void removeProperty(const SceneObjectProperty::Type type);
 	/**
-	 * Returns the object's appearance property if one exists, nullptr otherwise.
+	 * Returns the object's appearance, if the property exists, nullptr otherwise.
 	 */
-	inline const SceneObjectAppearance* getAppearanceProperty() const {
-		return getProperty<const SceneObjectAppearance>(SceneObjectProperty::Type::Appearance);
-	}
+	const SceneObjectAppearance* getAppearance() const;
 private:
 	/**
 	 * The scene object's position in the world.

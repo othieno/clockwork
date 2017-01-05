@@ -80,7 +80,7 @@ GraphicsEngine::render(const Scene& scene) {
 
 		for (const SceneObject* object : scene.getNodes<SceneObject>()) {
 			if (object != nullptr && !object->isPruned() && viewer->isObjectVisible(*object)) {
-				const auto* appearance = object->getAppearanceProperty();
+				const auto* appearance = object->getAppearance();
 				if (appearance != nullptr && appearance->hasMesh()) {
 					const auto& MODEL = object->getModelTransform();
 					const auto& MODELVIEW = VIEW * MODEL;

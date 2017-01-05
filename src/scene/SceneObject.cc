@@ -134,3 +134,9 @@ SceneObject::removeProperty(const SceneObjectProperty::Type type) {
 		property->deleteLater();
 	}
 }
+
+
+const clockwork::SceneObjectAppearance*
+SceneObject::getAppearance() const {
+	return getProperty<const SceneObjectAppearance>(SceneObjectProperty::Type::Appearance);
+}
