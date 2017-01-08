@@ -44,11 +44,6 @@ class SceneObject : public SceneNode {
 	Q_PROPERTY(QVector3D scale READ getScale WRITE setScale NOTIFY scaleChanged)
 public:
 	/**
-	 * Instantiates a named scene object.
-	 * @param name the scene object's name.
-	 */
-	explicit SceneObject(const QString& name);
-	/**
 	 * Updates the scene object.
 	 */
 	void update() Q_DECL_OVERRIDE;
@@ -152,6 +147,12 @@ public:
 	 * Returns the object's appearance, if the property exists, nullptr otherwise.
 	 */
 	const SceneObjectAppearance* getAppearance() const;
+protected:
+	/**
+	 * Instantiates a named scene object.
+	 * @param name the scene object's name.
+	 */
+	explicit SceneObject(const QString& name);
 private:
 	/**
 	 * Updates the scene object's cumulative (composite) model transformation matrix.
