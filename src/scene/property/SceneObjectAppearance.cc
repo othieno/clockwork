@@ -30,7 +30,7 @@ using clockwork::SceneObjectAppearance;
 
 
 SceneObjectAppearance::SceneObjectAppearance(SceneObject& owner) :
-SceneObjectProperty(owner, SceneObjectProperty::Type::Appearance),
+SceneObjectProperty(SceneObjectProperty::Type::Appearance, owner),
 mesh_(nullptr) {}
 
 

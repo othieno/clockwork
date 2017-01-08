@@ -53,8 +53,9 @@ public:
 	Suzanne& operator=(const Suzanne&&) = delete;
 	/**
 	 * Instantiates a Suzanne object.
+	 * @param parent the node's parent.
 	 */
-	Suzanne();
+	explicit Suzanne(SceneNode& parent);
 };
 } // namespace asset
 } // namespace clockwork

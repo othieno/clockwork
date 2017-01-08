@@ -53,8 +53,9 @@ public:
 	Triangle& operator=(const Triangle&&) = delete;
 	/**
 	 * Instantiates a Triangle object.
+	 * @param parent the node's parent.
 	 */
-	Triangle();
+	explicit Triangle(SceneNode& parent);
 };
 } // namespace asset
 } // namespace clockwork

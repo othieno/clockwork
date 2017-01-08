@@ -150,9 +150,10 @@ public:
 protected:
 	/**
 	 * Instantiates a named scene object.
+	 * @param parent the scene object's parent.
 	 * @param name the scene object's name.
 	 */
-	explicit SceneObject(const QString& name);
+	SceneObject(SceneNode& parent, const QString& name);
 private:
 	/**
 	 * Updates the scene object's cumulative (composite) model transformation matrix.

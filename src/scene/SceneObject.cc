@@ -27,8 +27,8 @@
 using clockwork::SceneObject;
 
 
-SceneObject::SceneObject(const QString& name) :
-SceneNode(SceneNode::Type::Object, name),
+SceneObject::SceneObject(SceneNode& parent, const QString& name) :
+SceneNode(SceneNode::Type::Object, &parent, name),
 scale_(1, 1, 1),
 isCumulativeModelTransformDirty_(true) {
 	connect(this, &SceneObject::positionChanged, this, &SceneObject::nodeChanged);

@@ -36,9 +36,10 @@ class Camera : public SceneViewer {
 public:
 	/**
 	 * Instantiate a named Camera object.
+	 * @param name the camera's parent.
 	 * @param name the camera's name.
 	 */
-	explicit Camera(const QString& name);
+	Camera(SceneNode& parent, const QString& name);
 };
 } // namespace clockwork
 

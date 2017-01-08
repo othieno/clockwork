@@ -28,8 +28,8 @@
 using clockwork::SceneViewer;
 
 
-SceneViewer::SceneViewer(const Type type, const QString& name) :
-SceneObject(name),
+SceneViewer::SceneViewer(const Type type, SceneNode& parent, const QString& name) :
+SceneObject(parent, name),
 type_(type),
 projection_(Projection::Perspective),
 isProjectionTransformDirty_(true),

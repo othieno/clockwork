@@ -27,8 +27,8 @@
 using clockwork::asset::Suzanne;
 
 
-Suzanne::Suzanne() :
-SceneObject("Suzanne") {
+Suzanne::Suzanne(SceneNode& parent) :
+SceneObject(parent, "Suzanne") {
 	setScale(0.7, 0.7, 0.7);
 	setRotation(-180, 0, 0);
 

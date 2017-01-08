@@ -27,7 +27,8 @@
 using clockwork::SceneNode;
 
 
-SceneNode::SceneNode(const Type type, const QString& name) :
+SceneNode::SceneNode(const Type type, SceneNode* const parent, const QString& name) :
+QObject(parent),
 identifier_(QUuid::createUuid()),
 type_(type),
 isPruned_(false) {
@@ -50,6 +51,12 @@ SceneNode::getNodeType() const {
 }
 
 
+const SceneNode*
+SceneNode::getParent() const {
+	return static_cast<const SceneNode*>(parent());
+}
+
+
 QString
 SceneNode::getName() const {
 	return objectName();
@@ -59,12 +66,6 @@ SceneNode::getName() const {
 void
 SceneNode::setName(const QString& name) {
 	setObjectName(name);
-}
-
-
-const SceneNode*
-SceneNode::getParent() const {
-	return static_cast<const SceneNode*>(parent());
 }
 
 

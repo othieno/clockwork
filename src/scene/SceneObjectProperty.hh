@@ -65,7 +65,7 @@ public:
 	/**
 	 * Returns the property's owner.
 	 */
-	SceneObject& getOwner();
+	const SceneObject& getOwner() const;
 	/**
 	 * Returns the property's type.
 	 */
@@ -73,15 +73,11 @@ public:
 protected:
 	/**
 	 * Instantiates a named SceneObjectProperty object attached to a given SceneObject instance.
-	 * @param owner the scene object that is characterized by this property.
 	 * @param type the property's internal type.
+	 * @param owner the scene object that is characterized by this property.
 	 */
-	SceneObjectProperty(SceneObject& owner, const Type type);
+	SceneObjectProperty(const Type type, SceneObject& owner);
 private:
-	/**
-	 * The property's owner, i.e. the object that is characterized by this property.
-	 */
-	SceneObject& owner_;
 	/**
 	 * The property's type.
 	 */

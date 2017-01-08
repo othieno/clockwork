@@ -30,10 +30,10 @@ using clockwork::Scene;
 
 
 Scene::Scene(const QString& name) :
-SceneNode(SceneNode::Type::Root, name) {
+SceneNode(SceneNode::Type::Root, nullptr, name) {
 	//TODO Remove this when done debugging.
 	setViewer(SceneViewer::Type::Camera);
-	addNode(new asset::Suzanne());
+	addNode(new asset::Suzanne(*this));
 }
 
 
@@ -52,8 +52,7 @@ Scene::getNode(const QString& name) {
 
 void
 Scene::addNode(SceneNode* const node) {
-	if (node != nullptr && !isChild(node)) {
-		addChild(node);
+	if (node != nullptr) {
 		connect(node, &SceneNode::nodeChanged, this, &Scene::update);
 	}
 }
@@ -93,7 +92,7 @@ Scene::setViewer(const SceneViewer::Type type) {
 	SceneViewer* newViewer = nullptr;
 	switch (type) {
 		case SceneViewer::Type::Camera:
-			newViewer = new Camera("Default Camera");
+			newViewer = new Camera(*this, "Default Camera");
 			break;
 		default:
 			qFatal("[Scene::setViewer] Unknown SceneViewer type!");

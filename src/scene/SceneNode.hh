@@ -53,6 +53,10 @@ public:
 	 */
 	Type getNodeType() const;
 	/**
+	 * Returns the node's parent.
+	 */
+	const SceneNode* getParent() const;
+	/**
 	 * Returns the scene node's name.
 	 */
 	QString getName() const;
@@ -61,10 +65,6 @@ public:
 	 * @param name the scene node's name.
 	 */
 	void setName(const QString& name);
-	/**
-	 * Returns the scene node's parent.
-	 */
-	const SceneNode* getParent() const;
 	/**
 	 * Returns true if this node is pruned, false otherwise.
 	 */
@@ -82,9 +82,10 @@ protected:
 	/**
 	 * Instantiates a named scene node.
 	 * @param type the scene node's type.
+	 * @param parent the scene node's parent.
 	 * @param name the scene node's name.
 	 */
-	SceneNode(const Type type, const QString& name);
+	SceneNode(const Type type, SceneNode* const parent, const QString& name);
 	/**
 	 * Adds a child node.
 	 * @param child the child node to add.
