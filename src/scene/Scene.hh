@@ -80,12 +80,20 @@ public:
 		return getChildren<const Node>();
 	}
 	/**
-	 * Adds the specified node to the scene.
-	 * The scene will claim ownership of the node, i.e. it will automatically
-	 * destroy the node in its destructor.
-	 * @param node a SceneNode to add to the scene.
+	 * Adds a node of the specified Node type to the scene.
+	 * The scene will claim ownership of the node meaning the node is
+	 * automatically deleted during the scene's destruction.
+	 * @param arguments the Node constructor's arguments.
 	 */
-	void addNode(SceneNode* const node);
+	template<class Node, class... Arguments> Node* addNode(Arguments... arguments) {
+		static_assert(std::is_base_of<SceneNode, Node>::value);
+
+		Node* const node = new Node(*this, arguments...);
+		if (node != nullptr) {
+			connect(node, &SceneNode::nodeChanged, this, &Scene::update);
+		}
+		return node;
+	}
 	/**
 	 * Removes a node with the specified name from the scene.
 	 * @param name the name of the node to remove.

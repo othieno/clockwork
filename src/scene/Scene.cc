@@ -33,7 +33,7 @@ Scene::Scene(const QString& name) :
 SceneNode(SceneNode::Type::Root, nullptr, name) {
 	//TODO Remove this when done debugging.
 	setViewer(SceneViewer::Type::Camera);
-	addNode(new asset::Suzanne(*this));
+	addNode<asset::Suzanne>();
 }
 
 
@@ -47,14 +47,6 @@ Scene::update() {
 clockwork::SceneNode*
 Scene::getNode(const QString& name) {
 	return getChild<SceneNode>(name);
-}
-
-
-void
-Scene::addNode(SceneNode* const node) {
-	if (node != nullptr) {
-		connect(node, &SceneNode::nodeChanged, this, &Scene::update);
-	}
 }
 
 
@@ -92,12 +84,11 @@ Scene::setViewer(const SceneViewer::Type type) {
 	SceneViewer* newViewer = nullptr;
 	switch (type) {
 		case SceneViewer::Type::Camera:
-			newViewer = new Camera(*this, "Default Camera");
+			newViewer = addNode<Camera>("Default Camera");
 			break;
 		default:
 			qFatal("[Scene::setViewer] Unknown SceneViewer type!");
 	}
 
-	addNode(newViewer);
 	emit viewerChanged(newViewer);
 }
