@@ -117,7 +117,7 @@ private:
 	/**
 	 * Instantiates a Scene object.
 	 */
-	explicit Scene(const QString& name = QString());
+	Scene();
 signals:
 	/**
 	 * A signal that is emitted when the scene has been updated.

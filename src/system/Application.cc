@@ -30,11 +30,12 @@ using clockwork::Application;
 
 Application::Application(int& argc, char** argv) :
 QGuiApplication(argc, argv),
-settings_(),
 userInterface_(*this) {
 	setApplicationName("Clockwork");
 	setApplicationVersion(APPLICATION_VERSION);
 	parseCommandLineArguments(argc, argv);
+
+	connect(&scene_, &Scene::updated, this, &Application::renderScene);
 }
 
 
@@ -53,7 +54,6 @@ Application::initialize() {
 		return error;
 	}
 
-	connect(&scene_, &Scene::updated, this, &Application::renderScene);
 	scene_.update();
 
 	return Error::None;

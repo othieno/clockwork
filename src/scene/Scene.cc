@@ -29,8 +29,8 @@
 using clockwork::Scene;
 
 
-Scene::Scene(const QString& name) :
-SceneNode(SceneNode::Type::Root, nullptr, name) {
+Scene::Scene() :
+SceneNode(SceneNode::Type::Root, nullptr, "Default Scene") {
 	//TODO Remove this when done debugging.
 	setViewer(SceneViewer::Type::Camera, "Default Camera");
 	addNode<asset::Suzanne>();
