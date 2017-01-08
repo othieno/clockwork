@@ -109,9 +109,10 @@ public:
 	const SceneViewer* getViewer() const;
 	/**
 	 * Sets the type of SceneViewer.
-	 * @param type the SceneViewer type to set.
+	 * @param type the type of scene viewer to set.
+	 * @param name the scene viewer's name.
 	 */
-	void setViewer(const SceneViewer::Type type);
+	void setViewer(const SceneViewer::Type type, const QString& name);
 private:
 	/**
 	 * Instantiates a Scene object.
