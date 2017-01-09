@@ -71,12 +71,12 @@ public:
 	/**
 	 * Returns the framebuffer's current resolution.
 	 */
-	Framebuffer::Resolution getResolution() const;
+	Framebuffer::Resolution getFramebufferResolution() const;
 	/**
 	 * Sets the framebuffer's resolution.
 	 * @param resolution the resolution to set.
 	 */
-	void setResolution(const Framebuffer::Resolution resolution);
+	void setFramebufferResolution(const Framebuffer::Resolution resolution);
 	/**
 	 * Clears the framebuffer.
 	 */

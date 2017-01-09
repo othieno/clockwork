@@ -43,13 +43,13 @@ GraphicsEngine::~GraphicsEngine() {}
 
 
 clockwork::Framebuffer::Resolution
-GraphicsEngine::getResolution() const {
+GraphicsEngine::getFramebufferResolution() const {
 	return renderingContext_.framebuffer.getResolution();
 }
 
 
 void
-GraphicsEngine::setResolution(const Framebuffer::Resolution resolution) {
+GraphicsEngine::setFramebufferResolution(const Framebuffer::Resolution resolution) {
 	renderingContext_.framebuffer.setResolution(resolution);
 }
 
