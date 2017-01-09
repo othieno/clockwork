@@ -35,19 +35,19 @@ projection_(Projection::Perspective),
 isProjectionTransformDirty_(true),
 isViewTransformDirty_(true),
 isViewProjectionTransformDirty_(true),
+isViewportTransformDirty_(true),
 scissor_(0.0, 0.0, 1.0, 1.0),
 renderingAlgorithm_(RenderingAlgorithm::Wireframe),
 primitiveMode_(Primitive::Triangle),
 textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {
 	setPosition(0, 0, -3);
 
-	const auto& markViewTransformDirty = [this]() {
-		isViewTransformDirty_ = true;
-	};
+	const auto& markViewTransformDirty = [this]() { isViewTransformDirty_ = true; };
+	const auto& markViewportTransformDirty = [this]() { isViewportTransformDirty_ = true; };
+
 	connect(this, &SceneObject::positionChanged, markViewTransformDirty);
 	connect(this, &SceneObject::rotationChanged, markViewTransformDirty);
-
-	connect(&Service::Graphics.getFramebuffer(), &Framebuffer::resized, this, &SceneViewer::updateViewportTransform);
+	connect(&Service::Graphics.getFramebuffer(), &Framebuffer::resized, markViewportTransformDirty);
 }
 
 
@@ -56,6 +56,7 @@ SceneViewer::update() {
 	updateViewTransform();
 	updateProjectionTransform();
 	updateViewProjectionTransform();
+	updateViewportTransform();
 
 	SceneObject::update(); // Update CMTM and children.
 }
@@ -114,8 +115,12 @@ SceneViewer::getViewport() const {
 
 void
 SceneViewer::setViewport(const Viewport& viewport) {
-	viewport_ = viewport;
-	updateViewportTransform(Service::Graphics.getFramebuffer().getResolutionSize());
+	//if (viewport_ != viewport) { // FIXME Implement comparison operator for the Viewport class.
+	if (true) {
+		viewport_ = viewport;
+		isViewportTransformDirty_ = true;
+		emit viewportChanged(viewport_);
+	}
 }
 
 
@@ -266,29 +271,35 @@ SceneViewer::updateViewProjectionTransform() {
 
 
 void
-SceneViewer::updateViewportTransform(const QSize& resolution) {
-	const qreal x = viewport_.x * resolution.width();
-	const qreal y = viewport_.y * resolution.height();
-	const qreal w = viewport_.width * resolution.width();
-	const qreal h = viewport_.height * resolution.height();
-	const qreal n = viewFrustum_.nearClippingPlaneDistance;
-	const qreal f = viewFrustum_.farClippingPlaneDistance;
+SceneViewer::updateViewportTransform() {
+	if (isViewportTransformDirty_) {
+		isViewportTransformDirty_ = false;
 
-	// The viewport transformation is defined as:
-	// P'  = (scale                                 P)    + (translate)
-	// x_w = (viewport_width / 2)                 * x_ndc + (viewport_x + (viewport_width / 2))
-	// y_w = (viewport_height / 2)                * y_ndc + (viewport_y + (viewport_height / 2))
-	// z_w = ((viewport_far - viewport_near) / 2) * z_ndc + ((viewport_near + viewport_far) / 2)
-	// where the 3D point <x_ndc, y_ndc and z_ndc> is in the normalized device
-	// coordinate (NDC) space.
+		const QSize& resolution = Service::Graphics.getFramebuffer().getResolutionSize();
 
-	// The first column vector contains the scaling factor.
-	viewportTransform_(0, 0) = 0.5 * w;
-	viewportTransform_(1, 0) = 0.5 * h;
-	viewportTransform_(2, 0) = 0.5 * (f - n);
+		const qreal x = viewport_.x * resolution.width();
+		const qreal y = viewport_.y * resolution.height();
+		const qreal w = viewport_.width * resolution.width();
+		const qreal h = viewport_.height * resolution.height();
+		const qreal n = viewFrustum_.nearClippingPlaneDistance;
+		const qreal f = viewFrustum_.farClippingPlaneDistance;
 
-	// The second contains the translation factor.
-	viewportTransform_(0, 1) = x + (0.5 * w);
-	viewportTransform_(1, 1) = y + (0.5 * h);
-	viewportTransform_(2, 1) = 0.5 * (f + n);
+		// The viewport transformation is defined as:
+		// P'  = (scale                                 P)    + (translate)
+		// x_w = (viewport_width / 2)                 * x_ndc + (viewport_x + (viewport_width / 2))
+		// y_w = (viewport_height / 2)                * y_ndc + (viewport_y + (viewport_height / 2))
+		// z_w = ((viewport_far - viewport_near) / 2) * z_ndc + ((viewport_near + viewport_far) / 2)
+		// where the 3D point <x_ndc, y_ndc and z_ndc> is in the normalized device
+		// coordinate (NDC) space.
+
+		// The first column vector contains the scaling factor.
+		viewportTransform_(0, 0) = 0.5 * w;
+		viewportTransform_(1, 0) = 0.5 * h;
+		viewportTransform_(2, 0) = 0.5 * (f - n);
+
+		// The second contains the translation factor.
+		viewportTransform_(0, 1) = x + (0.5 * w);
+		viewportTransform_(1, 1) = y + (0.5 * h);
+		viewportTransform_(2, 1) = 0.5 * (f + n);
+	}
 }

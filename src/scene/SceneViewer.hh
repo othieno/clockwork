@@ -207,9 +207,8 @@ private:
 	void updateViewProjectionTransform();
 	/**
 	 * Updates the viewer's viewport transformation matrix.
-	 * @param resolution the framebuffer's resolution.
 	 */
-	void updateViewportTransform(const QSize& resolution);
+	void updateViewportTransform();
 	/**
 	 * The type of viewer.
 	 */
@@ -252,6 +251,11 @@ private:
 	 */
 	QMatrix2x3 viewportTransform_;
 	/**
+	 * A flag that signals whether or not the viewport transformation matrix needs to be
+	 * recalculated before it can be used.
+	 */
+	bool isViewportTransformDirty_;
+	/**
 	 * The viewer's view frustum.
 	 */
 	ViewFrustum viewFrustum_;
@@ -280,6 +284,10 @@ private:
 	 */
 	QList<ImageFilter::Identifier> imageFilterIdentifiers_;
 signals:
+	/**
+	 * A signal that is emitted when the viewer's viewport is changed.
+	 */
+	void viewportChanged(const Viewport& viewport);
 	/**
 	 * A signal that is emitted when the viewer's reference point is changed.
 	 */
