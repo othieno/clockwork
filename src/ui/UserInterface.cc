@@ -49,10 +49,16 @@ UserInterface::initialize() {
 		return Error::InvalidQmlContext;
 	}
 
-	qRegisterMetaType<SceneViewer*>("SceneViewer*");
-	qmlRegisterType<FramebufferView>("Clockwork", 0, 1, "FramebufferView");
+	registerTypes();
 
 	QPM_INIT(engine_);
 	engine_.load(QUrl("qrc:/view/ApplicationWindow"));
 	return Error::None;
+}
+
+
+void
+UserInterface::registerTypes() {
+	qRegisterMetaType<SceneViewer*>("SceneViewer*");
+	qmlRegisterType<FramebufferView>("Clockwork", 0, 1, "FramebufferView");
 }

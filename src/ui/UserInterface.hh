@@ -67,6 +67,10 @@ private:
 	 */
 	Error initialize();
 	/**
+	 * Registers custom data types for use in the QML context.
+	 */
+	void registerTypes();
+	/**
 	 * The application that this user interface is bound to.
 	 */
 	Application& application_;
