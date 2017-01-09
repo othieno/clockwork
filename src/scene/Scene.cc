@@ -31,9 +31,7 @@ using clockwork::Scene;
 
 Scene::Scene() :
 SceneNode(SceneNode::Type::Root, nullptr, "Default Scene") {
-	//TODO Remove this when done debugging.
-	setViewer(SceneViewer::Type::Camera, "Default Camera");
-	addNode<asset::Suzanne>();
+	connect(this, &Scene::nodeChanged, this, &Scene::update);
 }
 
 
@@ -77,6 +75,7 @@ Scene::setViewer(const SceneViewer::Type type, const QString& name) {
 	if (oldViewer != nullptr) {
 		if (oldViewer->getType() == type) {
 			oldViewer->setName(name);
+			viewerChanged(oldViewer);
 			return;
 		}
 		removeChild(oldViewer);
@@ -92,4 +91,22 @@ Scene::setViewer(const SceneViewer::Type type, const QString& name) {
 	}
 
 	emit viewerChanged(newViewer);
+}
+
+
+void
+Scene::load(const QString&) {
+	// When a child is added to a node, the nodeChanged signal is emitted and
+	// depending on how many nodes a scene has, this could generate quite a
+	// number of redundant signals. So we block all signals while the scene
+	// is being populated, reenable them when the process is done, and emit a
+	// single nodeChanged signal, effectively coalescing all ignored signals.
+	blockSignals(true);
+
+	//TODO Implement me.
+	setViewer(SceneViewer::Type::Camera, "Default Camera");
+	addNode<asset::Suzanne>();
+
+	blockSignals(false);
+	emit nodeChanged();
 }

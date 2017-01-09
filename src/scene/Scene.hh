@@ -113,6 +113,12 @@ public:
 	 * @param name the scene viewer's name.
 	 */
 	void setViewer(const SceneViewer::Type type, const QString& name);
+public slots:
+	/**
+	 * Loads a scene from the file with the specified file name.
+	 * @param filename the name of the file containing the scene to load.
+	 */
+	void load(const QString& filename);
 private:
 	/**
 	 * Instantiates a Scene object.

@@ -46,6 +46,8 @@ ApplicationWindow {
 			flags |= Qt.FramelessWindowHint
 			applicationWindow.clientSideDecorations = true
 		}
+		// TODO Remove this when there's a more user-friendly way of loading a scene.
+		scene.load("/dummy/path/to/scene");
 	}
 	/**
 	 * The application's page content.

@@ -49,14 +49,7 @@ Application::initialize() {
 	Service::Graphics.enableDepthTest(settings_.isDepthTestEnabled());
 	Service::Graphics.setFramebufferResolution(Framebuffer::Resolution::XGA);
 
-	auto error = userInterface_.initialize();
-	if (error != Error::None) {
-		return error;
-	}
-
-	scene_.update();
-
-	return Error::None;
+	return userInterface_.initialize();
 }
 
 
