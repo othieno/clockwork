@@ -131,9 +131,7 @@ void
 SceneObject::removeProperty(const SceneObjectProperty::Type type) {
 	auto* const property = getProperty<SceneObjectProperty>(type);
 	if (property != nullptr) {
-		property->setParent(nullptr);
-		property->disconnect();
-		property->deleteLater();
+		removeChild(property);
 	}
 }
 
