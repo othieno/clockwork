@@ -28,20 +28,20 @@
 using clockwork::SceneObjectProperty;
 
 
-SceneObjectProperty::SceneObjectProperty(const Type type, SceneObject& owner) :
-SceneNode(SceneNode::Type::Property, &owner, toString(type)),
+SceneObjectProperty::SceneObjectProperty(const Type type) :
+SceneNode(SceneNode::Type::Property, toString(type)),
 type_(type) {}
-
-
-const clockwork::SceneObject&
-SceneObjectProperty::getOwner() const {
-	return *static_cast<const SceneObject*>(getParent());
-}
 
 
 SceneObjectProperty::Type
 SceneObjectProperty::getType() const {
 	return type_;
+}
+
+
+const clockwork::SceneObject&
+SceneObjectProperty::getOwner() const {
+	return *static_cast<const SceneObject*>(getParent());
 }
 
 

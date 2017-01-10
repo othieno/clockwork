@@ -27,5 +27,5 @@
 using clockwork::asset::TexturedCube;
 
 
-TexturedCube::TexturedCube(SceneNode& parent) :
-SceneObject(parent, "Textured Cube") {}
+TexturedCube::TexturedCube() :
+SceneObject("Textured Cube") {}

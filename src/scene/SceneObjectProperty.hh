@@ -63,20 +63,19 @@ public:
 	 */
 	SceneObjectProperty& operator=(SceneObjectProperty&&) = delete;
 	/**
-	 * Returns the property's owner.
-	 */
-	const SceneObject& getOwner() const;
-	/**
 	 * Returns the property's type.
 	 */
 	Type getType() const;
+	/**
+	 * Returns the property's owner.
+	 */
+	const SceneObject& getOwner() const;
 protected:
 	/**
 	 * Instantiates a named SceneObjectProperty object attached to a given SceneObject instance.
-	 * @param type the property's internal type.
-	 * @param owner the scene object that is characterized by this property.
+	 * @param type the property's type.
 	 */
-	SceneObjectProperty(const Type type, SceneObject& owner);
+	SceneObjectProperty(const Type type);
 private:
 	/**
 	 * The property's type.

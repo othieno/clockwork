@@ -88,7 +88,7 @@ public:
 	template<class Node, class... Arguments> Node* addNode(Arguments... arguments) {
 		static_assert(std::is_base_of<SceneNode, Node>::value);
 
-		Node* const node = new Node(*this, arguments...);
+		Node* const node = new Node(arguments...);
 		if (node != nullptr) {
 			connect(node, &SceneNode::nodeChanged, this, &Scene::update);
 		}

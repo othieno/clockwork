@@ -91,10 +91,9 @@ protected:
 	/**
 	 * Instantiates a named scene node.
 	 * @param type the scene node's type.
-	 * @param parent the scene node's parent.
 	 * @param name the scene node's name.
 	 */
-	SceneNode(const Type type, SceneNode* const parent, const QString& name);
+	SceneNode(const Type type, const QString& name);
 	/**
 	 * Adds a child node.
 	 * @param child the child node to add.

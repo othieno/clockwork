@@ -27,13 +27,10 @@
 using clockwork::SceneNode;
 
 
-SceneNode::SceneNode(const Type type, SceneNode* const parent, const QString& name) :
+SceneNode::SceneNode(const Type type, const QString& name) :
 identifier_(QUuid::createUuid()),
 type_(type),
 isPruned_(false) {
-	if (parent != nullptr) {
-		setParent(*parent);
-	}
 	setObjectName(name);
 
 	connect(this, &QObject::objectNameChanged, this, &SceneNode::nodeChanged);

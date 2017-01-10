@@ -30,7 +30,7 @@ using clockwork::Scene;
 
 
 Scene::Scene() :
-SceneNode(SceneNode::Type::Root, nullptr, "Default Scene") {
+SceneNode(SceneNode::Type::Root, "Default Scene") {
 	connect(this, &Scene::nodeChanged, this, &Scene::update);
 }
 

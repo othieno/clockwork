@@ -29,8 +29,8 @@
 using clockwork::SceneObjectAppearance;
 
 
-SceneObjectAppearance::SceneObjectAppearance(SceneObject& owner) :
-SceneObjectProperty(SceneObjectProperty::Type::Appearance, owner),
+SceneObjectAppearance::SceneObjectAppearance() :
+SceneObjectProperty(SceneObjectProperty::Type::Appearance),
 mesh_(nullptr) {}
 
 

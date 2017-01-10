@@ -188,10 +188,9 @@ protected:
 	/**
 	 * Instantiates a named SceneViewer object of a given type.
 	 * @param type the viewer's type.
-	 * @param name the viewer's parent.
 	 * @param name the viewer's name.
 	 */
-	SceneViewer(const Type type, SceneNode& parent, const QString& name);
+	SceneViewer(const Type type, const QString& name);
 private:
 	/**
 	 * Updates the viewer's view transformation matrix.

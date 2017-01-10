@@ -27,8 +27,8 @@
 using clockwork::asset::Triangle;
 
 
-Triangle::Triangle(SceneNode& parent) :
-SceneObject(parent, "Triangle") {
+Triangle::Triangle() :
+SceneObject("Triangle") {
 	auto& appearance = addProperty<SceneObjectAppearance>(SceneObjectProperty::Type::Appearance);
 	appearance.setMesh(":/asset/triangle.obj");
 }

@@ -80,10 +80,9 @@ public:
 	void removeMesh();
 private:
 	/**
-	 * Instantiates a SceneObjectAppearance object attached to a given owner.
-	 * @param owner the property's owner.
+	 * Instantiates a SceneObjectAppearance object.
 	 */
-	explicit SceneObjectAppearance(SceneObject&);
+	SceneObjectAppearance();
 	/**
 	 * A polygon mesh.
 	 */

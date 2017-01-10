@@ -53,9 +53,8 @@ public:
 	TexturedCube& operator=(const TexturedCube&&) = delete;
 	/**
 	 * Instantiates a TexturedCube object.
-	 * @param parent the node's parent.
 	 */
-	explicit TexturedCube(SceneNode& parent);
+	TexturedCube();
 };
 } // namespace asset
 } // namespace clockwork

@@ -27,5 +27,5 @@
 using clockwork::Camera;
 
 
-Camera::Camera(SceneNode& parent, const QString& name) :
-SceneViewer(Type::Camera, parent, name) {}
+Camera::Camera(const QString& name) :
+SceneViewer(Type::Camera, name) {}
