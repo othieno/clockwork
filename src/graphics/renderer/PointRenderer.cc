@@ -67,7 +67,7 @@ PointRenderer::FragmentArray
 PointRenderer::rasterize(const RenderingContext&, const VertexArray& vertices) {
 	FragmentArray fragments;
 	for (const auto& vertex : vertices) {
-		fragments.append(PipelineFragment(vertex));
+		fragments.append(Fragment(vertex));
 	}
 	return fragments;
 }

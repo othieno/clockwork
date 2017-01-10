@@ -45,7 +45,6 @@ template<RenderingAlgorithm algorithm, class Implementation>
 class PolygonRenderer : public Renderer<algorithm, Implementation> {
 public:
 	using Fragment = typename Renderer<algorithm, Implementation>::Fragment;
-	using PipelineFragment = typename Renderer<algorithm, Implementation>::PipelineFragment;
 	using FragmentArray = typename Renderer<algorithm, Implementation>::FragmentArray;
 	using Varying = typename Renderer<algorithm, Implementation>::Varying;
 	using Vertex = typename Renderer<algorithm, Implementation>::Vertex;
@@ -224,7 +223,7 @@ PolygonRenderer<A, T>::rasterize(const RenderingContext&, const VertexArray& ver
 				// considered identical so there's no need to interpolate any
 				// new vertices between them.
 				if (std::abs(dx) < EPSILON) {
-					fragments.append(PipelineFragment(from));
+					fragments.append(Fragment(from));
 				} else {
 					auto xmin = static_cast<std::uint32_t>(Fx);
 					auto xmax = static_cast<std::uint32_t>(Tx);
@@ -234,9 +233,9 @@ PolygonRenderer<A, T>::rasterize(const RenderingContext&, const VertexArray& ver
 					for (auto x = xmin; x <= xmax; ++x) {
 						const double p = (x - Fx) / dx;
 						const auto vertex = Vertex::lerp(from, to, p);
-						PipelineFragment fragment(vertex);
-						fragment.data.x = x;
-						fragment.data.y = y;
+						Fragment fragment(vertex);
+						fragment.x = x;
+						fragment.y = y;
 						fragments.append(fragment);
 					}
 				}

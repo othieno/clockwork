@@ -54,11 +54,11 @@ private:
 	/**
 	 *
 	 */
-	static FragmentArray getBresenhamLineFragments(const PipelineFragment&, const PipelineFragment&);
+	static FragmentArray getBresenhamLineFragments(const Fragment&, const Fragment&);
 	/**
 	 *
 	 */
-	static FragmentArray getXiaolinWuLineFragments(const PipelineFragment&, const PipelineFragment&);
+	static FragmentArray getXiaolinWuLineFragments(const Fragment&, const Fragment&);
 };
 } // namespace clockwork
 

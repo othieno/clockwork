@@ -82,45 +82,42 @@ public:
 	/**
 	 *
 	 */
-	using Fragment = typename ShaderProgram::Fragment;
-	static_assert(std::is_base_of<BaseFragment, Fragment>::value);
-	/**
-	 *
-	 */
-	struct PipelineFragment {
+	struct Fragment : ShaderProgram::Fragment {
 		/**
-		 * Instantiates a PipelineFragment object.
+		 * Instantiates a Fragment object.
 		 */
-		PipelineFragment() = default;
+		Fragment() = default;
 		/**
-		 * Instantiates a PipelineFragment object based on the specified Vertex object.
+		 * Instantiates a Fragment object based on the specified ShaderProgram fragment.
 		 */
-		explicit PipelineFragment(const Vertex& vertex);
+		explicit Fragment(const typename ShaderProgram::Fragment&);
 		/**
-		 * Performs a linear interpolation to find the PipelineFragment at a specified
-		 * percentage between two PipelineFragment instances.
+		 * Instantiates a Fragment object based on the specified Vertex object.
 		 */
-		static PipelineFragment lerp(const PipelineFragment& from, const PipelineFragment& to, const double percentage);
+		explicit Fragment(const Vertex&);
 		/**
-		 * The actual fragment data.
+		 * Performs a linear interpolation to find the Fragment at a specified
+		 * percentage between two Fragment instances.
 		 */
-		Fragment data;
+		static Fragment lerp(const Fragment& from, const Fragment& to, const double percentage);
 		/**
 		 * The set of varying variables that accompany the fragment throughout
 		 * the rendering pipeline.
 		 */
 		Varying varying;
 	};
+	static_assert(std::is_base_of<BaseFragment, Fragment>::value);
 	/**
 	 *
 	 */
-	using FragmentArray = QList<PipelineFragment>;
+	using FragmentArray = QList<Fragment>;
 	/**
 	 * Renders the specified mesh in the given context.
 	 * @param context the rendering context.
 	 * @param mesh the polygon mesh to render.
 	 */
 	static void draw(RenderingContext& context, const Mesh& mesh);
+private:
 	/**
 	 *
 	 */
@@ -133,7 +130,6 @@ public:
 	 *
 	 */
 	static void fragmentProcessing(const RenderingContext&, Framebuffer&, const FragmentArray&);
-private:
 	/**
 	 * Converts the coordinates for each of the specified vertices from clipping space to
 	 * normalized device coordinate space to screen space.
@@ -168,16 +164,21 @@ Renderer<A, T>::Vertex::lerp(const Vertex& from, const Vertex& to, const double 
 
 
 template<RenderingAlgorithm A, class T>
-Renderer<A, T>::PipelineFragment::PipelineFragment(const Vertex& vertex) :
-data(vertex),
+Renderer<A, T>::Fragment::Fragment(const typename ShaderProgram::Fragment& fragment) :
+ShaderProgram::Fragment(fragment) {}
+
+
+template<RenderingAlgorithm A, class T>
+Renderer<A, T>::Fragment::Fragment(const Vertex& vertex) :
+ShaderProgram::Fragment(vertex),
 varying(vertex.varying) {}
 
 
-template<RenderingAlgorithm A, class T> typename Renderer<A, T>::PipelineFragment
-Renderer<A, T>::PipelineFragment::lerp(const PipelineFragment& from, const PipelineFragment& to, const double p) {
-	PipelineFragment fragment;
-	fragment.data = Fragment::lerp(from.data, to.data, p);
-	fragment.varying = Varying::lerp(from.varying, to.varying, p);
+template<RenderingAlgorithm A, class T> typename Renderer<A, T>::Fragment
+Renderer<A, T>::Fragment::lerp(const Fragment& from, const Fragment& to, const double p) {
+	Fragment fragment(ShaderProgram::Fragment::lerp(from, to, p));
+	fragment.varying = std::move(Varying::lerp(from.varying, to.varying, p));
+
 	return fragment;
 }
 
@@ -263,9 +264,8 @@ Renderer<A, T>::fragmentProcessing(const RenderingContext& context, Framebuffer&
 	auto* const pbuffer = framebuffer.getPixelBuffer();
 	auto* const zbuffer = framebuffer.getDepthBuffer();
 	auto* const sbuffer = framebuffer.getStencilBuffer();
-	for (const auto& f : fragments) {
-		const auto& fragment = f.data;
-		const auto& varying = f.varying;
+	for (const auto& fragment : fragments) {
+		const auto& varying = fragment.varying;
 		const int offset = fragmentPasses(context, fragment);
 		if (offset >= 0) {
 			pbuffer[offset] = T::ShaderProgram::fragmentShader(context.uniforms, varying, fragment);

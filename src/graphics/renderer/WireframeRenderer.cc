@@ -51,7 +51,7 @@ WireframeRenderer::FragmentArray
 WireframeRenderer::rasterize(const RenderingContext& context, const VertexArray& vertices) {
 	const std::size_t primitiveCount = vertices.size();
 
-	FragmentArray (*getLineFragments)(const PipelineFragment&, const PipelineFragment&) = nullptr;
+	FragmentArray (*getLineFragments)(const Fragment&, const Fragment&) = nullptr;
 	switch (context.lineDrawingAlgorithm) {
 		case LineDrawingAlgorithm::XiaolinWu:
 			getLineFragments = &WireframeRenderer::getXiaolinWuLineFragments;
@@ -72,8 +72,8 @@ WireframeRenderer::rasterize(const RenderingContext& context, const VertexArray&
 			// to it.
 			constexpr auto MASK = std::numeric_limits<decltype(primitiveCount)>::max() - 1;
 			for (std::size_t i = 0; i < (primitiveCount & MASK); ++i) {
-				const PipelineFragment f0(vertices[i]);
-				const PipelineFragment f1(vertices[i + 1]);
+				const Fragment f0(vertices[i]);
+				const Fragment f1(vertices[i + 1]);
 				fragments.append(f0);
 				fragments.append(f1);
 				fragments.append(getLineFragments(f0, f1));
@@ -82,8 +82,8 @@ WireframeRenderer::rasterize(const RenderingContext& context, const VertexArray&
 		}
 		case Primitive::LineStrip:
 			for (std::size_t i = 0; i < (primitiveCount - 1); ++i) {
-				const PipelineFragment f0(vertices[i]);
-				const PipelineFragment f1(vertices[i + 1]);
+				const Fragment f0(vertices[i]);
+				const Fragment f1(vertices[i + 1]);
 				fragments.append(f0);
 				fragments.append(f1);
 				fragments.append(getLineFragments(f0, f1));
@@ -91,8 +91,8 @@ WireframeRenderer::rasterize(const RenderingContext& context, const VertexArray&
 			break;
 		case Primitive::LineLoop:
 			for (std::size_t i = 0; i < primitiveCount; ++i) {
-				const PipelineFragment f0(vertices[i]);
-				const PipelineFragment f1(vertices[(i + 1) % primitiveCount]);
+				const Fragment f0(vertices[i]);
+				const Fragment f1(vertices[(i + 1) % primitiveCount]);
 				fragments.append(f0);
 				fragments.append(f1);
 				fragments.append(getLineFragments(f0, f1));
@@ -106,13 +106,13 @@ WireframeRenderer::rasterize(const RenderingContext& context, const VertexArray&
 
 
 WireframeRenderer::FragmentArray
-WireframeRenderer::getBresenhamLineFragments(const PipelineFragment& from, const PipelineFragment& to) {
+WireframeRenderer::getBresenhamLineFragments(const Fragment& from, const Fragment& to) {
 	FragmentArray fragments;
 
-	const int x0 = from.data.x;
-	const int y0 = from.data.y;
-	const int x1 = to.data.x;
-	const int y1 = to.data.y;
+	const int x0 = from.x;
+	const int y0 = from.y;
+	const int x1 = to.x;
+	const int y1 = to.y;
 	const int xmin = std::min(x0, x1);
 	const int xmax = std::max(x0, x1);
 	const int ymin = std::min(y0, y1);
@@ -124,23 +124,23 @@ WireframeRenderer::getBresenhamLineFragments(const PipelineFragment& from, const
 
 	if (dx == 0) {
 		for (int y = ymin; y <= ymax; ++y) {
-			auto f = PipelineFragment::lerp(from, to, dy == 0 ? 0.0 : (y - y0) / double(dy));
-			f.data.x = x0;
-			f.data.y = y;
+			auto f = Fragment::lerp(from, to, dy == 0 ? 0.0 : (y - y0) / double(dy));
+			f.x = x0;
+			f.y = y;
 			fragments.append(f);
 		}
 	} else if (std::abs(slope) < 1.0) {
 		for (int x = xmin; x <= xmax; ++x) {
-			auto f = PipelineFragment::lerp(from, to, dx == 0 ? 0.0f : (x - x0) / double(dx));
-			f.data.x = x;
-			f.data.y = std::round((slope * x) + b);
+			auto f = Fragment::lerp(from, to, dx == 0 ? 0.0f : (x - x0) / double(dx));
+			f.x = x;
+			f.y = std::round((slope * x) + b);
 			fragments.append(f);
 		}
 	} else {
 		for (int y = ymin; y <= ymax; ++y) {
-			auto f = PipelineFragment::lerp(from, to, dy == 0 ? 0.0 : (y - y0) / double(dy));
-			f.data.x = std::round((y - b) / slope);
-			f.data.y = y;
+			auto f = Fragment::lerp(from, to, dy == 0 ? 0.0 : (y - y0) / double(dy));
+			f.x = std::round((y - b) / slope);
+			f.y = y;
 			fragments.append(f);
 		}
 	}
@@ -149,6 +149,6 @@ WireframeRenderer::getBresenhamLineFragments(const PipelineFragment& from, const
 
 
 WireframeRenderer::FragmentArray
-WireframeRenderer::getXiaolinWuLineFragments(const PipelineFragment& from, const PipelineFragment& to) {
+WireframeRenderer::getXiaolinWuLineFragments(const Fragment& from, const Fragment& to) {
 	return getBresenhamLineFragments(from, to);
 }
