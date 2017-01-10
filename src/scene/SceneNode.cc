@@ -51,6 +51,12 @@ SceneNode::getNodeType() const {
 }
 
 
+bool
+SceneNode::hasParent() const {
+	return QObject::parent() != nullptr;
+}
+
+
 const SceneNode*
 SceneNode::getParent() const {
 	return static_cast<const SceneNode*>(parent());

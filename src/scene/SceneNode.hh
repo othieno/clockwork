@@ -53,6 +53,10 @@ public:
 	 */
 	Type getNodeType() const;
 	/**
+	 * Returns true if the node has a parent, false otherwise.
+	 */
+	bool hasParent() const;
+	/**
 	 * Returns the node's parent.
 	 */
 	const SceneNode* getParent() const;
