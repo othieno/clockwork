@@ -101,12 +101,13 @@ Scene::load(const QString&) {
 	// number of redundant signals. So we block all signals while the scene
 	// is being populated, reenable them when the process is done, and emit a
 	// single nodeChanged signal, effectively coalescing all ignored signals.
-	blockSignals(true);
+	{
+		QSignalBlocker signalBlocker(*this);
 
-	//TODO Implement me.
-	setViewer(SceneViewer::Type::Camera, "Default Camera");
-	addNode<asset::Suzanne>();
+		//TODO Implement me.
+		setViewer(SceneViewer::Type::Camera, "Default Camera");
+		addNode<asset::Suzanne>();
+	} // signalBlocker is destroyed (we've left its scope) so signals are restored.
 
-	blockSignals(false);
 	emit nodeChanged();
 }
