@@ -37,7 +37,6 @@ class Mesh;
  *
  */
 class SceneObjectAppearance : public SceneObjectProperty {
-	friend class SceneObject;
 public:
 	/**
 	 *
@@ -55,6 +54,10 @@ public:
 	 *
 	 */
 	SceneObjectAppearance& operator=(SceneObjectAppearance&&) = delete;
+	/**
+	 * Instantiates a SceneObjectAppearance object.
+	 */
+	SceneObjectAppearance();
 	/**
 	 * Returns true if the property has a non-empty polygon mesh, false otherwise.
 	 * A polygon mesh is considered empty if it has no faces and vertices.
@@ -79,10 +82,6 @@ public:
 	 */
 	void removeMesh();
 private:
-	/**
-	 * Instantiates a SceneObjectAppearance object.
-	 */
-	SceneObjectAppearance();
 	/**
 	 * A polygon mesh.
 	 */

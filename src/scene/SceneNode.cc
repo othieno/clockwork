@@ -108,14 +108,6 @@ SceneNode::update() {
 
 
 void
-SceneNode::addChild(SceneNode* const node) {
-	if (node != nullptr) {
-		node->setParent(*this);
-	}
-}
-
-
-void
 SceneNode::removeChild(SceneNode* const node) {
 	if (isChild(node)) {
 		node->removeParent();

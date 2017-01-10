@@ -81,18 +81,10 @@ public:
 	}
 	/**
 	 * Adds a node of the specified Node type to the scene.
-	 * The scene will claim ownership of the node meaning the node is
-	 * automatically deleted during the scene's destruction.
 	 * @param arguments the Node constructor's arguments.
 	 */
 	template<class Node, class... Arguments> Node* addNode(Arguments... arguments) {
-		static_assert(std::is_base_of<SceneNode, Node>::value);
-
-		Node* const node = new Node(arguments...);
-		if (node != nullptr) {
-			connect(node, &SceneNode::nodeChanged, this, &Scene::update);
-		}
-		return node;
+		return SceneNode::addChild<Node>(arguments...);
 	}
 	/**
 	 * Removes a node with the specified name from the scene.

@@ -130,7 +130,7 @@ public:
 		if (property == nullptr) {
 			switch (type) {
 				case SceneObjectProperty::Type::Appearance:
-					property = new SceneObjectAppearance();
+					property = SceneNode::addChild<SceneObjectAppearance>();
 					break;
 				default:
 					qFatal("[SceneObject::addProperty] Undefined SceneObjectProperty::Type!");

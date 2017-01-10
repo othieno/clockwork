@@ -95,10 +95,19 @@ protected:
 	 */
 	SceneNode(const Type type, const QString& name);
 	/**
-	 * Adds a child node.
-	 * @param child the child node to add.
+	 * Adds a child Node object.
+	 * This node will claim ownership of the child node such that when it is
+	 * destroyed, the child will be destroyed too.
+	 * @param arguments the Node constructor's arguments.
 	 */
-	void addChild(SceneNode* const child);
+	template<class Node, class... Arguments> Node* addChild(Arguments... arguments) {
+		static_assert(std::is_base_of<SceneNode, Node>::value);
+
+		Node* const child = new Node(arguments...);
+		child->setParent(*this);
+
+		return child;
+	}
 	/**
 	 * Removes the specified child node.
 	 * @param child the child node to remove.
