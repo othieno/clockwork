@@ -28,10 +28,12 @@ using clockwork::SceneNode;
 
 
 SceneNode::SceneNode(const Type type, SceneNode* const parent, const QString& name) :
-QObject(parent),
 identifier_(QUuid::createUuid()),
 type_(type),
 isPruned_(false) {
+	if (parent != nullptr) {
+		setParent(*parent);
+	}
 	setObjectName(name);
 
 	connect(this, &QObject::objectNameChanged, this, &SceneNode::nodeChanged);
@@ -60,6 +62,16 @@ SceneNode::hasParent() const {
 const SceneNode*
 SceneNode::getParent() const {
 	return static_cast<const SceneNode*>(parent());
+}
+
+
+void
+SceneNode::setParent(SceneNode& parent) {
+	if (!parent.isChild(this)) {
+		removeParent();
+		QObject::setParent(&parent);
+		connect(this, &SceneNode::nodeChanged, &parent, &SceneNode::nodeChanged);
+	}
 }
 
 
@@ -101,7 +113,7 @@ SceneNode::update() {
 void
 SceneNode::addChild(SceneNode* const node) {
 	if (node != nullptr) {
-		node->setParent(this);
+		node->setParent(*this);
 	}
 }
 

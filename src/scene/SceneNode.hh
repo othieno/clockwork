@@ -61,6 +61,11 @@ public:
 	 */
 	const SceneNode* getParent() const;
 	/**
+	 * Sets the node's parent.
+	 * @param parent the parent node to set.
+	 */
+	void setParent(SceneNode& parent);
+	/**
 	 * Returns the scene node's name.
 	 */
 	QString getName() const;
