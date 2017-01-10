@@ -49,31 +49,31 @@ public:
 	/**
 	 *
 	 */
-	using Vertex = typename ShaderProgram::Vertex;
-	static_assert(std::is_base_of<BaseVertex, Vertex>::value);
-	/**
-	 *
-	 */
-	struct PipelineVertex {
+	struct Vertex : ShaderProgram::Vertex {
 		/**
-		 * Performs a linear interpolation to find the PipelineVertex at a specified
-		 * percentage between two PipelineVertex instances.
+		 * Instantiates a Vertex object.
 		 */
-		static PipelineVertex lerp(const PipelineVertex& from, const PipelineVertex& to, const double percentage);
+		Vertex() = default;
 		/**
-		 * The actual vertex data.
+		 * Instantiates a Vertex object based on the specified ShaderProgram vertex.
 		 */
-		Vertex data;
+		explicit Vertex(const typename ShaderProgram::Vertex&);
+		/**
+		 * Performs a linear interpolation to find the Vertex at a specified
+		 * percentage between two Vertex instances.
+		 */
+		static Vertex lerp(const Vertex& from, const Vertex& to, const double percentage);
 		/**
 		 * The set of varying variables that accompany the vertex throughout
 		 * the rendering pipeline.
 		 */
 		Varying varying;
 	};
+	static_assert(std::is_base_of<BaseVertex, Vertex>::value);
 	/**
 	 *
 	 */
-	using VertexArray = QList<PipelineVertex>;
+	using VertexArray = QList<Vertex>;
 	/**
 	 *
 	 */
@@ -93,9 +93,9 @@ public:
 		 */
 		PipelineFragment() = default;
 		/**
-		 * Instantiates a PipelineFragment object based on the specified PipelineVertex object.
+		 * Instantiates a PipelineFragment object based on the specified Vertex object.
 		 */
-		explicit PipelineFragment(const PipelineVertex& vertex);
+		explicit PipelineFragment(const Vertex& vertex);
 		/**
 		 * Performs a linear interpolation to find the PipelineFragment at a specified
 		 * percentage between two PipelineFragment instances.
@@ -153,18 +153,23 @@ private:
 };
 
 
-template<RenderingAlgorithm A, class T> typename Renderer<A, T>::PipelineVertex
-Renderer<A, T>::PipelineVertex::lerp(const PipelineVertex& from, const PipelineVertex& to, const double p) {
-	PipelineVertex vertex;
-	vertex.data = Vertex::lerp(from.data, to.data, p);
-	vertex.varying = Varying::lerp(from.varying, to.varying, p);
+template<RenderingAlgorithm A, class T>
+Renderer<A, T>::Vertex::Vertex(const typename ShaderProgram::Vertex& vertex) :
+ShaderProgram::Vertex(vertex) {}
+
+
+template<RenderingAlgorithm A, class T> typename Renderer<A, T>::Vertex
+Renderer<A, T>::Vertex::lerp(const Vertex& from, const Vertex& to, const double p) {
+	Vertex vertex(ShaderProgram::Vertex::lerp(from, to, p));
+	vertex.varying = std::move(Varying::lerp(from.varying, to.varying, p));
+
 	return vertex;
 }
 
 
 template<RenderingAlgorithm A, class T>
-Renderer<A, T>::PipelineFragment::PipelineFragment(const PipelineVertex& vertex) :
-data(vertex.data),
+Renderer<A, T>::PipelineFragment::PipelineFragment(const Vertex& vertex) :
+data(vertex),
 varying(vertex.varying) {}
 
 
@@ -207,8 +212,10 @@ Renderer<A, T>::vertexProcessing(const RenderingContext& context, const Mesh::Fa
 	for (std::size_t i = 0; i < face.length; ++i) {
 		T::ShaderProgram::setVertexAttributes(attributes, face, i);
 
-		PipelineVertex vertex;
-		vertex.data = std::move(T::ShaderProgram::vertexShader(context.uniforms, vertex.varying, attributes));
+		Varying varying;
+		Vertex vertex(T::ShaderProgram::vertexShader(context.uniforms, varying, attributes));
+		vertex.varying = std::move(varying);
+
 		vertices.append(vertex);
 	}
 	return vertices;
@@ -230,7 +237,7 @@ Renderer<A, T>::toScreenSpace(const QMatrix2x3& transform, VertexArray& vertices
 	const qreal Tz = transform(2, 1);
 
 	for (auto& vertex : vertices) {
-		auto& position = vertex.data.position;
+		auto& position = vertex.position;
 
 		// Convert the vertex position from clipping space to normalized
 		// device coordinate (NDC) space ...
