@@ -22,34 +22,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_FRAGMENT_HH
-#define CLOCKWORK_FRAGMENT_HH
+#include "BaseFragment.hh"
 
-#include <cstdint>
+using clockwork::BaseFragment;
 
 
-namespace clockwork {
-/**
- *
- */
-struct Fragment {
-	/**
-	 * Instantiates a Fragment object.
-	 */
-	Fragment(const std::uint32_t x = 0, const std::uint32_t y = 0, const double z = 0);
-	/**
-	 * The fragment's screen-space horizontal position.
-	 */
-	std::uint32_t x;
-	/**
-	 * The fragment's screen-space vertical position.
-	 */
-	std::uint32_t y;
-	/**
-	 * The fragment's depth value.
-	 */
-	double z;
-};
-} // namespace clockwork
-
-#endif // CLOCKWORK_FRAGMENT_HH
+BaseFragment::BaseFragment(const std::uint32_t X, const std::uint32_t Y, const double Z) :
+x(X),
+y(Y),
+z(Z) {}

@@ -26,9 +26,9 @@
 #define CLOCKWORK_SHADER_PROGRAM_HH
 
 #include "RenderingAlgorithm.hh"
-#include "Fragment.hh"
-#include "Vertex.hh"
-#include "VertexAttributes.hh"
+#include "BaseFragment.hh"
+#include "BaseVertex.hh"
+#include "BaseVertexAttributes.hh"
 #include "Mesh.hh"
 #include "Uniform.hh"
 #include "lerp.hh"
@@ -56,7 +56,7 @@ public:
 	/**
 	 *
 	 */
-	struct Vertex : clockwork::Vertex {
+	struct Vertex : BaseVertex {
 		/**
 		 * Performs a linear interpolation to find the Vertex at a specified
 		 * percentage between two Vertex instances.
@@ -66,11 +66,11 @@ public:
 	/**
 	 *
 	 */
-	struct VertexAttributes : clockwork::VertexAttributes {};
+	struct VertexAttributes : BaseVertexAttributes {};
 	/**
 	 *
 	 */
-	struct Fragment : clockwork::Fragment {
+	struct Fragment : BaseFragment {
 		/**
 		 * Instantiates a Fragment object.
 		 */

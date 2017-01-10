@@ -22,16 +22,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "VertexAttributes.hh"
+#ifndef CLOCKWORK_BASE_FRAGMENT_HH
+#define CLOCKWORK_BASE_FRAGMENT_HH
 
-using clockwork::VertexAttributes;
+#include <cstdint>
 
 
-VertexAttributes::VertexAttributes(
-	const QVector3D* p,
-	const QVector3D* n,
-	const QPointF* uv
-) :
-position(p),
-normal(n),
-textureCoordinates(uv) {}
+namespace clockwork {
+/**
+ *
+ */
+struct BaseFragment {
+	/**
+	 * The fragment's screen-space horizontal position.
+	 */
+	std::uint32_t x;
+	/**
+	 * The fragment's screen-space vertical position.
+	 */
+	std::uint32_t y;
+	/**
+	 * The fragment's depth value.
+	 */
+	double z;
+protected:
+	/**
+	 * Instantiates a BaseFragment object.
+	 */
+	BaseFragment(const std::uint32_t x = 0, const std::uint32_t y = 0, const double z = 0);
+};
+} // namespace clockwork
+
+#endif // CLOCKWORK_BASE_FRAGMENT_HH

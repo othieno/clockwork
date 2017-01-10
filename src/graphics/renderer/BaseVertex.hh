@@ -22,12 +22,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "Fragment.hh"
+#ifndef CLOCKWORK_BASE_VERTEX_HH
+#define CLOCKWORK_BASE_VERTEX_HH
 
-using clockwork::Fragment;
+#include <QVector4D>
 
 
-Fragment::Fragment(const std::uint32_t X, const std::uint32_t Y, const double Z) :
-x(X),
-y(Y),
-z(Z) {}
+namespace clockwork {
+/**
+ *
+ */
+struct BaseVertex {
+	/**
+	 * The vertex's homogeneous position.
+	 */
+	QVector4D position;
+protected:
+	/**
+	 * Instantiates a BaseVertex object.
+	 */
+	BaseVertex() = default;
+	/**
+	 * Instantiates a BaseVertex object with the specified homogeneous position.
+	 */
+	explicit BaseVertex(const QVector4D& position);
+};
+} // namespace clockwork
+
+#endif // CLOCKWORK_BASE_VERTEX_HH

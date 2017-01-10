@@ -50,7 +50,7 @@ public:
 	 *
 	 */
 	using Vertex = typename ShaderProgram::Vertex;
-	static_assert(std::is_base_of<clockwork::Vertex, Vertex>::value);
+	static_assert(std::is_base_of<BaseVertex, Vertex>::value);
 	/**
 	 *
 	 */
@@ -78,12 +78,12 @@ public:
 	 *
 	 */
 	using VertexAttributes = typename ShaderProgram::VertexAttributes;
-	static_assert(std::is_base_of<clockwork::VertexAttributes, VertexAttributes>::value);
+	static_assert(std::is_base_of<BaseVertexAttributes, VertexAttributes>::value);
 	/**
 	 *
 	 */
 	using Fragment = typename ShaderProgram::Fragment;
-	static_assert(std::is_base_of<clockwork::Fragment, Fragment>::value);
+	static_assert(std::is_base_of<BaseFragment, Fragment>::value);
 	/**
 	 *
 	 */

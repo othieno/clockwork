@@ -22,10 +22,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "Vertex.hh"
+#include "BaseVertexAttributes.hh"
 
-using clockwork::Vertex;
+using clockwork::BaseVertexAttributes;
 
 
-Vertex::Vertex(const QVector4D& p) :
-position(p) {}
+BaseVertexAttributes::BaseVertexAttributes(
+	const QVector3D* p,
+	const QVector3D* n,
+	const QPointF* uv
+) :
+position(p),
+normal(n),
+textureCoordinates(uv) {}

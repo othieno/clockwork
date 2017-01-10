@@ -63,7 +63,9 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/filter/ImageFilterFactory.hh \
 		src/graphics/filter/TextureFilter.hh \
 		src/graphics/filter/TextureFilterFactory.hh \
-		src/graphics/renderer/Fragment.hh \
+		src/graphics/renderer/BaseFragment.hh \
+		src/graphics/renderer/BaseVertex.hh \
+		src/graphics/renderer/BaseVertexAttributes.hh \
 		src/graphics/renderer/Framebuffer.hh \
 		src/graphics/renderer/LineDrawingAlgorithm.hh \
 		src/graphics/renderer/PointRenderer.hh \
@@ -73,8 +75,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/RenderingAlgorithm.hh \
 		src/graphics/renderer/RenderingContext.hh \
 		src/graphics/renderer/Uniform.hh \
-		src/graphics/renderer/Vertex.hh \
-		src/graphics/renderer/VertexAttributes.hh \
 		src/graphics/renderer/WireframeRenderer.hh \
 		src/graphics/renderer/shader/BumpMapShaderProgram.hh \
 		src/graphics/renderer/shader/CelShadingShaderProgram.hh \
@@ -120,11 +120,11 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/Texture.cc \
 		src/graphics/filter/ImageFilter.cc \
 		src/graphics/filter/TextureFilter.cc \
-		src/graphics/renderer/Fragment.cc \
+		src/graphics/renderer/BaseFragment.cc \
+		src/graphics/renderer/BaseVertex.cc \
+		src/graphics/renderer/BaseVertexAttributes.cc \
 		src/graphics/renderer/Framebuffer.cc \
 		src/graphics/renderer/PointRenderer.cc \
-		src/graphics/renderer/Vertex.cc \
-		src/graphics/renderer/VertexAttributes.cc \
 		src/graphics/renderer/WireframeRenderer.cc \
 		src/graphics/renderer/shader/BumpMapShaderProgram.cc \
 		src/graphics/renderer/shader/CelShadingShaderProgram.cc \

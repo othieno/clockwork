@@ -34,7 +34,7 @@ namespace detail {
  *
  */
 template<>
-struct ShaderProgram<RenderingAlgorithm::NormalMapping>::Vertex : clockwork::Vertex {
+struct ShaderProgram<RenderingAlgorithm::NormalMapping>::Vertex : BaseVertex {
 	/**
 	 * Performs a linear interpolation to find the Vertex at a specified
 	 * percentage between two Vertex instances.
@@ -49,7 +49,7 @@ struct ShaderProgram<RenderingAlgorithm::NormalMapping>::Vertex : clockwork::Ver
  *
  */
 template<>
-struct ShaderProgram<RenderingAlgorithm::NormalMapping>::Fragment : clockwork::Fragment {
+struct ShaderProgram<RenderingAlgorithm::NormalMapping>::Fragment : BaseFragment {
 	/**
 	 * Instantiates a Fragment object.
 	 */

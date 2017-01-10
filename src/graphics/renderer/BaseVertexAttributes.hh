@@ -22,8 +22,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_VERTEX_ATTRIBUTES_HH
-#define CLOCKWORK_VERTEX_ATTRIBUTES_HH
+#ifndef CLOCKWORK_BASE_VERTEX_ATTRIBUTES_HH
+#define CLOCKWORK_BASE_VERTEX_ATTRIBUTES_HH
 /**
  * @see <QVector3D>
  */
@@ -38,15 +38,7 @@ namespace clockwork {
 /**
  *
  */
-struct VertexAttributes {
-	/**
-	 * Instantiates a VertexAttributes object.
-	 */
-	VertexAttributes(
-		const QVector3D* position = nullptr,
-		const QVector3D* normal = nullptr,
-		const QPointF* textureCoordinates = nullptr
-	);
+struct BaseVertexAttributes {
 	/**
 	 * A reference to a vertex position.
 	 */
@@ -59,7 +51,16 @@ struct VertexAttributes {
 	 * A reference to a vertex's texture mapping coordinates.
 	 */
 	const QPointF* textureCoordinates;
+protected:
+	/**
+	 * Instantiates a BaseVertexAttributes object.
+	 */
+	BaseVertexAttributes(
+		const QVector3D* position = nullptr,
+		const QVector3D* normal = nullptr,
+		const QPointF* textureCoordinates = nullptr
+	);
 };
 } // namespace clockwork
 
-#endif // CLOCKWORK_VERTEX_ATTRIBUTES_HH
+#endif // CLOCKWORK_BASE_VERTEX_ATTRIBUTES_HH

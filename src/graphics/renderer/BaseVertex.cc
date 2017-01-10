@@ -22,30 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_VERTEX_HH
-#define CLOCKWORK_VERTEX_HH
+#include "BaseVertex.hh"
 
-#include <QVector4D>
+using clockwork::BaseVertex;
 
 
-namespace clockwork {
-/**
- *
- */
-struct Vertex {
-	/**
-	 * Instantiates a Vertex object.
-	 */
-	Vertex() = default;
-	/**
-	 * Instantiates a Vertex object with the specified homogeneous position.
-	 */
-	explicit Vertex(const QVector4D& position);
-	/**
-	 * The vertex's homogeneous position.
-	 */
-	QVector4D position;
-};
-} // namespace clockwork
-
-#endif // CLOCKWORK_VERTEX_HH
+BaseVertex::BaseVertex(const QVector4D& p) :
+position(p) {}

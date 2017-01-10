@@ -48,7 +48,7 @@ struct ShaderProgram<RenderingAlgorithm::RandomShading>::Varying {
  * The set of vertex attributes used by the random shading renderer.
  */
 template<>
-struct ShaderProgram<RenderingAlgorithm::RandomShading>::VertexAttributes : clockwork::VertexAttributes {
+struct ShaderProgram<RenderingAlgorithm::RandomShading>::VertexAttributes : BaseVertexAttributes {
 	/**
 	 * The address of the face that the vertex belongs to. The memory address
 	 * is sufficiently random and can be converted into a 32-bit ARGB color
