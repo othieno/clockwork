@@ -109,8 +109,7 @@ SceneNode::addChild(SceneNode* const node) {
 void
 SceneNode::removeChild(SceneNode* const node) {
 	if (isChild(node)) {
-		node->setParent(nullptr);
-		node->disconnect();
+		node->removeParent();
 		node->deleteLater();
 	}
 }
@@ -119,4 +118,13 @@ SceneNode::removeChild(SceneNode* const node) {
 bool
 SceneNode::isChild(const SceneNode* const node) const {
 	return node != nullptr && node->parent() == this;
+}
+
+
+void
+SceneNode::removeParent() {
+	if (hasParent()) {
+		QObject::setParent(nullptr);
+		disconnect();
+	}
 }

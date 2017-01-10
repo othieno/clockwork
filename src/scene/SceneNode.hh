@@ -137,6 +137,10 @@ protected:
 	}
 private:
 	/**
+	 * Makes this node an orphan.
+	 */
+	void removeParent();
+	/**
 	 * The scene node's unique identifier.
 	 */
 	const QUuid identifier_;
