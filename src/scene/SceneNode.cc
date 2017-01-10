@@ -136,7 +136,7 @@ SceneNode::isChild(const SceneNode* const node) const {
 void
 SceneNode::removeParent() {
 	if (hasParent()) {
+		disconnect(this, &SceneNode::nodeChanged, getParent(), &SceneNode::nodeChanged);
 		QObject::setParent(nullptr);
-		disconnect();
 	}
 }
