@@ -63,11 +63,13 @@ PointRenderer::clip(const RenderingContext&, VertexArray& vertices) {
 }
 
 
-PointRenderer::FragmentArray
-PointRenderer::rasterize(const RenderingContext&, const VertexArray& vertices) {
-	FragmentArray fragments;
+void
+PointRenderer::rasterize(
+	const RenderingContext& context,
+	const VertexArray& vertices,
+	Framebuffer& framebuffer
+) {
 	for (const auto& vertex : vertices) {
-		fragments.append(Fragment(vertex));
+		fragmentProcessing(context, Fragment(vertex), framebuffer);
 	}
-	return fragments;
 }

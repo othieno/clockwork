@@ -48,9 +48,16 @@ public:
 	 */
 	static void clip(const RenderingContext&, VertexArray&);
 	/**
-	 * Generates fragments from the specified collection of vertices.
+	 * Converts the specified vertices into fragments that are written to the given framebuffer.
+	 * @param context the rendering context.
+	 * @param vertices the vertices to convert.
+	 * @param framebuffer the framebuffer where fragments will be written to.
 	 */
-	static FragmentArray rasterize(const RenderingContext&, const VertexArray&);
+	static void rasterize(
+		const RenderingContext& context,
+		const VertexArray& vertices,
+		Framebuffer& framebuffer
+	);
 };
 } // namespace clockwork
 

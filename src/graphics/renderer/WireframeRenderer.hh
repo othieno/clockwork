@@ -47,18 +47,35 @@ public:
 	 */
 	static void clip(const RenderingContext&, VertexArray&);
 	/**
-	 * Generates fragments from the specified collection of vertices.
+	 * Converts the specified vertices into fragments that are written to the given framebuffer.
+	 * @param context the rendering context.
+	 * @param vertices the vertices to convert.
+	 * @param framebuffer the framebuffer where fragments will be written to.
 	 */
-	static FragmentArray rasterize(const RenderingContext&, const VertexArray&);
+	static void rasterize(
+		const RenderingContext& context,
+		const VertexArray& vertices,
+		Framebuffer& framebuffer
+	);
 private:
 	/**
 	 *
 	 */
-	static FragmentArray getBresenhamLineFragments(const Fragment&, const Fragment&);
+	static void drawBresenhamLine(
+		const RenderingContext& context,
+		const Fragment& from,
+		const Fragment& to,
+		Framebuffer& framebuffer
+	);
 	/**
 	 *
 	 */
-	static FragmentArray getXiaolinWuLineFragments(const Fragment&, const Fragment&);
+	static void drawXiaolinWuLine(
+		const RenderingContext& context,
+		const Fragment& from,
+		const Fragment& to,
+		Framebuffer& framebuffer
+	);
 };
 } // namespace clockwork
 

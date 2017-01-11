@@ -45,7 +45,6 @@ template<RenderingAlgorithm algorithm, class Implementation>
 class PolygonRenderer : public Renderer<algorithm, Implementation> {
 public:
 	using Fragment = typename Renderer<algorithm, Implementation>::Fragment;
-	using FragmentArray = typename Renderer<algorithm, Implementation>::FragmentArray;
 	using Varying = typename Renderer<algorithm, Implementation>::Varying;
 	using Vertex = typename Renderer<algorithm, Implementation>::Vertex;
 	using VertexArray = typename Renderer<algorithm, Implementation>::VertexArray;
@@ -62,9 +61,16 @@ public:
 	 */
 	static void clip(const RenderingContext&, VertexArray&);
 	/**
-	 * Generates fragments from the specified collection of vertices.
+	 * Converts the specified vertices into fragments that are written to the given framebuffer.
+	 * @param context the rendering context.
+	 * @param vertices the vertices to convert.
+	 * @param framebuffer the framebuffer where fragments will be written to.
 	 */
-	static FragmentArray rasterize(const RenderingContext&, const VertexArray&);
+	static void rasterize(
+		const RenderingContext& context,
+		const VertexArray& vertices,
+		Framebuffer& framebuffer
+	);
 };
 /**
  *
@@ -182,9 +188,12 @@ template<RenderingAlgorithm A, class T> void
 PolygonRenderer<A, T>::clip(const RenderingContext&, VertexArray&) {}
 
 
-template<RenderingAlgorithm A, class T> typename PolygonRenderer<A, T>::FragmentArray
-PolygonRenderer<A, T>::rasterize(const RenderingContext&, const VertexArray& vertices) {
-	FragmentArray fragments;
+template<RenderingAlgorithm A, class T> void
+PolygonRenderer<A, T>::rasterize(
+	const RenderingContext& context,
+	const VertexArray& vertices,
+	Framebuffer& framebuffer
+) {
 	for (auto it = vertices.begin(); it != vertices.end(); it += 3) {
 		const auto* a = &it[1];
 		const auto* b = &it[0];
@@ -223,7 +232,7 @@ PolygonRenderer<A, T>::rasterize(const RenderingContext&, const VertexArray& ver
 				// considered identical so there's no need to interpolate any
 				// new vertices between them.
 				if (std::abs(dx) < EPSILON) {
-					fragments.append(Fragment(from));
+					T::fragmentProcessing(context, Fragment(from), framebuffer);
 				} else {
 					auto xmin = static_cast<std::uint32_t>(Fx);
 					auto xmax = static_cast<std::uint32_t>(Tx);
@@ -236,13 +245,12 @@ PolygonRenderer<A, T>::rasterize(const RenderingContext&, const VertexArray& ver
 						Fragment fragment(vertex);
 						fragment.x = x;
 						fragment.y = y;
-						fragments.append(fragment);
+						T::fragmentProcessing(context, fragment, framebuffer);
 					}
 				}
 			}
 		}
 	}
-	return fragments;
 }
 } // namespace clockwork
 

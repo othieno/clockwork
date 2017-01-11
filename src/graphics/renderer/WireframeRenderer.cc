@@ -23,7 +23,6 @@
  * THE SOFTWARE.
  */
 #include "WireframeRenderer.hh"
-#include <cmath>
 
 using clockwork::WireframeRenderer;
 
@@ -47,68 +46,64 @@ void
 WireframeRenderer::clip(const RenderingContext&, VertexArray&) {}
 
 
-WireframeRenderer::FragmentArray
-WireframeRenderer::rasterize(const RenderingContext& context, const VertexArray& vertices) {
-	const std::size_t primitiveCount = vertices.size();
+void
+WireframeRenderer::rasterize(
+	const RenderingContext& context,
+	const VertexArray& vertices,
+	Framebuffer& framebuffer
+) {
+	// Determine the number of primitives based on the current topology. Initially,
+	// let's assume the topology is set to line loops.
+	std::size_t primitiveCount = vertices.size();
+	std::size_t step = 1;
 
-	FragmentArray (*getLineFragments)(const Fragment&, const Fragment&) = nullptr;
+	if (context.primitiveMode != Primitive::LineLoop) {
+		return;
+		switch (context.primitiveMode) {
+			case Primitive::Line:
+				// In the case of Line primitives, the number of primitives must be
+				// even to prevent accessing data out of the primitives array. If
+				// the number of primitives is odd, the last primitive is discared.
+				primitiveCount &= ~1;
+				step = 2;
+				break;
+			case Primitive::LineStrip:
+				primitiveCount--;
+				break;
+			default:
+				qFatal("[WireframeRenderer::rasterize] Invalid primitive topology!");
+		}
+	}
+	// Determine the line-drawing algorithm.
+	void (*drawLine)(const RenderingContext&, const Fragment&, const Fragment&, Framebuffer&) = nullptr;
 	switch (context.lineDrawingAlgorithm) {
 		case LineDrawingAlgorithm::XiaolinWu:
-			getLineFragments = &WireframeRenderer::getXiaolinWuLineFragments;
+			drawLine = &WireframeRenderer::drawXiaolinWuLine;
 			break;
 		case LineDrawingAlgorithm::Bresenham:
 		default:
-			getLineFragments = &WireframeRenderer::getBresenhamLineFragments;
+			drawLine = &WireframeRenderer::drawBresenhamLine;
 			break;
 	}
 
-	FragmentArray fragments;
-	switch (context.primitiveMode) {
-		case Primitive::Line: {
-			// In the case of Line primitives, the number of primitves must be
-			// even to prevent accessing data out of the primitives array. If
-			// the number of primitives is odd, the last primitive is discared.
-			// To make sure the number is even, we simply apply the mask 0xF...FFFFFE
-			// to it.
-			constexpr auto MASK = std::numeric_limits<decltype(primitiveCount)>::max() - 1;
-			for (std::size_t i = 0; i < (primitiveCount & MASK); ++i) {
-				const Fragment f0(vertices[i]);
-				const Fragment f1(vertices[i + 1]);
-				fragments.append(f0);
-				fragments.append(f1);
-				fragments.append(getLineFragments(f0, f1));
-			}
-			break;
-		}
-		case Primitive::LineStrip:
-			for (std::size_t i = 0; i < (primitiveCount - 1); ++i) {
-				const Fragment f0(vertices[i]);
-				const Fragment f1(vertices[i + 1]);
-				fragments.append(f0);
-				fragments.append(f1);
-				fragments.append(getLineFragments(f0, f1));
-			}
-			break;
-		case Primitive::LineLoop:
-			for (std::size_t i = 0; i < primitiveCount; ++i) {
-				const Fragment f0(vertices[i]);
-				const Fragment f1(vertices[(i + 1) % primitiveCount]);
-				fragments.append(f0);
-				fragments.append(f1);
-				fragments.append(getLineFragments(f0, f1));
-			}
-			break;
-		default:
-			break;
+	for (std::size_t i = 0; i < primitiveCount; i += step) {
+		drawLine(
+			context,
+			Fragment(vertices[i]),
+			Fragment(vertices[(i + 1) % primitiveCount]),
+			framebuffer
+		);
 	}
-	return fragments;
 }
 
 
-WireframeRenderer::FragmentArray
-WireframeRenderer::getBresenhamLineFragments(const Fragment& from, const Fragment& to) {
-	FragmentArray fragments;
-
+void
+WireframeRenderer::drawBresenhamLine(
+	const RenderingContext& context,
+	const Fragment& from,
+	const Fragment& to,
+	Framebuffer& framebuffer
+) {
 	const int x0 = from.x;
 	const int y0 = from.y;
 	const int x1 = to.x;
@@ -127,28 +122,33 @@ WireframeRenderer::getBresenhamLineFragments(const Fragment& from, const Fragmen
 			auto f = Fragment::lerp(from, to, dy == 0 ? 0.0 : (y - y0) / double(dy));
 			f.x = x0;
 			f.y = y;
-			fragments.append(f);
+			fragmentProcessing(context, f, framebuffer);
 		}
 	} else if (std::abs(slope) < 1.0) {
 		for (int x = xmin; x <= xmax; ++x) {
 			auto f = Fragment::lerp(from, to, dx == 0 ? 0.0f : (x - x0) / double(dx));
 			f.x = x;
 			f.y = std::round((slope * x) + b);
-			fragments.append(f);
+			fragmentProcessing(context, f, framebuffer);
 		}
 	} else {
 		for (int y = ymin; y <= ymax; ++y) {
 			auto f = Fragment::lerp(from, to, dy == 0 ? 0.0 : (y - y0) / double(dy));
 			f.x = std::round((y - b) / slope);
 			f.y = y;
-			fragments.append(f);
+			fragmentProcessing(context, f, framebuffer);
 		}
 	}
-	return fragments;
 }
 
 
-WireframeRenderer::FragmentArray
-WireframeRenderer::getXiaolinWuLineFragments(const Fragment& from, const Fragment& to) {
-	return getBresenhamLineFragments(from, to);
+void
+WireframeRenderer::drawXiaolinWuLine(
+	const RenderingContext& context,
+	const Fragment& from,
+	const Fragment& to,
+	Framebuffer& framebuffer
+) {
+	//TODO Implement me.
+	return drawBresenhamLine(context, from, to, framebuffer);
 }

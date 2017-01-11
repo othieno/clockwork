@@ -108,16 +108,12 @@ public:
 	};
 	static_assert(std::is_base_of<BaseFragment, Fragment>::value);
 	/**
-	 *
-	 */
-	using FragmentArray = QList<Fragment>;
-	/**
 	 * Renders the specified mesh in the given context.
 	 * @param context the rendering context.
 	 * @param mesh the polygon mesh to render.
 	 */
 	static void draw(RenderingContext& context, const Mesh& mesh);
-private:
+protected:
 	/**
 	 *
 	 */
@@ -129,7 +125,8 @@ private:
 	/**
 	 *
 	 */
-	static void fragmentProcessing(const RenderingContext&, Framebuffer&, const FragmentArray&);
+	static void fragmentProcessing(const RenderingContext&, const Fragment&, Framebuffer&);
+private:
 	/**
 	 * Converts the coordinates for each of the specified vertices from clipping space to
 	 * normalized device coordinate space to screen space.
@@ -200,8 +197,7 @@ Renderer<A, T>::draw(RenderingContext& context, const Mesh& mesh) {
 			continue;
 		}
 		toScreenSpace(viewportTransform, vertices);
-		const auto& fragments = T::rasterize(context, vertices);
-		fragmentProcessing(context, context.framebuffer, fragments);
+		T::rasterize(context, vertices, context.framebuffer);
 	}
 }
 
@@ -257,21 +253,20 @@ Renderer<A, T>::toScreenSpace(const QMatrix2x3& transform, VertexArray& vertices
 
 
 template<RenderingAlgorithm A, class T> void
-Renderer<A, T>::fragmentProcessing(const RenderingContext& context, Framebuffer& framebuffer, const FragmentArray& fragments) {
-	if (fragments.isEmpty()) {
-		return;
-	}
+Renderer<A, T>::fragmentProcessing(
+	const RenderingContext& context,
+	const Fragment& fragment,
+	Framebuffer& framebuffer
+) {
 	auto* const pbuffer = framebuffer.getPixelBuffer();
 	auto* const zbuffer = framebuffer.getDepthBuffer();
 	auto* const sbuffer = framebuffer.getStencilBuffer();
-	for (const auto& fragment : fragments) {
-		const auto& varying = fragment.varying;
-		const int offset = fragmentPasses(context, fragment);
-		if (offset >= 0) {
-			pbuffer[offset] = T::ShaderProgram::fragmentShader(context.uniforms, varying, fragment);
-			zbuffer[offset] = fragment.z;
-			sbuffer[offset] = 0xFF;
-		}
+
+	const int offset = fragmentPasses(context, fragment);
+	if (offset >= 0) {
+		pbuffer[offset] = T::ShaderProgram::fragmentShader(context.uniforms, fragment.varying, fragment);
+		zbuffer[offset] = fragment.z;
+		sbuffer[offset] = 0xFF;
 	}
 }
 
