@@ -28,7 +28,7 @@
 
 namespace clockwork {
 /**
- *
+ * An enumeration of available system errors.
  */
 enum class Error {
 	None,
