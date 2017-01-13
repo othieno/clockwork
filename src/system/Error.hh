@@ -25,6 +25,8 @@
 #ifndef CLOCKWORK_ERROR_HH
 #define CLOCKWORK_ERROR_HH
 
+#include "enumeration.hh"
+
 
 namespace clockwork {
 /**
@@ -36,6 +38,37 @@ enum class Error {
 	InvalidQmlContext,
 	Unknown,
 };
+/**
+ * Returns a list of all available system errors.
+ */
+template<> constexpr std::initializer_list<Error>
+enumeration<Error>::enumerators() {
+	return {
+		Error::None,
+		Error::FileNotAccessible,
+		Error::InvalidQmlContext,
+		Error::Unknown,
+	};
+}
+/**
+ * Returns the human-readable name of the specified system error.
+ * @param error the system error to query.
+ */
+template<> template<class String> String
+enumeration<Error>::name(const Error error) {
+	switch (error) {
+		case Error::None:
+			return "None";
+		case Error::FileNotAccessible:
+			return "File not accessible";
+		case Error::InvalidQmlContext:
+			return "Invalid QML context";
+		case Error::Unknown:
+			return "Unknown system error";
+		default:
+			return "???";
+	}
+}
 } // namespace clockwork
 
 #endif // CLOCKWORK_ERROR_HH

@@ -24,7 +24,6 @@
  */
 #include <iostream>
 #include "Application.hh"
-#include "toString.hh"
 
 
 int main(int argc, char** argv) {
@@ -32,8 +31,10 @@ int main(int argc, char** argv) {
 
 	const auto error = application.initialize();
 	if (error != clockwork::Error::None) {
-		std::cerr << clockwork::toString(error).toStdString() << std::endl;
-		return static_cast<int>(error);
+		using enumeration = clockwork::enumeration<clockwork::Error>;
+
+		std::cerr << enumeration::name(error) << std::endl;
+		return enumeration::ordinal(error);
 	}
 	return application.exec();
 }

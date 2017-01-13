@@ -34,10 +34,6 @@
 
 namespace clockwork {
 /**
- * Returns the human-readable name of the specified system error.
- */
-QString toString(const Error);
-/**
  * Returns the human-readable name of the specified framebuffer resolution.
  */
 QString toString(const Framebuffer::Resolution resolution);

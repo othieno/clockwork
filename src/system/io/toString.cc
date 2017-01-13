@@ -26,17 +26,6 @@
 
 
 QString
-clockwork::toString(const Error error) {
-	switch (error) {
-		case Error::None:
-			return "None";
-		default:
-			return "???";
-	}
-}
-
-
-QString
 clockwork::toString(const Framebuffer::Resolution resolution) {
 	switch (resolution) {
 		case Framebuffer::Resolution::ZERO:
