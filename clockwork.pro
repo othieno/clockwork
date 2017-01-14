@@ -35,6 +35,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 	QMAKE_CXXFLAGS += -Wextra
 	INCLUDEPATH += \
 		src/graphics/filter \
+		src/graphics/lighting \
 		src/graphics/renderer/shader \
 		src/graphics/renderer \
 		src/graphics \
@@ -47,6 +48,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/system \
 		src/types \
 		src/ui/components \
+		src/ui/models \
 		src/ui \
 		src
 	HEADERS += \
@@ -63,6 +65,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/filter/ImageFilterFactory.hh \
 		src/graphics/filter/TextureFilter.hh \
 		src/graphics/filter/TextureFilterFactory.hh \
+		src/graphics/lighting/IlluminationModel.hh \
 		src/graphics/renderer/BaseFragment.hh \
 		src/graphics/renderer/BaseVertex.hh \
 		src/graphics/renderer/BaseVertexAttributes.hh \
