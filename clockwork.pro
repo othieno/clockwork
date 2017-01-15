@@ -23,8 +23,9 @@
 
 # Make sure the project is being built against Qt 5.5 or later.
 greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
-	# Include third-party project setups.
-	include(resources/theme/material/material.pri)
+	# Include theme configurations.
+	include(src/ui/theme/material/material.pri)
+	include(src/ui/theme/atomic/atomic.pri)
 
 	# Setup the compiler arguments.
 	TEMPLATE = app
@@ -169,9 +170,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		APPLICATION_VERSION=\\\"$$VERSION\\\" \
 		APPLICATION_REPOSITORY=\\\"$$REPOSITORY\\\" \
 		QPM_INIT\\(E\\)=\"E.addImportPath(QStringLiteral(\\\"qrc:/\\\"));\"
-
-	# Add roboto fonts.
-	OPTIONS += roboto
 
 	# Add resource file configurations.
 	RESOURCES += clockwork.qrc
