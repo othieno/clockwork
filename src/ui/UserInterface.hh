@@ -26,7 +26,9 @@
 #define CLOCKWORK_USER_INTERFACE_HH
 
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include "Error.hh"
+#include "SelectModel.hh"
 
 
 namespace clockwork {
@@ -37,7 +39,7 @@ class Application;
 /**
  *
  */
-class UserInterface {
+class UserInterface : private QObject {
 	friend class Application;
 public:
 	/**
@@ -70,6 +72,25 @@ private:
 	 * Registers custom data types for use in the QML context.
 	 */
 	void registerTypes();
+	/**
+	 * Registers a SelectModel object that contains the enumeration E's
+	 * enumerator names and their corresponding values.
+	 * @param context the QML context.
+	 * @param name the model's name.
+	 */
+	template<class E> void registerEnumeration(QQmlContext& context, const QString& name) {
+		static_assert(std::is_enum<E>::value);
+		using enumeration = enumeration<E>;
+
+		QList<SelectModel::Option> options;
+		for (const auto enumerator : enumeration::enumerators()) {
+			options << SelectModel::Option(
+				enumeration::template name<QString>(enumerator),
+				enumeration::ordinal(enumerator)
+			);
+		}
+		context.setContextProperty(name, new SelectModel(options, this));
+	}
 	/**
 	 * The application that this user interface is bound to.
 	 */

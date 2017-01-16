@@ -27,7 +27,7 @@
 #include "FramebufferView.hh"
 #include "FramebufferProvider.hh"
 #include "Service.hh"
-#include <QQmlContext>
+#include "IlluminationModel.hh"
 
 using clockwork::UserInterface;
 
@@ -45,6 +45,8 @@ UserInterface::initialize() {
 		qmlContext->setContextProperty("application", &application_);
 		qmlContext->setContextProperty("settings", &application_.getSettings());
 		qmlContext->setContextProperty("scene", &application_.getScene());
+
+		registerEnumeration<IlluminationModel>(*qmlContext, "illuminationModels");
 	} else {
 		return Error::InvalidQmlContext;
 	}
