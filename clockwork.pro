@@ -114,6 +114,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/types/Factory.hh \
 		src/types/WeakVariant.hh \
 		src/ui/components/FramebufferView.hh \
+		src/ui/models/SelectModel.hh \
 		src/ui/FramebufferProvider.hh \
 		src/ui/UserInterface.hh
 	SOURCES += \
@@ -162,6 +163,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/system/task/Task.cc \
 		src/system/task/TaskManager.cc \
 		src/ui/components/FramebufferView.cc \
+		src/ui/models/SelectModel.cc \
 		src/ui/FramebufferProvider.cc \
 		src/ui/UserInterface.cc \
 		src/clockwork.cc
