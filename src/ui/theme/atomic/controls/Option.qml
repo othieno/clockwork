@@ -22,3 +22,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+import QtQuick 2.4
+import QtQuick.Layouts 1.1
+import Material 0.3
+import Material.ListItems 0.1 as ListItem
+
+
+ListItem.BaseListItem {
+	id: control
+	dividerInset: 0
+	height: 48 * Units.dp
+	implicitHeight: 48 * Units.dp
+	implicitWidth: label_.implicitWidth + row.spacing
+
+	property alias label: label_.text
+	property var value
+
+	RowLayout {
+		id: row
+		anchors.fill: parent
+
+		anchors.leftMargin: control.margins
+		anchors.rightMargin: control.margins
+
+		spacing: 16 * Units.dp
+
+		ColumnLayout {
+			Layout.alignment: Qt.AlignVCenter
+			Layout.preferredHeight: parent.height
+			Label {
+				Layout.alignment: Qt.AlignVCenter
+				Layout.fillWidth: true
+
+				id: label_
+				elide: Text.ElideRight
+				style: "subheading"
+				color: control.selected ? Theme.primaryColor
+						: darkBackground ? Theme.dark.textColor : Theme.light.textColor
+			}
+		}
+	}
+}
