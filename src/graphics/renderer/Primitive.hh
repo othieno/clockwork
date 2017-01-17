@@ -22,14 +22,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_PRIMITIVE_HH
-#define CLOCKWORK_PRIMITIVE_HH
+#ifndef CLOCKWORK_PRIMITIVE_TOPOLOGY_HH
+#define CLOCKWORK_PRIMITIVE_TOPOLOGY_HH
+
+#include "enumeration.hh"
 
 
 namespace clockwork {
 /**
- * An enumeration of available primitive topologies that determine how
- * consecutive vertices are organized into geometric primitives.
+ * An enumeration of available primitive topologies that determine how a set of
+ * vertices gets organized into a collection of geometric primitives.
  */
 enum class PrimitiveTopology {
 	Point,
@@ -41,6 +43,46 @@ enum class PrimitiveTopology {
 	TriangleFan
 };
 using Primitive = PrimitiveTopology;
+/**
+ * Returns a list of all available primitive topologies.
+ */
+template<> constexpr std::initializer_list<PrimitiveTopology>
+enumeration<PrimitiveTopology>::enumerators() {
+	return {
+		PrimitiveTopology::Point,
+		PrimitiveTopology::Line,
+		PrimitiveTopology::LineStrip,
+		PrimitiveTopology::LineLoop,
+		PrimitiveTopology::Triangle,
+		PrimitiveTopology::TriangleStrip,
+		PrimitiveTopology::TriangleFan
+	};
+}
+/**
+ * Returns the human-readable name of the specified system error.
+ * @param error the system error to query.
+ */
+template<> template<class String> String
+enumeration<PrimitiveTopology>::name(const PrimitiveTopology topology) {
+	switch (topology) {
+		case PrimitiveTopology::Point:
+			return "Points";
+		case PrimitiveTopology::Line:
+			return "Lines";
+		case PrimitiveTopology::LineStrip:
+			return "Line strips";
+		case PrimitiveTopology::LineLoop:
+			return "Line loops";
+		case PrimitiveTopology::Triangle:
+			return "Triangles";
+		case PrimitiveTopology::TriangleStrip:
+			return "Triangle strips";
+		case PrimitiveTopology::TriangleFan:
+			return "Triangle fans";
+		default:
+			return "???";
+	}
+}
 } // namespace clockwork
 
-#endif // CLOCKWORK_PRIMITIVE_HH
+#endif // CLOCKWORK_PRIMITIVE_TOPOLOGY_HH
