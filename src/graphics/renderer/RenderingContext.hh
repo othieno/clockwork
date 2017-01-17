@@ -26,7 +26,7 @@
 #define CLOCKWORK_RENDERING_CONTEXT_HH
 
 #include "Framebuffer.hh"
-#include "Primitive.hh"
+#include "PrimitiveTopology.hh"
 #include "LineDrawingAlgorithm.hh"
 #include "Uniform.hh"
 

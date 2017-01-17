@@ -30,7 +30,7 @@
 #include "ViewFrustum.hh"
 #include "Viewport.hh"
 #include "RenderingAlgorithm.hh"
-#include "Primitive.hh"
+#include "PrimitiveTopology.hh"
 #include "Renderer.hh"
 #include "ImageFilter.hh"
 #include "TextureFilter.hh"
