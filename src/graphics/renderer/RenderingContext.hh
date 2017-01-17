@@ -41,9 +41,9 @@ struct RenderingContext {
 	 */
 	Framebuffer framebuffer;
 	/**
-	 * The primitive mode.
+	 * The primitive topology.
 	 */
-	Primitive primitiveMode;
+	PrimitiveTopology primitiveTopology;
 	/**
 	 * The line drawing algorithm used by the Wireframe renderer.
 	 */

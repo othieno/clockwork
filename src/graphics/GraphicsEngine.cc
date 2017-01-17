@@ -36,7 +36,7 @@ GraphicsEngine::GraphicsEngine() {
 	renderingContext_.enableScissorTest = !true;
 	renderingContext_.enableStencilTest = !true;
 	renderingContext_.enableDepthTest = !true;
-	renderingContext_.primitiveMode = PrimitiveTopology::Triangle;
+	renderingContext_.primitiveTopology = PrimitiveTopology::Triangle;
 }
 
 

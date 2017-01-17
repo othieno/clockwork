@@ -31,11 +31,11 @@ using clockwork::PointRenderer;
 
 void
 PointRenderer::sanitizeRenderingContext(RenderingContext& context) {
-	// The Point renderer only draws point primitives so if the primitive mode
+	// The Point renderer only draws point primitives so if the primitive topology
 	// is not set to Point, it will be changed.
-	auto& mode = context.primitiveMode;
-	if (mode != Primitive::Point) {
-		mode = Primitive::Point;
+	auto& t = context.primitiveTopology;
+	if (t != PrimitiveTopology::Point) {
+		t = PrimitiveTopology::Point;
 	}
 }
 

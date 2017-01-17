@@ -29,11 +29,11 @@ using clockwork::WireframeRenderer;
 
 void
 WireframeRenderer::sanitizeRenderingContext(RenderingContext& context) {
-	// The Wireframe renderer only draws line primitives so if the primitive mode
+	// The Wireframe renderer only draws line primitives so if the primitive topology
 	// is not set to Line, LineStrip or LineLoop, it will be set to LineLoop.
-	auto& mode = context.primitiveMode;
-	if (mode != Primitive::Line && mode != Primitive::LineStrip && mode != Primitive::LineLoop) {
-		mode = Primitive::LineLoop;
+	auto& t = context.primitiveTopology;
+	if (t != PrimitiveTopology::Line && t != PrimitiveTopology::LineStrip && t != PrimitiveTopology::LineLoop) {
+		t = PrimitiveTopology::LineLoop;
 	}
 }
 
@@ -57,17 +57,17 @@ WireframeRenderer::rasterize(
 	std::size_t primitiveCount = vertices.size();
 	std::size_t step = 1;
 
-	if (context.primitiveMode != Primitive::LineLoop) {
+	if (context.primitiveTopology != PrimitiveTopology::LineLoop) {
 		return;
-		switch (context.primitiveMode) {
-			case Primitive::Line:
+		switch (context.primitiveTopology) {
+			case PrimitiveTopology::Line:
 				// In the case of Line primitives, the number of primitives must be
 				// even to prevent accessing data out of the primitives array. If
 				// the number of primitives is odd, the last primitive is discared.
 				primitiveCount &= ~1;
 				step = 2;
 				break;
-			case Primitive::LineStrip:
+			case PrimitiveTopology::LineStrip:
 				primitiveCount--;
 				break;
 			default:

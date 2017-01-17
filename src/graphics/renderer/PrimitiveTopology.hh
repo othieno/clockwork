@@ -42,7 +42,6 @@ enum class PrimitiveTopology {
 	TriangleStrip,
 	TriangleFan
 };
-using Primitive = PrimitiveTopology;
 /**
  * Returns a list of all available primitive topologies.
  */

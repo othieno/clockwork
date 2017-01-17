@@ -121,11 +121,11 @@ public PolygonRenderer<RenderingAlgorithm::TextureMapping, TextureMapRenderer> {
 
 template<RenderingAlgorithm A, class T> void
 PolygonRenderer<A, T>::sanitizeRenderingContext(RenderingContext& context) {
-	// The Polygon renderer only draws triangle primitives so if the primitive mode
+	// The Polygon renderer only draws triangle primitives so if the primitive topology
 	// is not set to Triangle, TriangleStrip or TriangleFan, it will be set to TriangleStrip.
-	auto& mode = context.primitiveMode;
-	if (mode != Primitive::Triangle && mode != Primitive::TriangleStrip && mode != Primitive::TriangleFan) {
-		mode = Primitive::TriangleStrip;
+	auto& t = context.primitiveTopology;
+	if (t != PrimitiveTopology::Triangle && t != PrimitiveTopology::TriangleStrip && t != PrimitiveTopology::TriangleFan) {
+		t = PrimitiveTopology::TriangleStrip;
 	}
 }
 
