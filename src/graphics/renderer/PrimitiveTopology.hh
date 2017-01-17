@@ -58,8 +58,8 @@ enumeration<PrimitiveTopology>::enumerators() {
 	};
 }
 /**
- * Returns the human-readable name of the specified system error.
- * @param error the system error to query.
+ * Returns the human-readable name of the specified primitive topology.
+ * @param topology the primitive topology to query.
  */
 template<> template<class String> String
 enumeration<PrimitiveTopology>::name(const PrimitiveTopology topology) {
