@@ -25,6 +25,7 @@
 import QtQuick 2.4
 import Material 0.2
 import Material.ListItems 0.1 as ListItem
+import Atomic 0.1 as Atomic
 
 
 Page {
@@ -53,6 +54,13 @@ Page {
 			ListItem.Subheader {
 				text: qsTr("Primitive assembly and hidden surface removal")
 			}
+			Atomic.Select {
+				id: primitiveTopologySelector
+				title: qsTr("Primitive topology")
+				model: primitiveTopologies
+				enabled: false
+			}
+			ListItem.Divider {}
 			ListItem.Subtitled {
 				enabled: false
 				text: qsTr("Enable view frustum culling")
@@ -92,6 +100,12 @@ Page {
 
 			ListItem.Subheader {
 				text: qsTr("Rasterization")
+			}
+			Atomic.Select {
+				enabled: false
+				id: shadeModelSelector
+				title: qsTr("Shade model")
+				model: shadeModels
 			}
 
 

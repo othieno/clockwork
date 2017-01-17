@@ -28,6 +28,8 @@
 #include "FramebufferProvider.hh"
 #include "Service.hh"
 #include "IlluminationModel.hh"
+#include "PrimitiveTopology.hh"
+#include "ShadeModel.hh"
 #include <QQmlContext>
 
 using clockwork::UserInterface;
@@ -71,6 +73,8 @@ void
 UserInterface::registerEnumerations(QQmlContext& context) {
 	QHash<QString, SelectModel*> models({
 		{"illuminationModels", createEnumerationModel<IlluminationModel>(this)},
+		{"primitiveTopologies", createEnumerationModel<PrimitiveTopology>(this)},
+		{"shadeModels", createEnumerationModel<ShadeModel>(this)},
 	});
 	for (const auto& key : models.keys()) {
 		context.setContextProperty(key, models[key]);
