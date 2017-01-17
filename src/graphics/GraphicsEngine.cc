@@ -36,6 +36,7 @@ GraphicsEngine::GraphicsEngine() {
 	renderingContext_.enableScissorTest = !true;
 	renderingContext_.enableStencilTest = !true;
 	renderingContext_.enableDepthTest = !true;
+	renderingContext_.primitiveMode = PrimitiveTopology::Triangle;
 }
 
 
@@ -69,7 +70,6 @@ GraphicsEngine::render(const Scene& scene) {
 		const QMatrix4x4& VIEWPROJECTION = viewer->getViewProjectionTransform();
 		const QMatrix2x3& VIEWPORT = viewer->getViewportTransform();
 
-		renderingContext_.primitiveMode = viewer->getPrimitiveMode();
 		renderingContext_.uniforms.insert("PROJECTION", Uniform::create<const QMatrix4x4>(PROJECTION));
 		renderingContext_.uniforms.insert("VIEW", Uniform::create<const QMatrix4x4>(VIEW));
 		renderingContext_.uniforms.insert("viewpoint", Uniform::create<const QVector3D>(viewer->getPosition()));

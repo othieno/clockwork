@@ -38,7 +38,6 @@ isViewProjectionTransformDirty_(true),
 isViewportTransformDirty_(true),
 scissor_(0.0, 0.0, 1.0, 1.0),
 renderingAlgorithm_(RenderingAlgorithm::Wireframe),
-primitiveMode_(Primitive::Triangle),
 textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {
 	setPosition(0, 0, -3);
 
@@ -170,18 +169,6 @@ SceneViewer::getRenderingAlgorithm() const {
 void
 SceneViewer::setRenderingAlgorithm(const RenderingAlgorithm algorithm) {
 	renderingAlgorithm_ = algorithm;
-}
-
-
-clockwork::Primitive
-SceneViewer::getPrimitiveMode() const {
-	return primitiveMode_;
-}
-
-
-void
-SceneViewer::setPrimitiveMode(const Primitive primitive) {
-	primitiveMode_ = primitive;
 }
 
 

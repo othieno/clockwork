@@ -142,15 +142,6 @@ public:
 	 */
 	void setRenderingAlgorithm(const RenderingAlgorithm algorithm);
 	/**
-	 * Returns the viewer's primitive mode.
-	 */
-	Primitive getPrimitiveMode() const;
-	/**
-	 * Sets the viewer's primitive mode.
-	 * @param primitive the primitive mode to set.
-	 */
-	void setPrimitiveMode(const Primitive primitive);
-	/**
 	 * Returns the viewer's texture filter.
 	 */
 	TextureFilter::Identifier getTextureFilter() const;
@@ -270,10 +261,6 @@ private:
 	 * The viewer's rendering algorithm.
 	 */
 	RenderingAlgorithm renderingAlgorithm_;
-	/**
-	 * The viewer's primitive mode.
-	 */
-	Primitive primitiveMode_;
 	/**
 	 * The unique identifier of the viewer's texture filter.
 	 */
