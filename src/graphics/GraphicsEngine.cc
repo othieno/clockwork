@@ -23,6 +23,7 @@
  * THE SOFTWARE.
  */
 #include "GraphicsEngine.hh"
+#include "ApplicationSettings.hh"
 #include "Scene.hh"
 #include "PointRenderer.hh"
 #include "WireframeRenderer.hh"
@@ -31,17 +32,18 @@
 using clockwork::GraphicsEngine;
 
 
-GraphicsEngine::GraphicsEngine() {
+clockwork::Error
+GraphicsEngine::initialize(const ApplicationSettings& settings) {
 	renderingContext_.lineDrawingAlgorithm = LineDrawingAlgorithm::Bresenham;
-	renderingContext_.enableScissorTest = !true;
-	renderingContext_.enableStencilTest = !true;
-	renderingContext_.enableDepthTest = !true;
+	renderingContext_.enableScissorTest = settings.isScissorTestEnabled();
+	renderingContext_.enableStencilTest = settings.isStencilTestEnabled();
+	renderingContext_.enableDepthTest = settings.isDepthTestEnabled();
 	renderingContext_.primitiveTopology = PrimitiveTopology::Triangle;
 	renderingContext_.shadeModel = ShadeModel::Flat;
+	renderingContext_.framebuffer.setResolution(Framebuffer::Resolution::XGA);
+
+	return Error::None;
 }
-
-
-GraphicsEngine::~GraphicsEngine() {}
 
 
 clockwork::Framebuffer::Resolution

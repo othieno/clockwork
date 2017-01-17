@@ -27,9 +27,14 @@
 
 #include "RenderingContext.hh"
 #include "RenderingAlgorithm.hh"
+#include "Error.hh"
 
 
 namespace clockwork {
+/**
+ * @see ApplicationSettings.hh.
+ */
+class ApplicationSettings;
 /**
  * @see Mesh.hh.
  */
@@ -59,15 +64,16 @@ public:
 	/**
 	 *
 	 */
-	~GraphicsEngine();
-	/**
-	 *
-	 */
 	GraphicsEngine& operator=(const GraphicsEngine&) = delete;
 	/**
 	 *
 	 */
 	GraphicsEngine& operator=(GraphicsEngine&&) = delete;
+	/**
+	 * Initializes the graphics engine.
+	 * @param settings the application's settings.
+	 */
+	Error initialize(const ApplicationSettings& settings);
 	/**
 	 * Returns the framebuffer's current resolution.
 	 */
@@ -133,7 +139,7 @@ private:
 	/**
 	 * Instantiates a GraphicsEngine object.
 	 */
-	GraphicsEngine();
+	GraphicsEngine() = default;
 	/**
 	 * Returns the specified rendering algorithm's draw function.
 	 * @param algorithm the rendering algorithm to query.

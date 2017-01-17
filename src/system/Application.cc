@@ -44,11 +44,10 @@ Application::~Application() {}
 
 clockwork::Error
 Application::initialize() {
-	Service::Graphics.enableScissorTest(settings_.isScissorTestEnabled());
-	Service::Graphics.enableStencilTest(settings_.isStencilTestEnabled());
-	Service::Graphics.enableDepthTest(settings_.isDepthTestEnabled());
-	Service::Graphics.setFramebufferResolution(Framebuffer::Resolution::XGA);
-
+	auto error = Service::Graphics.initialize(settings_);
+	if (error != Error::None) {
+		return error;
+	}
 	return userInterface_.initialize();
 }
 
