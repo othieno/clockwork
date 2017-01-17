@@ -37,6 +37,7 @@ GraphicsEngine::GraphicsEngine() {
 	renderingContext_.enableStencilTest = !true;
 	renderingContext_.enableDepthTest = !true;
 	renderingContext_.primitiveTopology = PrimitiveTopology::Triangle;
+	renderingContext_.shadeModel = ShadeModel::Flat;
 }
 
 

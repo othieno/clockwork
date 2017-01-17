@@ -1,7 +1,7 @@
 /*
  * This file is part of Clockwork.
  *
- * Copyright (c) 2013-2016 Jeremy Othieno.
+ * Copyright (c) 2013-2017 Jeremy Othieno.
  *
  * The MIT License (MIT)
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,57 +22,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_RENDERING_CONTEXT_HH
-#define CLOCKWORK_RENDERING_CONTEXT_HH
+#ifndef CLOCKWORK_SHADE_MODEL_HH
+#define CLOCKWORK_SHADE_MODEL_HH
 
-#include "Framebuffer.hh"
-#include "PrimitiveTopology.hh"
-#include "ShadeModel.hh"
-#include "LineDrawingAlgorithm.hh"
-#include "Uniform.hh"
+#include "enumeration.hh"
 
 
 namespace clockwork {
 /**
- *
+ * An enumeration of available shade models.
  */
-struct RenderingContext {
-	/**
-	 * The framebuffer.
-	 */
-	Framebuffer framebuffer;
-	/**
-	 * The primitive topology.
-	 */
-	PrimitiveTopology primitiveTopology;
-	/**
-	 * The shade model.
-	 */
-	ShadeModel shadeModel;
-	/**
-	 * The line drawing algorithm used by the Wireframe renderer.
-	 */
-	LineDrawingAlgorithm lineDrawingAlgorithm;
-	/**
-	 * The set of uniform variables used by the shader programs.
-	 */
-	Uniforms uniforms;
-	/**
-	 * If set to true, a scissor test will be performed on each fragment before
-	 * it's written to the framebuffer.
-	 */
-	bool enableScissorTest;
-	/**
-	 * If set to true, a stencil test will be performed on each fragment before
-	 * it's written to the framebuffer.
-	 */
-	bool enableStencilTest;
-	/**
-	 * If set to true, a depth test will be performed on each fragment before
-	 * it's written to the framebuffer.
-	 */
-	bool enableDepthTest;
+enum class ShadeModel {
+	Flat,
+	Gouraud,
+	Phong
 };
+/**
+ * Returns a list of all available shade models.
+ */
+template<> constexpr std::initializer_list<ShadeModel>
+enumeration<ShadeModel>::enumerators() {
+	return {
+		ShadeModel::Flat,
+		ShadeModel::Gouraud,
+		ShadeModel::Phong
+	};
+}
+/**
+ * Returns the human-readable name of the specified shade model.
+ * @param model the shade model to query.
+ */
+template<> template<class String> String
+enumeration<ShadeModel>::name(const ShadeModel model) {
+	switch (model) {
+		case ShadeModel::Flat:
+			return "Flat";
+		case ShadeModel::Gouraud:
+			return "Gouraud";
+		case ShadeModel::Phong:
+			return "Phong";
+		default:
+			return "???";
+	}
+}
 } // namespace clockwork
 
-#endif // CLOCKWORK_RENDERING_CONTEXT_HH
+#endif // CLOCKWORK_SHADE_MODEL_HH
