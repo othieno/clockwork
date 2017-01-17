@@ -28,6 +28,7 @@
 #include "FramebufferProvider.hh"
 #include "Service.hh"
 #include "IlluminationModel.hh"
+#include <QQmlContext>
 
 using clockwork::UserInterface;
 
@@ -46,7 +47,7 @@ UserInterface::initialize() {
 		qmlContext->setContextProperty("settings", &application_.getSettings());
 		qmlContext->setContextProperty("scene", &application_.getScene());
 
-		registerEnumeration<IlluminationModel>(*qmlContext, "illuminationModels");
+		registerEnumerations(*qmlContext);
 	} else {
 		return Error::InvalidQmlContext;
 	}
@@ -63,4 +64,15 @@ void
 UserInterface::registerTypes() {
 	qRegisterMetaType<SceneViewer*>("SceneViewer*");
 	qmlRegisterType<FramebufferView>("Clockwork", 0, 1, "FramebufferView");
+}
+
+
+void
+UserInterface::registerEnumerations(QQmlContext& context) {
+	QHash<QString, SelectModel*> models({
+		{"illuminationModels", createEnumerationModel<IlluminationModel>(this)},
+	});
+	for (const auto& key : models.keys()) {
+		context.setContextProperty(key, models[key]);
+	}
 }

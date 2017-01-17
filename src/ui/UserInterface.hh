@@ -26,7 +26,6 @@
 #define CLOCKWORK_USER_INTERFACE_HH
 
 #include <QQmlApplicationEngine>
-#include <QQmlContext>
 #include "Error.hh"
 #include "SelectModel.hh"
 
@@ -73,12 +72,15 @@ private:
 	 */
 	void registerTypes();
 	/**
-	 * Registers a SelectModel object that contains the enumeration E's
-	 * enumerator names and their corresponding values.
-	 * @param context the QML context.
-	 * @param name the model's name.
+	 * Registers enumerations for use in the specified QML context.
+	 * @param context the QML context that the enumerations will be exposed to.
 	 */
-	template<class E> void registerEnumeration(QQmlContext& context, const QString& name) {
+	void registerEnumerations(QQmlContext& context);
+	/**
+	 * Creates a SelectModel object for the enumeration E.
+	 * @param parent the model's parent.
+	 */
+	template<class E> static SelectModel* createEnumerationModel(QObject* parent) {
 		static_assert(std::is_enum<E>::value);
 		using enumeration = enumeration<E>;
 
@@ -89,7 +91,7 @@ private:
 				enumeration::ordinal(enumerator)
 			);
 		}
-		context.setContextProperty(name, new SelectModel(options, this));
+		return new SelectModel(options, parent);
 	}
 	/**
 	 * The application that this user interface is bound to.
