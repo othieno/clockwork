@@ -39,7 +39,7 @@ isViewportTransformDirty_(true),
 scissor_(0.0, 0.0, 1.0, 1.0),
 renderingAlgorithm_(RenderingAlgorithm::Wireframe),
 textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {
-	setPosition(0, 0, -3);
+	setPosition(0, 0, 3);
 
 	const auto& markViewTransformDirty = [this]() { isViewTransformDirty_ = true; };
 	const auto& markViewportTransformDirty = [this]() { isViewportTransformDirty_ = true; };

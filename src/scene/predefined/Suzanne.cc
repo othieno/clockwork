@@ -30,7 +30,7 @@ using clockwork::asset::Suzanne;
 Suzanne::Suzanne() :
 SceneObject("Suzanne") {
 	setScale(0.7, 0.7, 0.7);
-	setRotation(-180, 0, 0);
+	setRotation(0, 0, 180);
 
 	auto& appearance = addProperty<SceneObjectAppearance>(SceneObjectProperty::Type::Appearance);
 	appearance.setMesh(":/asset/suzanne.obj");
