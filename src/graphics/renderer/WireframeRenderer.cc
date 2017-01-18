@@ -39,10 +39,6 @@ WireframeRenderer::sanitizeRenderingContext(RenderingContext& context) {
 
 
 void
-WireframeRenderer::primitiveAssembly(const RenderingContext&, VertexArray&) {}
-
-
-void
 WireframeRenderer::clip(const RenderingContext&, VertexArray&) {}
 
 

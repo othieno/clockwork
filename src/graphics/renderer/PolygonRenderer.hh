@@ -53,10 +53,6 @@ public:
 	 */
 	static void sanitizeRenderingContext(RenderingContext&);
 	/**
-	 * Rearranges the specified set of vertices into a collection of geometric primitives.
-	 */
-	static void primitiveAssembly(const RenderingContext&, VertexArray&);
-	/**
 	 * Removes vertices that are not visible on the screen.
 	 */
 	static void clip(const RenderingContext&, VertexArray&);
@@ -126,60 +122,6 @@ PolygonRenderer<A, T>::sanitizeRenderingContext(RenderingContext& context) {
 	auto& t = context.primitiveTopology;
 	if (t != PrimitiveTopology::Triangle && t != PrimitiveTopology::TriangleStrip && t != PrimitiveTopology::TriangleFan) {
 		t = PrimitiveTopology::TriangleStrip;
-	}
-}
-
-
-template<RenderingAlgorithm A, class T> void
-PolygonRenderer<A, T>::primitiveAssembly(const RenderingContext&, VertexArray& vertices) {
-	// TODO This will only generate triangle primitives. Implement TriangleStrip and
-	// TriangleLoop generation.
-	static const auto lessThan = [](const Vertex& a, const Vertex& b) {
-		const auto& pa = a.position;
-		const auto& pb = b.position;
-		if (qFuzzyCompare(1.0 + pa.y(), 1.0 + pb.y())) {
-			if (qFuzzyCompare(1.0 + pa.x(), 1.0 + pb.x())) {
-				return pa.z() < pb.z();
-			} else {
-				return pa.x() < pb.x();
-			}
-		} else {
-			return pa.y() < pb.y();
-		}
-	};
-	// If the triangle primitive is not correctly formed for the scanline algorithm,
-	// then tessellate two triangle primitives that fit our needs.
-	for (auto it = vertices.begin(); it != vertices.end();) {
-		const auto& from = it;
-		const auto& to = it + 3;
-
-		std::sort(from, to, lessThan); // Note: std::sort processes the range [first, last[.
-
-		// Tessellate the primitive, if need be.
-		const auto& V0 = it[0];
-		const auto& V1 = it[1];
-		const auto& V2 = it[2];
-
-		const auto& p0 = V0.position;
-		const auto& p1 = V1.position;
-		const auto& p2 = V2.position;
-
-		const bool tessellate = !qFuzzyCompare(1.0 + p0.y(), 1.0 + p1.y()) && !qFuzzyCompare(1.0 + p1.y(), 1.0 + p2.y());
-		if (tessellate) {
-			// Create a new output that will be used to create two new primitives.
-			auto V = Vertex::lerp(V0, V2, (p1.y() - p0.y()) / (p2.y() - p0.y()));
-			V.position.setY(p1.y());
-			//V.position.z = 0; //FIXME Depth needs to be interpolated between V1 and O3.
-
-			// Create two new triangle primitives: {V0, V1, V} and {V1, V, V2}. Since the
-			// original array of outputs is {V0, V1, V2}, it becomes {V0, V1, V, V1, V, V2}.
-			it = vertices.insert(it + 2, V);
-			it = vertices.insert(it + 1, V1);
-			it = vertices.insert(it + 1, V);
-			it = std::next(it, 2);
-		} else {
-			it = to;
-		}
 	}
 }
 

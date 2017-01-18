@@ -39,10 +39,6 @@ public:
 	 */
 	static void sanitizeRenderingContext(RenderingContext&);
 	/**
-	 * Rearranges the specified set of vertices into a collection of geometric primitives.
-	 */
-	static void primitiveAssembly(const RenderingContext&, VertexArray&);
-	/**
 	 * Removes vertices that are not visible on the screen.
 	 */
 	static void clip(const RenderingContext&, VertexArray&);

@@ -128,6 +128,12 @@ protected:
 	static void fragmentProcessing(const RenderingContext&, const Fragment&, Framebuffer&);
 private:
 	/**
+	 * Rearranges the specified set of vertices into a collection of geometric primitives.
+	 * @param topology the primitive topology that the vertices will be rearranged into.
+	 * @param vertices the set of vertices to rearrange.
+	 */
+	static void primitiveAssembly(const PrimitiveTopology topology, VertexArray& vertices);
+	/**
 	 * Converts the coordinates for each of the specified vertices from clipping space to
 	 * normalized device coordinate space to screen space.
 	 * @param viewportTransform the viewport transformation matrix.
@@ -190,7 +196,7 @@ Renderer<A, T>::draw(RenderingContext& context, const Mesh& mesh) {
 	T::sanitizeRenderingContext(context);
 	for (const auto& face : mesh.faces) {
 		VertexArray vertices = vertexProcessing(context, face);
-		T::primitiveAssembly(context, vertices);
+		primitiveAssembly(context.primitiveTopology, vertices);
 		cull(context, vertices);
 		T::clip(context, vertices);
 		if (vertices.isEmpty()) {
@@ -216,6 +222,78 @@ Renderer<A, T>::vertexProcessing(const RenderingContext& context, const Mesh::Fa
 		vertices.append(vertex);
 	}
 	return vertices;
+}
+
+
+template<RenderingAlgorithm A, class T> void
+Renderer<A, T>::primitiveAssembly(const PrimitiveTopology topology, VertexArray& vertices) {
+	if (vertices.isEmpty() ||
+		topology == PrimitiveTopology::Point ||
+		topology == PrimitiveTopology::LineStrip ||
+		topology == PrimitiveTopology::LineLoop
+	) {
+		return;
+	}
+
+	if (topology == PrimitiveTopology::Line) {
+		// In the case of Line primitives, the number of vertices must be
+		// even to prevent accessing data out of the vertex array. If the
+		// number of vertices is odd, the last vertex is simply discared.
+		if (vertices.size() & 1) {
+			vertices.removeLast();
+		}
+		return;
+	}
+
+	// Generate triangle primitives.
+	// TODO Implement TriangleStrip and TriangleLoop assembly (if there's even a difference).
+	static const auto lessThan = [](const Vertex& a, const Vertex& b) {
+		const auto& pa = a.position;
+		const auto& pb = b.position;
+		if (qFuzzyCompare(1.0 + pa.y(), 1.0 + pb.y())) {
+			if (qFuzzyCompare(1.0 + pa.x(), 1.0 + pb.x())) {
+				return pa.z() < pb.z();
+			} else {
+				return pa.x() < pb.x();
+			}
+		} else {
+			return pa.y() < pb.y();
+		}
+	};
+	// If the triangle primitive is not correctly formed for the scanline algorithm,
+	// then tessellate two triangle primitives that fit our needs.
+	for (auto it = vertices.begin(); it != vertices.end();) {
+		const auto& from = it;
+		const auto& to = it + 3;
+
+		std::sort(from, to, lessThan); // Note: std::sort processes the range [first, last[.
+
+		// Tessellate the primitive, if need be.
+		const auto& V0 = it[0];
+		const auto& V1 = it[1];
+		const auto& V2 = it[2];
+
+		const auto& p0 = V0.position;
+		const auto& p1 = V1.position;
+		const auto& p2 = V2.position;
+
+		const bool tessellate = !qFuzzyCompare(1.0 + p0.y(), 1.0 + p1.y()) && !qFuzzyCompare(1.0 + p1.y(), 1.0 + p2.y());
+		if (tessellate) {
+			// Create a new output that will be used to create two new primitives.
+			auto V = Vertex::lerp(V0, V2, (p1.y() - p0.y()) / (p2.y() - p0.y()));
+			V.position.setY(p1.y());
+			//V.position.z = 0; //FIXME Depth needs to be interpolated between V1 and O3.
+
+			// Create two new triangle primitives: {V0, V1, V} and {V1, V, V2}. Since the
+			// original array of outputs is {V0, V1, V2}, it becomes {V0, V1, V, V1, V, V2}.
+			it = vertices.insert(it + 2, V);
+			it = vertices.insert(it + 1, V1);
+			it = vertices.insert(it + 1, V);
+			it = std::next(it, 2);
+		} else {
+			it = to;
+		}
+	}
 }
 
 

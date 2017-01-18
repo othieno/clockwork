@@ -41,10 +41,6 @@ PointRenderer::sanitizeRenderingContext(RenderingContext& context) {
 
 
 void
-PointRenderer::primitiveAssembly(const RenderingContext&, VertexArray&) {}
-
-
-void
 PointRenderer::clip(const RenderingContext&, VertexArray& vertices) {
 	static const auto& filter = [](const Vertex& vertex) {
 		// Use a normalized 2D viewing volume: [-1, 1] x [-1, 1].
