@@ -25,7 +25,7 @@
 #ifndef CLOCKWORK_SHADE_MODEL_HH
 #define CLOCKWORK_SHADE_MODEL_HH
 
-#include "enumeration.hh"
+#include "enum_traits.hh"
 
 
 namespace clockwork {
@@ -41,7 +41,7 @@ enum class ShadeModel {
  * Returns a list of all available shade models.
  */
 template<> constexpr std::initializer_list<ShadeModel>
-enumeration<ShadeModel>::enumerators() {
+enum_traits<ShadeModel>::enumerators() {
 	return {
 		ShadeModel::Flat,
 		ShadeModel::Gouraud,
@@ -53,7 +53,7 @@ enumeration<ShadeModel>::enumerators() {
  * @param model the shade model to query.
  */
 template<> template<class String> String
-enumeration<ShadeModel>::name(const ShadeModel model) {
+enum_traits<ShadeModel>::name(const ShadeModel model) {
 	switch (model) {
 		case ShadeModel::Flat:
 			return "Flat";

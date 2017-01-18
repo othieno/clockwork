@@ -25,7 +25,7 @@
 #ifndef CLOCKWORK_ILLUMINATION_MODEL_HH
 #define CLOCKWORK_ILLUMINATION_MODEL_HH
 
-#include "enumeration.hh"
+#include "enum_traits.hh"
 
 
 namespace clockwork {
@@ -43,7 +43,7 @@ enum class IlluminationModel {
  * Returns a list of all available illumination models.
  */
 template<> constexpr std::initializer_list<IlluminationModel>
-enumeration<IlluminationModel>::enumerators() {
+enum_traits<IlluminationModel>::enumerators() {
 	return {
 		IlluminationModel::BlinnPhong,
 		IlluminationModel::CelShading,
@@ -57,7 +57,7 @@ enumeration<IlluminationModel>::enumerators() {
  * @param model the illumination model to query.
  */
 template<> template<class String> String
-enumeration<IlluminationModel>::name(const IlluminationModel model) {
+enum_traits<IlluminationModel>::name(const IlluminationModel model) {
 	switch (model) {
 		case IlluminationModel::BlinnPhong:
 			return "Blinn-Phong";

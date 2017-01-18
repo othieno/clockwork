@@ -31,10 +31,10 @@ int main(int argc, char** argv) {
 
 	const auto error = application.initialize();
 	if (error != clockwork::Error::None) {
-		using enumeration = clockwork::enumeration<clockwork::Error>;
+		using enum_traits = clockwork::enum_traits<clockwork::Error>;
 
-		std::cerr << enumeration::name(error) << std::endl;
-		return enumeration::ordinal(error);
+		std::cerr << enum_traits::name(error) << std::endl;
+		return enum_traits::ordinal(error);
 	}
 	return application.exec();
 }

@@ -25,7 +25,7 @@
 #ifndef CLOCKWORK_PRIMITIVE_TOPOLOGY_HH
 #define CLOCKWORK_PRIMITIVE_TOPOLOGY_HH
 
-#include "enumeration.hh"
+#include "enum_traits.hh"
 
 
 namespace clockwork {
@@ -46,7 +46,7 @@ enum class PrimitiveTopology {
  * Returns a list of all available primitive topologies.
  */
 template<> constexpr std::initializer_list<PrimitiveTopology>
-enumeration<PrimitiveTopology>::enumerators() {
+enum_traits<PrimitiveTopology>::enumerators() {
 	return {
 		PrimitiveTopology::Point,
 		PrimitiveTopology::Line,
@@ -62,7 +62,7 @@ enumeration<PrimitiveTopology>::enumerators() {
  * @param topology the primitive topology to query.
  */
 template<> template<class String> String
-enumeration<PrimitiveTopology>::name(const PrimitiveTopology topology) {
+enum_traits<PrimitiveTopology>::name(const PrimitiveTopology topology) {
 	switch (topology) {
 		case PrimitiveTopology::Point:
 			return "Points";

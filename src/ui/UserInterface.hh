@@ -81,14 +81,13 @@ private:
 	 * @param parent the model's parent.
 	 */
 	template<class E> static SelectModel* createEnumerationModel(QObject* parent) {
-		static_assert(std::is_enum<E>::value);
-		using enumeration = enumeration<E>;
+		using enum_traits = enum_traits<E>;
 
 		QList<SelectModel::Option> options;
-		for (const auto enumerator : enumeration::enumerators()) {
+		for (const auto enumerator : enum_traits::enumerators()) {
 			options << SelectModel::Option(
-				enumeration::template name<QString>(enumerator),
-				enumeration::ordinal(enumerator)
+				enum_traits::template name<QString>(enumerator),
+				enum_traits::ordinal(enumerator)
 			);
 		}
 		return new SelectModel(options, parent);

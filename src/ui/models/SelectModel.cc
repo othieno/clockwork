@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 #include "SelectModel.hh"
-#include "enumeration.hh"
+#include "enum_traits.hh"
 
 using clockwork::SelectModel;
 
@@ -44,10 +44,10 @@ value(v) {}
 
 QHash<int, QByteArray>
 SelectModel::roleNames() const {
-	using enumeration = enumeration<SelectModel::Role>;
+	using enum_traits = enum_traits<SelectModel::Role>;
 	return {
-		{enumeration::ordinal(Role::Label), "label"},
-		{enumeration::ordinal(Role::Value), "value"},
+		{enum_traits::ordinal(Role::Label), "label"},
+		{enum_traits::ordinal(Role::Value), "value"},
 	};
 }
 
@@ -62,10 +62,10 @@ QVariant
 SelectModel::data(const QModelIndex& index, const int role) const {
 	const auto row = index.row();
 	if (row >= 0 && row < options_.count()) {
-		using enumeration = enumeration<SelectModel::Role>;
+		using enum_traits = enum_traits<SelectModel::Role>;
 
 		const auto& item = options_[row];
-		switch (enumeration::enumerator(role)) {
+		switch (enum_traits::enumerator(role)) {
 			case Role::Label:
 				return item.label;
 			case Role::Value:

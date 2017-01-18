@@ -25,7 +25,7 @@
 #ifndef CLOCKWORK_ERROR_HH
 #define CLOCKWORK_ERROR_HH
 
-#include "enumeration.hh"
+#include "enum_traits.hh"
 
 
 namespace clockwork {
@@ -42,7 +42,7 @@ enum class Error {
  * Returns a list of all available system errors.
  */
 template<> constexpr std::initializer_list<Error>
-enumeration<Error>::enumerators() {
+enum_traits<Error>::enumerators() {
 	return {
 		Error::None,
 		Error::FileNotAccessible,
@@ -55,7 +55,7 @@ enumeration<Error>::enumerators() {
  * @param error the system error to query.
  */
 template<> template<class String> String
-enumeration<Error>::name(const Error error) {
+enum_traits<Error>::name(const Error error) {
 	switch (error) {
 		case Error::None:
 			return "None";

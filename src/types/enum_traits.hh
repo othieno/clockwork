@@ -22,8 +22,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_ENUMERATION_HH
-#define CLOCKWORK_ENUMERATION_HH
+#ifndef CLOCKWORK_ENUM_TRAITS_HH
+#define CLOCKWORK_ENUM_TRAITS_HH
 
 #include <initializer_list>
 #include <type_traits>
@@ -35,7 +35,7 @@ namespace clockwork {
  * Provides information about the enumeration E.
  */
 template<class E>
-struct enumeration {
+struct enum_traits {
 	static_assert(std::is_enum<E>::value);
 	/**
 	 * The integral type that serves as the enumeration's fixed underlying type.
@@ -75,4 +75,4 @@ struct enumeration {
 };
 } // namespace clockwork
 
-#endif // CLOCKWORK_ENUMERATION_HH
+#endif // CLOCKWORK_ENUM_TRAITS_HH
