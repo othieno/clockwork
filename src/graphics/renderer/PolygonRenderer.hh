@@ -204,49 +204,42 @@ PolygonRenderer<A, T>::rasterize(
 			c = &it[1];
 		}
 
-		const double ay = std::round(a->position.y());
-		const double by = std::round(b->position.y());
-		//const double cy = ay; // since a and c are colinear.
-		const double dy = by - ay; // or by - cy.
+		const int ay = qRound(a->position.y());
+		const int by = qRound(b->position.y());
+//		const int cy = ay; // since a and c are colinear.
+		const int dy = by - ay; // or by - cy.
 
-		// If the dy is relatively small, all 3 points are considered colinear.
-		constexpr double EPSILON = 1e-5;
-		if (std::abs(dy) < EPSILON) {
-			// TODO Handle cases where all 3 vertices are colinear.
-		} else {
-			auto ymin = static_cast<std::uint32_t>(ay);
-			auto ymax = static_cast<std::uint32_t>(by);
-			if (ymin > ymax) {
-				std::swap(ymin, ymax);
-			}
-			for (auto y = ymin; y <= ymax; ++y) {
-				const double p = (y - ay) / dy;
-				const auto from = Vertex::lerp(*a, *b, p);
-				const auto to = Vertex::lerp(*c, *b, p);
+		int ymin = ay;
+		int ymax = by;
+		if (ymax < ymin) {
+			std::swap(ymin, ymax);
+		}
+		for (int y = ymin; y <= ymax; ++y) {
+			const qreal p = (y - ay) / static_cast<qreal>(dy);
+			const Vertex from(Vertex::lerp(*a, *b, p));
+			const Vertex to(Vertex::lerp(*c, *b, p));
 
-				const double Fx = std::round(from.position.x());
-				const double Tx = std::round(to.position.x());
-				const double dx = Tx - Fx;
+			const int Fx = qRound(from.position.x());
+			const int Tx = qRound(to.position.x());
+			const int dx = Tx - Fx;
 
-				// If dx is relatively small, the 'from' and 'to' vertices are
-				// considered identical so there's no need to interpolate any
-				// new vertices between them.
-				if (std::abs(dx) < EPSILON) {
-					T::fragmentProcessing(context, Fragment(from), framebuffer);
-				} else {
-					auto xmin = static_cast<std::uint32_t>(Fx);
-					auto xmax = static_cast<std::uint32_t>(Tx);
-					if (xmin > xmax) {
-						std::swap(xmin, xmax);
-					}
-					for (auto x = xmin; x <= xmax; ++x) {
-						const double p = (x - Fx) / dx;
-						const auto vertex = Vertex::lerp(from, to, p);
-						Fragment fragment(vertex);
-						fragment.x = x;
-						fragment.y = y;
-						T::fragmentProcessing(context, fragment, framebuffer);
-					}
+			// If dx is equal to zero, the 'from' and 'to' vertices are
+			// considered identical so there's no need to interpolate any
+			// new vertices between them.
+			if (dx == 0) {
+				T::fragmentProcessing(context, Fragment(from), framebuffer);
+			} else {
+				int xmin = Fx;
+				int xmax = Tx;
+				if (xmax < xmin) {
+					std::swap(xmin, xmax);
+				}
+				for (int x = xmin; x <= xmax; ++x) {
+					const qreal p = (x - Fx) / static_cast<qreal>(dx);
+					Fragment fragment(Vertex::lerp(from, to, p));
+					fragment.x = x;
+					fragment.y = y;
+					T::fragmentProcessing(context, fragment, framebuffer);
 				}
 			}
 		}
