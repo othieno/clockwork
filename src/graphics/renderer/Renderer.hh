@@ -140,6 +140,12 @@ private:
 	 */
 	static void assembleTrianglePrimitives(const RenderingContext& context, VertexArray& vertices);
 	/**
+	 * Returns true if a triangle primitive is not facing the viewer, false otherwise.
+	 * @param context the rendering context.
+	 * @param offset an iterator to the first element of the primitive to query.
+	 */
+	static bool isBackFacePrimitive(const RenderingContext& context, const typename VertexArray::iterator& offset);
+	/**
 	 * Rearranges the specified set of vertices into a collection of geometric primitives.
 	 * @param topology the primitive topology that the vertices will be rearranged into.
 	 * @param vertices the set of vertices to rearrange.
@@ -268,6 +274,23 @@ Renderer<A, T>::assembleTrianglePrimitives(const RenderingContext& context, Vert
 		return;
 	}
 	Q_UNUSED(context);
+}
+
+
+template<RenderingAlgorithm A, class T> bool
+Renderer<A, T>::isBackFacePrimitive(const RenderingContext& context, const typename VertexArray::iterator& from) {
+	if (context.primitiveTopology == PrimitiveTopology::Triangle) {
+		const QVector3D p0(from[0].position.toVector3DAffine());
+		const QVector3D p1(from[1].position.toVector3DAffine());
+		const QVector3D p2(from[2].position.toVector3DAffine());
+
+		return QVector3D::crossProduct(p1 - p0, p2 - p1).z() <= 0;
+	} else if (context.primitiveTopology == PrimitiveTopology::TriangleStrip) {
+		qFatal("[isBackFacePrimitive] Implement me!");
+	} else if (context.primitiveTopology == PrimitiveTopology::TriangleFan) {
+		qFatal("[isBackFacePrimitive] Implement me!");
+	}
+	return false;
 }
 
 
