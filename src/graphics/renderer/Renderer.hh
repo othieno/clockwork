@@ -117,12 +117,24 @@ protected:
 	/**
 	 *
 	 */
+	static void fragmentProcessing(const RenderingContext&, const Fragment&, Framebuffer&);
+private:
+	/**
+	 *
+	 */
 	static VertexArray vertexProcessing(const RenderingContext& context, const Mesh::Face& face);
 	/**
 	 *
 	 */
-	static void fragmentProcessing(const RenderingContext&, const Fragment&, Framebuffer&);
-private:
+	static void vertexPostProcessing(const RenderingContext& context, VertexArray& vertices);
+	/**
+	 *
+	 */
+	static void primitiveAssembly(const RenderingContext& context, VertexArray& vertices);
+	/**
+	 *
+	 */
+	static void rasterization(RenderingContext& context, VertexArray& vertices);
 	/**
 	 * Rearranges the specified set of vertices into a collection of line primitives.
 	 * @param context the rendering context.
@@ -199,34 +211,14 @@ Renderer<A, T>::draw(RenderingContext& context, const Mesh& mesh) {
 	if (mesh.faces.isEmpty()) {
 		return;
 	}
-	const auto& viewportTransform = context.uniforms["VIEWPORT"].as<const QMatrix2x3>();
 
 	T::sanitizeRenderingContext(context);
 	for (const auto& face : mesh.faces) {
 		VertexArray vertices = vertexProcessing(context, face);
 
-		switch (context.primitiveTopology) {
-			case PrimitiveTopology::Line:
-			case PrimitiveTopology::LineStrip:
-			case PrimitiveTopology::LineLoop:
-				assembleLinePrimitives(context, vertices);
-				break;
-			case PrimitiveTopology::Triangle:
-			case PrimitiveTopology::TriangleStrip:
-			case PrimitiveTopology::TriangleFan:
-				assembleTrianglePrimitives(context, vertices);
-				break;
-			case PrimitiveTopology::Point:
-			default:
-				break;
-		}
-
-		T::clip(context, vertices);
-		if (vertices.isEmpty()) {
-			continue;
-		}
-		toScreenSpace(viewportTransform, vertices);
-		T::rasterize(context, vertices, context.framebuffer);
+		vertexPostProcessing(context, vertices);
+		primitiveAssembly(context, vertices);
+		rasterization(context, vertices);
 	}
 }
 
@@ -245,6 +237,49 @@ Renderer<A, T>::vertexProcessing(const RenderingContext& context, const Mesh::Fa
 		vertices.append(vertex);
 	}
 	return vertices;
+}
+
+
+template<RenderingAlgorithm A, class T> void
+Renderer<A, T>::vertexPostProcessing(const RenderingContext& context, VertexArray& vertices) {
+	if (vertices.isEmpty()) {
+		return;
+	}
+	const auto& viewportTransform = context.uniforms["VIEWPORT"].as<const QMatrix2x3>();
+
+	T::clip(context, vertices);
+	toScreenSpace(viewportTransform, vertices);
+}
+
+
+template<RenderingAlgorithm A, class T> void
+Renderer<A, T>::primitiveAssembly(const RenderingContext& context, VertexArray& vertices) {
+	if (vertices.isEmpty()) {
+		return;
+	}
+	switch (context.primitiveTopology) {
+		case PrimitiveTopology::Line:
+		case PrimitiveTopology::LineStrip:
+		case PrimitiveTopology::LineLoop:
+			assembleLinePrimitives(context, vertices);
+			break;
+		case PrimitiveTopology::Triangle:
+		case PrimitiveTopology::TriangleStrip:
+		case PrimitiveTopology::TriangleFan:
+			assembleTrianglePrimitives(context, vertices);
+			break;
+		default:
+			break;
+	}
+}
+
+
+template<RenderingAlgorithm A, class T> void
+Renderer<A, T>::rasterization(RenderingContext& context, VertexArray& vertices) {
+	if (vertices.isEmpty()) {
+		return;
+	}
+	T::rasterize(context, vertices, context.framebuffer);
 }
 
 
