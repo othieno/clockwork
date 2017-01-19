@@ -154,13 +154,6 @@ private:
 	 */
 	static bool isBackFacePrimitive(const RenderingContext& context, const typename VertexArray::iterator& offset);
 	/**
-	 * Converts the coordinates for each of the specified vertices from clipping space to
-	 * normalized device coordinate space to screen space.
-	 * @param viewportTransform the viewport transformation matrix.
-	 * @param vertices the collection of vertices to convert.
-	 */
-	static void toScreenSpace(const QMatrix2x3& viewportTransform, VertexArray& vertices);
-	/**
 	 * Tests whether the specified fragment can be written to the framebuffer. If
 	 * the specified fragment passes all tests, the function will return a framebuffer
 	 * offset indicating a location where the fragment data can be written to.
@@ -246,7 +239,32 @@ Renderer<A, T>::vertexPostProcessing(const RenderingContext& context, VertexArra
 		return;
 	}
 	T::clip(context, vertices);
-	toScreenSpace(context.viewportTransform, vertices);
+
+	// Convert the vertex positions from clip space to screen (window) space.
+	const qreal Sx = context.viewportTransform(0, 0);
+	const qreal Sy = context.viewportTransform(1, 0);
+	const qreal Sz = context.viewportTransform(2, 0);
+
+	const qreal Tx = context.viewportTransform(0, 1);
+	const qreal Ty = context.viewportTransform(1, 1);
+	const qreal Tz = context.viewportTransform(2, 1);
+
+	for (auto& vertex : vertices) {
+		auto& position = vertex.position;
+
+		// Convert the vertex position from clipping space to normalized
+		// device coordinate (NDC) space ...
+		const qreal w = position.w();
+		const qreal x = position.x() / w;
+		const qreal y = position.y() / w;
+		const qreal z = position.z() / w;
+
+		// ... then to screen space.
+		position.setX((x * Sx) + Tx);
+		position.setY((y * Sy) + Ty);
+		position.setZ((z * Sz) + Tz);
+		position.setW(1.0);
+	}
 }
 
 
@@ -379,35 +397,6 @@ Renderer<A, T>::isBackFacePrimitive(const RenderingContext& context, const typen
 		qFatal("[isBackFacePrimitive] Implement me!");
 	}
 	return false;
-}
-
-
-template<RenderingAlgorithm A, class T> void
-Renderer<A, T>::toScreenSpace(const QMatrix2x3& transform, VertexArray& vertices) {
-	const qreal Sx = transform(0, 0);
-	const qreal Sy = transform(1, 0);
-	const qreal Sz = transform(2, 0);
-
-	const qreal Tx = transform(0, 1);
-	const qreal Ty = transform(1, 1);
-	const qreal Tz = transform(2, 1);
-
-	for (auto& vertex : vertices) {
-		auto& position = vertex.position;
-
-		// Convert the vertex position from clipping space to normalized
-		// device coordinate (NDC) space ...
-		const qreal w = position.w();
-		const qreal x = position.x() / w;
-		const qreal y = position.y() / w;
-		const qreal z = position.z() / w;
-
-		// ... then to screen space.
-		position.setX((x * Sx) + Tx);
-		position.setY((y * Sy) + Ty);
-		position.setZ((z * Sz) + Tz);
-		position.setW(1.0);
-	}
 }
 
 
