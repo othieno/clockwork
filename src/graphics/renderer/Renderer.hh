@@ -136,6 +136,24 @@ private:
 	 */
 	static void rasterization(RenderingContext& context, VertexArray& vertices);
 	/**
+	 * Rremoves point primitves that are not in the view volume.
+	 * @param context the rendering context.
+	 * @param vertices the set of vertices to clip.
+	 */
+	static void clipPointPrimitives(const RenderingContext& context, VertexArray& vertices);
+	/**
+	 * Rremoves line primitves that are not in the view volume.
+	 * @param context the rendering context.
+	 * @param vertices the set of vertices to clip.
+	 */
+	static void clipLinePrimitives(const RenderingContext& context, VertexArray& vertices);
+	/**
+	 * Rremoves triangle primitves that are not in the view volume.
+	 * @param context the rendering context.
+	 * @param vertices the set of vertices to clip.
+	 */
+	static void clipTrianglePrimitives(const RenderingContext& context, VertexArray& vertices);
+	/**
 	 * Rearranges the specified set of vertices into a collection of line primitives.
 	 * @param context the rendering context.
 	 * @param vertices the set of vertices to rearrange.
@@ -238,7 +256,23 @@ Renderer<A, T>::vertexPostProcessing(const RenderingContext& context, VertexArra
 	if (vertices.isEmpty()) {
 		return;
 	}
-	T::clip(context, vertices);
+	switch (context.primitiveTopology) {
+		case PrimitiveTopology::Point:
+			clipPointPrimitives(context, vertices);
+			break;
+		case PrimitiveTopology::Line:
+		case PrimitiveTopology::LineStrip:
+		case PrimitiveTopology::LineLoop:
+			clipLinePrimitives(context, vertices);
+			break;
+		case PrimitiveTopology::Triangle:
+		case PrimitiveTopology::TriangleStrip:
+		case PrimitiveTopology::TriangleFan:
+			clipTrianglePrimitives(context, vertices);
+			break;
+		default:
+			break;
+	}
 
 	// Convert the vertex positions from clip space to screen (window) space.
 	const qreal Sx = context.viewportTransform(0, 0);
@@ -296,6 +330,27 @@ Renderer<A, T>::rasterization(RenderingContext& context, VertexArray& vertices) 
 		return;
 	}
 	T::rasterize(context, vertices, context.framebuffer);
+}
+
+
+template<RenderingAlgorithm A, class T> void
+Renderer<A, T>::clipPointPrimitives(const RenderingContext& context, VertexArray& vertices) {
+	Q_UNUSED(context);
+	Q_UNUSED(vertices);
+}
+
+
+template<RenderingAlgorithm A, class T> void
+Renderer<A, T>::clipLinePrimitives(const RenderingContext& context, VertexArray& vertices) {
+	Q_UNUSED(context);
+	Q_UNUSED(vertices);
+}
+
+
+template<RenderingAlgorithm A, class T> void
+Renderer<A, T>::clipTrianglePrimitives(const RenderingContext& context, VertexArray& vertices) {
+	Q_UNUSED(context);
+	Q_UNUSED(vertices);
 }
 
 
