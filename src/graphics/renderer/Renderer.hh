@@ -264,7 +264,14 @@ Renderer<A, T>::assembleLinePrimitives(const RenderingContext& context, VertexAr
 	if (vertices.isEmpty()) {
 		return;
 	}
-	Q_UNUSED(context);
+	// In the case of Line primitives, the number of vertices must be
+	// even to prevent accessing data out of the vertex array. If the
+	// number of vertices is odd, the last vertex is simply discared.
+	if (context.primitiveTopology == PrimitiveTopology::Line) {
+		if (vertices.size() & 1) {
+			vertices.removeLast();
+		}
+	}
 }
 
 
