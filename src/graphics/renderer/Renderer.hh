@@ -128,6 +128,18 @@ protected:
 	static void fragmentProcessing(const RenderingContext&, const Fragment&, Framebuffer&);
 private:
 	/**
+	 * Rearranges the specified set of vertices into a collection of line primitives.
+	 * @param context the rendering context.
+	 * @param vertices the set of vertices to rearrange.
+	 */
+	static void assembleLinePrimitives(const RenderingContext& context, VertexArray& vertices);
+	/**
+	 * Rearranges the specified set of vertices into a collection of triangle primitives.
+	 * @param context the rendering context.
+	 * @param vertices the set of vertices to rearrange.
+	 */
+	static void assembleTrianglePrimitives(const RenderingContext& context, VertexArray& vertices);
+	/**
 	 * Rearranges the specified set of vertices into a collection of geometric primitives.
 	 * @param topology the primitive topology that the vertices will be rearranged into.
 	 * @param vertices the set of vertices to rearrange.
@@ -196,7 +208,23 @@ Renderer<A, T>::draw(RenderingContext& context, const Mesh& mesh) {
 	T::sanitizeRenderingContext(context);
 	for (const auto& face : mesh.faces) {
 		VertexArray vertices = vertexProcessing(context, face);
-		primitiveAssembly(context.primitiveTopology, vertices);
+
+		switch (context.primitiveTopology) {
+			case PrimitiveTopology::Line:
+			case PrimitiveTopology::LineStrip:
+			case PrimitiveTopology::LineLoop:
+				assembleLinePrimitives(context, vertices);
+				break;
+			case PrimitiveTopology::Triangle:
+			case PrimitiveTopology::TriangleStrip:
+			case PrimitiveTopology::TriangleFan:
+				assembleTrianglePrimitives(context, vertices);
+				break;
+			case PrimitiveTopology::Point:
+			default:
+				break;
+		}
+
 		cull(context, vertices);
 		T::clip(context, vertices);
 		if (vertices.isEmpty()) {
@@ -222,6 +250,24 @@ Renderer<A, T>::vertexProcessing(const RenderingContext& context, const Mesh::Fa
 		vertices.append(vertex);
 	}
 	return vertices;
+}
+
+
+template<RenderingAlgorithm A, class T> void
+Renderer<A, T>::assembleLinePrimitives(const RenderingContext& context, VertexArray& vertices) {
+	if (vertices.isEmpty()) {
+		return;
+	}
+	Q_UNUSED(context);
+}
+
+
+template<RenderingAlgorithm A, class T> void
+Renderer<A, T>::assembleTrianglePrimitives(const RenderingContext& context, VertexArray& vertices) {
+	if (vertices.isEmpty()) {
+		return;
+	}
+	Q_UNUSED(context);
 }
 
 
