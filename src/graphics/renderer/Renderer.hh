@@ -273,7 +273,66 @@ Renderer<A, T>::assembleTrianglePrimitives(const RenderingContext& context, Vert
 	if (vertices.isEmpty()) {
 		return;
 	}
-	Q_UNUSED(context);
+
+	static const auto lessThan = [](const Vertex& a, const Vertex& b) {
+		const auto& pa = a.position;
+		const auto& pb = b.position;
+		if (qFuzzyCompare(1.0 + pa.y(), 1.0 + pb.y())) {
+			if (qFuzzyCompare(1.0 + pa.x(), 1.0 + pb.x())) {
+				return pa.z() < pb.z();
+			} else {
+				return pa.x() < pb.x();
+			}
+		} else {
+			return pa.y() < pb.y();
+		}
+	};
+
+	//FIXME This implementation does not work for triangle strips and fans.
+
+	for (auto it = vertices.begin(); it != vertices.end();) {
+		const auto& from = it;
+		const auto& to = it + 3;
+
+		// Cull backfacing triangle primitives.
+		if (isBackFacePrimitive(context, from)) {
+			it = vertices.erase(from, to);
+			continue;
+		}
+
+		// The scanline algorithm is used to fill polygons. It requires that triangle primitives
+		// be a certain form which may require a tessellation step for some primitives.
+		if (context.polygonMode == PolygonMode::Fill) {
+			std::sort(from, to, lessThan); // Note: std::sort processes the range [first, last[.
+
+			const auto& V0 = it[0];
+			const auto& V1 = it[1];
+			const auto& V2 = it[2];
+
+			const auto& p0 = V0.position;
+			const auto& p1 = V1.position;
+			const auto& p2 = V2.position;
+
+			// Tessellate the primitive, if need be.
+			const bool tessellate = !qFuzzyCompare(1.0 + p0.y(), 1.0 + p1.y()) && !qFuzzyCompare(1.0 + p1.y(), 1.0 + p2.y());
+			if (tessellate) {
+				// Create a new output that will be used to create two new primitives.
+				auto V = Vertex::lerp(V0, V2, (p1.y() - p0.y()) / (p2.y() - p0.y()));
+				V.position.setY(p1.y());
+				//V.position.z = 0; //FIXME Depth needs to be interpolated between V1 and O3.
+
+				// Create two new triangle primitives: {V0, V1, V} and {V1, V, V2}. Since the
+				// original array of outputs is {V0, V1, V2}, it becomes {V0, V1, V, V1, V, V2}.
+				it = vertices.insert(it + 2, V);
+				it = vertices.insert(it + 1, V1);
+				it = vertices.insert(it + 1, V);
+				it = std::next(it, 2);
+
+				continue;
+			}
+		}
+		it = to;
+	}
 }
 
 
