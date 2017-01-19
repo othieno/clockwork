@@ -72,13 +72,13 @@ GraphicsEngine::render(const Scene& scene) {
 		const QMatrix4x4& VIEW = viewer->getViewTransform();
 		const QMatrix4x4& PROJECTION = viewer->getProjectionTransform();
 		const QMatrix4x4& VIEWPROJECTION = viewer->getViewProjectionTransform();
-		const QMatrix2x3& VIEWPORT = viewer->getViewportTransform();
+
+		renderingContext_.viewportTransform = viewer->getViewportTransform();
 
 		renderingContext_.uniforms.insert("PROJECTION", Uniform::create<const QMatrix4x4>(PROJECTION));
 		renderingContext_.uniforms.insert("VIEW", Uniform::create<const QMatrix4x4>(VIEW));
 		renderingContext_.uniforms.insert("viewpoint", Uniform::create<const QVector3D>(viewer->getPosition()));
 		renderingContext_.uniforms.insert("VIEWPROJECTION", Uniform::create<const QMatrix4x4>(VIEWPROJECTION));
-		renderingContext_.uniforms.insert("VIEWPORT", Uniform::create<const QMatrix2x3>(VIEWPORT));
 
 		const auto draw = getDrawFunction(viewer->getRenderingAlgorithm());
 

@@ -77,6 +77,10 @@ struct RenderingContext {
 	 * it's written to the framebuffer.
 	 */
 	bool enableDepthTest;
+	/**
+	 * The viewport transformation matrix.
+	 */
+	QMatrix2x3 viewportTransform;
 };
 } // namespace clockwork
 

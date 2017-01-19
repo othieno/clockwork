@@ -245,10 +245,8 @@ Renderer<A, T>::vertexPostProcessing(const RenderingContext& context, VertexArra
 	if (vertices.isEmpty()) {
 		return;
 	}
-	const auto& viewportTransform = context.uniforms["VIEWPORT"].as<const QMatrix2x3>();
-
 	T::clip(context, vertices);
-	toScreenSpace(viewportTransform, vertices);
+	toScreenSpace(context.viewportTransform, vertices);
 }
 
 
