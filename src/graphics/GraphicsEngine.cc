@@ -39,6 +39,7 @@ GraphicsEngine::initialize(const ApplicationSettings& settings) {
 	renderingContext_.enableStencilTest = settings.isStencilTestEnabled();
 	renderingContext_.enableDepthTest = settings.isDepthTestEnabled();
 	renderingContext_.primitiveTopology = PrimitiveTopology::Triangle;
+	renderingContext_.polygonMode = PolygonMode::Point;
 	renderingContext_.shadeModel = ShadeModel::Flat;
 	renderingContext_.framebuffer.setResolution(Framebuffer::Resolution::XGA);
 

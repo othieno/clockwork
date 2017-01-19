@@ -28,6 +28,7 @@
 #include "Framebuffer.hh"
 #include "PrimitiveTopology.hh"
 #include "ShadeModel.hh"
+#include "PolygonMode.hh"
 #include "LineDrawingAlgorithm.hh"
 #include "Uniform.hh"
 
@@ -41,6 +42,10 @@ struct RenderingContext {
 	 * The framebuffer.
 	 */
 	Framebuffer framebuffer;
+	/**
+	 * The polygon mode.
+	 */
+	PolygonMode polygonMode;
 	/**
 	 * The primitive topology.
 	 */
