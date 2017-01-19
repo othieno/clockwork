@@ -121,10 +121,6 @@ protected:
 	/**
 	 *
 	 */
-	static void cull(const RenderingContext& context, VertexArray& vertices);
-	/**
-	 *
-	 */
 	static void fragmentProcessing(const RenderingContext&, const Fragment&, Framebuffer&);
 private:
 	/**
@@ -225,7 +221,6 @@ Renderer<A, T>::draw(RenderingContext& context, const Mesh& mesh) {
 				break;
 		}
 
-		cull(context, vertices);
 		T::clip(context, vertices);
 		if (vertices.isEmpty()) {
 			continue;
@@ -352,10 +347,6 @@ Renderer<A, T>::isBackFacePrimitive(const RenderingContext& context, const typen
 	}
 	return false;
 }
-
-
-template<RenderingAlgorithm A, class T> void
-Renderer<A, T>::cull(const RenderingContext&, VertexArray&) {}
 
 
 template<RenderingAlgorithm A, class T> void
