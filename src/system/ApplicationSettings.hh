@@ -41,13 +41,14 @@ class ApplicationSettings : public QSettings {
 	Q_OBJECT
 	Q_PROPERTY(bool showFramesPerSecond READ isFpsCounterVisible WRITE showFpsCounter NOTIFY fpsCounterVisibilityChanged)
 	Q_PROPERTY(bool showBorderlessWindow READ isWindowBorderless WRITE showBorderlessWindow NOTIFY windowBorderVisibilityChanged)
+	Q_PROPERTY(int primitiveTopology READ getPrimitiveTopology WRITE setPrimitiveTopology NOTIFY primitiveTopologyChanged_)
+	Q_PROPERTY(bool enableClipping READ isClippingEnabled WRITE enableClipping NOTIFY clippingToggled)
 	Q_PROPERTY(bool enableScissorTest READ isScissorTestEnabled WRITE enableScissorTest NOTIFY scissorTestChanged)
 	Q_PROPERTY(bool enableStencilTest READ isStencilTestEnabled WRITE enableStencilTest NOTIFY stencilTestChanged)
 	Q_PROPERTY(bool enableDepthTest READ isDepthTestEnabled WRITE enableDepthTest NOTIFY depthTestChanged)
 	Q_PROPERTY(QString fileLocation READ fileName CONSTANT)
 	Q_PROPERTY(QStringList availableLanguages READ getAvailableLanguages CONSTANT)
 	Q_PROPERTY(QStringList availableFramebufferResolutions READ getAvailableFramebufferResolutions CONSTANT)
-	Q_PROPERTY(int primitiveTopology READ getPrimitiveTopology WRITE setPrimitiveTopology NOTIFY primitiveTopologyChanged_)
 	friend class Application;
 public:
 	/**
@@ -68,6 +69,15 @@ public:
 	 * @param visible makes the borders visible if set to true, hides them otherwise.
 	 */
 	void showBorderlessWindow(const bool visible);
+	/**
+	 * Returns true if clipping is enabled, false otherwise.
+	 */
+	bool isClippingEnabled() const;
+	/**
+	 * Toggles clipping.
+	 * @param enable enables clipping if set to true, disables it otherwise.
+	 */
+	void enableClipping(const bool enable);
 	/**
 	 * Returns true if the scissor test is enabled, false otherwise.
 	 */
@@ -119,10 +129,11 @@ private:
 	enum class Key {
 		ShowBorderlessWindow,
 		ShowFramesPerSecond,
+		PrimitiveTopology,
+		EnableClipping,
 		EnableScissorTest,
 		EnableStencilTest,
 		EnableDepthTest,
-		PrimitiveTopology,
 	};
 	/**
 	 * Instantiates an ApplicationSettings object.
@@ -158,6 +169,15 @@ signals:
 	 */
 	void windowBorderVisibilityChanged(const bool visible);
 	/**
+	 * Signals that are raised when the primitive topology is changed.
+	 */
+	void primitiveTopologyChanged_(const int topology);
+	void primitiveTopologyChanged(const PrimitiveTopology topology);
+	/**
+	 * A signal that is raised when clipping is toggled.
+	 */
+	void clippingToggled(const bool enabled);
+	/**
 	 * A signal that is raised when the scissor test is toggled.
 	 */
 	void scissorTestChanged(const bool enabled);
@@ -169,11 +189,6 @@ signals:
 	 * A signal that is raised when the depth test is toggled.
 	 */
 	void depthTestChanged(const bool enabled);
-	/**
-	 * Signals that are raised when the primitive topology is changed.
-	 */
-	void primitiveTopologyChanged_(const int topology);
-	void primitiveTopologyChanged(const PrimitiveTopology topology);
 };
 } // namespace clockwork
 

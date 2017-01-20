@@ -60,6 +60,16 @@ Page {
 			ListItem.Subheader {
 				text: qsTr("Vertex post-processing")
 			}
+			ListItem.Subtitled {
+				text: qsTr("Enable clipping")
+				subText: qsTr("Clips primitives to the view volume.")
+				secondaryItem: Switch {
+					id: toggleClipping
+					checked: settings.enableClipping
+					anchors.verticalCenter: parent.verticalCenter
+				}
+				onClicked: toggleClipping.checked = !toggleClipping.checked
+			}
 
 
 			ListItem.Subheader {
@@ -158,6 +168,7 @@ Page {
 	}
 	Component.onDestruction: {
 		settings.primitiveTopology = selectPrimitiveTopology.selectedValue;
+		settings.enableClipping = toggleClipping.checked;
 		settings.enableScissorTest = toggleScissorTest.checked;
 		settings.enableStencilTest = toggleStencilTest.checked;
 		settings.enableDepthTest = toggleDepthTest.checked;

@@ -256,22 +256,24 @@ Renderer<A, T>::vertexPostProcessing(const RenderingContext& context, VertexArra
 	if (vertices.isEmpty()) {
 		return;
 	}
-	switch (context.primitiveTopology) {
-		case PrimitiveTopology::Point:
-			clipPointPrimitives(context, vertices);
-			break;
-		case PrimitiveTopology::Line:
-		case PrimitiveTopology::LineStrip:
-		case PrimitiveTopology::LineLoop:
-			clipLinePrimitives(context, vertices);
-			break;
-		case PrimitiveTopology::Triangle:
-		case PrimitiveTopology::TriangleStrip:
-		case PrimitiveTopology::TriangleFan:
-			clipTrianglePrimitives(context, vertices);
-			break;
-		default:
-			break;
+	if (context.enableClipping) {
+		switch (context.primitiveTopology) {
+			case PrimitiveTopology::Point:
+				clipPointPrimitives(context, vertices);
+				break;
+			case PrimitiveTopology::Line:
+			case PrimitiveTopology::LineStrip:
+			case PrimitiveTopology::LineLoop:
+				clipLinePrimitives(context, vertices);
+				break;
+			case PrimitiveTopology::Triangle:
+			case PrimitiveTopology::TriangleStrip:
+			case PrimitiveTopology::TriangleFan:
+				clipTrianglePrimitives(context, vertices);
+				break;
+			default:
+				break;
+		}
 	}
 
 	// Convert the vertex positions from clip space to screen (window) space.

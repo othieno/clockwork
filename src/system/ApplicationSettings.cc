@@ -69,6 +69,21 @@ ApplicationSettings::showBorderlessWindow(const bool visible) {
 
 
 bool
+ApplicationSettings::isClippingEnabled() const {
+	return value(Key::EnableClipping, true).toBool();
+}
+
+
+void
+ApplicationSettings::enableClipping(const bool enable) {
+	if (isClippingEnabled() != enable) {
+		setValue(Key::EnableClipping, enable);
+		emit clippingToggled(enable);
+	}
+}
+
+
+bool
 ApplicationSettings::isScissorTestEnabled() const {
 	return value(Key::EnableScissorTest, false).toBool();
 }
@@ -178,14 +193,16 @@ ApplicationSettings::keyToString(const Key key) {
 			return "showBorderlessWindow";
 		case Key::ShowFramesPerSecond:
 			return "showFramesPerSecond";
+		case Key::PrimitiveTopology:
+			return "primitiveTopology";
+		case Key::EnableClipping:
+			return "enableClipping";
 		case Key::EnableScissorTest:
 			return "enableScissorTest";
 		case Key::EnableStencilTest:
 			return "enableStencilTest";
 		case Key::EnableDepthTest:
 			return "enableDepthTest";
-		case Key::PrimitiveTopology:
-			return "primitiveTopology";
 		default:
 			qFatal("[ApplicationSettings::keyToString] Undefined key!");
 	}

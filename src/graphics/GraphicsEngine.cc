@@ -35,18 +35,20 @@ using clockwork::GraphicsEngine;
 clockwork::Error
 GraphicsEngine::initialize(const ApplicationSettings& settings) {
 	renderingContext_.lineDrawingAlgorithm = LineDrawingAlgorithm::Bresenham;
+	renderingContext_.primitiveTopology = enum_traits<PrimitiveTopology>::enumerator(settings.getPrimitiveTopology());
+	renderingContext_.enableClipping = settings.isClippingEnabled();
 	renderingContext_.enableScissorTest = settings.isScissorTestEnabled();
 	renderingContext_.enableStencilTest = settings.isStencilTestEnabled();
 	renderingContext_.enableDepthTest = settings.isDepthTestEnabled();
-	renderingContext_.primitiveTopology = PrimitiveTopology::Triangle;
 	renderingContext_.polygonMode = PolygonMode::Point;
 	renderingContext_.shadeModel = ShadeModel::Flat;
 	renderingContext_.framebuffer.setResolution(Framebuffer::Resolution::XGA);
 
+	connect(&settings, &ApplicationSettings::primitiveTopologyChanged, this, &GraphicsEngine::setPrimitiveTopology);
+	connect(&settings, &ApplicationSettings::clippingToggled, this, &GraphicsEngine::enableClipping);
 	connect(&settings, &ApplicationSettings::scissorTestChanged, this, &GraphicsEngine::enableScissorTest);
 	connect(&settings, &ApplicationSettings::stencilTestChanged, this, &GraphicsEngine::enableStencilTest);
 	connect(&settings, &ApplicationSettings::depthTestChanged, this, &GraphicsEngine::enableDepthTest);
-	connect(&settings, &ApplicationSettings::primitiveTopologyChanged, this, &GraphicsEngine::setPrimitiveTopology);
 
 	return Error::None;
 }
@@ -126,6 +128,18 @@ GraphicsEngine::getPrimitiveTopology() const {
 void
 GraphicsEngine::setPrimitiveTopology(const clockwork::PrimitiveTopology topology) {
 	renderingContext_.primitiveTopology = topology;
+}
+
+
+bool
+GraphicsEngine::isClippingEnabled() const {
+	return renderingContext_.enableClipping;
+}
+
+
+void
+GraphicsEngine::enableClipping(const bool enable) {
+	renderingContext_.enableClipping = enable;
 }
 
 

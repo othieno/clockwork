@@ -104,6 +104,16 @@ public:
 	 * @param topology the primitive topology to set.
 	 */
 	void setPrimitiveTopology(const PrimitiveTopology topology);
+
+	/**
+	 * Returns true if clipping is enabled, false otherwise.
+	 */
+	bool isClippingEnabled() const;
+	/**
+	 * Toggles clipping.
+	 * @param enabled enables clipping if set to true, disables it otherwise.
+	 */
+	void enableClipping(const bool enabled = true);
 	/**
 	 * Returns the line-drawing algorithm.
 	 */

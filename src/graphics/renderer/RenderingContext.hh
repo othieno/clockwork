@@ -51,6 +51,10 @@ struct RenderingContext {
 	 */
 	PrimitiveTopology primitiveTopology;
 	/**
+	 * Enables clipping if set to true, disables it otherwise.
+	 */
+	bool enableClipping;
+	/**
 	 * The shade model.
 	 */
 	ShadeModel shadeModel;
