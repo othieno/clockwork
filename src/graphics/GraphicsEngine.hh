@@ -96,6 +96,15 @@ public:
 	 */
 	Framebuffer& getFramebuffer();
 	/**
+	 * Returns the primitive topology.
+	 */
+	PrimitiveTopology getPrimitiveTopology() const;
+	/**
+	 * Sets the primitive topology.
+	 * @param topology the primitive topology to set.
+	 */
+	void setPrimitiveTopology(const PrimitiveTopology topology);
+	/**
 	 * Returns the line-drawing algorithm.
 	 */
 	LineDrawingAlgorithm getLineDrawingAlgorithm() const;

@@ -26,6 +26,7 @@
 #define CLOCKWORK_APPLICATION_SETTINGS_HH
 
 #include <QSettings>
+#include "PrimitiveTopology.hh"
 
 
 namespace clockwork {
@@ -46,6 +47,7 @@ class ApplicationSettings : public QSettings {
 	Q_PROPERTY(QString fileLocation READ fileName CONSTANT)
 	Q_PROPERTY(QStringList availableLanguages READ getAvailableLanguages CONSTANT)
 	Q_PROPERTY(QStringList availableFramebufferResolutions READ getAvailableFramebufferResolutions CONSTANT)
+	Q_PROPERTY(int primitiveTopology READ getPrimitiveTopology WRITE setPrimitiveTopology NOTIFY primitiveTopologyChanged_)
 	friend class Application;
 public:
 	/**
@@ -94,6 +96,15 @@ public:
 	 */
 	void enableDepthTest(const bool enable);
 	/**
+	 * Returns the primitive topology.
+	 */
+	int getPrimitiveTopology() const;
+	/**
+	 * Sets the primitive topology.
+	 * @param topology the primitive topology to set.
+	 */
+	void setPrimitiveTopology(const int topology);
+	/**
 	 * Returns the list of available languages.
 	 */
 	static QStringList getAvailableLanguages();
@@ -111,6 +122,7 @@ private:
 		EnableScissorTest,
 		EnableStencilTest,
 		EnableDepthTest,
+		PrimitiveTopology,
 	};
 	/**
 	 * Instantiates an ApplicationSettings object.
@@ -157,6 +169,11 @@ signals:
 	 * A signal that is raised when the depth test is toggled.
 	 */
 	void depthTestChanged(const bool enabled);
+	/**
+	 * Signals that are raised when the primitive topology is changed.
+	 */
+	void primitiveTopologyChanged_(const int topology);
+	void primitiveTopologyChanged(const PrimitiveTopology topology);
 };
 } // namespace clockwork
 

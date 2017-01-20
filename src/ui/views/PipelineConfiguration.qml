@@ -42,6 +42,17 @@ Page {
 			id: content
 			anchors.fill: parent
 			ListItem.Subheader {
+				text: qsTr("Vertex specification")
+			}
+			Atomic.Select {
+				id: selectPrimitiveTopology
+				title: qsTr("Primitive topology")
+				model: primitiveTopologies
+				initialValue: settings.primitiveTopology
+			}
+
+
+			ListItem.Subheader {
 				text: qsTr("Vertex processing")
 			}
 
@@ -53,12 +64,6 @@ Page {
 
 			ListItem.Subheader {
 				text: qsTr("Primitive assembly and hidden surface removal")
-			}
-			Atomic.Select {
-				id: primitiveTopologySelector
-				title: qsTr("Primitive topology")
-				model: primitiveTopologies
-				enabled: false
 			}
 			ListItem.Divider {}
 			ListItem.Subtitled {
@@ -152,6 +157,7 @@ Page {
 		}
 	}
 	Component.onDestruction: {
+		settings.primitiveTopology = selectPrimitiveTopology.selectedValue;
 		settings.enableScissorTest = toggleScissorTest.checked;
 		settings.enableStencilTest = toggleStencilTest.checked;
 		settings.enableDepthTest = toggleDepthTest.checked;

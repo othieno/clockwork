@@ -46,6 +46,7 @@ GraphicsEngine::initialize(const ApplicationSettings& settings) {
 	connect(&settings, &ApplicationSettings::scissorTestChanged, this, &GraphicsEngine::enableScissorTest);
 	connect(&settings, &ApplicationSettings::stencilTestChanged, this, &GraphicsEngine::enableStencilTest);
 	connect(&settings, &ApplicationSettings::depthTestChanged, this, &GraphicsEngine::enableDepthTest);
+	connect(&settings, &ApplicationSettings::primitiveTopologyChanged, this, &GraphicsEngine::setPrimitiveTopology);
 
 	return Error::None;
 }
@@ -113,6 +114,18 @@ GraphicsEngine::render(const Scene& scene) {
 clockwork::Framebuffer&
 GraphicsEngine::getFramebuffer() {
 	return renderingContext_.framebuffer;
+}
+
+
+clockwork::PrimitiveTopology
+GraphicsEngine::getPrimitiveTopology() const {
+	return renderingContext_.primitiveTopology;
+}
+
+
+void
+GraphicsEngine::setPrimitiveTopology(const clockwork::PrimitiveTopology topology) {
+	renderingContext_.primitiveTopology = topology;
 }
 
 

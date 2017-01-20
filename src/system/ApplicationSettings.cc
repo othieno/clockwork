@@ -26,6 +26,7 @@
 #include "Application.hh"
 #include "Framebuffer.hh"
 #include "toString.hh"
+#include "enum_traits.hh"
 #include <QStandardPaths>
 
 using clockwork::ApplicationSettings;
@@ -112,6 +113,26 @@ ApplicationSettings::enableDepthTest(const bool enable) {
 }
 
 
+int
+ApplicationSettings::getPrimitiveTopology() const {
+	static_assert(std::is_same<int, clockwork::enum_traits<clockwork::PrimitiveTopology>::Ordinal>::value);
+	return value(
+		Key::PrimitiveTopology,
+		enum_traits<PrimitiveTopology>::ordinal(PrimitiveTopology::Triangle)
+	).toInt();
+}
+
+
+void
+ApplicationSettings::setPrimitiveTopology(const int topology) {
+	if (getPrimitiveTopology() != topology) {
+		setValue(Key::PrimitiveTopology, topology);
+		emit primitiveTopologyChanged_(topology);
+		emit primitiveTopologyChanged(enum_traits<PrimitiveTopology>::enumerator(topology));
+	}
+}
+
+
 QStringList
 ApplicationSettings::getAvailableLanguages() {
 	QStringList languages;
@@ -163,6 +184,8 @@ ApplicationSettings::keyToString(const Key key) {
 			return "enableStencilTest";
 		case Key::EnableDepthTest:
 			return "enableDepthTest";
+		case Key::PrimitiveTopology:
+			return "primitiveTopology";
 		default:
 			qFatal("[ApplicationSettings::keyToString] Undefined key!");
 	}
