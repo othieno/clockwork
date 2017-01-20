@@ -39,6 +39,10 @@ ListItem.Subtitled {
 	property alias model: listView.model
 	property alias delegate: listView.delegate
 	property alias selectedIndex: listView.currentIndex
+	property alias selectedItem: listView.currentItem
+
+	readonly property var selectedValue: selectedItem.value
+	property var initialValue
 
 	property int maxWidth_: 0
 
@@ -93,6 +97,18 @@ ListItem.Subtitled {
 						control.changed(index, label, value)
 					}
 					menu.close()
+				}
+			}
+			Component.onCompleted: {
+				if (!initialValue) {
+					return;
+				}
+				var values = listView.model.values;
+				for (var i = 0; i < values.length; ++i) {
+					if (control.initialValue === values[i]) {
+						listView.currentIndex = i;
+						break;
+					}
 				}
 			}
 		}
