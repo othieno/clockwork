@@ -43,6 +43,10 @@ GraphicsEngine::initialize(const ApplicationSettings& settings) {
 	renderingContext_.shadeModel = ShadeModel::Flat;
 	renderingContext_.framebuffer.setResolution(Framebuffer::Resolution::XGA);
 
+	connect(&settings, &ApplicationSettings::scissorTestChanged, this, &GraphicsEngine::enableScissorTest);
+	connect(&settings, &ApplicationSettings::stencilTestChanged, this, &GraphicsEngine::enableStencilTest);
+	connect(&settings, &ApplicationSettings::depthTestChanged, this, &GraphicsEngine::enableDepthTest);
+
 	return Error::None;
 }
 

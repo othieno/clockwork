@@ -50,7 +50,7 @@ struct RenderingContext;
 /**
  *
  */
-class GraphicsEngine {
+class GraphicsEngine : public QObject {
 	friend class Service;
 public:
 	/**

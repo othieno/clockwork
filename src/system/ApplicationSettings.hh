@@ -157,10 +157,6 @@ signals:
 	 * A signal that is raised when the depth test is toggled.
 	 */
 	void depthTestChanged(const bool enabled);
-	/**
-	 * A signal that is raised when the rendering context is changed.
-	 */
-	void renderingContextChanged();
 };
 } // namespace clockwork
 

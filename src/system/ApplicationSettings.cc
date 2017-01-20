@@ -25,7 +25,6 @@
 #include "ApplicationSettings.hh"
 #include "Application.hh"
 #include "Framebuffer.hh"
-#include "Service.hh"
 #include "toString.hh"
 #include <QStandardPaths>
 
@@ -35,9 +34,6 @@ using clockwork::ApplicationSettings;
 ApplicationSettings::ApplicationSettings() :
 QSettings(QString("./clockwork-preferences.pro.user"), Format::IniFormat) {
 //QSettings(QString("%1/configuration.ini").arg(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)), Format::IniFormat) {
-	connect(this, SIGNAL(scissorTestChanged(const bool)), this, SIGNAL(renderingContextChanged()));
-	connect(this, SIGNAL(stencilTestChanged(const bool)), this, SIGNAL(renderingContextChanged()));
-	connect(this, SIGNAL(depthTestChanged(const bool)), this, SIGNAL(renderingContextChanged()));
 }
 
 
@@ -81,7 +77,6 @@ void
 ApplicationSettings::enableScissorTest(const bool enable) {
 	if (isScissorTestEnabled() != enable) {
 		setValue(Key::EnableScissorTest, enable);
-		Service::Graphics.enableScissorTest(enable);
 		emit scissorTestChanged(enable);
 	}
 }
@@ -97,7 +92,6 @@ void
 ApplicationSettings::enableStencilTest(const bool enable) {
 	if (isStencilTestEnabled() != enable) {
 		setValue(Key::EnableStencilTest, enable);
-		Service::Graphics.enableStencilTest(enable);
 		emit stencilTestChanged(enable);
 	}
 }
@@ -113,7 +107,6 @@ void
 ApplicationSettings::enableDepthTest(const bool enable) {
 	if (isDepthTestEnabled() != enable) {
 		setValue(Key::EnableDepthTest, enable);
-		Service::Graphics.enableDepthTest(enable);
 		emit depthTestChanged(enable);
 	}
 }
