@@ -36,6 +36,7 @@ class SelectModel : public QAbstractListModel {
 	Q_OBJECT
 	Q_PROPERTY(int length READ rowCount CONSTANT)
 	Q_PROPERTY(QStringList labels READ getLabels CONSTANT)
+	Q_PROPERTY(QVariantList values READ getValues CONSTANT)
 public:
 	/**
 	 *
@@ -99,6 +100,10 @@ public:
 	 * Returns the list of option labels.
 	 */
 	QStringList getLabels() const;
+	/**
+	 * Returns the list of option values.
+	 */
+	QVariantList getValues() const;
 private:
 	/**
 	 * The set of available options.

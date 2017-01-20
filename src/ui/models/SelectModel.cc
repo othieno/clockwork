@@ -98,3 +98,13 @@ SelectModel::getLabels() const {
 	}
 	return labels;
 }
+
+
+QVariantList
+SelectModel::getValues() const {
+	QVariantList values;
+	for (const auto& option : options_) {
+		values << option.value;
+	}
+	return values;
+}
