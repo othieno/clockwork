@@ -142,6 +142,15 @@ public:
 	 */
 	void setPolygonMode(const PolygonMode mode);
 	/**
+	 * Returns the shade model.
+	 */
+	ShadeModel getShadeModel() const;
+	/**
+	 * Sets the shade model.
+	 * @param model the shade model to set.
+	 */
+	void setShadeModel(const ShadeModel model);
+	/**
 	 * Returns true if the scissor test is enabled, false otherwise.
 	 */
 	bool isScissorTestEnabled() const;

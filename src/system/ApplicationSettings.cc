@@ -137,6 +137,26 @@ ApplicationSettings::setPolygonMode(const int mode) {
 }
 
 
+int
+ApplicationSettings::getShadeModelOrdinal() const {
+	static_assert(std::is_same<int, clockwork::enum_traits<clockwork::ShadeModel>::Ordinal>::value);
+	return value(
+		Key::ShadeModel,
+		enum_traits<ShadeModel>::ordinal(ShadeModel::Flat)
+	).toInt();
+}
+
+
+void
+ApplicationSettings::setShadeModel(const int model) {
+	if (getShadeModelOrdinal() != model) {
+		setValue(Key::ShadeModel, model);
+		emit shadeModelChanged_(model);
+		emit shadeModelChanged(enum_traits<ShadeModel>::enumerator(model));
+	}
+}
+
+
 bool
 ApplicationSettings::isScissorTestEnabled() const {
 	return value(Key::EnableScissorTest, false).toBool();
@@ -235,6 +255,8 @@ ApplicationSettings::keyToString(const Key key) {
 			return "enableBackfaceCulling";
 		case Key::PolygonMode:
 			return "polygonMode";
+		case Key::ShadeModel:
+			return "shadeModel";
 		case Key::EnableScissorTest:
 			return "enableScissorTest";
 		case Key::EnableStencilTest:

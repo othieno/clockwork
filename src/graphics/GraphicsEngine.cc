@@ -39,16 +39,17 @@ GraphicsEngine::initialize(const ApplicationSettings& settings) {
 	renderingContext_.enableClipping = settings.isClippingEnabled();
 	renderingContext_.enableBackfaceCulling = settings.isBackfaceCullingEnabled();
 	renderingContext_.polygonMode = settings.getPolygonMode();
+	renderingContext_.shadeModel = settings.getShadeModel();
 	renderingContext_.enableScissorTest = settings.isScissorTestEnabled();
 	renderingContext_.enableStencilTest = settings.isStencilTestEnabled();
 	renderingContext_.enableDepthTest = settings.isDepthTestEnabled();
-	renderingContext_.shadeModel = ShadeModel::Flat;
 	renderingContext_.framebuffer.setResolution(Framebuffer::Resolution::XGA);
 
 	connect(&settings, &ApplicationSettings::primitiveTopologyChanged, this, &GraphicsEngine::setPrimitiveTopology);
 	connect(&settings, &ApplicationSettings::clippingToggled, this, &GraphicsEngine::enableClipping);
 	connect(&settings, &ApplicationSettings::backfaceCullingToggled, this, &GraphicsEngine::enableBackfaceCulling);
 	connect(&settings, &ApplicationSettings::polygonModeChanged, this, &GraphicsEngine::setPolygonMode);
+	connect(&settings, &ApplicationSettings::shadeModelChanged, this, &GraphicsEngine::setShadeModel);
 	connect(&settings, &ApplicationSettings::scissorTestChanged, this, &GraphicsEngine::enableScissorTest);
 	connect(&settings, &ApplicationSettings::stencilTestChanged, this, &GraphicsEngine::enableStencilTest);
 	connect(&settings, &ApplicationSettings::depthTestChanged, this, &GraphicsEngine::enableDepthTest);
@@ -179,6 +180,18 @@ GraphicsEngine::getPolygonMode() const {
 void
 GraphicsEngine::setPolygonMode(const PolygonMode mode) {
 	renderingContext_.polygonMode = mode;
+}
+
+
+clockwork::ShadeModel
+GraphicsEngine::getShadeModel() const {
+	return renderingContext_.shadeModel;
+}
+
+
+void
+GraphicsEngine::setShadeModel(const ShadeModel model) {
+	renderingContext_.shadeModel = model;
 }
 
 

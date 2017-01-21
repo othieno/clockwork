@@ -28,6 +28,7 @@
 #include <QSettings>
 #include "PrimitiveTopology.hh"
 #include "PolygonMode.hh"
+#include "ShadeModel.hh"
 
 
 namespace clockwork {
@@ -46,6 +47,7 @@ class ApplicationSettings : public QSettings {
 	Q_PROPERTY(bool enableClipping READ isClippingEnabled WRITE enableClipping NOTIFY clippingToggled)
 	Q_PROPERTY(bool enableBackfaceCulling READ isBackfaceCullingEnabled WRITE enableBackfaceCulling NOTIFY backfaceCullingToggled)
 	Q_PROPERTY(int polygonMode READ getPolygonModeOrdinal WRITE setPolygonMode NOTIFY polygonModeChanged_)
+	Q_PROPERTY(int shadeModel READ getShadeModelOrdinal WRITE setShadeModel NOTIFY shadeModelChanged_)
 	Q_PROPERTY(bool enableScissorTest READ isScissorTestEnabled WRITE enableScissorTest NOTIFY scissorTestChanged)
 	Q_PROPERTY(bool enableStencilTest READ isStencilTestEnabled WRITE enableStencilTest NOTIFY stencilTestChanged)
 	Q_PROPERTY(bool enableDepthTest READ isDepthTestEnabled WRITE enableDepthTest NOTIFY depthTestChanged)
@@ -72,6 +74,21 @@ public:
 	 * @param visible makes the borders visible if set to true, hides them otherwise.
 	 */
 	void showBorderlessWindow(const bool visible);
+	/**
+	 * Returns the primitive topology's integer value.
+	 */
+	int getPrimitiveTopologyOrdinal() const;
+	/**
+	 * Returns the primitive topology.
+	 */
+	inline PrimitiveTopology getPrimitiveTopology() const {
+		return enum_traits<PrimitiveTopology>::enumerator(getPrimitiveTopologyOrdinal());
+	}
+	/**
+	 * Sets the primitive topology.
+	 * @param topology the integer value of the primitive topology to set.
+	 */
+	void setPrimitiveTopology(const int topology);
 	/**
 	 * Returns true if clipping is enabled, false otherwise.
 	 */
@@ -106,6 +123,21 @@ public:
 	 */
 	void setPolygonMode(const int mode);
 	/**
+	 * Returns the shade model's integer value.
+	 */
+	int getShadeModelOrdinal() const;
+	/**
+	 * Returns the shade model.
+	 */
+	inline ShadeModel getShadeModel() const {
+		return enum_traits<ShadeModel>::enumerator(getShadeModelOrdinal());
+	}
+	/**
+	 * Sets the shade model.
+	 * @param model the integer value of the shade model to set.
+	 */
+	void setShadeModel(const int model);
+	/**
 	 * Returns true if the scissor test is enabled, false otherwise.
 	 */
 	bool isScissorTestEnabled() const;
@@ -133,21 +165,6 @@ public:
 	 */
 	void enableDepthTest(const bool enable);
 	/**
-	 * Returns the primitive topology's integer value.
-	 */
-	int getPrimitiveTopologyOrdinal() const;
-	/**
-	 * Returns the primitive topology.
-	 */
-	inline PrimitiveTopology getPrimitiveTopology() const {
-		return enum_traits<PrimitiveTopology>::enumerator(getPrimitiveTopologyOrdinal());
-	}
-	/**
-	 * Sets the primitive topology.
-	 * @param topology the integer value of the primitive topology to set.
-	 */
-	void setPrimitiveTopology(const int topology);
-	/**
 	 * Returns the list of available languages.
 	 */
 	static QStringList getAvailableLanguages();
@@ -166,6 +183,7 @@ private:
 		EnableClipping,
 		EnableBackfaceCulling,
 		PolygonMode,
+		ShadeModel,
 		EnableScissorTest,
 		EnableStencilTest,
 		EnableDepthTest,
@@ -217,10 +235,15 @@ signals:
 	 */
 	void backfaceCullingToggled(const bool enabled);
 	/**
-	 * A signal that is raised when the polygon mode is toggled.
+	 * Signals that are raised when the polygon mode is changed.
 	 */
 	void polygonModeChanged_(const int mode);
 	void polygonModeChanged(const PolygonMode mode);
+	/**
+	 * Signals that are raised when the shade model is changed.
+	 */
+	void shadeModelChanged_(const int model);
+	void shadeModelChanged(const ShadeModel model);
 	/**
 	 * A signal that is raised when the scissor test is toggled.
 	 */

@@ -121,10 +121,10 @@ Page {
 				initialValue: settings.polygonMode
 			}
 			Atomic.Select {
-				enabled: false
-				id: shadeModelSelector
+				id: selectShadeModel
 				title: qsTr("Shade model")
 				model: shadeModels
+				initialValue: settings.shadeModel
 			}
 
 
@@ -175,6 +175,7 @@ Page {
 		settings.enableClipping = toggleClipping.checked;
 		settings.enableBackfaceCulling = toggleBackfaceCulling.checked;
 		settings.polygonMode = selectPolygonMode.selectedValue;
+		settings.shadeModel = selectShadeModel.selectedValue;
 		settings.enableScissorTest = toggleScissorTest.checked;
 		settings.enableStencilTest = toggleStencilTest.checked;
 		settings.enableDepthTest = toggleDepthTest.checked;
