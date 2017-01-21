@@ -111,6 +111,7 @@ public:
 	 * Returns the polygon mode's integer value.
 	 */
 	int getPolygonModeOrdinal() const;
+	static_assert(std::is_same<int, enum_traits<clockwork::PolygonMode>::Ordinal>::value);
 	/**
 	 * Returns the polygon mode.
 	 */
@@ -126,6 +127,7 @@ public:
 	 * Returns the shade model's integer value.
 	 */
 	int getShadeModelOrdinal() const;
+	static_assert(std::is_same<int, enum_traits<clockwork::ShadeModel>::Ordinal>::value);
 	/**
 	 * Returns the shade model.
 	 */

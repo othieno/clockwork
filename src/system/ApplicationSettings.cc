@@ -119,7 +119,6 @@ ApplicationSettings::enableBackfaceCulling(const bool enable) {
 
 int
 ApplicationSettings::getPolygonModeOrdinal() const {
-	static_assert(std::is_same<int, clockwork::enum_traits<clockwork::PolygonMode>::Ordinal>::value);
 	return value(
 		Key::PolygonMode,
 		enum_traits<PolygonMode>::ordinal(PolygonMode::Fill)
@@ -139,7 +138,6 @@ ApplicationSettings::setPolygonMode(const int mode) {
 
 int
 ApplicationSettings::getShadeModelOrdinal() const {
-	static_assert(std::is_same<int, clockwork::enum_traits<clockwork::ShadeModel>::Ordinal>::value);
 	return value(
 		Key::ShadeModel,
 		enum_traits<ShadeModel>::ordinal(ShadeModel::Flat)
