@@ -399,7 +399,7 @@ Renderer<A, T>::assembleTrianglePrimitives(const RenderingContext& context, Vert
 		const auto& to = it + 3;
 
 		// Cull backfacing triangle primitives.
-		if (isBackFacePrimitive(context, from)) {
+		if (context.enableBackfaceCulling && isBackFacePrimitive(context, from)) {
 			it = vertices.erase(from, to);
 			continue;
 		}

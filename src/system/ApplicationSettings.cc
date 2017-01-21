@@ -68,6 +68,26 @@ ApplicationSettings::showBorderlessWindow(const bool visible) {
 }
 
 
+int
+ApplicationSettings::getPrimitiveTopology() const {
+	static_assert(std::is_same<int, clockwork::enum_traits<clockwork::PrimitiveTopology>::Ordinal>::value);
+	return value(
+		Key::PrimitiveTopology,
+		enum_traits<PrimitiveTopology>::ordinal(PrimitiveTopology::Triangle)
+	).toInt();
+}
+
+
+void
+ApplicationSettings::setPrimitiveTopology(const int topology) {
+	if (getPrimitiveTopology() != topology) {
+		setValue(Key::PrimitiveTopology, topology);
+		emit primitiveTopologyChanged_(topology);
+		emit primitiveTopologyChanged(enum_traits<PrimitiveTopology>::enumerator(topology));
+	}
+}
+
+
 bool
 ApplicationSettings::isClippingEnabled() const {
 	return value(Key::EnableClipping, true).toBool();
@@ -79,6 +99,21 @@ ApplicationSettings::enableClipping(const bool enable) {
 	if (isClippingEnabled() != enable) {
 		setValue(Key::EnableClipping, enable);
 		emit clippingToggled(enable);
+	}
+}
+
+
+bool
+ApplicationSettings::isBackfaceCullingEnabled() const {
+	return value(Key::EnableBackfaceCulling, true).toBool();
+}
+
+
+void
+ApplicationSettings::enableBackfaceCulling(const bool enable) {
+	if (isBackfaceCullingEnabled() != enable) {
+		setValue(Key::EnableBackfaceCulling, enable);
+		emit backfaceCullingToggled(enable);
 	}
 }
 
@@ -124,26 +159,6 @@ ApplicationSettings::enableDepthTest(const bool enable) {
 	if (isDepthTestEnabled() != enable) {
 		setValue(Key::EnableDepthTest, enable);
 		emit depthTestChanged(enable);
-	}
-}
-
-
-int
-ApplicationSettings::getPrimitiveTopology() const {
-	static_assert(std::is_same<int, clockwork::enum_traits<clockwork::PrimitiveTopology>::Ordinal>::value);
-	return value(
-		Key::PrimitiveTopology,
-		enum_traits<PrimitiveTopology>::ordinal(PrimitiveTopology::Triangle)
-	).toInt();
-}
-
-
-void
-ApplicationSettings::setPrimitiveTopology(const int topology) {
-	if (getPrimitiveTopology() != topology) {
-		setValue(Key::PrimitiveTopology, topology);
-		emit primitiveTopologyChanged_(topology);
-		emit primitiveTopologyChanged(enum_traits<PrimitiveTopology>::enumerator(topology));
 	}
 }
 
@@ -197,6 +212,8 @@ ApplicationSettings::keyToString(const Key key) {
 			return "primitiveTopology";
 		case Key::EnableClipping:
 			return "enableClipping";
+		case Key::EnableBackfaceCulling:
+			return "enableBackfaceCulling";
 		case Key::EnableScissorTest:
 			return "enableScissorTest";
 		case Key::EnableStencilTest:

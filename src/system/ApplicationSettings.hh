@@ -43,6 +43,7 @@ class ApplicationSettings : public QSettings {
 	Q_PROPERTY(bool showBorderlessWindow READ isWindowBorderless WRITE showBorderlessWindow NOTIFY windowBorderVisibilityChanged)
 	Q_PROPERTY(int primitiveTopology READ getPrimitiveTopology WRITE setPrimitiveTopology NOTIFY primitiveTopologyChanged_)
 	Q_PROPERTY(bool enableClipping READ isClippingEnabled WRITE enableClipping NOTIFY clippingToggled)
+	Q_PROPERTY(bool enableBackfaceCulling READ isBackfaceCullingEnabled WRITE enableBackfaceCulling NOTIFY backfaceCullingToggled)
 	Q_PROPERTY(bool enableScissorTest READ isScissorTestEnabled WRITE enableScissorTest NOTIFY scissorTestChanged)
 	Q_PROPERTY(bool enableStencilTest READ isStencilTestEnabled WRITE enableStencilTest NOTIFY stencilTestChanged)
 	Q_PROPERTY(bool enableDepthTest READ isDepthTestEnabled WRITE enableDepthTest NOTIFY depthTestChanged)
@@ -78,6 +79,15 @@ public:
 	 * @param enable enables clipping if set to true, disables it otherwise.
 	 */
 	void enableClipping(const bool enable);
+	/**
+	 * Returns true if backface culling is enabled, false otherwise.
+	 */
+	bool isBackfaceCullingEnabled() const;
+	/**
+	 * Toggles backface culling.
+	 * @param enable enables backface culling if set to true, disables it otherwise.
+	 */
+	void enableBackfaceCulling(const bool enable);
 	/**
 	 * Returns true if the scissor test is enabled, false otherwise.
 	 */
@@ -131,6 +141,7 @@ private:
 		ShowFramesPerSecond,
 		PrimitiveTopology,
 		EnableClipping,
+		EnableBackfaceCulling,
 		EnableScissorTest,
 		EnableStencilTest,
 		EnableDepthTest,
@@ -177,6 +188,10 @@ signals:
 	 * A signal that is raised when clipping is toggled.
 	 */
 	void clippingToggled(const bool enabled);
+	/**
+	 * A signal that is raised when backface culling is toggled.
+	 */
+	void backfaceCullingToggled(const bool enabled);
 	/**
 	 * A signal that is raised when the scissor test is toggled.
 	 */

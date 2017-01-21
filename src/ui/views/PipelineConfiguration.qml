@@ -73,7 +73,17 @@ Page {
 
 
 			ListItem.Subheader {
-				text: qsTr("Primitive assembly and hidden surface removal")
+				text: qsTr("Primitive assembly")
+			}
+			ListItem.Subtitled {
+				text: qsTr("Enable backface culling")
+				subText: qsTr("Discards surfaces that are not facing the camera.")
+				secondaryItem: Switch {
+					id: toggleBackfaceCulling
+					checked: settings.enableBackfaceCulling
+					anchors.verticalCenter: parent.verticalCenter
+				}
+				onClicked: toggleBackfaceCulling.checked = !toggleBackfaceCulling.checked
 			}
 			ListItem.Divider {}
 			ListItem.Subtitled {
@@ -98,18 +108,6 @@ Page {
 					anchors.verticalCenter: parent.verticalCenter
 				}
 				onClicked: toggleContributionCulling.checked = !toggleContributionCulling.checked
-			}
-			ListItem.Divider {}
-			ListItem.Subtitled {
-				enabled: false
-				text: qsTr("Enable backface culling")
-				subText: qsTr("Discards surfaces that are not facing the camera.")
-				secondaryItem: Switch {
-					id: toggleBackfaceCulling
-					checked: true
-					anchors.verticalCenter: parent.verticalCenter
-				}
-				onClicked: toggleBackfaceCulling.checked = !toggleBackfaceCulling.checked
 			}
 
 
@@ -169,6 +167,7 @@ Page {
 	Component.onDestruction: {
 		settings.primitiveTopology = selectPrimitiveTopology.selectedValue;
 		settings.enableClipping = toggleClipping.checked;
+		settings.enableBackfaceCulling = toggleBackfaceCulling.checked;
 		settings.enableScissorTest = toggleScissorTest.checked;
 		settings.enableStencilTest = toggleStencilTest.checked;
 		settings.enableDepthTest = toggleDepthTest.checked;

@@ -37,6 +37,7 @@ GraphicsEngine::initialize(const ApplicationSettings& settings) {
 	renderingContext_.lineDrawingAlgorithm = LineDrawingAlgorithm::Bresenham;
 	renderingContext_.primitiveTopology = enum_traits<PrimitiveTopology>::enumerator(settings.getPrimitiveTopology());
 	renderingContext_.enableClipping = settings.isClippingEnabled();
+	renderingContext_.enableBackfaceCulling = settings.isBackfaceCullingEnabled();
 	renderingContext_.enableScissorTest = settings.isScissorTestEnabled();
 	renderingContext_.enableStencilTest = settings.isStencilTestEnabled();
 	renderingContext_.enableDepthTest = settings.isDepthTestEnabled();
@@ -46,6 +47,7 @@ GraphicsEngine::initialize(const ApplicationSettings& settings) {
 
 	connect(&settings, &ApplicationSettings::primitiveTopologyChanged, this, &GraphicsEngine::setPrimitiveTopology);
 	connect(&settings, &ApplicationSettings::clippingToggled, this, &GraphicsEngine::enableClipping);
+	connect(&settings, &ApplicationSettings::backfaceCullingToggled, this, &GraphicsEngine::enableBackfaceCulling);
 	connect(&settings, &ApplicationSettings::scissorTestChanged, this, &GraphicsEngine::enableScissorTest);
 	connect(&settings, &ApplicationSettings::stencilTestChanged, this, &GraphicsEngine::enableStencilTest);
 	connect(&settings, &ApplicationSettings::depthTestChanged, this, &GraphicsEngine::enableDepthTest);
@@ -140,6 +142,18 @@ GraphicsEngine::isClippingEnabled() const {
 void
 GraphicsEngine::enableClipping(const bool enable) {
 	renderingContext_.enableClipping = enable;
+}
+
+
+bool
+GraphicsEngine::isBackfaceCullingEnabled() const {
+	return renderingContext_.enableBackfaceCulling;
+}
+
+
+void
+GraphicsEngine::enableBackfaceCulling(const bool enable) {
+	renderingContext_.enableBackfaceCulling = enable;
 }
 
 

@@ -115,6 +115,15 @@ public:
 	 */
 	void enableClipping(const bool enabled = true);
 	/**
+	 * Returns true if backface culling is enabled, false otherwise.
+	 */
+	bool isBackfaceCullingEnabled() const;
+	/**
+	 * Toggles backface culling.
+	 * @param enable enables backface culling if set to true, disables it otherwise.
+	 */
+	void enableBackfaceCulling(const bool enable = true);
+	/**
 	 * Returns the line-drawing algorithm.
 	 */
 	LineDrawingAlgorithm getLineDrawingAlgorithm() const;

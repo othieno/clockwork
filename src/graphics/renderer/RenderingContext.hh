@@ -55,6 +55,10 @@ struct RenderingContext {
 	 */
 	bool enableClipping;
 	/**
+	 * Enables backface culling if set to true, disables it otherwise.
+	 */
+	bool enableBackfaceCulling;
+	/**
 	 * The shade model.
 	 */
 	ShadeModel shadeModel;
