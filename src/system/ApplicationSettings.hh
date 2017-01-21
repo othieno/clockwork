@@ -27,6 +27,7 @@
 
 #include <QSettings>
 #include "PrimitiveTopology.hh"
+#include "PolygonMode.hh"
 
 
 namespace clockwork {
@@ -41,9 +42,10 @@ class ApplicationSettings : public QSettings {
 	Q_OBJECT
 	Q_PROPERTY(bool showFramesPerSecond READ isFpsCounterVisible WRITE showFpsCounter NOTIFY fpsCounterVisibilityChanged)
 	Q_PROPERTY(bool showBorderlessWindow READ isWindowBorderless WRITE showBorderlessWindow NOTIFY windowBorderVisibilityChanged)
-	Q_PROPERTY(int primitiveTopology READ getPrimitiveTopology WRITE setPrimitiveTopology NOTIFY primitiveTopologyChanged_)
+	Q_PROPERTY(int primitiveTopology READ getPrimitiveTopologyOrdinal WRITE setPrimitiveTopology NOTIFY primitiveTopologyChanged_)
 	Q_PROPERTY(bool enableClipping READ isClippingEnabled WRITE enableClipping NOTIFY clippingToggled)
 	Q_PROPERTY(bool enableBackfaceCulling READ isBackfaceCullingEnabled WRITE enableBackfaceCulling NOTIFY backfaceCullingToggled)
+	Q_PROPERTY(int polygonMode READ getPolygonModeOrdinal WRITE setPolygonMode NOTIFY polygonModeChanged_)
 	Q_PROPERTY(bool enableScissorTest READ isScissorTestEnabled WRITE enableScissorTest NOTIFY scissorTestChanged)
 	Q_PROPERTY(bool enableStencilTest READ isStencilTestEnabled WRITE enableStencilTest NOTIFY stencilTestChanged)
 	Q_PROPERTY(bool enableDepthTest READ isDepthTestEnabled WRITE enableDepthTest NOTIFY depthTestChanged)
@@ -89,6 +91,21 @@ public:
 	 */
 	void enableBackfaceCulling(const bool enable);
 	/**
+	 * Returns the polygon mode's integer value.
+	 */
+	int getPolygonModeOrdinal() const;
+	/**
+	 * Returns the polygon mode.
+	 */
+	inline PolygonMode getPolygonMode() const {
+		return enum_traits<PolygonMode>::enumerator(getPolygonModeOrdinal());
+	}
+	/**
+	 * Sets the polygon mode.
+	 * @param mode the integer value of the polygon mode to set.
+	 */
+	void setPolygonMode(const int mode);
+	/**
 	 * Returns true if the scissor test is enabled, false otherwise.
 	 */
 	bool isScissorTestEnabled() const;
@@ -116,12 +133,18 @@ public:
 	 */
 	void enableDepthTest(const bool enable);
 	/**
+	 * Returns the primitive topology's integer value.
+	 */
+	int getPrimitiveTopologyOrdinal() const;
+	/**
 	 * Returns the primitive topology.
 	 */
-	int getPrimitiveTopology() const;
+	inline PrimitiveTopology getPrimitiveTopology() const {
+		return enum_traits<PrimitiveTopology>::enumerator(getPrimitiveTopologyOrdinal());
+	}
 	/**
 	 * Sets the primitive topology.
-	 * @param topology the primitive topology to set.
+	 * @param topology the integer value of the primitive topology to set.
 	 */
 	void setPrimitiveTopology(const int topology);
 	/**
@@ -142,6 +165,7 @@ private:
 		PrimitiveTopology,
 		EnableClipping,
 		EnableBackfaceCulling,
+		PolygonMode,
 		EnableScissorTest,
 		EnableStencilTest,
 		EnableDepthTest,
@@ -192,6 +216,11 @@ signals:
 	 * A signal that is raised when backface culling is toggled.
 	 */
 	void backfaceCullingToggled(const bool enabled);
+	/**
+	 * A signal that is raised when the polygon mode is toggled.
+	 */
+	void polygonModeChanged_(const int mode);
+	void polygonModeChanged(const PolygonMode mode);
 	/**
 	 * A signal that is raised when the scissor test is toggled.
 	 */

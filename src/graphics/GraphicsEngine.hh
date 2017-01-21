@@ -133,6 +133,15 @@ public:
 	 */
 	void setLineDrawingAlgorithm(const LineDrawingAlgorithm algorithm);
 	/**
+	 * Returns the polygon mode.
+	 */
+	PolygonMode getPolygonMode() const;
+	/**
+	 * Sets the polygon mode.
+	 * @param mode the polygon mode to set.
+	 */
+	void setPolygonMode(const PolygonMode mode);
+	/**
 	 * Returns true if the scissor test is enabled, false otherwise.
 	 */
 	bool isScissorTestEnabled() const;

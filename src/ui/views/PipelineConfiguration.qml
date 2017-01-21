@@ -115,6 +115,12 @@ Page {
 				text: qsTr("Rasterization")
 			}
 			Atomic.Select {
+				id: selectPolygonMode
+				title: qsTr("Polygon mode")
+				model: polygonModes
+				initialValue: settings.polygonMode
+			}
+			Atomic.Select {
 				enabled: false
 				id: shadeModelSelector
 				title: qsTr("Shade model")
@@ -168,6 +174,7 @@ Page {
 		settings.primitiveTopology = selectPrimitiveTopology.selectedValue;
 		settings.enableClipping = toggleClipping.checked;
 		settings.enableBackfaceCulling = toggleBackfaceCulling.checked;
+		settings.polygonMode = selectPolygonMode.selectedValue;
 		settings.enableScissorTest = toggleScissorTest.checked;
 		settings.enableStencilTest = toggleStencilTest.checked;
 		settings.enableDepthTest = toggleDepthTest.checked;

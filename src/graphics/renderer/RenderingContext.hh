@@ -43,10 +43,6 @@ struct RenderingContext {
 	 */
 	Framebuffer framebuffer;
 	/**
-	 * The polygon mode.
-	 */
-	PolygonMode polygonMode;
-	/**
 	 * The primitive topology.
 	 */
 	PrimitiveTopology primitiveTopology;
@@ -58,6 +54,10 @@ struct RenderingContext {
 	 * Enables backface culling if set to true, disables it otherwise.
 	 */
 	bool enableBackfaceCulling;
+	/**
+	 * The polygon mode.
+	 */
+	PolygonMode polygonMode;
 	/**
 	 * The shade model.
 	 */

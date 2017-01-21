@@ -26,7 +26,6 @@
 #include "Application.hh"
 #include "Framebuffer.hh"
 #include "toString.hh"
-#include "enum_traits.hh"
 #include <QStandardPaths>
 
 using clockwork::ApplicationSettings;
@@ -69,7 +68,7 @@ ApplicationSettings::showBorderlessWindow(const bool visible) {
 
 
 int
-ApplicationSettings::getPrimitiveTopology() const {
+ApplicationSettings::getPrimitiveTopologyOrdinal() const {
 	static_assert(std::is_same<int, clockwork::enum_traits<clockwork::PrimitiveTopology>::Ordinal>::value);
 	return value(
 		Key::PrimitiveTopology,
@@ -80,7 +79,7 @@ ApplicationSettings::getPrimitiveTopology() const {
 
 void
 ApplicationSettings::setPrimitiveTopology(const int topology) {
-	if (getPrimitiveTopology() != topology) {
+	if (getPrimitiveTopologyOrdinal() != topology) {
 		setValue(Key::PrimitiveTopology, topology);
 		emit primitiveTopologyChanged_(topology);
 		emit primitiveTopologyChanged(enum_traits<PrimitiveTopology>::enumerator(topology));
@@ -114,6 +113,26 @@ ApplicationSettings::enableBackfaceCulling(const bool enable) {
 	if (isBackfaceCullingEnabled() != enable) {
 		setValue(Key::EnableBackfaceCulling, enable);
 		emit backfaceCullingToggled(enable);
+	}
+}
+
+
+int
+ApplicationSettings::getPolygonModeOrdinal() const {
+	static_assert(std::is_same<int, clockwork::enum_traits<clockwork::PolygonMode>::Ordinal>::value);
+	return value(
+		Key::PolygonMode,
+		enum_traits<PolygonMode>::ordinal(PolygonMode::Fill)
+	).toInt();
+}
+
+
+void
+ApplicationSettings::setPolygonMode(const int mode) {
+	if (getPolygonModeOrdinal() != mode) {
+		setValue(Key::PolygonMode, mode);
+		emit polygonModeChanged_(mode);
+		emit polygonModeChanged(enum_traits<PolygonMode>::enumerator(mode));
 	}
 }
 
@@ -214,6 +233,8 @@ ApplicationSettings::keyToString(const Key key) {
 			return "enableClipping";
 		case Key::EnableBackfaceCulling:
 			return "enableBackfaceCulling";
+		case Key::PolygonMode:
+			return "polygonMode";
 		case Key::EnableScissorTest:
 			return "enableScissorTest";
 		case Key::EnableStencilTest:

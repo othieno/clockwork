@@ -74,6 +74,7 @@ UserInterface::registerEnumerations(QQmlContext& context) {
 	QHash<QString, SelectModel*> models({
 		{"illuminationModels", createEnumerationModel<IlluminationModel>(this)},
 		{"primitiveTopologies", createEnumerationModel<PrimitiveTopology>(this)},
+		{"polygonModes", createEnumerationModel<PolygonMode>(this)},
 		{"shadeModels", createEnumerationModel<ShadeModel>(this)},
 	});
 	for (const auto& key : models.keys()) {

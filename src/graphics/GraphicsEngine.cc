@@ -35,19 +35,20 @@ using clockwork::GraphicsEngine;
 clockwork::Error
 GraphicsEngine::initialize(const ApplicationSettings& settings) {
 	renderingContext_.lineDrawingAlgorithm = LineDrawingAlgorithm::Bresenham;
-	renderingContext_.primitiveTopology = enum_traits<PrimitiveTopology>::enumerator(settings.getPrimitiveTopology());
+	renderingContext_.primitiveTopology = settings.getPrimitiveTopology();
 	renderingContext_.enableClipping = settings.isClippingEnabled();
 	renderingContext_.enableBackfaceCulling = settings.isBackfaceCullingEnabled();
+	renderingContext_.polygonMode = settings.getPolygonMode();
 	renderingContext_.enableScissorTest = settings.isScissorTestEnabled();
 	renderingContext_.enableStencilTest = settings.isStencilTestEnabled();
 	renderingContext_.enableDepthTest = settings.isDepthTestEnabled();
-	renderingContext_.polygonMode = PolygonMode::Point;
 	renderingContext_.shadeModel = ShadeModel::Flat;
 	renderingContext_.framebuffer.setResolution(Framebuffer::Resolution::XGA);
 
 	connect(&settings, &ApplicationSettings::primitiveTopologyChanged, this, &GraphicsEngine::setPrimitiveTopology);
 	connect(&settings, &ApplicationSettings::clippingToggled, this, &GraphicsEngine::enableClipping);
 	connect(&settings, &ApplicationSettings::backfaceCullingToggled, this, &GraphicsEngine::enableBackfaceCulling);
+	connect(&settings, &ApplicationSettings::polygonModeChanged, this, &GraphicsEngine::setPolygonMode);
 	connect(&settings, &ApplicationSettings::scissorTestChanged, this, &GraphicsEngine::enableScissorTest);
 	connect(&settings, &ApplicationSettings::stencilTestChanged, this, &GraphicsEngine::enableStencilTest);
 	connect(&settings, &ApplicationSettings::depthTestChanged, this, &GraphicsEngine::enableDepthTest);
@@ -166,6 +167,18 @@ GraphicsEngine::getLineDrawingAlgorithm() const {
 void
 GraphicsEngine::setLineDrawingAlgorithm(const LineDrawingAlgorithm algorithm) {
 	renderingContext_.lineDrawingAlgorithm = algorithm;
+}
+
+
+clockwork::PolygonMode
+GraphicsEngine::getPolygonMode() const {
+	return renderingContext_.polygonMode;
+}
+
+
+void
+GraphicsEngine::setPolygonMode(const PolygonMode mode) {
+	renderingContext_.polygonMode = mode;
 }
 
 
