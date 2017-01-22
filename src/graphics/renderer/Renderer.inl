@@ -341,9 +341,9 @@ Renderer<A, T>::rasterizePointPrimitives(
 	VertexArray& vertices,
 	Framebuffer& framebuffer
 ) {
-	Q_UNUSED(context);
-	Q_UNUSED(vertices);
-	Q_UNUSED(framebuffer);
+	for (const auto& vertex : vertices) {
+		fragmentProcessing(context, Fragment(vertex), framebuffer);
+	}
 }
 
 

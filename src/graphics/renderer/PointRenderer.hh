@@ -38,17 +38,6 @@ public:
 	 * Sanitizes the rendering context and makes sure it is compatible with this renderer.
 	 */
 	static void sanitizeRenderingContext(RenderingContext&);
-	/**
-	 * Converts the specified vertices into fragments that are written to the given framebuffer.
-	 * @param context the rendering context.
-	 * @param vertices the vertices to convert.
-	 * @param framebuffer the framebuffer where fragments will be written to.
-	 */
-	static void rasterize(
-		const RenderingContext& context,
-		const VertexArray& vertices,
-		Framebuffer& framebuffer
-	);
 };
 } // namespace clockwork
 

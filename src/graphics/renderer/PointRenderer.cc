@@ -38,15 +38,3 @@ PointRenderer::sanitizeRenderingContext(RenderingContext& context) {
 		t = PrimitiveTopology::Point;
 	}
 }
-
-
-void
-PointRenderer::rasterize(
-	const RenderingContext& context,
-	const VertexArray& vertices,
-	Framebuffer& framebuffer
-) {
-	for (const auto& vertex : vertices) {
-		fragmentProcessing(context, Fragment(vertex), framebuffer);
-	}
-}
