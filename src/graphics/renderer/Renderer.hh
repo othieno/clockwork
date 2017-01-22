@@ -48,7 +48,7 @@ struct RenderingContext;
 /**
  *
  */
-template<RenderingAlgorithm algorithm, class Implementation>
+template<RenderingAlgorithm algorithm>
 class Renderer {
 public:
 	/**
@@ -239,47 +239,47 @@ private:
  *
  */
 class RandomShadingRenderer :
-public Renderer<RenderingAlgorithm::RandomShading, RandomShadingRenderer> {};
+public Renderer<RenderingAlgorithm::RandomShading> {};
 /**
  *
  */
 class FlatShadingRenderer :
-public Renderer<RenderingAlgorithm::FlatShading, FlatShadingRenderer> {};
+public Renderer<RenderingAlgorithm::FlatShading> {};
 /**
  *
  */
 class GouraudShadingRenderer :
-public Renderer<RenderingAlgorithm::GouraudShading, GouraudShadingRenderer> {};
+public Renderer<RenderingAlgorithm::GouraudShading> {};
 /**
  *
  */
 class PhongShadingRenderer :
-public Renderer<RenderingAlgorithm::PhongShading, PhongShadingRenderer> {};
+public Renderer<RenderingAlgorithm::PhongShading> {};
 /**
  *
  */
 class CelShadingRenderer :
-public Renderer<RenderingAlgorithm::CelShading, CelShadingRenderer> {};
+public Renderer<RenderingAlgorithm::CelShading> {};
 /**
  *
  */
 class DepthMapRenderer :
-public Renderer<RenderingAlgorithm::DepthMapping, DepthMapRenderer> {};
+public Renderer<RenderingAlgorithm::DepthMapping> {};
 /**
  *
  */
 class NormalMapRenderer :
-public Renderer<RenderingAlgorithm::NormalMapping, NormalMapRenderer> {};
+public Renderer<RenderingAlgorithm::NormalMapping> {};
 /**
  *
  */
 class BumpMapRenderer :
-public Renderer<RenderingAlgorithm::BumpMapping, BumpMapRenderer> {};
+public Renderer<RenderingAlgorithm::BumpMapping> {};
 /**
  *
  */
 class TextureMapRenderer :
-public Renderer<RenderingAlgorithm::TextureMapping, TextureMapRenderer> {};
+public Renderer<RenderingAlgorithm::TextureMapping> {};
 } // namespace clockwork
 
 #include "Renderer.inl"

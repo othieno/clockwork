@@ -32,7 +32,7 @@ namespace clockwork {
 /**
  *
  */
-class WireframeRenderer : public Renderer<RenderingAlgorithm::Wireframe, WireframeRenderer> {
+class WireframeRenderer : public Renderer<RenderingAlgorithm::Wireframe> {
 public:
 	/**
 	 * Removes vertices that are not visible on the screen.

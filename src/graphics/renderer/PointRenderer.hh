@@ -32,7 +32,7 @@ namespace clockwork {
 /**
  *
  */
-class PointRenderer : public Renderer<RenderingAlgorithm::Point, PointRenderer> {
+class PointRenderer : public Renderer<RenderingAlgorithm::Point> {
 };
 } // namespace clockwork
 
