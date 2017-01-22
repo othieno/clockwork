@@ -25,15 +25,7 @@
 #ifndef CLOCKWORK_RENDERER_HH
 #define CLOCKWORK_RENDERER_HH
 
-#include "RandomShadingShaderProgram.hh"
-#include "FlatShadingShaderProgram.hh"
-#include "GouraudShadingShaderProgram.hh"
-#include "PhongShadingShaderProgram.hh"
-#include "CelShadingShaderProgram.hh"
-#include "DepthMapShaderProgram.hh"
-#include "NormalMapShaderProgram.hh"
-#include "BumpMapShaderProgram.hh"
-#include "TextureMapShaderProgram.hh"
+#include "ShaderProgram.hh"
 
 
 namespace clockwork {
@@ -235,51 +227,6 @@ private:
 	 */
 	static int fragmentPasses(const RenderingContext& context, const Fragment& fragment);
 };
-/**
- *
- */
-class RandomShadingRenderer :
-public Renderer<RenderingAlgorithm::RandomShading> {};
-/**
- *
- */
-class FlatShadingRenderer :
-public Renderer<RenderingAlgorithm::FlatShading> {};
-/**
- *
- */
-class GouraudShadingRenderer :
-public Renderer<RenderingAlgorithm::GouraudShading> {};
-/**
- *
- */
-class PhongShadingRenderer :
-public Renderer<RenderingAlgorithm::PhongShading> {};
-/**
- *
- */
-class CelShadingRenderer :
-public Renderer<RenderingAlgorithm::CelShading> {};
-/**
- *
- */
-class DepthMapRenderer :
-public Renderer<RenderingAlgorithm::DepthMapping> {};
-/**
- *
- */
-class NormalMapRenderer :
-public Renderer<RenderingAlgorithm::NormalMapping> {};
-/**
- *
- */
-class BumpMapRenderer :
-public Renderer<RenderingAlgorithm::BumpMapping> {};
-/**
- *
- */
-class TextureMapRenderer :
-public Renderer<RenderingAlgorithm::TextureMapping> {};
 } // namespace clockwork
 
 #include "Renderer.inl"

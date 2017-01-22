@@ -232,16 +232,29 @@ GraphicsEngine::enableDepthTest(const bool enable) {
 GraphicsEngine::DrawFunction
 GraphicsEngine::getDrawFunction(const RenderingAlgorithm algorithm) {
 	switch (algorithm) {
-		case RenderingAlgorithm::Wireframe: return &WireframeRenderer::draw;
-		case RenderingAlgorithm::RandomShading: return &RandomShadingRenderer::draw;
-		case RenderingAlgorithm::FlatShading: return &FlatShadingRenderer::draw;
-		case RenderingAlgorithm::GouraudShading: return &GouraudShadingRenderer::draw;
-		case RenderingAlgorithm::PhongShading: return &PhongShadingRenderer::draw;
-		case RenderingAlgorithm::CelShading: return &CelShadingRenderer::draw;
-		case RenderingAlgorithm::DepthMapping: return &DepthMapRenderer::draw;
-		case RenderingAlgorithm::NormalMapping: return &NormalMapRenderer::draw;
-		case RenderingAlgorithm::BumpMapping: return &BumpMapRenderer::draw;
-		case RenderingAlgorithm::TextureMapping: return &TextureMapRenderer::draw;
-		case RenderingAlgorithm::Point: default: return &Renderer<RenderingAlgorithm::Point>::draw;
+		case RenderingAlgorithm::Wireframe:
+			return &Renderer<RenderingAlgorithm::Wireframe>::draw;
+		case RenderingAlgorithm::RandomShading:
+			return &Renderer<RenderingAlgorithm::RandomShading>::draw;
+		case RenderingAlgorithm::FlatShading:
+			return &Renderer<RenderingAlgorithm::FlatShading>::draw;
+		case RenderingAlgorithm::GouraudShading:
+			return &Renderer<RenderingAlgorithm::GouraudShading>::draw;
+		case RenderingAlgorithm::PhongShading:
+			return &Renderer<RenderingAlgorithm::PhongShading>::draw;
+		case RenderingAlgorithm::CelShading:
+			return &Renderer<RenderingAlgorithm::CelShading>::draw;
+		case RenderingAlgorithm::DepthMapping:
+			return &Renderer<RenderingAlgorithm::DepthMapping>::draw;
+		case RenderingAlgorithm::NormalMapping:
+			return &Renderer<RenderingAlgorithm::NormalMapping>::draw;
+		case RenderingAlgorithm::BumpMapping:
+			return &Renderer<RenderingAlgorithm::BumpMapping>::draw;
+		case RenderingAlgorithm::TextureMapping:
+			return &Renderer<RenderingAlgorithm::TextureMapping>::draw;
+		case RenderingAlgorithm::Point:
+			return &Renderer<RenderingAlgorithm::Point>::draw;
+		default:
+			qFatal("[GraphicsEngine::getDrawFunction] Undefined draw function!");
 	}
 }
