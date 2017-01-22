@@ -80,7 +80,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/RenderingContext.hh \
 		src/graphics/renderer/ShadeModel.hh \
 		src/graphics/renderer/Uniform.hh \
-		src/graphics/renderer/WireframeRenderer.hh \
 		src/graphics/renderer/shader/BumpMapShaderProgram.hh \
 		src/graphics/renderer/shader/CelShadingShaderProgram.hh \
 		src/graphics/renderer/shader/DepthMapShaderProgram.hh \
@@ -131,7 +130,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/BaseVertex.cc \
 		src/graphics/renderer/BaseVertexAttributes.cc \
 		src/graphics/renderer/Framebuffer.cc \
-		src/graphics/renderer/WireframeRenderer.cc \
 		src/graphics/renderer/shader/BumpMapShaderProgram.cc \
 		src/graphics/renderer/shader/CelShadingShaderProgram.cc \
 		src/graphics/renderer/shader/DepthMapShaderProgram.cc \

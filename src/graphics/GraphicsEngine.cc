@@ -25,7 +25,6 @@
 #include "GraphicsEngine.hh"
 #include "ApplicationSettings.hh"
 #include "Scene.hh"
-#include "WireframeRenderer.hh"
 
 using clockwork::GraphicsEngine;
 
