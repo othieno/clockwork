@@ -72,7 +72,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/BaseVertexAttributes.hh \
 		src/graphics/renderer/Framebuffer.hh \
 		src/graphics/renderer/LineDrawingAlgorithm.hh \
-		src/graphics/renderer/PointRenderer.hh \
 		src/graphics/renderer/PolygonMode.hh \
 		src/graphics/renderer/PrimitiveTopology.hh \
 		src/graphics/renderer/Renderer.hh \
@@ -132,7 +131,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/BaseVertex.cc \
 		src/graphics/renderer/BaseVertexAttributes.cc \
 		src/graphics/renderer/Framebuffer.cc \
-		src/graphics/renderer/PointRenderer.cc \
 		src/graphics/renderer/WireframeRenderer.cc \
 		src/graphics/renderer/shader/BumpMapShaderProgram.cc \
 		src/graphics/renderer/shader/CelShadingShaderProgram.cc \

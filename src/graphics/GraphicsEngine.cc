@@ -25,7 +25,6 @@
 #include "GraphicsEngine.hh"
 #include "ApplicationSettings.hh"
 #include "Scene.hh"
-#include "PointRenderer.hh"
 #include "WireframeRenderer.hh"
 
 using clockwork::GraphicsEngine;
@@ -243,6 +242,6 @@ GraphicsEngine::getDrawFunction(const RenderingAlgorithm algorithm) {
 		case RenderingAlgorithm::NormalMapping: return &NormalMapRenderer::draw;
 		case RenderingAlgorithm::BumpMapping: return &BumpMapRenderer::draw;
 		case RenderingAlgorithm::TextureMapping: return &TextureMapRenderer::draw;
-		case RenderingAlgorithm::Point: default: return &PointRenderer::draw;
+		case RenderingAlgorithm::Point: default: return &Renderer<RenderingAlgorithm::Point>::draw;
 	}
 }
