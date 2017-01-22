@@ -172,6 +172,39 @@ private:
 	 */
 	static bool isBackFacePrimitive(const RenderingContext& context, const typename VertexArray::iterator& offset);
 	/**
+	 * Draws a set of point primitives to the framebuffer.
+	 * @param context the rendering context.
+	 * @param vertices the set of vertices to draw.
+	 * @param framebuffer the framebuffer that the primitives will be drawn to.
+	 */
+	static void rasterizePointPrimitives(
+		const RenderingContext& context,
+		VertexArray& vertices,
+		Framebuffer& framebuffer
+	);
+	/**
+	 * Draws a set of line primitives to the framebuffer.
+	 * @param context the rendering context.
+	 * @param vertices the set of vertices to draw.
+	 * @param framebuffer the framebuffer that the primitives will be drawn to.
+	 */
+	static void rasterizeLinePrimitives(
+		const RenderingContext& context,
+		VertexArray& vertices,
+		Framebuffer& framebuffer
+	);
+	/**
+	 * Draws a set of triangle primitives to the framebuffer.
+	 * @param context the rendering context.
+	 * @param vertices the set of vertices to draw.
+	 * @param framebuffer the framebuffer that the primitives will be drawn to.
+	 */
+	static void rasterizeTrianglePrimitives(
+		const RenderingContext& context,
+		VertexArray& vertices,
+		Framebuffer& framebuffer
+	);
+	/**
 	 * Tests whether the specified fragment can be written to the framebuffer. If
 	 * the specified fragment passes all tests, the function will return a framebuffer
 	 * offset indicating a location where the fragment data can be written to.
@@ -331,7 +364,23 @@ Renderer<A, T>::rasterization(RenderingContext& context, VertexArray& vertices) 
 	if (vertices.isEmpty()) {
 		return;
 	}
-	T::rasterize(context, vertices, context.framebuffer);
+	switch (context.primitiveTopology) {
+		case PrimitiveTopology::Point:
+			rasterizePointPrimitives(context, vertices, context.framebuffer);
+			break;
+		case PrimitiveTopology::Line:
+		case PrimitiveTopology::LineStrip:
+		case PrimitiveTopology::LineLoop:
+			rasterizeLinePrimitives(context, vertices, context.framebuffer);
+			break;
+		case PrimitiveTopology::Triangle:
+		case PrimitiveTopology::TriangleStrip:
+		case PrimitiveTopology::TriangleFan:
+			rasterizeTrianglePrimitives(context, vertices, context.framebuffer);
+			break;
+		default:
+			break;
+	}
 }
 
 
@@ -468,6 +517,42 @@ Renderer<A, T>::isBackFacePrimitive(const RenderingContext& context, const typen
 		qFatal("[isBackFacePrimitive] Implement me!");
 	}
 	return false;
+}
+
+
+template<RenderingAlgorithm A, class T> void
+Renderer<A, T>::rasterizePointPrimitives(
+	const RenderingContext& context,
+	VertexArray& vertices,
+	Framebuffer& framebuffer
+) {
+	Q_UNUSED(context);
+	Q_UNUSED(vertices);
+	Q_UNUSED(framebuffer);
+}
+
+
+template<RenderingAlgorithm A, class T> void
+Renderer<A, T>::rasterizeLinePrimitives(
+	const RenderingContext& context,
+	VertexArray& vertices,
+	Framebuffer& framebuffer
+) {
+	Q_UNUSED(context);
+	Q_UNUSED(vertices);
+	Q_UNUSED(framebuffer);
+}
+
+
+template<RenderingAlgorithm A, class T> void
+Renderer<A, T>::rasterizeTrianglePrimitives(
+	const RenderingContext& context,
+	VertexArray& vertices,
+	Framebuffer& framebuffer
+) {
+	Q_UNUSED(context);
+	Q_UNUSED(vertices);
+	Q_UNUSED(framebuffer);
 }
 
 
