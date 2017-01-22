@@ -182,8 +182,8 @@ private:
 	/**
 	 * Converts a set of point primitives into fragments that are then written to a framebuffer.
 	 * @param context the rendering context.
-	 * @param vertices the set of vertices to draw.
-	 * @param framebuffer the framebuffer that the primitives will be drawn to.
+	 * @param vertices the set of vertices to convert into fragments.
+	 * @param framebuffer the framebuffer where fragments be drawn to.
 	 */
 	static void rasterizePointPrimitives(
 		const RenderingContext& context,
@@ -193,8 +193,8 @@ private:
 	/**
 	 * Converts a set of line primitives into fragments that are then written to a framebuffer.
 	 * @param context the rendering context.
-	 * @param vertices the set of vertices to draw.
-	 * @param framebuffer the framebuffer that the primitives will be drawn to.
+	 * @param vertices the set of vertices to convert into fragments.
+	 * @param framebuffer the framebuffer where fragments be drawn to.
 	 */
 	static void rasterizeLinePrimitives(
 		const RenderingContext& context,
@@ -204,8 +204,8 @@ private:
 	/**
 	 * Converts a set of triangle primitives into fragments that are then written to a framebuffer.
 	 * @param context the rendering context.
-	 * @param vertices the set of vertices to draw.
-	 * @param framebuffer the framebuffer that the primitives will be drawn to.
+	 * @param vertices the set of vertices to convert into fragments.
+	 * @param framebuffer the framebuffer where fragments be drawn to.
 	 */
 	static void rasterizeTrianglePrimitives(
 		const RenderingContext& context,
