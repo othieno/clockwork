@@ -170,9 +170,12 @@ private:
 	 * @param context the rendering context.
 	 * @param offset an iterator to the first element of the primitive to query.
 	 */
-	static bool isBackFacePrimitive(const RenderingContext& context, const typename VertexArray::iterator& offset);
+	static bool isBackFacePrimitive(
+		const RenderingContext& context,
+		const typename VertexArray::iterator& offset
+	);
 	/**
-	 * Draws a set of point primitives to the framebuffer.
+	 * Converts a set of point primitives into fragments that are then written to a framebuffer.
 	 * @param context the rendering context.
 	 * @param vertices the set of vertices to draw.
 	 * @param framebuffer the framebuffer that the primitives will be drawn to.
@@ -183,7 +186,7 @@ private:
 		Framebuffer& framebuffer
 	);
 	/**
-	 * Draws a set of line primitives to the framebuffer.
+	 * Converts a set of line primitives into fragments that are then written to a framebuffer.
 	 * @param context the rendering context.
 	 * @param vertices the set of vertices to draw.
 	 * @param framebuffer the framebuffer that the primitives will be drawn to.
@@ -194,7 +197,7 @@ private:
 		Framebuffer& framebuffer
 	);
 	/**
-	 * Draws a set of triangle primitives to the framebuffer.
+	 * Converts a set of triangle primitives into fragments that are then written to a framebuffer.
 	 * @param context the rendering context.
 	 * @param vertices the set of vertices to draw.
 	 * @param framebuffer the framebuffer that the primitives will be drawn to.
