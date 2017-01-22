@@ -242,25 +242,25 @@ QString
 ApplicationSettings::keyToString(const Key key) {
 	switch (key) {
 		case Key::ShowBorderlessWindow:
-			return "showBorderlessWindow";
+			return "theme/ShowBorderlessWindow";
 		case Key::ShowFramesPerSecond:
-			return "showFramesPerSecond";
+			return "debug/ShowFramesPerSecond";
 		case Key::PrimitiveTopology:
-			return "primitiveTopology";
+			return "renderingcontext/PrimitiveTopology";
 		case Key::EnableClipping:
-			return "enableClipping";
+			return "renderingcontext/EnableClipping";
 		case Key::EnableBackfaceCulling:
-			return "enableBackfaceCulling";
+			return "renderingcontext/EnableBackfaceCulling";
 		case Key::PolygonMode:
-			return "polygonMode";
+			return "renderingcontext/PolygonMode";
 		case Key::ShadeModel:
-			return "shadeModel";
+			return "renderingcontext/ShadeModel";
 		case Key::EnableScissorTest:
-			return "enableScissorTest";
+			return "renderingcontext/EnableScissorTest";
 		case Key::EnableStencilTest:
-			return "enableStencilTest";
+			return "renderingcontext/EnableStencilTest";
 		case Key::EnableDepthTest:
-			return "enableDepthTest";
+			return "renderingcontext/EnableDepthTest";
 		default:
 			qFatal("[ApplicationSettings::keyToString] Undefined key!");
 	}
