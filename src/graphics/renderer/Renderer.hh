@@ -113,11 +113,12 @@ public:
 	};
 	static_assert(std::is_base_of<BaseFragment, Fragment>::value);
 	/**
-	 * Renders the specified mesh in the given context.
+	 * Renders the specified mesh in the given context to the the specified framebuffer.
 	 * @param context the rendering context.
 	 * @param mesh the polygon mesh to render.
+	 * @param framebuffer the framebuffer where the mesh is rendered to.
 	 */
-	static void draw(RenderingContext& context, const Mesh& mesh);
+	static void draw(const RenderingContext& context, const Mesh& mesh, Framebuffer& framebuffer);
 protected:
 	/**
 	 *
@@ -139,7 +140,11 @@ private:
 	/**
 	 *
 	 */
-	static void rasterization(RenderingContext& context, VertexArray& vertices);
+	static void rasterization(
+		const RenderingContext& context,
+		VertexArray& vertices,
+		Framebuffer& framebuffer
+	);
 	/**
 	 * Rremoves point primitves that are not in the view volume.
 	 * @param context the rendering context.

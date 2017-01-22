@@ -66,18 +66,16 @@ Renderer<A, T>::Fragment::lerp(const Fragment& from, const Fragment& to, const d
 
 
 template<RenderingAlgorithm A, class T> void
-Renderer<A, T>::draw(RenderingContext& context, const Mesh& mesh) {
+Renderer<A, T>::draw(const RenderingContext& context, const Mesh& mesh, Framebuffer& framebuffer) {
 	if (mesh.faces.isEmpty()) {
 		return;
 	}
-
-	T::sanitizeRenderingContext(context);
 	for (const auto& face : mesh.faces) {
 		VertexArray vertices = vertexProcessing(context, face);
 
 		vertexPostProcessing(context, vertices);
 		primitiveAssembly(context, vertices);
-		rasterization(context, vertices);
+		rasterization(context, vertices, framebuffer);
 	}
 }
 
@@ -175,23 +173,23 @@ Renderer<A, T>::primitiveAssembly(const RenderingContext& context, VertexArray& 
 
 
 template<RenderingAlgorithm A, class T> void
-Renderer<A, T>::rasterization(RenderingContext& context, VertexArray& vertices) {
+Renderer<A, T>::rasterization(const RenderingContext& context, VertexArray& vertices, Framebuffer& framebuffer) {
 	if (vertices.isEmpty()) {
 		return;
 	}
 	switch (context.primitiveTopology) {
 		case PrimitiveTopology::Point:
-			rasterizePointPrimitives(context, vertices, context.framebuffer);
+			rasterizePointPrimitives(context, vertices, framebuffer);
 			break;
 		case PrimitiveTopology::Line:
 		case PrimitiveTopology::LineStrip:
 		case PrimitiveTopology::LineLoop:
-			rasterizeLinePrimitives(context, vertices, context.framebuffer);
+			rasterizeLinePrimitives(context, vertices, framebuffer);
 			break;
 		case PrimitiveTopology::Triangle:
 		case PrimitiveTopology::TriangleStrip:
 		case PrimitiveTopology::TriangleFan:
-			rasterizeTrianglePrimitives(context, vertices, context.framebuffer);
+			rasterizeTrianglePrimitives(context, vertices, framebuffer);
 			break;
 		default:
 			break;

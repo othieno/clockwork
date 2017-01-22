@@ -181,7 +181,7 @@ private:
 	/**
 	 * A pointer to a function that draws a mesh in a specified rendering context.
 	 */
-	typedef void (*DrawFunction)(RenderingContext&, const Mesh&);
+	typedef void (*DrawFunction)(const RenderingContext&, const Mesh&, Framebuffer&);
 	/**
 	 * Instantiates a GraphicsEngine object.
 	 */

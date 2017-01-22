@@ -109,7 +109,7 @@ GraphicsEngine::render(const Scene& scene) {
 					renderingContext_.uniforms.insert("INVERSE_MODEL", Uniform::create<const QMatrix4x4>(INVERSE_MODEL));
 					renderingContext_.uniforms.insert("NORMAL", Uniform::create<const QMatrix4x4>(NORMAL));
 
-					draw(renderingContext_, *appearance->getMesh());
+					draw(renderingContext_, *appearance->getMesh(), renderingContext_.framebuffer);
 				}
 			}
 		}
