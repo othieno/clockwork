@@ -49,10 +49,6 @@ public:
 	using Vertex = typename Renderer<algorithm, Implementation>::Vertex;
 	using VertexArray = typename Renderer<algorithm, Implementation>::VertexArray;
 	/**
-	 * Sanitizes the rendering context and makes sure it is compatible with this renderer.
-	 */
-	static void sanitizeRenderingContext(RenderingContext&);
-	/**
 	 * Removes vertices that are not visible on the screen.
 	 */
 	static void clip(const RenderingContext&, VertexArray&);
@@ -113,17 +109,6 @@ public PolygonRenderer<RenderingAlgorithm::BumpMapping, BumpMapRenderer> {};
  */
 class TextureMapRenderer :
 public PolygonRenderer<RenderingAlgorithm::TextureMapping, TextureMapRenderer> {};
-
-
-template<RenderingAlgorithm A, class T> void
-PolygonRenderer<A, T>::sanitizeRenderingContext(RenderingContext& context) {
-	// The Polygon renderer only draws triangle primitives so if the primitive topology
-	// is not set to Triangle, TriangleStrip or TriangleFan, it will be set to TriangleStrip.
-	auto& t = context.primitiveTopology;
-	if (t != PrimitiveTopology::Triangle && t != PrimitiveTopology::TriangleStrip && t != PrimitiveTopology::TriangleFan) {
-		t = PrimitiveTopology::TriangleStrip;
-	}
-}
 
 
 template<RenderingAlgorithm A, class T> void

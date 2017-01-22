@@ -27,14 +27,3 @@
 #include "Mesh.hh"
 
 using clockwork::PointRenderer;
-
-
-void
-PointRenderer::sanitizeRenderingContext(RenderingContext& context) {
-	// The Point renderer only draws point primitives so if the primitive topology
-	// is not set to Point, it will be changed.
-	auto& t = context.primitiveTopology;
-	if (t != PrimitiveTopology::Point) {
-		t = PrimitiveTopology::Point;
-	}
-}

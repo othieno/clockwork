@@ -28,17 +28,6 @@ using clockwork::WireframeRenderer;
 
 
 void
-WireframeRenderer::sanitizeRenderingContext(RenderingContext& context) {
-	// The Wireframe renderer only draws line primitives so if the primitive topology
-	// is not set to Line, LineStrip or LineLoop, it will be set to LineLoop.
-	auto& t = context.primitiveTopology;
-	if (t != PrimitiveTopology::Line && t != PrimitiveTopology::LineStrip && t != PrimitiveTopology::LineLoop) {
-		t = PrimitiveTopology::LineLoop;
-	}
-}
-
-
-void
 WireframeRenderer::clip(const RenderingContext&, VertexArray&) {}
 
 

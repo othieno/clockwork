@@ -33,11 +33,6 @@ namespace clockwork {
  *
  */
 class PointRenderer : public Renderer<RenderingAlgorithm::Point, PointRenderer> {
-public:
-	/**
-	 * Sanitizes the rendering context and makes sure it is compatible with this renderer.
-	 */
-	static void sanitizeRenderingContext(RenderingContext&);
 };
 } // namespace clockwork
 

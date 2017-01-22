@@ -35,10 +35,6 @@ namespace clockwork {
 class WireframeRenderer : public Renderer<RenderingAlgorithm::Wireframe, WireframeRenderer> {
 public:
 	/**
-	 * Sanitizes the rendering context and makes sure it is compatible with this renderer.
-	 */
-	static void sanitizeRenderingContext(RenderingContext&);
-	/**
 	 * Removes vertices that are not visible on the screen.
 	 */
 	static void clip(const RenderingContext&, VertexArray&);
