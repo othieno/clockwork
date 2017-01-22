@@ -27,7 +27,6 @@
 #include "Scene.hh"
 #include "PointRenderer.hh"
 #include "WireframeRenderer.hh"
-#include "PolygonRenderer.hh"
 
 using clockwork::GraphicsEngine;
 

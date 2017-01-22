@@ -74,7 +74,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/LineDrawingAlgorithm.hh \
 		src/graphics/renderer/PointRenderer.hh \
 		src/graphics/renderer/PolygonMode.hh \
-		src/graphics/renderer/PolygonRenderer.hh \
 		src/graphics/renderer/PrimitiveTopology.hh \
 		src/graphics/renderer/Renderer.hh \
 		src/graphics/renderer/Renderer.inl \
