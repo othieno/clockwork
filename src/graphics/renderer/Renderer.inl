@@ -363,9 +363,70 @@ Renderer<A, T>::rasterizeTrianglePrimitives(
 	VertexArray& vertices,
 	Framebuffer& framebuffer
 ) {
-	Q_UNUSED(context);
-	Q_UNUSED(vertices);
-	Q_UNUSED(framebuffer);
+	if (context.polygonMode == PolygonMode::Point) {
+		rasterizePointPrimitives(context, vertices, framebuffer);
+	} else if (context.polygonMode == PolygonMode::Line) {
+		for (auto it = vertices.begin(); it != vertices.end(); it += 3) {
+			const Fragment a(it[1]);
+			const Fragment b(it[0]);
+			const Fragment c(it[2]);
+
+			Q_UNUSED(a);
+			Q_UNUSED(b);
+			Q_UNUSED(c);
+		}
+	} else {
+		for (auto it = vertices.begin(); it != vertices.end(); it += 3) {
+			const auto* a = &it[1];
+			const auto* b = &it[0];
+			const auto* c = &it[2];
+			if (qFuzzyCompare(1.0 + a->position.y(), 1.0 + b->position.y())) {
+				a = &it[0];
+				b = &it[2];
+				c = &it[1];
+			}
+
+			const int ay = qRound(a->position.y());
+			const int by = qRound(b->position.y());
+	//		const int cy = ay; // since a and c are colinear.
+			const int dy = by - ay; // or by - cy.
+
+			int ymin = ay;
+			int ymax = by;
+			if (ymax < ymin) {
+				std::swap(ymin, ymax);
+			}
+			for (int y = ymin; y <= ymax; ++y) {
+				const qreal p = (y - ay) / static_cast<qreal>(dy);
+				const Vertex from(Vertex::lerp(*a, *b, p));
+				const Vertex to(Vertex::lerp(*c, *b, p));
+
+				const int Fx = qRound(from.position.x());
+				const int Tx = qRound(to.position.x());
+				const int dx = Tx - Fx;
+
+				// If dx is equal to zero, the 'from' and 'to' vertices are
+				// considered identical so there's no need to interpolate any
+				// new vertices between them.
+				if (dx == 0) {
+					fragmentProcessing(context, Fragment(from), framebuffer);
+				} else {
+					int xmin = Fx;
+					int xmax = Tx;
+					if (xmax < xmin) {
+						std::swap(xmin, xmax);
+					}
+					for (int x = xmin; x <= xmax; ++x) {
+						const qreal p = (x - Fx) / static_cast<qreal>(dx);
+						Fragment fragment(Vertex::lerp(from, to, p));
+						fragment.x = x;
+						fragment.y = y;
+						fragmentProcessing(context, fragment, framebuffer);
+					}
+				}
+			}
+		}
+	}
 }
 
 

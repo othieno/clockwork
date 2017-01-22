@@ -52,17 +52,6 @@ public:
 	 * Removes vertices that are not visible on the screen.
 	 */
 	static void clip(const RenderingContext&, VertexArray&);
-	/**
-	 * Converts the specified vertices into fragments that are written to the given framebuffer.
-	 * @param context the rendering context.
-	 * @param vertices the vertices to convert.
-	 * @param framebuffer the framebuffer where fragments will be written to.
-	 */
-	static void rasterize(
-		const RenderingContext& context,
-		const VertexArray& vertices,
-		Framebuffer& framebuffer
-	);
 };
 /**
  *
@@ -113,65 +102,6 @@ public PolygonRenderer<RenderingAlgorithm::TextureMapping, TextureMapRenderer> {
 
 template<RenderingAlgorithm A, class T> void
 PolygonRenderer<A, T>::clip(const RenderingContext&, VertexArray&) {}
-
-
-template<RenderingAlgorithm A, class T> void
-PolygonRenderer<A, T>::rasterize(
-	const RenderingContext& context,
-	const VertexArray& vertices,
-	Framebuffer& framebuffer
-) {
-	for (auto it = vertices.begin(); it != vertices.end(); it += 3) {
-		const auto* a = &it[1];
-		const auto* b = &it[0];
-		const auto* c = &it[2];
-		if (qFuzzyCompare(1.0 + a->position.y(), 1.0 + b->position.y())) {
-			a = &it[0];
-			b = &it[2];
-			c = &it[1];
-		}
-
-		const int ay = qRound(a->position.y());
-		const int by = qRound(b->position.y());
-//		const int cy = ay; // since a and c are colinear.
-		const int dy = by - ay; // or by - cy.
-
-		int ymin = ay;
-		int ymax = by;
-		if (ymax < ymin) {
-			std::swap(ymin, ymax);
-		}
-		for (int y = ymin; y <= ymax; ++y) {
-			const qreal p = (y - ay) / static_cast<qreal>(dy);
-			const Vertex from(Vertex::lerp(*a, *b, p));
-			const Vertex to(Vertex::lerp(*c, *b, p));
-
-			const int Fx = qRound(from.position.x());
-			const int Tx = qRound(to.position.x());
-			const int dx = Tx - Fx;
-
-			// If dx is equal to zero, the 'from' and 'to' vertices are
-			// considered identical so there's no need to interpolate any
-			// new vertices between them.
-			if (dx == 0) {
-				T::fragmentProcessing(context, Fragment(from), framebuffer);
-			} else {
-				int xmin = Fx;
-				int xmax = Tx;
-				if (xmax < xmin) {
-					std::swap(xmin, xmax);
-				}
-				for (int x = xmin; x <= xmax; ++x) {
-					const qreal p = (x - Fx) / static_cast<qreal>(dx);
-					Fragment fragment(Vertex::lerp(from, to, p));
-					fragment.x = x;
-					fragment.y = y;
-					T::fragmentProcessing(context, fragment, framebuffer);
-				}
-			}
-		}
-	}
-}
 } // namespace clockwork
 
 #endif // CLOCKWORK_POLYGON_RENDERER_HH
