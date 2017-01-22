@@ -41,25 +41,6 @@ PointRenderer::sanitizeRenderingContext(RenderingContext& context) {
 
 
 void
-PointRenderer::clip(const RenderingContext&, VertexArray& vertices) {
-	static const auto& filter = [](const Vertex& vertex) {
-		// Use a normalized 2D viewing volume: [-1, 1] x [-1, 1].
-		constexpr double xmin = -1.0;
-		constexpr double xmax =  1.0;
-		constexpr double ymin = -1.0;
-		constexpr double ymax =  1.0;
-
-		const auto& p = vertex.position;
-		return p.x() < xmin || p.x() > xmax || p.y() < ymin || p.y() > ymax;
-	};
-	const auto& begin = vertices.begin();
-	const auto& end = vertices.end();
-
-	vertices.erase(std::remove_if(begin, end, filter), end);
-}
-
-
-void
 PointRenderer::rasterize(
 	const RenderingContext& context,
 	const VertexArray& vertices,

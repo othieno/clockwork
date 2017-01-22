@@ -39,10 +39,6 @@ public:
 	 */
 	static void sanitizeRenderingContext(RenderingContext&);
 	/**
-	 * Removes vertices that are not visible on the screen.
-	 */
-	static void clip(const RenderingContext&, VertexArray&);
-	/**
 	 * Converts the specified vertices into fragments that are written to the given framebuffer.
 	 * @param context the rendering context.
 	 * @param vertices the vertices to convert.

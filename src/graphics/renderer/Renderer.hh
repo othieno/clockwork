@@ -336,9 +336,24 @@ Renderer<A, T>::rasterization(RenderingContext& context, VertexArray& vertices) 
 
 
 template<RenderingAlgorithm A, class T> void
-Renderer<A, T>::clipPointPrimitives(const RenderingContext& context, VertexArray& vertices) {
-	Q_UNUSED(context);
-	Q_UNUSED(vertices);
+Renderer<A, T>::clipPointPrimitives(const RenderingContext&, VertexArray& vertices) {
+	if (vertices.isEmpty()) {
+		return;
+	}
+	static const auto& filter = [](const Vertex& vertex) {
+		// Use a normalized 2D viewing volume: [-1, 1] x [-1, 1].
+		constexpr double xmin = -1.0;
+		constexpr double xmax =  1.0;
+		constexpr double ymin = -1.0;
+		constexpr double ymax =  1.0;
+
+		const auto& p = vertex.position;
+		return p.x() < xmin || p.x() > xmax || p.y() < ymin || p.y() > ymax;
+	};
+	const auto& begin = vertices.begin();
+	const auto& end = vertices.end();
+
+	vertices.erase(std::remove_if(begin, end, filter), end);
 }
 
 
@@ -377,7 +392,6 @@ Renderer<A, T>::assembleTrianglePrimitives(const RenderingContext& context, Vert
 	if (vertices.isEmpty()) {
 		return;
 	}
-
 	static const auto lessThan = [](const Vertex& a, const Vertex& b) {
 		const auto& pa = a.position;
 		const auto& pb = b.position;
