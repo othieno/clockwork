@@ -129,7 +129,9 @@ private:
 	 */
 	static void vertexPostProcessing(const RenderingContext& context, VertexArray& vertices);
 	/**
-	 *
+	 * Rearranges the specified set of vertices into a collection of geometric primitives.
+	 * @param context the rendering context.
+	 * @param vertices the set of vertices to rearrange.
 	 */
 	static void primitiveAssembly(const RenderingContext& context, VertexArray& vertices);
 	/**
@@ -141,19 +143,19 @@ private:
 		Framebuffer& framebuffer
 	);
 	/**
-	 * Rremoves point primitves that are not in the view volume.
+	 * Removes point primitves that are not in the view volume.
 	 * @param context the rendering context.
 	 * @param vertices the set of vertices to clip.
 	 */
 	static void clipPointPrimitives(const RenderingContext& context, VertexArray& vertices);
 	/**
-	 * Rremoves line primitves that are not in the view volume.
+	 * Removes line primitves that are not in the view volume.
 	 * @param context the rendering context.
 	 * @param vertices the set of vertices to clip.
 	 */
 	static void clipLinePrimitives(const RenderingContext& context, VertexArray& vertices);
 	/**
-	 * Rremoves triangle primitves that are not in the view volume.
+	 * Removes triangle primitves that are not in the view volume.
 	 * @param context the rendering context.
 	 * @param vertices the set of vertices to clip.
 	 */
