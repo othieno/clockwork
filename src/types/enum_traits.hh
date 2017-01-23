@@ -28,6 +28,7 @@
 #include <initializer_list>
 #include <type_traits>
 #include <string>
+#include <stdexcept>
 
 
 namespace clockwork {
@@ -59,12 +60,16 @@ struct enum_traits {
 		return static_cast<Ordinal>(enumerator);
 	}
 	/**
-	 * Returns the enumerator with the specified value.
-	 * @param ordinal an enumerator's integral value.
+	 * Returns the enumerator with the specified integer value.
+	 * @param ordinal an enumerator's integer value.
 	 */
 	static constexpr E enumerator(const Ordinal ordinal) {
-		//TODO Make sure the ordinal is actually valid.
-		return static_cast<E>(ordinal);
+		for (const auto e : enumerators()) {
+			if (enum_traits::ordinal(e) == ordinal) {
+				return e;
+			}
+		}
+		throw std::domain_error("Invalid integer value.");
 	}
 	/**
 	 * Returns the number of enumerators listed in the enumeration.
