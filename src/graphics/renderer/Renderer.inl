@@ -367,13 +367,13 @@ Renderer<A>::rasterizeTrianglePrimitives(
 		rasterizePointPrimitives(context, vertices, framebuffer);
 	} else if (context.polygonMode == PolygonMode::Line) {
 		for (auto it = vertices.begin(); it != vertices.end(); it += 3) {
-			const Fragment a(it[1]);
-			const Fragment b(it[0]);
+			const Fragment a(it[0]);
+			const Fragment b(it[1]);
 			const Fragment c(it[2]);
 
-			Q_UNUSED(a);
-			Q_UNUSED(b);
-			Q_UNUSED(c);
+			drawLine(context, a, b, framebuffer);
+			drawLine(context, b, c, framebuffer);
+			drawLine(context, c, a, framebuffer);
 		}
 	} else {
 		for (auto it = vertices.begin(); it != vertices.end(); it += 3) {
@@ -427,6 +427,67 @@ Renderer<A>::rasterizeTrianglePrimitives(
 			}
 		}
 	}
+}
+
+
+template<RenderingAlgorithm A> void
+Renderer<A>::drawLine(
+	const RenderingContext& context,
+	const Fragment& from,
+	const Fragment& to,
+	Framebuffer& framebuffer
+) {
+
+	const int x0 = from.x;
+	const int y0 = from.y;
+	const int x1 = to.x;
+	const int y1 = to.y;
+	const int xmin = std::min(x0, x1);
+	const int xmax = std::max(x0, x1);
+	const int ymin = std::min(y0, y1);
+	const int ymax = std::max(y0, y1);
+	const int dx = x1 - x0;
+	const int dy = y1 - y0;
+	const double slope = dy / double(dx);
+	const double b = y0 - (slope * x0); // Remember, the line equation is y = mx + b.
+
+	if (dx == 0) {
+		for (int y = ymin; y <= ymax; ++y) {
+			auto f = Fragment::lerp(from, to, dy == 0 ? 0.0 : (y - y0) / double(dy));
+			f.x = x0;
+			f.y = y;
+			fragmentProcessing(context, f, framebuffer);
+		}
+	} else if (std::abs(slope) < 1.0) {
+		for (int x = xmin; x <= xmax; ++x) {
+			auto f = Fragment::lerp(from, to, dx == 0 ? 0.0f : (x - x0) / double(dx));
+			f.x = x;
+			f.y = std::round((slope * x) + b);
+			fragmentProcessing(context, f, framebuffer);
+		}
+	} else {
+		for (int y = ymin; y <= ymax; ++y) {
+			auto f = Fragment::lerp(from, to, dy == 0 ? 0.0 : (y - y0) / double(dy));
+			f.x = std::round((y - b) / slope);
+			f.y = y;
+			fragmentProcessing(context, f, framebuffer);
+		}
+	}
+}
+
+
+template<RenderingAlgorithm A> void
+Renderer<A>::drawSmoothLine(
+	const RenderingContext& context,
+	const Fragment& from,
+	const Fragment& to,
+	Framebuffer& framebuffer
+) {
+	Q_UNUSED(context);
+	Q_UNUSED(from);
+	Q_UNUSED(to);
+	Q_UNUSED(framebuffer);
+	qFatal("[Renderer::drawSmoothLine] Implement me!");
 }
 
 

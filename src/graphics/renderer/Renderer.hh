@@ -119,11 +119,6 @@ public:
 	 * @param framebuffer the framebuffer where the mesh is rendered to.
 	 */
 	static void draw(const RenderingContext& context, const Mesh& mesh, Framebuffer& framebuffer);
-protected:
-	/**
-	 *
-	 */
-	static void fragmentProcessing(const RenderingContext&, const Fragment&, Framebuffer&);
 private:
 	/**
 	 *
@@ -217,6 +212,36 @@ private:
 		VertexArray& vertices,
 		Framebuffer& framebuffer
 	);
+	/**
+	 * Draws a line from one fragment to another.
+	 * Note that this approach will use the Bresenham algorithm.
+	 * @param context the rendering context.
+	 * @param from the fragment containing the position from which the line begins.
+	 * @param to the fragment containing the position at which the line ends.
+	 */
+	static void drawLine(
+		const RenderingContext& context,
+		const Fragment& from,
+		const Fragment& to,
+		Framebuffer& framebuffer
+	);
+	/**
+	 * Draws a smooth line from one fragment to another.
+	 * Note that this approach will use the Xiaolin-Wu algorithm.
+	 * @param context the rendering context.
+	 * @param from the fragment containing the position from which the line begins.
+	 * @param to the fragment containing the position at which the line ends.
+	 */
+	static void drawSmoothLine(
+		const RenderingContext& context,
+		const Fragment& from,
+		const Fragment& to,
+		Framebuffer& framebuffer
+	);
+	/**
+	 *
+	 */
+	static void fragmentProcessing(const RenderingContext&, const Fragment&, Framebuffer&);
 	/**
 	 * Tests whether the specified fragment can be written to the framebuffer. If
 	 * the specified fragment passes all tests, the function will return a framebuffer
