@@ -31,12 +31,12 @@ using clockwork::GraphicsEngine;
 
 clockwork::Error
 GraphicsEngine::initialize(const ApplicationSettings& settings) {
-	renderingContext_.lineDrawingAlgorithm = LineDrawingAlgorithm::Bresenham;
 	renderingContext_.primitiveTopology = settings.getPrimitiveTopology();
 	renderingContext_.enableClipping = settings.isClippingEnabled();
 	renderingContext_.enableBackfaceCulling = settings.isBackfaceCullingEnabled();
 	renderingContext_.polygonMode = settings.getPolygonMode();
 	renderingContext_.shadeModel = settings.getShadeModel();
+	renderingContext_.enableLineAntiAliasing = false;
 	renderingContext_.enableScissorTest = settings.isScissorTestEnabled();
 	renderingContext_.enableStencilTest = settings.isStencilTestEnabled();
 	renderingContext_.enableDepthTest = settings.isDepthTestEnabled();
@@ -156,18 +156,6 @@ GraphicsEngine::enableBackfaceCulling(const bool enable) {
 }
 
 
-clockwork::LineDrawingAlgorithm
-GraphicsEngine::getLineDrawingAlgorithm() const {
-	return renderingContext_.lineDrawingAlgorithm;
-}
-
-
-void
-GraphicsEngine::setLineDrawingAlgorithm(const LineDrawingAlgorithm algorithm) {
-	renderingContext_.lineDrawingAlgorithm = algorithm;
-}
-
-
 clockwork::PolygonMode
 GraphicsEngine::getPolygonMode() const {
 	return renderingContext_.polygonMode;
@@ -189,6 +177,18 @@ GraphicsEngine::getShadeModel() const {
 void
 GraphicsEngine::setShadeModel(const ShadeModel model) {
 	renderingContext_.shadeModel = model;
+}
+
+
+bool
+GraphicsEngine::isLineAntiAliasingEnabled() const {
+	return renderingContext_.enableLineAntiAliasing;
+}
+
+
+void
+GraphicsEngine::enableLineAntiAliasing(const bool enable) {
+	renderingContext_.enableLineAntiAliasing = enable;
 }
 
 

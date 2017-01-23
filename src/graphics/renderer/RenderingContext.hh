@@ -29,7 +29,6 @@
 #include "PrimitiveTopology.hh"
 #include "ShadeModel.hh"
 #include "PolygonMode.hh"
-#include "LineDrawingAlgorithm.hh"
 #include "Uniform.hh"
 
 
@@ -63,9 +62,9 @@ struct RenderingContext {
 	 */
 	ShadeModel shadeModel;
 	/**
-	 * The line drawing algorithm used by the Wireframe renderer.
+	 * If set to true, anti-aliasing is enabled when drawing lines.
 	 */
-	LineDrawingAlgorithm lineDrawingAlgorithm;
+	bool enableLineAntiAliasing;
 	/**
 	 * The set of uniform variables used by the shader programs.
 	 */

@@ -71,7 +71,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/BaseVertex.hh \
 		src/graphics/renderer/BaseVertexAttributes.hh \
 		src/graphics/renderer/Framebuffer.hh \
-		src/graphics/renderer/LineDrawingAlgorithm.hh \
 		src/graphics/renderer/PolygonMode.hh \
 		src/graphics/renderer/PrimitiveTopology.hh \
 		src/graphics/renderer/Renderer.hh \

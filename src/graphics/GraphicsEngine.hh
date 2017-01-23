@@ -124,14 +124,14 @@ public:
 	 */
 	void enableBackfaceCulling(const bool enable = true);
 	/**
-	 * Returns the line-drawing algorithm.
+	 * Returns true if line anti-aliasing is enabled, false otherwise.
 	 */
-	LineDrawingAlgorithm getLineDrawingAlgorithm() const;
+	bool isLineAntiAliasingEnabled() const;
 	/**
-	 * Sets the line-drawing algorithm.
-	 * @param algorithm the line-drawing algorithm to set.
+	 * Toggles line anti-aliasing.
+	 * @param enable enables line anti-aliasing if set to true, disables it otherwise.
 	 */
-	void setLineDrawingAlgorithm(const LineDrawingAlgorithm algorithm);
+	void enableLineAntiAliasing(const bool enable = true);
 	/**
 	 * Returns the polygon mode.
 	 */
