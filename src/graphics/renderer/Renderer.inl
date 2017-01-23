@@ -351,9 +351,29 @@ Renderer<A>::rasterizeLinePrimitives(
 	VertexArray& vertices,
 	Framebuffer& framebuffer
 ) {
-	Q_UNUSED(context);
-	Q_UNUSED(vertices);
-	Q_UNUSED(framebuffer);
+	std::size_t primitiveCount = vertices.size();
+	std::size_t step = 1;
+
+	switch (context.primitiveTopology) {
+		case PrimitiveTopology::Line:
+			step++;
+			break;
+		case PrimitiveTopology::LineStrip:
+			primitiveCount--;
+			break;
+		case PrimitiveTopology::LineLoop:
+		default:
+			break;
+	}
+
+	for (std::size_t i = 0; i < primitiveCount; i += step) {
+		drawLine(
+			context,
+			Fragment(vertices[i]),
+			Fragment(vertices[(i + 1) % primitiveCount]),
+			framebuffer
+		);
+	}
 }
 
 
