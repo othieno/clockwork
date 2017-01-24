@@ -26,6 +26,7 @@
 #define CLOCKWORK_APPLICATION_SETTINGS_HH
 
 #include <QSettings>
+#include "BaseShaderProgram.hh"
 #include "PrimitiveTopology.hh"
 #include "PolygonMode.hh"
 #include "ShadeModel.hh"
@@ -43,6 +44,7 @@ class ApplicationSettings : public QSettings {
 	Q_OBJECT
 	Q_PROPERTY(bool showFramesPerSecond READ isFpsCounterVisible WRITE showFpsCounter NOTIFY fpsCounterVisibilityChanged)
 	Q_PROPERTY(bool showBorderlessWindow READ isWindowBorderless WRITE showBorderlessWindow NOTIFY windowBorderVisibilityChanged)
+	Q_PROPERTY(int shaderProgram READ getShaderProgramOrdinal WRITE setShaderProgram NOTIFY shaderProgramChanged_)
 	Q_PROPERTY(int primitiveTopology READ getPrimitiveTopologyOrdinal WRITE setPrimitiveTopology NOTIFY primitiveTopologyChanged_)
 	Q_PROPERTY(bool enableClipping READ isClippingEnabled WRITE enableClipping NOTIFY clippingToggled)
 	Q_PROPERTY(bool enableBackfaceCulling READ isBackfaceCullingEnabled WRITE enableBackfaceCulling NOTIFY backfaceCullingToggled)
@@ -75,9 +77,26 @@ public:
 	 */
 	void showBorderlessWindow(const bool visible);
 	/**
+	 * Returns the shader program's integer value.
+	 */
+	int getShaderProgramOrdinal() const;
+	static_assert(std::is_same<int, enum_traits<BaseShaderProgram::Identifier>::Ordinal>::value);
+	/**
+	 * Returns the shader program.
+	 */
+	inline BaseShaderProgram::Identifier getShaderProgram() const {
+		return enum_traits<BaseShaderProgram::Identifier>::enumerator(getShaderProgramOrdinal());
+	}
+	/**
+	 * Sets the shader program.
+	 * @param identifier the integer value of the shader program identifier to set.
+	 */
+	void setShaderProgram(const int identifier);
+	/**
 	 * Returns the primitive topology's integer value.
 	 */
 	int getPrimitiveTopologyOrdinal() const;
+	static_assert(std::is_same<int, enum_traits<PrimitiveTopology>::Ordinal>::value);
 	/**
 	 * Returns the primitive topology.
 	 */
@@ -111,7 +130,7 @@ public:
 	 * Returns the polygon mode's integer value.
 	 */
 	int getPolygonModeOrdinal() const;
-	static_assert(std::is_same<int, enum_traits<clockwork::PolygonMode>::Ordinal>::value);
+	static_assert(std::is_same<int, enum_traits<PolygonMode>::Ordinal>::value);
 	/**
 	 * Returns the polygon mode.
 	 */
@@ -127,7 +146,7 @@ public:
 	 * Returns the shade model's integer value.
 	 */
 	int getShadeModelOrdinal() const;
-	static_assert(std::is_same<int, enum_traits<clockwork::ShadeModel>::Ordinal>::value);
+	static_assert(std::is_same<int, enum_traits<ShadeModel>::Ordinal>::value);
 	/**
 	 * Returns the shade model.
 	 */
@@ -181,6 +200,7 @@ private:
 	enum class Key {
 		ShowBorderlessWindow,
 		ShowFramesPerSecond,
+		ShaderProgram,
 		PrimitiveTopology,
 		EnableClipping,
 		EnableBackfaceCulling,
@@ -223,6 +243,11 @@ signals:
 	 * A signal that is raised when the visibility of the window's borders changes.
 	 */
 	void windowBorderVisibilityChanged(const bool visible);
+	/**
+	 * Signals that are raised when the shader program is changed.
+	 */
+	void shaderProgramChanged_(const int identifier);
+	void shaderProgramChanged(const BaseShaderProgram::Identifier identifier);
 	/**
 	 * Signals that are raised when the primitive topology is changed.
 	 */

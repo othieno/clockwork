@@ -42,6 +42,17 @@ Page {
 			id: content
 			anchors.fill: parent
 			ListItem.Subheader {
+				text: qsTr("Shaders")
+			}
+			Atomic.Select {
+				id: selectShaderProgram
+				title: qsTr("Shader program")
+				model: shaderPrograms
+				initialValue: settings.shaderProgram
+			}
+
+
+			ListItem.Subheader {
 				text: qsTr("Vertex specification")
 			}
 			Atomic.Select {
@@ -171,6 +182,7 @@ Page {
 		}
 	}
 	Component.onDestruction: {
+		settings.shaderProgram = selectShaderProgram.selectedValue;
 		settings.primitiveTopology = selectPrimitiveTopology.selectedValue;
 		settings.enableClipping = toggleClipping.checked;
 		settings.enableBackfaceCulling = toggleBackfaceCulling.checked;

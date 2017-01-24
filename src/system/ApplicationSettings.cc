@@ -68,8 +68,26 @@ ApplicationSettings::showBorderlessWindow(const bool visible) {
 
 
 int
+ApplicationSettings::getShaderProgramOrdinal() const {
+	return value(
+		Key::ShaderProgram,
+		enum_traits<BaseShaderProgram::Identifier>::ordinal(BaseShaderProgram::Identifier::Minimal)
+	).toInt();
+}
+
+
+void
+ApplicationSettings::setShaderProgram(const int identifier) {
+	if (getShaderProgramOrdinal() != identifier) {
+		setValue(Key::ShaderProgram, identifier);
+		emit shaderProgramChanged_(identifier);
+		emit shaderProgramChanged(enum_traits<BaseShaderProgram::Identifier>::enumerator(identifier));
+	}
+}
+
+
+int
 ApplicationSettings::getPrimitiveTopologyOrdinal() const {
-	static_assert(std::is_same<int, clockwork::enum_traits<clockwork::PrimitiveTopology>::Ordinal>::value);
 	return value(
 		Key::PrimitiveTopology,
 		enum_traits<PrimitiveTopology>::ordinal(PrimitiveTopology::Triangle)
@@ -245,6 +263,8 @@ ApplicationSettings::keyToString(const Key key) {
 			return "theme/ShowBorderlessWindow";
 		case Key::ShowFramesPerSecond:
 			return "debug/ShowFramesPerSecond";
+		case Key::ShaderProgram:
+			return "renderingcontext/ShaderProgram";
 		case Key::PrimitiveTopology:
 			return "renderingcontext/PrimitiveTopology";
 		case Key::EnableClipping:

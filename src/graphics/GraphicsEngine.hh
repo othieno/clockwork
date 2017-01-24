@@ -96,6 +96,15 @@ public:
 	 */
 	Framebuffer& getFramebuffer();
 	/**
+	 * Returns the shader program identifier.
+	 */
+	BaseShaderProgram::Identifier getShaderProgram() const;
+	/**
+	 * Sets the shader program.
+	 * @param identifier the identifier of the shader program to set.
+	 */
+	void setShaderProgram(const BaseShaderProgram::Identifier identifier);
+	/**
 	 * Returns the primitive topology.
 	 */
 	PrimitiveTopology getPrimitiveTopology() const;
@@ -104,7 +113,6 @@ public:
 	 * @param topology the primitive topology to set.
 	 */
 	void setPrimitiveTopology(const PrimitiveTopology topology);
-
 	/**
 	 * Returns true if clipping is enabled, false otherwise.
 	 */

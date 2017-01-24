@@ -31,6 +31,7 @@ using clockwork::GraphicsEngine;
 
 clockwork::Error
 GraphicsEngine::initialize(const ApplicationSettings& settings) {
+	renderingContext_.shaderProgram = settings.getShaderProgram();
 	renderingContext_.primitiveTopology = settings.getPrimitiveTopology();
 	renderingContext_.enableClipping = settings.isClippingEnabled();
 	renderingContext_.enableBackfaceCulling = settings.isBackfaceCullingEnabled();
@@ -42,6 +43,7 @@ GraphicsEngine::initialize(const ApplicationSettings& settings) {
 	renderingContext_.enableDepthTest = settings.isDepthTestEnabled();
 	renderingContext_.framebuffer.setResolution(Framebuffer::Resolution::XGA);
 
+	connect(&settings, &ApplicationSettings::shaderProgramChanged, this, &GraphicsEngine::setShaderProgram);
 	connect(&settings, &ApplicationSettings::primitiveTopologyChanged, this, &GraphicsEngine::setPrimitiveTopology);
 	connect(&settings, &ApplicationSettings::clippingToggled, this, &GraphicsEngine::enableClipping);
 	connect(&settings, &ApplicationSettings::backfaceCullingToggled, this, &GraphicsEngine::enableBackfaceCulling);
@@ -117,6 +119,18 @@ GraphicsEngine::render(const Scene& scene) {
 clockwork::Framebuffer&
 GraphicsEngine::getFramebuffer() {
 	return renderingContext_.framebuffer;
+}
+
+
+clockwork::BaseShaderProgram::Identifier
+GraphicsEngine::getShaderProgram() const {
+	return renderingContext_.shaderProgram;
+}
+
+
+void
+GraphicsEngine::setShaderProgram(const clockwork::BaseShaderProgram::Identifier identifier) {
+	renderingContext_.shaderProgram = identifier;
 }
 
 
