@@ -37,7 +37,7 @@ GraphicsEngine::initialize(const ApplicationSettings& settings) {
 	renderingContext_.enableBackfaceCulling = settings.isBackfaceCullingEnabled();
 	renderingContext_.polygonMode = settings.getPolygonMode();
 	renderingContext_.shadeModel = settings.getShadeModel();
-	renderingContext_.enableLineAntiAliasing = false;
+	renderingContext_.enableLineAntiAliasing = settings.isLineAntiAliasingEnabled();
 	renderingContext_.enableScissorTest = settings.isScissorTestEnabled();
 	renderingContext_.enableStencilTest = settings.isStencilTestEnabled();
 	renderingContext_.enableDepthTest = settings.isDepthTestEnabled();
@@ -49,6 +49,7 @@ GraphicsEngine::initialize(const ApplicationSettings& settings) {
 	connect(&settings, &ApplicationSettings::backfaceCullingToggled, this, &GraphicsEngine::enableBackfaceCulling);
 	connect(&settings, &ApplicationSettings::polygonModeChanged, this, &GraphicsEngine::setPolygonMode);
 	connect(&settings, &ApplicationSettings::shadeModelChanged, this, &GraphicsEngine::setShadeModel);
+	connect(&settings, &ApplicationSettings::lineAntiAliasingToggled, this, &GraphicsEngine::enableLineAntiAliasing);
 	connect(&settings, &ApplicationSettings::scissorTestChanged, this, &GraphicsEngine::enableScissorTest);
 	connect(&settings, &ApplicationSettings::stencilTestChanged, this, &GraphicsEngine::enableStencilTest);
 	connect(&settings, &ApplicationSettings::depthTestChanged, this, &GraphicsEngine::enableDepthTest);

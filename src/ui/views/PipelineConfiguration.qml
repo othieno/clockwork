@@ -131,11 +131,23 @@ Page {
 				model: polygonModes
 				initialValue: settings.polygonMode
 			}
+			ListItem.Divider {}
 			Atomic.Select {
 				id: selectShadeModel
 				title: qsTr("Shade model")
 				model: shadeModels
 				initialValue: settings.shadeModel
+			}
+			ListItem.Divider {}
+			ListItem.Subtitled {
+				text: qsTr("Enable line anti-aliasing")
+				subText: qsTr("Draws smoother lines.")
+				secondaryItem: Switch {
+					id: toggleLineAntiAliasing
+					checked: settings.enableLineAntiAliasing
+					anchors.verticalCenter: parent.verticalCenter
+				}
+				onClicked: toggleLineAntiAliasing.checked = !toggleLineAntiAliasing.checked
 			}
 
 
@@ -188,6 +200,7 @@ Page {
 		settings.enableBackfaceCulling = toggleBackfaceCulling.checked;
 		settings.polygonMode = selectPolygonMode.selectedValue;
 		settings.shadeModel = selectShadeModel.selectedValue;
+		settings.enableLineAntiAliasing = toggleLineAntiAliasing.checked;
 		settings.enableScissorTest = toggleScissorTest.checked;
 		settings.enableStencilTest = toggleStencilTest.checked;
 		settings.enableDepthTest = toggleDepthTest.checked;

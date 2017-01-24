@@ -174,6 +174,21 @@ ApplicationSettings::setShadeModel(const int model) {
 
 
 bool
+ApplicationSettings::isLineAntiAliasingEnabled() const {
+	return value(Key::EnableLineAntiAliasing, false).toBool();
+}
+
+
+void
+ApplicationSettings::enableLineAntiAliasing(const bool enable) {
+	if (isLineAntiAliasingEnabled() != enable) {
+		setValue(Key::EnableLineAntiAliasing, enable);
+		emit lineAntiAliasingToggled(enable);
+	}
+}
+
+
+bool
 ApplicationSettings::isScissorTestEnabled() const {
 	return value(Key::EnableScissorTest, false).toBool();
 }
@@ -275,6 +290,8 @@ ApplicationSettings::keyToString(const Key key) {
 			return "renderingcontext/PolygonMode";
 		case Key::ShadeModel:
 			return "renderingcontext/ShadeModel";
+		case Key::EnableLineAntiAliasing:
+			return "renderingcontext/EnableLineAntiAliasing";
 		case Key::EnableScissorTest:
 			return "renderingcontext/EnableScissorTest";
 		case Key::EnableStencilTest:

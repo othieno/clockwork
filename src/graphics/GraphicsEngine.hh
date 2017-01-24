@@ -175,7 +175,7 @@ public:
 	 * Toggles the stencil test.
 	 * @param enable enables the stencil test if set to true, disables it otherwise.
 	 */
-	void enableStencilTest(const bool enable);
+	void enableStencilTest(const bool enable = true);
 	/**
 	 * Returns true if the depth test is enabled, false otherwise.
 	 */
@@ -184,7 +184,7 @@ public:
 	 * Toggles the depth test.
 	 * @param enable enables the depth test if set to true, disables it otherwise.
 	 */
-	void enableDepthTest(const bool enable);
+	void enableDepthTest(const bool enable = true);
 private:
 	/**
 	 * A pointer to a function that draws a mesh in a specified rendering context.

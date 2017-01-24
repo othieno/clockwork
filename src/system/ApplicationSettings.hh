@@ -50,6 +50,7 @@ class ApplicationSettings : public QSettings {
 	Q_PROPERTY(bool enableBackfaceCulling READ isBackfaceCullingEnabled WRITE enableBackfaceCulling NOTIFY backfaceCullingToggled)
 	Q_PROPERTY(int polygonMode READ getPolygonModeOrdinal WRITE setPolygonMode NOTIFY polygonModeChanged_)
 	Q_PROPERTY(int shadeModel READ getShadeModelOrdinal WRITE setShadeModel NOTIFY shadeModelChanged_)
+	Q_PROPERTY(bool enableLineAntiAliasing READ isLineAntiAliasingEnabled WRITE enableLineAntiAliasing NOTIFY lineAntiAliasingToggled)
 	Q_PROPERTY(bool enableScissorTest READ isScissorTestEnabled WRITE enableScissorTest NOTIFY scissorTestChanged)
 	Q_PROPERTY(bool enableStencilTest READ isStencilTestEnabled WRITE enableStencilTest NOTIFY stencilTestChanged)
 	Q_PROPERTY(bool enableDepthTest READ isDepthTestEnabled WRITE enableDepthTest NOTIFY depthTestChanged)
@@ -159,6 +160,15 @@ public:
 	 */
 	void setShadeModel(const int model);
 	/**
+	 * Returns true if line anti-aliasing is enabled, false otherwise.
+	 */
+	bool isLineAntiAliasingEnabled() const;
+	/**
+	 * Toggles line anti-aliasing.
+	 * @param enable enables line anti-aliasing if set to true, disables it otherwise.
+	 */
+	void enableLineAntiAliasing(const bool enable);
+	/**
 	 * Returns true if the scissor test is enabled, false otherwise.
 	 */
 	bool isScissorTestEnabled() const;
@@ -206,6 +216,7 @@ private:
 		EnableBackfaceCulling,
 		PolygonMode,
 		ShadeModel,
+		EnableLineAntiAliasing,
 		EnableScissorTest,
 		EnableStencilTest,
 		EnableDepthTest,
@@ -271,6 +282,10 @@ signals:
 	 */
 	void shadeModelChanged_(const int model);
 	void shadeModelChanged(const ShadeModel model);
+	/**
+	 * A signal that is raised when the line anti-aliasing is toggled.
+	 */
+	void lineAntiAliasingToggled(const bool enabled);
 	/**
 	 * A signal that is raised when the scissor test is toggled.
 	 */
