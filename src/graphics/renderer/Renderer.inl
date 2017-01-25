@@ -31,13 +31,13 @@
 
 namespace clockwork {
 
-template<RenderingAlgorithm A>
-Renderer<A>::Vertex::Vertex(const typename ShaderProgram::Vertex& vertex) :
+template<BaseShaderProgram::Identifier I>
+Renderer<I>::Vertex::Vertex(const typename ShaderProgram::Vertex& vertex) :
 ShaderProgram::Vertex(vertex) {}
 
 
-template<RenderingAlgorithm A> typename Renderer<A>::Vertex
-Renderer<A>::Vertex::lerp(const Vertex& from, const Vertex& to, const double p) {
+template<BaseShaderProgram::Identifier I> typename Renderer<I>::Vertex
+Renderer<I>::Vertex::lerp(const Vertex& from, const Vertex& to, const double p) {
 	Vertex vertex(ShaderProgram::Vertex::lerp(from, to, p));
 	vertex.varying = std::move(Varying::lerp(from.varying, to.varying, p));
 
@@ -45,19 +45,19 @@ Renderer<A>::Vertex::lerp(const Vertex& from, const Vertex& to, const double p) 
 }
 
 
-template<RenderingAlgorithm A>
-Renderer<A>::Fragment::Fragment(const typename ShaderProgram::Fragment& fragment) :
+template<BaseShaderProgram::Identifier I>
+Renderer<I>::Fragment::Fragment(const typename ShaderProgram::Fragment& fragment) :
 ShaderProgram::Fragment(fragment) {}
 
 
-template<RenderingAlgorithm A>
-Renderer<A>::Fragment::Fragment(const Vertex& vertex) :
+template<BaseShaderProgram::Identifier I>
+Renderer<I>::Fragment::Fragment(const Vertex& vertex) :
 ShaderProgram::Fragment(vertex),
 varying(vertex.varying) {}
 
 
-template<RenderingAlgorithm A> typename Renderer<A>::Fragment
-Renderer<A>::Fragment::lerp(const Fragment& from, const Fragment& to, const double p) {
+template<BaseShaderProgram::Identifier I> typename Renderer<I>::Fragment
+Renderer<I>::Fragment::lerp(const Fragment& from, const Fragment& to, const double p) {
 	Fragment fragment(ShaderProgram::Fragment::lerp(from, to, p));
 	fragment.varying = std::move(Varying::lerp(from.varying, to.varying, p));
 
@@ -65,8 +65,8 @@ Renderer<A>::Fragment::lerp(const Fragment& from, const Fragment& to, const doub
 }
 
 
-template<RenderingAlgorithm A> void
-Renderer<A>::draw(const RenderingContext& context, const Mesh& mesh, Framebuffer& framebuffer) {
+template<BaseShaderProgram::Identifier I> void
+Renderer<I>::draw(const RenderingContext& context, const Mesh& mesh, Framebuffer& framebuffer) {
 	if (mesh.faces.isEmpty()) {
 		return;
 	}
@@ -80,8 +80,8 @@ Renderer<A>::draw(const RenderingContext& context, const Mesh& mesh, Framebuffer
 }
 
 
-template<RenderingAlgorithm A> typename Renderer<A>::VertexArray
-Renderer<A>::vertexProcessing(const RenderingContext& context, const Mesh::Face& face) {
+template<BaseShaderProgram::Identifier I> typename Renderer<I>::VertexArray
+Renderer<I>::vertexProcessing(const RenderingContext& context, const Mesh::Face& face) {
 	static VertexAttributes attributes;
 	VertexArray vertices;
 	for (std::size_t i = 0; i < face.length; ++i) {
@@ -97,8 +97,8 @@ Renderer<A>::vertexProcessing(const RenderingContext& context, const Mesh::Face&
 }
 
 
-template<RenderingAlgorithm A> void
-Renderer<A>::vertexPostProcessing(const RenderingContext& context, VertexArray& vertices) {
+template<BaseShaderProgram::Identifier I> void
+Renderer<I>::vertexPostProcessing(const RenderingContext& context, VertexArray& vertices) {
 	if (vertices.isEmpty()) {
 		return;
 	}
@@ -150,8 +150,8 @@ Renderer<A>::vertexPostProcessing(const RenderingContext& context, VertexArray& 
 }
 
 
-template<RenderingAlgorithm A> void
-Renderer<A>::primitiveAssembly(const RenderingContext& context, VertexArray& vertices) {
+template<BaseShaderProgram::Identifier I> void
+Renderer<I>::primitiveAssembly(const RenderingContext& context, VertexArray& vertices) {
 	if (vertices.isEmpty()) {
 		return;
 	}
@@ -172,8 +172,8 @@ Renderer<A>::primitiveAssembly(const RenderingContext& context, VertexArray& ver
 }
 
 
-template<RenderingAlgorithm A> void
-Renderer<A>::rasterization(const RenderingContext& context, VertexArray& vertices, Framebuffer& framebuffer) {
+template<BaseShaderProgram::Identifier I> void
+Renderer<I>::rasterization(const RenderingContext& context, VertexArray& vertices, Framebuffer& framebuffer) {
 	if (vertices.isEmpty()) {
 		return;
 	}
@@ -197,8 +197,8 @@ Renderer<A>::rasterization(const RenderingContext& context, VertexArray& vertice
 }
 
 
-template<RenderingAlgorithm A> void
-Renderer<A>::clipPointPrimitives(const RenderingContext&, VertexArray& vertices) {
+template<BaseShaderProgram::Identifier I> void
+Renderer<I>::clipPointPrimitives(const RenderingContext&, VertexArray& vertices) {
 	if (vertices.isEmpty()) {
 		return;
 	}
@@ -219,22 +219,22 @@ Renderer<A>::clipPointPrimitives(const RenderingContext&, VertexArray& vertices)
 }
 
 
-template<RenderingAlgorithm A> void
-Renderer<A>::clipLinePrimitives(const RenderingContext& context, VertexArray& vertices) {
+template<BaseShaderProgram::Identifier I> void
+Renderer<I>::clipLinePrimitives(const RenderingContext& context, VertexArray& vertices) {
 	Q_UNUSED(context);
 	Q_UNUSED(vertices);
 }
 
 
-template<RenderingAlgorithm A> void
-Renderer<A>::clipTrianglePrimitives(const RenderingContext& context, VertexArray& vertices) {
+template<BaseShaderProgram::Identifier I> void
+Renderer<I>::clipTrianglePrimitives(const RenderingContext& context, VertexArray& vertices) {
 	Q_UNUSED(context);
 	Q_UNUSED(vertices);
 }
 
 
-template<RenderingAlgorithm A> void
-Renderer<A>::assembleLinePrimitives(const RenderingContext& context, VertexArray& vertices) {
+template<BaseShaderProgram::Identifier I> void
+Renderer<I>::assembleLinePrimitives(const RenderingContext& context, VertexArray& vertices) {
 	if (vertices.isEmpty()) {
 		return;
 	}
@@ -249,8 +249,8 @@ Renderer<A>::assembleLinePrimitives(const RenderingContext& context, VertexArray
 }
 
 
-template<RenderingAlgorithm A> void
-Renderer<A>::assembleTrianglePrimitives(const RenderingContext& context, VertexArray& vertices) {
+template<BaseShaderProgram::Identifier I> void
+Renderer<I>::assembleTrianglePrimitives(const RenderingContext& context, VertexArray& vertices) {
 	if (vertices.isEmpty()) {
 		return;
 	}
@@ -316,8 +316,8 @@ Renderer<A>::assembleTrianglePrimitives(const RenderingContext& context, VertexA
 }
 
 
-template<RenderingAlgorithm A> bool
-Renderer<A>::isBackFacePrimitive(const RenderingContext& context, const typename VertexArray::iterator& from) {
+template<BaseShaderProgram::Identifier I> bool
+Renderer<I>::isBackFacePrimitive(const RenderingContext& context, const typename VertexArray::iterator& from) {
 	if (context.primitiveTopology == PrimitiveTopology::Triangle) {
 		const QVector3D p0(from[0].position.toVector3DAffine());
 		const QVector3D p1(from[1].position.toVector3DAffine());
@@ -333,8 +333,8 @@ Renderer<A>::isBackFacePrimitive(const RenderingContext& context, const typename
 }
 
 
-template<RenderingAlgorithm A> void
-Renderer<A>::rasterizePointPrimitives(
+template<BaseShaderProgram::Identifier I> void
+Renderer<I>::rasterizePointPrimitives(
 	const RenderingContext& context,
 	VertexArray& vertices,
 	Framebuffer& framebuffer
@@ -345,8 +345,8 @@ Renderer<A>::rasterizePointPrimitives(
 }
 
 
-template<RenderingAlgorithm A> void
-Renderer<A>::rasterizeLinePrimitives(
+template<BaseShaderProgram::Identifier I> void
+Renderer<I>::rasterizeLinePrimitives(
 	const RenderingContext& context,
 	VertexArray& vertices,
 	Framebuffer& framebuffer
@@ -377,8 +377,8 @@ Renderer<A>::rasterizeLinePrimitives(
 }
 
 
-template<RenderingAlgorithm A> void
-Renderer<A>::rasterizeTrianglePrimitives(
+template<BaseShaderProgram::Identifier I> void
+Renderer<I>::rasterizeTrianglePrimitives(
 	const RenderingContext& context,
 	VertexArray& vertices,
 	Framebuffer& framebuffer
@@ -450,8 +450,8 @@ Renderer<A>::rasterizeTrianglePrimitives(
 }
 
 
-template<RenderingAlgorithm A> void
-Renderer<A>::drawLine(
+template<BaseShaderProgram::Identifier I> void
+Renderer<I>::drawLine(
 	const RenderingContext& context,
 	const Fragment& from,
 	const Fragment& to,
@@ -496,8 +496,8 @@ Renderer<A>::drawLine(
 }
 
 
-template<RenderingAlgorithm A> void
-Renderer<A>::drawSmoothLine(
+template<BaseShaderProgram::Identifier I> void
+Renderer<I>::drawSmoothLine(
 	const RenderingContext& context,
 	const Fragment& from,
 	const Fragment& to,
@@ -511,8 +511,8 @@ Renderer<A>::drawSmoothLine(
 }
 
 
-template<RenderingAlgorithm A> void
-Renderer<A>::fragmentProcessing(
+template<BaseShaderProgram::Identifier I> void
+Renderer<I>::fragmentProcessing(
 	const RenderingContext& context,
 	const Fragment& fragment,
 	Framebuffer& framebuffer
@@ -530,8 +530,8 @@ Renderer<A>::fragmentProcessing(
 }
 
 
-template<RenderingAlgorithm A> int
-Renderer<A>::fragmentPasses(const RenderingContext& context, const Fragment& fragment) {
+template<BaseShaderProgram::Identifier I> int
+Renderer<I>::fragmentPasses(const RenderingContext& context, const Fragment& fragment) {
 	const int offset = context.framebuffer.getOffset(fragment.x, fragment.y);
 	if (offset >= 0) {
 		if (context.enableDepthTest) {

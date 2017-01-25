@@ -40,13 +40,13 @@ struct RenderingContext;
 /**
  *
  */
-template<RenderingAlgorithm algorithm>
+template<BaseShaderProgram::Identifier identifier>
 class Renderer {
 public:
 	/**
 	 *
 	 */
-	using ShaderProgram = detail::ShaderProgram<algorithm>;
+	using ShaderProgram = detail::ShaderProgram<RenderingAlgorithm::RandomShading>;
 	/**
 	 *
 	 */
