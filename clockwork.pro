@@ -80,6 +80,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/ShadeModel.hh \
 		src/graphics/renderer/ShaderProgramIdentifier.hh \
 		src/graphics/renderer/ShaderProgram.hh \
+		src/graphics/renderer/ShaderProgram.inl \
 		src/graphics/renderer/Uniform.hh \
 		src/graphics/renderer/shader/BumpMapShaderProgram.hh \
 		src/graphics/renderer/shader/CelShadingShaderProgram.hh \
