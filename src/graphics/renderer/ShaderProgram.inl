@@ -32,30 +32,30 @@
 namespace clockwork {
 namespace detail {
 
-template<RenderingAlgorithm A> typename ShaderProgram<A>::Varying
-ShaderProgram<A>::Varying::lerp(const Varying&, const Varying&, const double) {
+template<ShaderProgramIdentifier I> typename ShaderProgram<I>::Varying
+ShaderProgram<I>::Varying::lerp(const Varying&, const Varying&, const double) {
 	return Varying();
 }
 
 
-template<RenderingAlgorithm A> typename ShaderProgram<A>::Vertex
-ShaderProgram<A>::Vertex::lerp(const Vertex& from, const Vertex& to, const double p) {
+template<ShaderProgramIdentifier I> typename ShaderProgram<I>::Vertex
+ShaderProgram<I>::Vertex::lerp(const Vertex& from, const Vertex& to, const double p) {
 	Vertex vertex;
 	vertex.position = clockwork::lerp(from.position, to.position, p);
 	return vertex;
 }
 
 
-template<RenderingAlgorithm A>
-ShaderProgram<A>::Fragment::Fragment(const Vertex& v) {
+template<ShaderProgramIdentifier I>
+ShaderProgram<I>::Fragment::Fragment(const Vertex& v) {
 	x = std::round(v.position.x());
 	y = std::round(v.position.y());
 	z = v.position.z();
 }
 
 
-template<RenderingAlgorithm A> typename ShaderProgram<A>::Fragment
-ShaderProgram<A>::Fragment::lerp(const Fragment& from, const Fragment& to, const double p) {
+template<ShaderProgramIdentifier I> typename ShaderProgram<I>::Fragment
+ShaderProgram<I>::Fragment::lerp(const Fragment& from, const Fragment& to, const double p) {
 	const double pp = 1.0 - p;
 
 	Fragment fragment;
@@ -67,8 +67,8 @@ ShaderProgram<A>::Fragment::lerp(const Fragment& from, const Fragment& to, const
 }
 
 
-template<RenderingAlgorithm A> void
-ShaderProgram<A>::setVertexAttributes(VertexAttributes& attributes, const Mesh::Face& face, const std::size_t i) {
+template<ShaderProgramIdentifier I> void
+ShaderProgram<I>::setVertexAttributes(VertexAttributes& attributes, const Mesh::Face& face, const std::size_t i) {
 	if (Q_UNLIKELY(i >= face.length)) {
 		return;
 	}
@@ -76,8 +76,8 @@ ShaderProgram<A>::setVertexAttributes(VertexAttributes& attributes, const Mesh::
 }
 
 
-template<RenderingAlgorithm A> typename ShaderProgram<A>::Vertex
-ShaderProgram<A>::vertexShader(const Uniforms& uniforms, Varying&, const VertexAttributes& attributes) {
+template<ShaderProgramIdentifier I> typename ShaderProgram<I>::Vertex
+ShaderProgram<I>::vertexShader(const Uniforms& uniforms, Varying&, const VertexAttributes& attributes) {
 	const auto& MVP = uniforms["MODELVIEWPROJECTION"].as<const QMatrix4x4>();
 	const auto& position = QVector4D(*attributes.position, 1.0);
 
@@ -88,8 +88,8 @@ ShaderProgram<A>::vertexShader(const Uniforms& uniforms, Varying&, const VertexA
 }
 
 
-template<RenderingAlgorithm A> std::uint32_t
-ShaderProgram<A>::fragmentShader(const Uniforms&, const Varying&, const Fragment&) {
+template<ShaderProgramIdentifier I> std::uint32_t
+ShaderProgram<I>::fragmentShader(const Uniforms&, const Varying&, const Fragment&) {
 	return 0xFFFFFFFF;
 }
 } // namespace detail

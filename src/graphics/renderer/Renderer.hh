@@ -46,7 +46,7 @@ public:
 	/**
 	 *
 	 */
-	using ShaderProgram = detail::ShaderProgram<RenderingAlgorithm::RandomShading>;
+	using ShaderProgram = detail::ShaderProgram<identifier>;
 	/**
 	 *
 	 */

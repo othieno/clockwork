@@ -26,7 +26,6 @@
 #define CLOCKWORK_SHADER_PROGRAM_HH
 
 #include "ShaderProgramIdentifier.hh"
-#include "RenderingAlgorithm.hh"
 #include "BaseFragment.hh"
 #include "BaseVertex.hh"
 #include "BaseVertexAttributes.hh"
@@ -38,7 +37,7 @@ namespace detail {
 /**
  *
  */
-template<RenderingAlgorithm algorithm>
+template<ShaderProgramIdentifier identifier>
 class ShaderProgram {
 public:
 	/**
