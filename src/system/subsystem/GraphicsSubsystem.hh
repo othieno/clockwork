@@ -26,7 +26,6 @@
 #define CLOCKWORK_GRAPHICS_SUBSYSTEM_HH
 
 #include "RenderingContext.hh"
-#include "RenderingAlgorithm.hh"
 #include "Error.hh"
 
 

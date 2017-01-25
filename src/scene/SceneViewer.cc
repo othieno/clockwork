@@ -37,7 +37,6 @@ isViewTransformDirty_(true),
 isViewProjectionTransformDirty_(true),
 isViewportTransformDirty_(true),
 scissor_(0.0, 0.0, 1.0, 1.0),
-renderingAlgorithm_(RenderingAlgorithm::Wireframe),
 textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {
 	setPosition(0, 0, 3);
 
@@ -157,18 +156,6 @@ SceneViewer::setScissor(const QRectF& scissor) {
 const clockwork::ViewFrustum&
 SceneViewer::getViewFrustum() const {
 	return viewFrustum_;
-}
-
-
-clockwork::RenderingAlgorithm
-SceneViewer::getRenderingAlgorithm() const {
-	return renderingAlgorithm_;
-}
-
-
-void
-SceneViewer::setRenderingAlgorithm(const RenderingAlgorithm algorithm) {
-	renderingAlgorithm_ = algorithm;
 }
 
 

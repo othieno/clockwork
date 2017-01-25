@@ -29,7 +29,6 @@
 #include "Projection.hh"
 #include "ViewFrustum.hh"
 #include "Viewport.hh"
-#include "RenderingAlgorithm.hh"
 #include "PrimitiveTopology.hh"
 #include "Renderer.hh"
 #include "ImageFilter.hh"
@@ -132,15 +131,6 @@ public:
 	 * Returns the viewer's view frustum.
 	 */
 	const ViewFrustum& getViewFrustum() const;
-	/**
-	 * Returns the viewer's rendering algorithm.
-	 */
-	RenderingAlgorithm getRenderingAlgorithm() const;
-	/**
-	 * Sets the viewer's rendering algorithm.
-	 * @param algorithm the rendering algorithm to set.
-	 */
-	void setRenderingAlgorithm(const RenderingAlgorithm algorithm);
 	/**
 	 * Returns the viewer's texture filter.
 	 */
@@ -257,10 +247,6 @@ private:
 	 * The viewer's viewport scissor.
 	 */
 	QRectF scissor_;
-	/**
-	 * The viewer's rendering algorithm.
-	 */
-	RenderingAlgorithm renderingAlgorithm_;
 	/**
 	 * The unique identifier of the viewer's texture filter.
 	 */
