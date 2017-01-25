@@ -22,15 +22,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "GraphicsEngine.hh"
+#include "GraphicsSubsystem.hh"
 #include "ApplicationSettings.hh"
 #include "Scene.hh"
 
-using clockwork::GraphicsEngine;
+using clockwork::GraphicsSubsystem;
 
 
 clockwork::Error
-GraphicsEngine::initialize(const ApplicationSettings& settings) {
+GraphicsSubsystem::initialize(const ApplicationSettings& settings) {
 	renderingContext_.shaderProgramIdentifier = settings.getShaderProgram();
 	renderingContext_.primitiveTopology = settings.getPrimitiveTopology();
 	renderingContext_.enableClipping = settings.isClippingEnabled();
@@ -43,41 +43,41 @@ GraphicsEngine::initialize(const ApplicationSettings& settings) {
 	renderingContext_.enableDepthTest = settings.isDepthTestEnabled();
 	renderingContext_.framebuffer.setResolution(Framebuffer::Resolution::XGA);
 
-	connect(&settings, &ApplicationSettings::shaderProgramChanged, this, &GraphicsEngine::setShaderProgram);
-	connect(&settings, &ApplicationSettings::primitiveTopologyChanged, this, &GraphicsEngine::setPrimitiveTopology);
-	connect(&settings, &ApplicationSettings::clippingToggled, this, &GraphicsEngine::enableClipping);
-	connect(&settings, &ApplicationSettings::backfaceCullingToggled, this, &GraphicsEngine::enableBackfaceCulling);
-	connect(&settings, &ApplicationSettings::polygonModeChanged, this, &GraphicsEngine::setPolygonMode);
-	connect(&settings, &ApplicationSettings::shadeModelChanged, this, &GraphicsEngine::setShadeModel);
-	connect(&settings, &ApplicationSettings::lineAntiAliasingToggled, this, &GraphicsEngine::enableLineAntiAliasing);
-	connect(&settings, &ApplicationSettings::scissorTestChanged, this, &GraphicsEngine::enableScissorTest);
-	connect(&settings, &ApplicationSettings::stencilTestChanged, this, &GraphicsEngine::enableStencilTest);
-	connect(&settings, &ApplicationSettings::depthTestChanged, this, &GraphicsEngine::enableDepthTest);
+	connect(&settings, &ApplicationSettings::shaderProgramChanged, this, &GraphicsSubsystem::setShaderProgram);
+	connect(&settings, &ApplicationSettings::primitiveTopologyChanged, this, &GraphicsSubsystem::setPrimitiveTopology);
+	connect(&settings, &ApplicationSettings::clippingToggled, this, &GraphicsSubsystem::enableClipping);
+	connect(&settings, &ApplicationSettings::backfaceCullingToggled, this, &GraphicsSubsystem::enableBackfaceCulling);
+	connect(&settings, &ApplicationSettings::polygonModeChanged, this, &GraphicsSubsystem::setPolygonMode);
+	connect(&settings, &ApplicationSettings::shadeModelChanged, this, &GraphicsSubsystem::setShadeModel);
+	connect(&settings, &ApplicationSettings::lineAntiAliasingToggled, this, &GraphicsSubsystem::enableLineAntiAliasing);
+	connect(&settings, &ApplicationSettings::scissorTestChanged, this, &GraphicsSubsystem::enableScissorTest);
+	connect(&settings, &ApplicationSettings::stencilTestChanged, this, &GraphicsSubsystem::enableStencilTest);
+	connect(&settings, &ApplicationSettings::depthTestChanged, this, &GraphicsSubsystem::enableDepthTest);
 
 	return Error::None;
 }
 
 
 clockwork::Framebuffer::Resolution
-GraphicsEngine::getFramebufferResolution() const {
+GraphicsSubsystem::getFramebufferResolution() const {
 	return renderingContext_.framebuffer.getResolution();
 }
 
 
 void
-GraphicsEngine::setFramebufferResolution(const Framebuffer::Resolution resolution) {
+GraphicsSubsystem::setFramebufferResolution(const Framebuffer::Resolution resolution) {
 	renderingContext_.framebuffer.setResolution(resolution);
 }
 
 
 void
-GraphicsEngine::clear() {
+GraphicsSubsystem::clear() {
 	renderingContext_.framebuffer.clear();
 }
 
 
 void
-GraphicsEngine::render(const Scene& scene) {
+GraphicsSubsystem::render(const Scene& scene) {
 	const auto* const viewer = scene.getViewer();
 	if (viewer != nullptr) {
 		const QMatrix4x4& VIEW = viewer->getViewTransform();
@@ -118,138 +118,138 @@ GraphicsEngine::render(const Scene& scene) {
 
 
 clockwork::Framebuffer&
-GraphicsEngine::getFramebuffer() {
+GraphicsSubsystem::getFramebuffer() {
 	return renderingContext_.framebuffer;
 }
 
 
 clockwork::ShaderProgramIdentifier
-GraphicsEngine::getShaderProgramIdentifier() const {
+GraphicsSubsystem::getShaderProgramIdentifier() const {
 	return renderingContext_.shaderProgramIdentifier;
 }
 
 
 void
-GraphicsEngine::setShaderProgram(const ShaderProgramIdentifier identifier) {
+GraphicsSubsystem::setShaderProgram(const ShaderProgramIdentifier identifier) {
 	renderingContext_.shaderProgramIdentifier = identifier;
 }
 
 
 clockwork::PrimitiveTopology
-GraphicsEngine::getPrimitiveTopology() const {
+GraphicsSubsystem::getPrimitiveTopology() const {
 	return renderingContext_.primitiveTopology;
 }
 
 
 void
-GraphicsEngine::setPrimitiveTopology(const clockwork::PrimitiveTopology topology) {
+GraphicsSubsystem::setPrimitiveTopology(const clockwork::PrimitiveTopology topology) {
 	renderingContext_.primitiveTopology = topology;
 }
 
 
 bool
-GraphicsEngine::isClippingEnabled() const {
+GraphicsSubsystem::isClippingEnabled() const {
 	return renderingContext_.enableClipping;
 }
 
 
 void
-GraphicsEngine::enableClipping(const bool enable) {
+GraphicsSubsystem::enableClipping(const bool enable) {
 	renderingContext_.enableClipping = enable;
 }
 
 
 bool
-GraphicsEngine::isBackfaceCullingEnabled() const {
+GraphicsSubsystem::isBackfaceCullingEnabled() const {
 	return renderingContext_.enableBackfaceCulling;
 }
 
 
 void
-GraphicsEngine::enableBackfaceCulling(const bool enable) {
+GraphicsSubsystem::enableBackfaceCulling(const bool enable) {
 	renderingContext_.enableBackfaceCulling = enable;
 }
 
 
 clockwork::PolygonMode
-GraphicsEngine::getPolygonMode() const {
+GraphicsSubsystem::getPolygonMode() const {
 	return renderingContext_.polygonMode;
 }
 
 
 void
-GraphicsEngine::setPolygonMode(const PolygonMode mode) {
+GraphicsSubsystem::setPolygonMode(const PolygonMode mode) {
 	renderingContext_.polygonMode = mode;
 }
 
 
 clockwork::ShadeModel
-GraphicsEngine::getShadeModel() const {
+GraphicsSubsystem::getShadeModel() const {
 	return renderingContext_.shadeModel;
 }
 
 
 void
-GraphicsEngine::setShadeModel(const ShadeModel model) {
+GraphicsSubsystem::setShadeModel(const ShadeModel model) {
 	renderingContext_.shadeModel = model;
 }
 
 
 bool
-GraphicsEngine::isLineAntiAliasingEnabled() const {
+GraphicsSubsystem::isLineAntiAliasingEnabled() const {
 	return renderingContext_.enableLineAntiAliasing;
 }
 
 
 void
-GraphicsEngine::enableLineAntiAliasing(const bool enable) {
+GraphicsSubsystem::enableLineAntiAliasing(const bool enable) {
 	renderingContext_.enableLineAntiAliasing = enable;
 }
 
 
 bool
-GraphicsEngine::isScissorTestEnabled() const {
+GraphicsSubsystem::isScissorTestEnabled() const {
 	return renderingContext_.enableScissorTest;
 }
 
 
 void
-GraphicsEngine::enableScissorTest(const bool enable) {
+GraphicsSubsystem::enableScissorTest(const bool enable) {
 	renderingContext_.enableScissorTest = enable;
 }
 
 
 bool
-GraphicsEngine::isStencilTestEnabled() const {
+GraphicsSubsystem::isStencilTestEnabled() const {
 	return renderingContext_.enableStencilTest;
 }
 
 
 void
-GraphicsEngine::enableStencilTest(const bool enable) {
+GraphicsSubsystem::enableStencilTest(const bool enable) {
 	renderingContext_.enableStencilTest = enable;
 }
 
 
 bool
-GraphicsEngine::isDepthTestEnabled() const {
+GraphicsSubsystem::isDepthTestEnabled() const {
 	return renderingContext_.enableDepthTest;
 }
 
 
 void
-GraphicsEngine::enableDepthTest(const bool enable) {
+GraphicsSubsystem::enableDepthTest(const bool enable) {
 	renderingContext_.enableDepthTest = enable;
 }
 
 
 void
-(*GraphicsEngine::getDrawCommand())(const RenderingContext&, const Mesh&, Framebuffer&) {
+(*GraphicsSubsystem::getDrawCommand())(const RenderingContext&, const Mesh&, Framebuffer&) {
 	using Identifier = ShaderProgramIdentifier;
 	switch (renderingContext_.shaderProgramIdentifier) {
 		case Identifier::Minimal:
 			return &Renderer<Identifier::Minimal>::draw;
 		default:
-			qFatal("[GraphicsEngine::getDrawCommand] Undefined draw command!");
+			qFatal("[GraphicsSubsystem::getDrawCommand] Undefined draw command!");
 	}
 }

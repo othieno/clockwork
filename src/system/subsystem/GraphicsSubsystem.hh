@@ -22,8 +22,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_GRAPHICS_ENGINE_HH
-#define CLOCKWORK_GRAPHICS_ENGINE_HH
+#ifndef CLOCKWORK_GRAPHICS_SUBSYSTEM_HH
+#define CLOCKWORK_GRAPHICS_SUBSYSTEM_HH
 
 #include "RenderingContext.hh"
 #include "RenderingAlgorithm.hh"
@@ -50,25 +50,25 @@ struct RenderingContext;
 /**
  *
  */
-class GraphicsEngine : public QObject {
+class GraphicsSubsystem : public QObject {
 	friend class Service;
 public:
 	/**
 	 *
 	 */
-	GraphicsEngine(const GraphicsEngine&) = delete;
+	GraphicsSubsystem(const GraphicsSubsystem&) = delete;
 	/**
 	 *
 	 */
-	GraphicsEngine(GraphicsEngine&&) = delete;
+	GraphicsSubsystem(GraphicsSubsystem&&) = delete;
 	/**
 	 *
 	 */
-	GraphicsEngine& operator=(const GraphicsEngine&) = delete;
+	GraphicsSubsystem& operator=(const GraphicsSubsystem&) = delete;
 	/**
 	 *
 	 */
-	GraphicsEngine& operator=(GraphicsEngine&&) = delete;
+	GraphicsSubsystem& operator=(GraphicsSubsystem&&) = delete;
 	/**
 	 * Initializes the graphics engine.
 	 * @param settings the application's settings.
@@ -187,9 +187,9 @@ public:
 	void enableDepthTest(const bool enable = true);
 private:
 	/**
-	 * Instantiates a GraphicsEngine object.
+	 * Instantiates a GraphicsSubsystem object.
 	 */
-	GraphicsEngine() = default;
+	GraphicsSubsystem() = default;
 	/**
 	 * Returns the current shader program's draw command.
 	 */
@@ -200,4 +200,4 @@ private:
 	RenderingContext renderingContext_;
 };
 } // namespace clockwork
-#endif // CLOCKWORK_GRAPHICS_ENGINE_HH
+#endif // CLOCKWORK_GRAPHICS_SUBSYSTEM_HH

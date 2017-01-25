@@ -27,6 +27,6 @@
 using clockwork::Service;
 
 
-clockwork::GraphicsEngine Service::Graphics;
+clockwork::GraphicsSubsystem Service::Graphics;
 clockwork::ResourceManager Service::Resources;
 clockwork::TaskManager Service::Tasks;

@@ -47,6 +47,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/system/io \
 		src/system/task \
 		src/system \
+		src/system/subsystem \
 		src/types \
 		src/ui/components \
 		src/ui/models \
@@ -55,7 +56,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 	HEADERS += \
 		src/graphics/Camera.hh \
 		src/graphics/Color.hh \
-		src/graphics/GraphicsEngine.hh \
 		src/graphics/Material.hh \
 		src/graphics/Mesh.hh \
 		src/graphics/Projection.hh \
@@ -110,6 +110,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/system/io/toString.hh \
 		src/system/task/Task.hh \
 		src/system/task/TaskManager.hh \
+		src/system/subsystem/GraphicsSubsystem.hh \
 		src/types/enum_traits.hh \
 		src/types/Factory.hh \
 		src/types/WeakVariant.hh \
@@ -120,7 +121,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 	SOURCES += \
 		src/graphics/Camera.cc \
 		src/graphics/Color.cc \
-		src/graphics/GraphicsEngine.cc \
 		src/graphics/Material.cc \
 		src/graphics/Mesh.cc \
 		src/graphics/Texture.cc \
@@ -160,6 +160,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/system/io/toString.cc \
 		src/system/task/Task.cc \
 		src/system/task/TaskManager.cc \
+		src/system/subsystem/GraphicsSubsystem.cc \
 		src/ui/components/FramebufferView.cc \
 		src/ui/models/SelectModel.cc \
 		src/ui/FramebufferProvider.cc \

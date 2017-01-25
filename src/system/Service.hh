@@ -25,7 +25,7 @@
 #ifndef CLOCKWORK_SERVICE_HH
 #define CLOCKWORK_SERVICE_HH
 
-#include "GraphicsEngine.hh"
+#include "GraphicsSubsystem.hh"
 #include "ResourceManager.hh"
 #include "TaskManager.hh"
 
@@ -55,7 +55,7 @@ public:
 	/**
 	 *
 	 */
-	static GraphicsEngine Graphics;
+	static GraphicsSubsystem Graphics;
 	/**
 	 *
 	 */
