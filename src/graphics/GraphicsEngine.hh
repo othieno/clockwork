@@ -189,16 +189,16 @@ private:
 	/**
 	 * A pointer to a function that draws a mesh in a specified rendering context.
 	 */
-	typedef void (*DrawFunction)(const RenderingContext&, const Mesh&, Framebuffer&);
+	typedef void (DrawCommand)(const RenderingContext&, const Mesh&, Framebuffer&);
 	/**
 	 * Instantiates a GraphicsEngine object.
 	 */
 	GraphicsEngine() = default;
 	/**
-	 * Returns the specified rendering algorithm's draw function.
-	 * @param algorithm the rendering algorithm to query.
+	 * Returns the specified shader program's draw command.
+	 * @param identifier the shader program to query.
 	 */
-	DrawFunction getDrawFunction(const RenderingAlgorithm algorithm);
+	DrawCommand* getDrawCommand(const BaseShaderProgram::Identifier identifier);
 	/**
 	 * The rendering context.
 	 */

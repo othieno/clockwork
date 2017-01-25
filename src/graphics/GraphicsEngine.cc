@@ -91,7 +91,7 @@ GraphicsEngine::render(const Scene& scene) {
 		renderingContext_.uniforms.insert("viewpoint", Uniform::create<const QVector3D>(viewer->getPosition()));
 		renderingContext_.uniforms.insert("VIEWPROJECTION", Uniform::create<const QMatrix4x4>(VIEWPROJECTION));
 
-		const auto draw = getDrawFunction(viewer->getRenderingAlgorithm());
+		const auto draw = getDrawCommand(renderingContext_.shaderProgram);
 
 		for (const SceneObject* object : scene.getNodes<SceneObject>()) {
 			if (object != nullptr && !object->isPruned() && viewer->isObjectVisible(*object)) {
@@ -243,32 +243,13 @@ GraphicsEngine::enableDepthTest(const bool enable) {
 }
 
 
-GraphicsEngine::DrawFunction
-GraphicsEngine::getDrawFunction(const RenderingAlgorithm algorithm) {
-	switch (algorithm) {
-		case RenderingAlgorithm::Wireframe:
-			return &Renderer<RenderingAlgorithm::Wireframe>::draw;
-		case RenderingAlgorithm::RandomShading:
-			return &Renderer<RenderingAlgorithm::RandomShading>::draw;
-		case RenderingAlgorithm::FlatShading:
-			return &Renderer<RenderingAlgorithm::FlatShading>::draw;
-		case RenderingAlgorithm::GouraudShading:
-			return &Renderer<RenderingAlgorithm::GouraudShading>::draw;
-		case RenderingAlgorithm::PhongShading:
-			return &Renderer<RenderingAlgorithm::PhongShading>::draw;
-		case RenderingAlgorithm::CelShading:
-			return &Renderer<RenderingAlgorithm::CelShading>::draw;
-		case RenderingAlgorithm::DepthMapping:
-			return &Renderer<RenderingAlgorithm::DepthMapping>::draw;
-		case RenderingAlgorithm::NormalMapping:
-			return &Renderer<RenderingAlgorithm::NormalMapping>::draw;
-		case RenderingAlgorithm::BumpMapping:
-			return &Renderer<RenderingAlgorithm::BumpMapping>::draw;
-		case RenderingAlgorithm::TextureMapping:
-			return &Renderer<RenderingAlgorithm::TextureMapping>::draw;
-		case RenderingAlgorithm::Point:
-			return &Renderer<RenderingAlgorithm::Point>::draw;
+GraphicsEngine::DrawCommand*
+GraphicsEngine::getDrawCommand(const BaseShaderProgram::Identifier identifier) {
+	using Identifier = BaseShaderProgram::Identifier;
+	switch (identifier) {
+		case Identifier::Minimal:
+			return &Renderer<Identifier::Minimal>::draw;
 		default:
-			qFatal("[GraphicsEngine::getDrawFunction] Undefined draw function!");
+			qFatal("[GraphicsEngine::getDrawCommand] Undefined draw command!");
 	}
 }
