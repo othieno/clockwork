@@ -22,10 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "NormalMapShaderProgram.hh"
+#include "NormalMapsShaderProgram.hh"
 
-using clockwork::RenderingAlgorithm;
-using ShaderProgram = clockwork::detail::ShaderProgram<RenderingAlgorithm::NormalMapping>;
+using clockwork::ShaderProgramIdentifier;
+using ShaderProgram = clockwork::detail::ShaderProgram<ShaderProgramIdentifier::NormalMaps>;
 
 
 ShaderProgram::Vertex

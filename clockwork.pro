@@ -87,7 +87,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/shader/DepthMapShaderProgram.hh \
 		src/graphics/renderer/shader/FlatShadingShaderProgram.hh \
 		src/graphics/renderer/shader/GouraudShadingShaderProgram.hh \
-		src/graphics/renderer/shader/NormalMapShaderProgram.hh \
+		src/graphics/renderer/shader/NormalMapsShaderProgram.hh \
 		src/graphics/renderer/shader/PhongShadingShaderProgram.hh \
 		src/graphics/renderer/shader/RandomShadingShaderProgram.hh \
 		src/graphics/renderer/shader/TextureMapShaderProgram.hh \
@@ -136,7 +136,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/renderer/shader/DepthMapShaderProgram.cc \
 		src/graphics/renderer/shader/FlatShadingShaderProgram.cc \
 		src/graphics/renderer/shader/GouraudShadingShaderProgram.cc \
-		src/graphics/renderer/shader/NormalMapShaderProgram.cc \
+		src/graphics/renderer/shader/NormalMapsShaderProgram.cc \
 		src/graphics/renderer/shader/PhongShadingShaderProgram.cc \
 		src/graphics/renderer/shader/RandomShadingShaderProgram.cc \
 		src/graphics/renderer/shader/TextureMapShaderProgram.cc \

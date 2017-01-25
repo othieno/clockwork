@@ -34,7 +34,7 @@ namespace detail {
  *
  */
 template<>
-struct ShaderProgram<RenderingAlgorithm::NormalMapping>::Vertex : BaseVertex {
+struct ShaderProgram<ShaderProgramIdentifier::NormalMaps>::Vertex : BaseVertex {
 	/**
 	 * Performs a linear interpolation to find the Vertex at a specified
 	 * percentage between two Vertex instances.
@@ -49,7 +49,7 @@ struct ShaderProgram<RenderingAlgorithm::NormalMapping>::Vertex : BaseVertex {
  *
  */
 template<>
-struct ShaderProgram<RenderingAlgorithm::NormalMapping>::Fragment : BaseFragment {
+struct ShaderProgram<ShaderProgramIdentifier::NormalMaps>::Fragment : BaseFragment {
 	/**
 	 * Instantiates a Fragment object.
 	 */
@@ -72,17 +72,17 @@ struct ShaderProgram<RenderingAlgorithm::NormalMapping>::Fragment : BaseFragment
  * Initializes the vertex attributes used by the vertex shader.
  */
 template<> void
-ShaderProgram<RenderingAlgorithm::NormalMapping>::setVertexAttributes(VertexAttributes&, const Mesh::Face&, const std::size_t);
+ShaderProgram<ShaderProgramIdentifier::NormalMaps>::setVertexAttributes(VertexAttributes&, const Mesh::Face&, const std::size_t);
 /**
  * The vertex shader used by the normal mapping renderer.
  */
-template<> ShaderProgram<RenderingAlgorithm::NormalMapping>::Vertex
-ShaderProgram<RenderingAlgorithm::NormalMapping>::vertexShader(const Uniforms&, Varying&, const VertexAttributes&);
+template<> ShaderProgram<ShaderProgramIdentifier::NormalMaps>::Vertex
+ShaderProgram<ShaderProgramIdentifier::NormalMaps>::vertexShader(const Uniforms&, Varying&, const VertexAttributes&);
 /**
  * The fragment shader used by the normal mapping renderer.
  */
 template<> std::uint32_t
-ShaderProgram<RenderingAlgorithm::NormalMapping>::fragmentShader(const Uniforms&, const Varying&, const Fragment&);
+ShaderProgram<ShaderProgramIdentifier::NormalMaps>::fragmentShader(const Uniforms&, const Varying&, const Fragment&);
 } // namespace detail
 } // namespace clockwork
 
