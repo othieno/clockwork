@@ -27,7 +27,7 @@
 #include "FramebufferView.hh"
 #include "FramebufferProvider.hh"
 #include "Service.hh"
-#include "BaseShaderProgram.hh"
+#include "ShaderProgramIdentifier.hh"
 #include "IlluminationModel.hh"
 #include "PrimitiveTopology.hh"
 #include "ShadeModel.hh"
@@ -73,7 +73,7 @@ UserInterface::registerTypes() {
 void
 UserInterface::registerEnumerations(QQmlContext& context) {
 	QHash<QString, SelectModel*> models({
-		{"shaderPrograms", createEnumerationModel<BaseShaderProgram::Identifier>(this)},
+		{"shaderPrograms", createEnumerationModel<ShaderProgramIdentifier>(this)},
 		{"illuminationModels", createEnumerationModel<IlluminationModel>(this)},
 		{"primitiveTopologies", createEnumerationModel<PrimitiveTopology>(this)},
 		{"polygonModes", createEnumerationModel<PolygonMode>(this)},

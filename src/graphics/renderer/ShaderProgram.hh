@@ -25,7 +25,7 @@
 #ifndef CLOCKWORK_SHADER_PROGRAM_HH
 #define CLOCKWORK_SHADER_PROGRAM_HH
 
-#include "BaseShaderProgram.hh"
+#include "ShaderProgramIdentifier.hh"
 #include "RenderingAlgorithm.hh"
 #include "BaseFragment.hh"
 #include "BaseVertex.hh"

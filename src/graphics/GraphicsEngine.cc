@@ -31,7 +31,7 @@ using clockwork::GraphicsEngine;
 
 clockwork::Error
 GraphicsEngine::initialize(const ApplicationSettings& settings) {
-	renderingContext_.shaderProgram = settings.getShaderProgram();
+	renderingContext_.shaderProgramIdentifier = settings.getShaderProgram();
 	renderingContext_.primitiveTopology = settings.getPrimitiveTopology();
 	renderingContext_.enableClipping = settings.isClippingEnabled();
 	renderingContext_.enableBackfaceCulling = settings.isBackfaceCullingEnabled();
@@ -91,7 +91,7 @@ GraphicsEngine::render(const Scene& scene) {
 		renderingContext_.uniforms.insert("viewpoint", Uniform::create<const QVector3D>(viewer->getPosition()));
 		renderingContext_.uniforms.insert("VIEWPROJECTION", Uniform::create<const QMatrix4x4>(VIEWPROJECTION));
 
-		const auto draw = getDrawCommand(renderingContext_.shaderProgram);
+		const auto draw = getDrawCommand();
 
 		for (const SceneObject* object : scene.getNodes<SceneObject>()) {
 			if (object != nullptr && !object->isPruned() && viewer->isObjectVisible(*object)) {
@@ -123,15 +123,15 @@ GraphicsEngine::getFramebuffer() {
 }
 
 
-clockwork::BaseShaderProgram::Identifier
-GraphicsEngine::getShaderProgram() const {
-	return renderingContext_.shaderProgram;
+clockwork::ShaderProgramIdentifier
+GraphicsEngine::getShaderProgramIdentifier() const {
+	return renderingContext_.shaderProgramIdentifier;
 }
 
 
 void
-GraphicsEngine::setShaderProgram(const clockwork::BaseShaderProgram::Identifier identifier) {
-	renderingContext_.shaderProgram = identifier;
+GraphicsEngine::setShaderProgram(const ShaderProgramIdentifier identifier) {
+	renderingContext_.shaderProgramIdentifier = identifier;
 }
 
 
@@ -243,10 +243,10 @@ GraphicsEngine::enableDepthTest(const bool enable) {
 }
 
 
-GraphicsEngine::DrawCommand*
-GraphicsEngine::getDrawCommand(const BaseShaderProgram::Identifier identifier) {
-	using Identifier = BaseShaderProgram::Identifier;
-	switch (identifier) {
+void
+(*GraphicsEngine::getDrawCommand())(const RenderingContext&, const Mesh&, Framebuffer&) {
+	using Identifier = ShaderProgramIdentifier;
+	switch (renderingContext_.shaderProgramIdentifier) {
 		case Identifier::Minimal:
 			return &Renderer<Identifier::Minimal>::draw;
 		default:

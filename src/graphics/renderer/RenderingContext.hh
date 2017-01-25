@@ -26,7 +26,7 @@
 #define CLOCKWORK_RENDERING_CONTEXT_HH
 
 #include "Framebuffer.hh"
-#include "BaseShaderProgram.hh"
+#include "ShaderProgramIdentifier.hh"
 #include "PrimitiveTopology.hh"
 #include "ShadeModel.hh"
 #include "PolygonMode.hh"
@@ -43,9 +43,9 @@ struct RenderingContext {
 	 */
 	Framebuffer framebuffer;
 	/**
-	 * The shader program.
+	 * The shader program identifier.
 	 */
-	BaseShaderProgram::Identifier shaderProgram;
+	ShaderProgramIdentifier shaderProgramIdentifier;
 	/**
 	 * The primitive topology.
 	 */

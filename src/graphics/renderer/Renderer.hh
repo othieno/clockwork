@@ -40,7 +40,7 @@ struct RenderingContext;
 /**
  *
  */
-template<BaseShaderProgram::Identifier identifier>
+template<ShaderProgramIdentifier identifier>
 class Renderer {
 public:
 	/**

@@ -22,32 +22,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef CLOCKWORK_BASE_SHADER_PROGRAM_HH
-#define CLOCKWORK_BASE_SHADER_PROGRAM_HH
+#ifndef CLOCKWORK_SHADER_PROGRAM_IDENTIFIER_HH
+#define CLOCKWORK_SHADER_PROGRAM_IDENTIFIER_HH
 
 #include "enum_traits.hh"
 
 
 namespace clockwork {
 /**
- *
+ * An enumeration of available shader programs.
  */
-class BaseShaderProgram {
-public:
-	/**
-	 * An enumeration of available shader programs.
-	 */
-	enum class Identifier {
-		Minimal,
-	};
+enum class ShaderProgramIdentifier {
+	Minimal,
 };
 /**
  * Returns a list of all available shader program identifiers.
  */
-template<> constexpr std::initializer_list<BaseShaderProgram::Identifier>
-enum_traits<BaseShaderProgram::Identifier>::enumerators() {
+template<> constexpr std::initializer_list<ShaderProgramIdentifier>
+enum_traits<ShaderProgramIdentifier>::enumerators() {
 	return {
-		BaseShaderProgram::Identifier::Minimal,
+		ShaderProgramIdentifier::Minimal,
 	};
 }
 /**
@@ -55,9 +49,9 @@ enum_traits<BaseShaderProgram::Identifier>::enumerators() {
  * @param identifier the shader program identifier to query.
  */
 template<> template<class String> String
-enum_traits<BaseShaderProgram::Identifier>::name(const BaseShaderProgram::Identifier identifier) {
+enum_traits<ShaderProgramIdentifier>::name(const ShaderProgramIdentifier identifier) {
 	switch (identifier) {
-		case BaseShaderProgram::Identifier::Minimal:
+		case ShaderProgramIdentifier::Minimal:
 			return "Minimal";
 		default:
 			return "???";
@@ -65,4 +59,4 @@ enum_traits<BaseShaderProgram::Identifier>::name(const BaseShaderProgram::Identi
 }
 } // namespace clockwork
 
-#endif // CLOCKWORK_BASE_SHADER_PROGRAM_HH
+#endif // CLOCKWORK_SHADER_PROGRAM_IDENTIFIER_HH

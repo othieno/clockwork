@@ -98,12 +98,12 @@ public:
 	/**
 	 * Returns the shader program identifier.
 	 */
-	BaseShaderProgram::Identifier getShaderProgram() const;
+	ShaderProgramIdentifier getShaderProgramIdentifier() const;
 	/**
 	 * Sets the shader program.
 	 * @param identifier the identifier of the shader program to set.
 	 */
-	void setShaderProgram(const BaseShaderProgram::Identifier identifier);
+	void setShaderProgram(const ShaderProgramIdentifier identifier);
 	/**
 	 * Returns the primitive topology.
 	 */
@@ -187,18 +187,13 @@ public:
 	void enableDepthTest(const bool enable = true);
 private:
 	/**
-	 * A pointer to a function that draws a mesh in a specified rendering context.
-	 */
-	typedef void (DrawCommand)(const RenderingContext&, const Mesh&, Framebuffer&);
-	/**
 	 * Instantiates a GraphicsEngine object.
 	 */
 	GraphicsEngine() = default;
 	/**
-	 * Returns the specified shader program's draw command.
-	 * @param identifier the shader program to query.
+	 * Returns the current shader program's draw command.
 	 */
-	DrawCommand* getDrawCommand(const BaseShaderProgram::Identifier identifier);
+	void (*getDrawCommand())(const RenderingContext&, const Mesh&, Framebuffer&);
 	/**
 	 * The rendering context.
 	 */

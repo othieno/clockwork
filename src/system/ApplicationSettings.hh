@@ -26,7 +26,7 @@
 #define CLOCKWORK_APPLICATION_SETTINGS_HH
 
 #include <QSettings>
-#include "BaseShaderProgram.hh"
+#include "ShaderProgramIdentifier.hh"
 #include "PrimitiveTopology.hh"
 #include "PolygonMode.hh"
 #include "ShadeModel.hh"
@@ -81,12 +81,12 @@ public:
 	 * Returns the shader program's integer value.
 	 */
 	int getShaderProgramOrdinal() const;
-	static_assert(std::is_same<int, enum_traits<BaseShaderProgram::Identifier>::Ordinal>::value);
+	static_assert(std::is_same<int, enum_traits<ShaderProgramIdentifier>::Ordinal>::value);
 	/**
 	 * Returns the shader program.
 	 */
-	inline BaseShaderProgram::Identifier getShaderProgram() const {
-		return enum_traits<BaseShaderProgram::Identifier>::enumerator(getShaderProgramOrdinal());
+	inline ShaderProgramIdentifier getShaderProgram() const {
+		return enum_traits<ShaderProgramIdentifier>::enumerator(getShaderProgramOrdinal());
 	}
 	/**
 	 * Sets the shader program.
@@ -258,7 +258,7 @@ signals:
 	 * Signals that are raised when the shader program is changed.
 	 */
 	void shaderProgramChanged_(const int identifier);
-	void shaderProgramChanged(const BaseShaderProgram::Identifier identifier);
+	void shaderProgramChanged(const ShaderProgramIdentifier identifier);
 	/**
 	 * Signals that are raised when the primitive topology is changed.
 	 */

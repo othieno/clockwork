@@ -71,7 +71,7 @@ int
 ApplicationSettings::getShaderProgramOrdinal() const {
 	return value(
 		Key::ShaderProgram,
-		enum_traits<BaseShaderProgram::Identifier>::ordinal(BaseShaderProgram::Identifier::Minimal)
+		enum_traits<ShaderProgramIdentifier>::ordinal(ShaderProgramIdentifier::Minimal)
 	).toInt();
 }
 
@@ -81,7 +81,7 @@ ApplicationSettings::setShaderProgram(const int identifier) {
 	if (getShaderProgramOrdinal() != identifier) {
 		setValue(Key::ShaderProgram, identifier);
 		emit shaderProgramChanged_(identifier);
-		emit shaderProgramChanged(enum_traits<BaseShaderProgram::Identifier>::enumerator(identifier));
+		emit shaderProgramChanged(enum_traits<ShaderProgramIdentifier>::enumerator(identifier));
 	}
 }
 
