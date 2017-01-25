@@ -34,7 +34,7 @@ namespace detail {
  * The set of varying variables used by the random shading renderer.
  */
 template<>
-struct ShaderProgram<RenderingAlgorithm::RandomShading>::Varying {
+struct ShaderProgram<ShaderProgramIdentifier::RandomColoredSurfaces>::Varying {
 	/**
 	 *
 	 */
@@ -48,7 +48,7 @@ struct ShaderProgram<RenderingAlgorithm::RandomShading>::Varying {
  * The set of vertex attributes used by the random shading renderer.
  */
 template<>
-struct ShaderProgram<RenderingAlgorithm::RandomShading>::VertexAttributes : BaseVertexAttributes {
+struct ShaderProgram<ShaderProgramIdentifier::RandomColoredSurfaces>::VertexAttributes : BaseVertexAttributes {
 	/**
 	 * The address of the face that the vertex belongs to. The memory address
 	 * is sufficiently random and can be converted into a 32-bit ARGB color
@@ -60,17 +60,17 @@ struct ShaderProgram<RenderingAlgorithm::RandomShading>::VertexAttributes : Base
  * Initializes the vertex attributes used by the vertex shader.
  */
 template<> void
-ShaderProgram<RenderingAlgorithm::RandomShading>::setVertexAttributes(VertexAttributes&, const Mesh::Face&, const std::size_t);
+ShaderProgram<ShaderProgramIdentifier::RandomColoredSurfaces>::setVertexAttributes(VertexAttributes&, const Mesh::Face&, const std::size_t);
 /**
  * The vertex shader used by the random shading renderer.
  */
-template<> ShaderProgram<RenderingAlgorithm::RandomShading>::Vertex
-ShaderProgram<RenderingAlgorithm::RandomShading>::vertexShader(const Uniforms&, Varying&, const VertexAttributes&);
+template<> ShaderProgram<ShaderProgramIdentifier::RandomColoredSurfaces>::Vertex
+ShaderProgram<ShaderProgramIdentifier::RandomColoredSurfaces>::vertexShader(const Uniforms&, Varying&, const VertexAttributes&);
 /**
  * The fragment shader used by the random shading renderer.
  */
 template<> std::uint32_t
-ShaderProgram<RenderingAlgorithm::RandomShading>::fragmentShader(const Uniforms&, const Varying&, const Fragment&);
+ShaderProgram<ShaderProgramIdentifier::RandomColoredSurfaces>::fragmentShader(const Uniforms&, const Varying&, const Fragment&);
 } // namespace detail
 } // namespace clockwork
 

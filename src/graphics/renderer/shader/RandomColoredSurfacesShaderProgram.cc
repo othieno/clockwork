@@ -22,10 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "RandomShadingShaderProgram.hh"
+#include "RandomColoredSurfacesShaderProgram.hh"
 
-using clockwork::RenderingAlgorithm;
-using ShaderProgram = clockwork::detail::ShaderProgram<RenderingAlgorithm::RandomShading>;
+using clockwork::ShaderProgramIdentifier;
+using ShaderProgram = clockwork::detail::ShaderProgram<ShaderProgramIdentifier::RandomColoredSurfaces>;
 
 
 ShaderProgram::Varying
