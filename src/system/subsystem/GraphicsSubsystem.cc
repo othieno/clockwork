@@ -25,6 +25,8 @@
 #include "GraphicsSubsystem.hh"
 #include "ApplicationSettings.hh"
 #include "Scene.hh"
+#include "RandomColoredSurfacesShaderProgram.hh"
+#include "NormalMapsShaderProgram.hh"
 
 using clockwork::GraphicsSubsystem;
 
@@ -249,6 +251,10 @@ void
 	switch (renderingContext_.shaderProgramIdentifier) {
 		case Identifier::Minimal:
 			return &Renderer<Identifier::Minimal>::draw;
+		case Identifier::RandomColoredSurfaces:
+			return &Renderer<Identifier::RandomColoredSurfaces>::draw;
+		case Identifier::NormalMaps:
+			return &Renderer<Identifier::NormalMaps>::draw;
 		default:
 			qFatal("[GraphicsSubsystem::getDrawCommand] Undefined draw command!");
 	}
