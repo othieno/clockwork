@@ -65,7 +65,7 @@ SelectModel::data(const QModelIndex& index, const int role) const {
 		using enum_traits = enum_traits<SelectModel::Role>;
 
 		const auto& item = options_[row];
-		switch (static_cast<Role>(role)) {
+		switch (enum_traits::enumerator(role)) {
 			case Role::Label:
 				return item.label;
 			case Role::Value:
