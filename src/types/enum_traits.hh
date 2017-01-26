@@ -29,6 +29,7 @@
 #include <type_traits>
 #include <string>
 #include <stdexcept>
+#include <iterator>
 
 
 namespace clockwork {
@@ -102,6 +103,23 @@ struct enum_traits {
 	static constexpr std::size_t cardinality() {
 		return enumerators().size();
 	}
+};
+/**
+ * Defines the enum_traits::enumerators member function for the enumeration E.
+ * Furthermore, if the list of enumerators is not empty, it will set
+ * hasEnumeratorList<E>::value to true, which enables safe conversions from
+ * integers to enumerators (see enum_traits::enumerator for more info).
+ */
+#define DECLARE_ENUMERATOR_LIST(E, ...) \
+template<> \
+struct hasEnumeratorList<E> { \
+	/* TODO: Replace the following with std::size(__VA_ARGS__) when you move to C++17. */ \
+	static constexpr bool value = std::initializer_list<E>(__VA_ARGS__).size() > 0; \
+}; \
+\
+template<> constexpr std::initializer_list<E> \
+enum_traits<E>::enumerators() { \
+	return __VA_ARGS__; \
 };
 } // namespace clockwork
 

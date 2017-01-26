@@ -38,16 +38,13 @@ enum class ShadeModel {
 	Phong
 };
 /**
- * Returns a list of all available shade models.
+ * Declares a list of all available shade models.
  */
-template<> constexpr std::initializer_list<ShadeModel>
-enum_traits<ShadeModel>::enumerators() {
-	return {
-		ShadeModel::Flat,
-		ShadeModel::Gouraud,
-		ShadeModel::Phong
-	};
-}
+DECLARE_ENUMERATOR_LIST(ShadeModel, {
+	ShadeModel::Flat,
+	ShadeModel::Gouraud,
+	ShadeModel::Phong
+})
 /**
  * Returns the human-readable name of the specified shade model.
  * @param model the shade model to query.

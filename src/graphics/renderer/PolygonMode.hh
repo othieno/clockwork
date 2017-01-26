@@ -38,16 +38,13 @@ enum class PolygonMode {
 	Fill
 };
 /**
- * Returns a list of all available polygon modes.
+ * Declares a list of all available polygon modes.
  */
-template<> constexpr std::initializer_list<PolygonMode>
-enum_traits<PolygonMode>::enumerators() {
-	return {
-		PolygonMode::Point,
-		PolygonMode::Line,
-		PolygonMode::Fill
-	};
-}
+DECLARE_ENUMERATOR_LIST(PolygonMode, {
+	PolygonMode::Point,
+	PolygonMode::Line,
+	PolygonMode::Fill
+})
 /**
  * Returns the human-readable name of the specified polygon mode.
  * @param mode the polygon mode to query.

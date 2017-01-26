@@ -40,18 +40,15 @@ enum class IlluminationModel {
 	Phong
 };
 /**
- * Returns a list of all available illumination models.
+ * Declares a list of all available illumination models.
  */
-template<> constexpr std::initializer_list<IlluminationModel>
-enum_traits<IlluminationModel>::enumerators() {
-	return {
-		IlluminationModel::BlinnPhong,
-		IlluminationModel::CelShading,
-		IlluminationModel::CookTorrance,
-		IlluminationModel::Lambert,
-		IlluminationModel::Phong,
-	};
-}
+DECLARE_ENUMERATOR_LIST(IlluminationModel, {
+	IlluminationModel::BlinnPhong,
+	IlluminationModel::CelShading,
+	IlluminationModel::CookTorrance,
+	IlluminationModel::Lambert,
+	IlluminationModel::Phong,
+})
 /**
  * Returns the human-readable name of the specified illumination model.
  * @param model the illumination model to query.

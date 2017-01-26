@@ -38,16 +38,13 @@ enum class ShaderProgramIdentifier {
 	NormalMaps,
 };
 /**
- * Returns a list of all available shader program identifiers.
+ * Declares a list of all available shader program identifiers.
  */
-template<> constexpr std::initializer_list<ShaderProgramIdentifier>
-enum_traits<ShaderProgramIdentifier>::enumerators() {
-	return {
-		ShaderProgramIdentifier::Minimal,
-		ShaderProgramIdentifier::RandomColoredSurfaces,
-		ShaderProgramIdentifier::NormalMaps,
-	};
-}
+DECLARE_ENUMERATOR_LIST(ShaderProgramIdentifier, {
+	ShaderProgramIdentifier::Minimal,
+	ShaderProgramIdentifier::RandomColoredSurfaces,
+	ShaderProgramIdentifier::NormalMaps,
+})
 /**
  * Returns the human-readable name of the specified shader program identifier.
  * @param identifier the shader program identifier to query.

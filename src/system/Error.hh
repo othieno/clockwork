@@ -39,17 +39,16 @@ enum class Error {
 	Unknown,
 };
 /**
- * Returns a list of all available system errors.
+ * Declares a list of all available system errors.
  */
-template<> constexpr std::initializer_list<Error>
-enum_traits<Error>::enumerators() {
-	return {
-		Error::None,
-		Error::FileNotAccessible,
-		Error::InvalidQmlContext,
-		Error::Unknown,
-	};
-}
+DECLARE_ENUMERATOR_LIST(Error, {
+	Error::None,
+	Error::FileNotAccessible,
+	Error::InvalidQmlContext,
+	Error::Unknown,
+})
+/*
+*/
 /**
  * Returns the human-readable name of the specified system error.
  * @param error the system error to query.

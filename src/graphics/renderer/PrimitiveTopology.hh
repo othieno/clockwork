@@ -43,20 +43,17 @@ enum class PrimitiveTopology {
 	TriangleFan
 };
 /**
- * Returns a list of all available primitive topologies.
+ * Declares a list of all available primitive topologies.
  */
-template<> constexpr std::initializer_list<PrimitiveTopology>
-enum_traits<PrimitiveTopology>::enumerators() {
-	return {
-		PrimitiveTopology::Point,
-		PrimitiveTopology::Line,
-		PrimitiveTopology::LineStrip,
-		PrimitiveTopology::LineLoop,
-		PrimitiveTopology::Triangle,
-		PrimitiveTopology::TriangleStrip,
-		PrimitiveTopology::TriangleFan
-	};
-}
+DECLARE_ENUMERATOR_LIST(PrimitiveTopology, {
+	PrimitiveTopology::Point,
+	PrimitiveTopology::Line,
+	PrimitiveTopology::LineStrip,
+	PrimitiveTopology::LineLoop,
+	PrimitiveTopology::Triangle,
+	PrimitiveTopology::TriangleStrip,
+	PrimitiveTopology::TriangleFan
+})
 /**
  * Returns the human-readable name of the specified primitive topology.
  * @param topology the primitive topology to query.
