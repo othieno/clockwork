@@ -47,8 +47,6 @@ DECLARE_ENUMERATOR_LIST(Error, {
 	Error::InvalidQmlContext,
 	Error::Unknown,
 })
-/*
-*/
 /**
  * Returns the human-readable name of the specified system error.
  * @param error the system error to query.

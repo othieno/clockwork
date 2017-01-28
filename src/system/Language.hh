@@ -33,6 +33,25 @@ namespace clockwork {
 enum class Language {
 	English,
 };
+/**
+ * Declares a list of all available languages.
+ */
+DECLARE_ENUMERATOR_LIST(Language, {
+	Language::English,
+})
+/**
+ * Returns the human-readable name of the specified language.
+ * @param language the language to query.
+ */
+template<> template<class String> String
+enum_traits<Language>::name(const Language language) {
+	switch (language) {
+		case Language::English:
+			return "English";
+		default:
+			return "???";
+	}
+}
 } // namespace clockwork
 
 #endif // CLOCKWORK_LANGUAGE_HH
