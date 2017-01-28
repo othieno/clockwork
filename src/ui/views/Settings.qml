@@ -47,7 +47,7 @@ Page {
 			anchors.fill: parent
 			ListItem.Standard {
 				text: qsTr("About Clockwork")
-				onClicked: pageStack.push("qrc:/view/AboutClockwork")
+				onClicked: pageStack.push("qrc:/view/AboutClockwork.qml")
 				action: Icon {
 					anchors.centerIn: parent
 					source: "qrc:/icon/action/info_outline"
@@ -68,7 +68,7 @@ Page {
 			ListItem.Divider {}
 			ListItem.Subtitled {
 				text: qsTr("Performance")
-				onClicked: pageStack.push("qrc:/view/PerformanceSettings")
+				onClicked: pageStack.push("qrc:/view/PerformanceSettings.qml")
 				subText: qsTr("[Performance short description]")
 				action: Icon {
 					anchors.centerIn: parent
@@ -79,7 +79,7 @@ Page {
 			ListItem.Divider {}
 			ListItem.Subtitled {
 				text: qsTr("Theme")
-				onClicked: pageStack.push("qrc:/view/ThemeSettings")
+				onClicked: pageStack.push("qrc:/view/ThemeSettings.qml")
 				subText: qsTr("[Theme short description]")
 				action: Icon {
 					anchors.centerIn: parent

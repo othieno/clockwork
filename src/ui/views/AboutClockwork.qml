@@ -58,13 +58,13 @@ Page {
 			ListItem.Subtitled {
 				text: qsTr("Software license")
 				subText: qsTr("MIT License.")
-				onClicked: pageStack.push("qrc:/view/SoftwareLicense")
+				onClicked: pageStack.push("qrc:/view/SoftwareLicense.qml")
 			}
 			ListItem.Divider {}
 			ListItem.Subtitled {
 				text: qsTr("Documentation license")
 				subText: qsTr("Creative Commons License (CC BY-NC-SA 4.0).")
-				onClicked: pageStack.push("qrc:/view/DocumentationLicense")
+				onClicked: pageStack.push("qrc:/view/DocumentationLicense.qml")
 			}
 			ListItem.Divider {}
 			ListItem.Subtitled {
