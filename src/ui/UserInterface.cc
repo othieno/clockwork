@@ -58,7 +58,7 @@ UserInterface::initialize() {
 	registerTypes();
 
 	QPM_INIT(engine_);
-	engine_.load(QUrl("qrc:/view/ApplicationWindow.qml"));
+	engine_.load(QUrl("qrc:/view/main.qml"));
 	return Error::None;
 }
 

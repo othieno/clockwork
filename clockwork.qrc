@@ -25,16 +25,14 @@
 		<file alias="navigation/fullscreen_exit">resources/icons/material-design/navigation/svg/production/ic_fullscreen_exit_48px.svg</file>
 	</qresource>
 	<qresource prefix="/view">
+		<file alias="main.qml">src/ui/views/main.qml</file>
 		<file alias="AboutClockwork.qml">src/ui/views/AboutClockwork.qml</file>
-		<file alias="ApplicationWindow.qml">src/ui/views/ApplicationWindow.qml</file>
 		<file alias="Documentation.qml">src/ui/views/Documentation.qml</file>
 		<file alias="DocumentationLicense.qml">src/ui/views/DocumentationLicense.qml</file>
-		<file alias="Output.qml">src/ui/views/Output.qml</file>
 		<file alias="PerformanceSettings.qml">src/ui/views/PerformanceSettings.qml</file>
-		<file alias="PipelineConfiguration.qml">src/ui/views/PipelineConfiguration.qml</file>
-		<file alias="ScissorConfiguration.qml">src/ui/views/ScissorConfiguration.qml</file>
+		<file alias="Renderer.qml">src/ui/views/Renderer.qml</file>
+		<file alias="RenderingContext.qml">src/ui/views/RenderingContext.qml</file>
 		<file alias="Settings.qml">src/ui/views/Settings.qml</file>
-		<file alias="StencilConfiguration.qml">src/ui/views/StencilConfiguration.qml</file>
 		<file alias="SoftwareLicense.qml">src/ui/views/SoftwareLicense.qml</file>
 		<file alias="ThemeSettings.qml">src/ui/views/ThemeSettings.qml</file>
 	</qresource>
