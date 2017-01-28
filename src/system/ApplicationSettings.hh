@@ -42,21 +42,7 @@ class Application;
  */
 class ApplicationSettings : public QSettings {
 	Q_OBJECT
-	Q_PROPERTY(bool showFramesPerSecond READ isFpsCounterVisible WRITE showFpsCounter NOTIFY fpsCounterVisibilityChanged)
-	Q_PROPERTY(bool showBorderlessWindow READ isWindowBorderless WRITE showBorderlessWindow NOTIFY windowBorderVisibilityChanged)
-	Q_PROPERTY(int shaderProgram READ getShaderProgramOrdinal WRITE setShaderProgram NOTIFY shaderProgramChanged_)
-	Q_PROPERTY(int primitiveTopology READ getPrimitiveTopologyOrdinal WRITE setPrimitiveTopology NOTIFY primitiveTopologyChanged_)
-	Q_PROPERTY(bool enableClipping READ isClippingEnabled WRITE enableClipping NOTIFY clippingToggled)
-	Q_PROPERTY(bool enableBackfaceCulling READ isBackfaceCullingEnabled WRITE enableBackfaceCulling NOTIFY backfaceCullingToggled)
-	Q_PROPERTY(int polygonMode READ getPolygonModeOrdinal WRITE setPolygonMode NOTIFY polygonModeChanged_)
-	Q_PROPERTY(int shadeModel READ getShadeModelOrdinal WRITE setShadeModel NOTIFY shadeModelChanged_)
-	Q_PROPERTY(bool enableLineAntiAliasing READ isLineAntiAliasingEnabled WRITE enableLineAntiAliasing NOTIFY lineAntiAliasingToggled)
-	Q_PROPERTY(bool enableScissorTest READ isScissorTestEnabled WRITE enableScissorTest NOTIFY scissorTestChanged)
-	Q_PROPERTY(bool enableStencilTest READ isStencilTestEnabled WRITE enableStencilTest NOTIFY stencilTestChanged)
-	Q_PROPERTY(bool enableDepthTest READ isDepthTestEnabled WRITE enableDepthTest NOTIFY depthTestChanged)
 	Q_PROPERTY(QString fileLocation READ fileName CONSTANT)
-	Q_PROPERTY(QStringList availableLanguages READ getAvailableLanguages CONSTANT)
-	Q_PROPERTY(QStringList availableFramebufferResolutions READ getAvailableFramebufferResolutions CONSTANT)
 	friend class Application;
 public:
 	/**
@@ -78,37 +64,23 @@ public:
 	 */
 	void showBorderlessWindow(const bool visible);
 	/**
-	 * Returns the shader program's integer value.
+	 * Returns the shader program identifier.
 	 */
-	int getShaderProgramOrdinal() const;
-	static_assert(std::is_same<int, enum_traits<ShaderProgramIdentifier>::Ordinal>::value);
+	ShaderProgramIdentifier getShaderProgramIdentifier() const;
 	/**
-	 * Returns the shader program.
+	 * Sets the shader program identifier.
+	 * @param identifier the shader program identifier to set.
 	 */
-	inline ShaderProgramIdentifier getShaderProgram() const {
-		return enum_traits<ShaderProgramIdentifier>::enumerator(getShaderProgramOrdinal());
-	}
-	/**
-	 * Sets the shader program.
-	 * @param identifier the integer value of the shader program identifier to set.
-	 */
-	void setShaderProgram(const int identifier);
-	/**
-	 * Returns the primitive topology's integer value.
-	 */
-	int getPrimitiveTopologyOrdinal() const;
-	static_assert(std::is_same<int, enum_traits<PrimitiveTopology>::Ordinal>::value);
+	void setShaderProgramIdentifier(const ShaderProgramIdentifier identifier);
 	/**
 	 * Returns the primitive topology.
 	 */
-	inline PrimitiveTopology getPrimitiveTopology() const {
-		return enum_traits<PrimitiveTopology>::enumerator(getPrimitiveTopologyOrdinal());
-	}
+	PrimitiveTopology getPrimitiveTopology() const;
 	/**
 	 * Sets the primitive topology.
-	 * @param topology the integer value of the primitive topology to set.
+	 * @param topology the primitive topology to set.
 	 */
-	void setPrimitiveTopology(const int topology);
+	void setPrimitiveTopology(const PrimitiveTopology topology);
 	/**
 	 * Returns true if clipping is enabled, false otherwise.
 	 */
@@ -128,37 +100,23 @@ public:
 	 */
 	void enableBackfaceCulling(const bool enable);
 	/**
-	 * Returns the polygon mode's integer value.
-	 */
-	int getPolygonModeOrdinal() const;
-	static_assert(std::is_same<int, enum_traits<PolygonMode>::Ordinal>::value);
-	/**
 	 * Returns the polygon mode.
 	 */
-	inline PolygonMode getPolygonMode() const {
-		return enum_traits<PolygonMode>::enumerator(getPolygonModeOrdinal());
-	}
+	PolygonMode getPolygonMode() const;
 	/**
 	 * Sets the polygon mode.
-	 * @param mode the integer value of the polygon mode to set.
+	 * @param mode the polygon mode to set.
 	 */
-	void setPolygonMode(const int mode);
-	/**
-	 * Returns the shade model's integer value.
-	 */
-	int getShadeModelOrdinal() const;
-	static_assert(std::is_same<int, enum_traits<ShadeModel>::Ordinal>::value);
+	void setPolygonMode(const PolygonMode mode);
 	/**
 	 * Returns the shade model.
 	 */
-	inline ShadeModel getShadeModel() const {
-		return enum_traits<ShadeModel>::enumerator(getShadeModelOrdinal());
-	}
+	ShadeModel getShadeModel() const;
 	/**
 	 * Sets the shade model.
-	 * @param model the integer value of the shade model to set.
+	 * @param model the shade model to set.
 	 */
-	void setShadeModel(const int model);
+	void setShadeModel(const ShadeModel model);
 	/**
 	 * Returns true if line anti-aliasing is enabled, false otherwise.
 	 */
@@ -195,14 +153,6 @@ public:
 	 * @param enable enables the depth test if set to true, disables it otherwise.
 	 */
 	void enableDepthTest(const bool enable);
-	/**
-	 * Returns the list of available languages.
-	 */
-	static QStringList getAvailableLanguages();
-	/**
-	 * Returns the list of available framebuffer resolutions.
-	 */
-	static QStringList getAvailableFramebufferResolutions();
 private:
 	/**
 	 * An enumeration of available configuration keys.
@@ -210,7 +160,7 @@ private:
 	enum class Key {
 		ShowBorderlessWindow,
 		ShowFramesPerSecond,
-		ShaderProgram,
+		ShaderProgramIdentifier,
 		PrimitiveTopology,
 		EnableClipping,
 		EnableBackfaceCulling,
@@ -245,59 +195,6 @@ private:
 	 * @param key the configuration key to convert.
 	 */
 	static QString keyToString(const Key key);
-signals:
-	/**
-	 * A signal that is raised when the FPS counter's visibility is changed.
-	 */
-	void fpsCounterVisibilityChanged(const bool visible);
-	/**
-	 * A signal that is raised when the visibility of the window's borders changes.
-	 */
-	void windowBorderVisibilityChanged(const bool visible);
-	/**
-	 * Signals that are raised when the shader program is changed.
-	 */
-	void shaderProgramChanged_(const int identifier);
-	void shaderProgramChanged(const ShaderProgramIdentifier identifier);
-	/**
-	 * Signals that are raised when the primitive topology is changed.
-	 */
-	void primitiveTopologyChanged_(const int topology);
-	void primitiveTopologyChanged(const PrimitiveTopology topology);
-	/**
-	 * A signal that is raised when clipping is toggled.
-	 */
-	void clippingToggled(const bool enabled);
-	/**
-	 * A signal that is raised when backface culling is toggled.
-	 */
-	void backfaceCullingToggled(const bool enabled);
-	/**
-	 * Signals that are raised when the polygon mode is changed.
-	 */
-	void polygonModeChanged_(const int mode);
-	void polygonModeChanged(const PolygonMode mode);
-	/**
-	 * Signals that are raised when the shade model is changed.
-	 */
-	void shadeModelChanged_(const int model);
-	void shadeModelChanged(const ShadeModel model);
-	/**
-	 * A signal that is raised when the line anti-aliasing is toggled.
-	 */
-	void lineAntiAliasingToggled(const bool enabled);
-	/**
-	 * A signal that is raised when the scissor test is toggled.
-	 */
-	void scissorTestChanged(const bool enabled);
-	/**
-	 * A signal that is raised when the stencil test is toggled.
-	 */
-	void stencilTestChanged(const bool enabled);
-	/**
-	 * A signal that is raised when the depth test is toggled.
-	 */
-	void depthTestChanged(const bool enabled);
 };
 } // namespace clockwork
 

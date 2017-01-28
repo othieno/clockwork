@@ -43,7 +43,8 @@ Flickable {
 			id: selectShaderProgram
 			title: qsTr("Shader program")
 			model: shaderPrograms
-			initialValue: settings.shaderProgram
+			initialValue: graphics.shaderProgram
+			onChanged: graphics.shaderProgram = value
 		}
 
 
@@ -54,7 +55,8 @@ Flickable {
 			id: selectPrimitiveTopology
 			title: qsTr("Primitive topology")
 			model: primitiveTopologies
-			initialValue: settings.primitiveTopology
+			initialValue: graphics.primitiveTopology
+			onChanged: graphics.primitiveTopology = value
 		}
 
 
@@ -71,10 +73,13 @@ Flickable {
 			subText: qsTr("Clips primitives to the view volume.")
 			secondaryItem: Material.Switch {
 				id: toggleClipping
-				checked: settings.enableClipping
+				checked: graphics.enableClipping
 				anchors.verticalCenter: parent.verticalCenter
 			}
-			onClicked: toggleClipping.checked = !toggleClipping.checked
+			onClicked: {
+				toggleClipping.checked = !toggleClipping.checked
+				graphics.enableClipping = toggleClipping.checked
+			}
 		}
 
 
@@ -86,35 +91,44 @@ Flickable {
 			subText: qsTr("Discards surfaces that are not facing the camera.")
 			secondaryItem: Material.Switch {
 				id: toggleBackfaceCulling
-				checked: settings.enableBackfaceCulling
+				checked: graphics.enableBackfaceCulling
 				anchors.verticalCenter: parent.verticalCenter
 			}
-			onClicked: toggleBackfaceCulling.checked = !toggleBackfaceCulling.checked
+			onClicked: {
+				toggleBackfaceCulling.checked = !toggleBackfaceCulling.checked
+				graphics.enableBackfaceCulling = toggleBackfaceCulling.checked
+			}
 		}
+/*
 		ListItem.Divider {}
 		ListItem.Subtitled {
-			enabled: false
 			text: qsTr("Enable view frustum culling")
 			subText: qsTr("Discards primitives that are outside the camera's view volume.")
 			secondaryItem: Material.Switch {
 				id: toggleViewFrustumCulling
-				checked: true
+				checked: graphics.enableViewFrustumCulling
 				anchors.verticalCenter: parent.verticalCenter
 			}
-			onClicked: toggleViewFrustumCulling.checked = !toggleViewFrustumCulling.checked
+			onClicked: {
+				toggleViewFrustumCulling.checked = !toggleViewFrustumCulling.checked
+				graphics.enableViewFrustumCulling = toggleViewFrustumCulling.checked
+			}
 		}
 		ListItem.Divider {}
 		ListItem.Subtitled {
-			enabled: false
 			text: qsTr("Enable contribution culling")
 			subText: qsTr("Discards objects that are too far away or too small to contribute significantly to the final render.")
 			secondaryItem: Material.Switch {
 				id: toggleContributionCulling
-				checked: true
+				checked: graphics.enableContributionCulling
 				anchors.verticalCenter: parent.verticalCenter
 			}
-			onClicked: toggleContributionCulling.checked = !toggleContributionCulling.checked
+			onClicked: {
+				toggleContributionCulling.checked = !toggleContributionCulling.checked
+				graphics.enableContributionCulling = toggleContributionCulling.checked
+			}
 		}
+*/
 
 
 		ListItem.Subheader {
@@ -124,14 +138,16 @@ Flickable {
 			id: selectPolygonMode
 			title: qsTr("Polygon mode")
 			model: polygonModes
-			initialValue: settings.polygonMode
+			initialValue: graphics.polygonMode
+			onChanged: graphics.polygonMode = value
 		}
 		ListItem.Divider {}
 		Atomic.Select {
 			id: selectShadeModel
 			title: qsTr("Shade model")
 			model: shadeModels
-			initialValue: settings.shadeModel
+			initialValue: graphics.shadeModel
+			onChanged: graphics.shadeModel = value
 		}
 		ListItem.Divider {}
 		ListItem.Subtitled {
@@ -139,10 +155,13 @@ Flickable {
 			subText: qsTr("Draws smoother lines.")
 			secondaryItem: Material.Switch {
 				id: toggleLineAntiAliasing
-				checked: settings.enableLineAntiAliasing
+				checked: graphics.enableLineAntiAliasing
 				anchors.verticalCenter: parent.verticalCenter
 			}
-			onClicked: toggleLineAntiAliasing.checked = !toggleLineAntiAliasing.checked
+			onClicked: {
+				toggleLineAntiAliasing.checked = !toggleLineAntiAliasing.checked
+				graphics.enableLineAntiAliasing = toggleLineAntiAliasing.checked
+			}
 		}
 
 
@@ -154,10 +173,13 @@ Flickable {
 			subText: qsTr("Discards fragments that fall outside of the scissor's bounding box.")
 			secondaryItem: Material.Switch {
 				id: toggleScissorTest
-				checked: settings.enableScissorTest
+				checked: graphics.enableScissorTest
 				anchors.verticalCenter: parent.verticalCenter
 			}
-			onClicked: toggleScissorTest.checked = !toggleScissorTest.checked
+			onClicked: {
+				toggleScissorTest.checked = !toggleScissorTest.checked
+				graphics.enableScissorTest = toggleScissorTest.checked
+			}
 		}
 		ListItem.Divider {}
 		ListItem.Subtitled {
@@ -165,10 +187,13 @@ Flickable {
 			subText: qsTr("Discards fragments that fall outside of the stencil's cut-out.")
 			secondaryItem: Material.Switch {
 				id: toggleStencilTest
-				checked: settings.enableStencilTest
+				checked: graphics.enableStencilTest
 				anchors.verticalCenter: parent.verticalCenter
 			}
-			onClicked: toggleStencilTest.checked = !toggleStencilTest.checked
+			onClicked: {
+				toggleStencilTest.checked = !toggleStencilTest.checked
+				graphics.enableStencilTest = toggleStencilTest.checked
+			}
 		}
 		ListItem.Divider {}
 		ListItem.Subtitled {
@@ -176,10 +201,13 @@ Flickable {
 			subText: qsTr("Discards fragments that are not visible based on how close they are to the viewer.")
 			secondaryItem: Material.Switch {
 				id: toggleDepthTest
-				checked: settings.enableDepthTest
+				checked: graphics.enableDepthTest
 				anchors.verticalCenter: parent.verticalCenter
 			}
-			onClicked: toggleDepthTest.checked = !toggleDepthTest.checked
+			onClicked: {
+				toggleDepthTest.checked = !toggleDepthTest.checked
+				graphics.enableDepthTest = toggleDepthTest.checked
+			}
 		}
 
 

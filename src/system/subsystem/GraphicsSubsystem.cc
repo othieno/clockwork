@@ -33,7 +33,7 @@ using clockwork::GraphicsSubsystem;
 
 clockwork::Error
 GraphicsSubsystem::initialize(const ApplicationSettings& settings) {
-	renderingContext_.shaderProgramIdentifier = settings.getShaderProgram();
+	renderingContext_.shaderProgramIdentifier = settings.getShaderProgramIdentifier();
 	renderingContext_.primitiveTopology = settings.getPrimitiveTopology();
 	renderingContext_.enableClipping = settings.isClippingEnabled();
 	renderingContext_.enableBackfaceCulling = settings.isBackfaceCullingEnabled();
@@ -45,16 +45,16 @@ GraphicsSubsystem::initialize(const ApplicationSettings& settings) {
 	renderingContext_.enableDepthTest = settings.isDepthTestEnabled();
 	renderingContext_.framebuffer.setResolution(Framebuffer::Resolution::XGA);
 
-	connect(&settings, &ApplicationSettings::shaderProgramChanged, this, &GraphicsSubsystem::setShaderProgram);
-	connect(&settings, &ApplicationSettings::primitiveTopologyChanged, this, &GraphicsSubsystem::setPrimitiveTopology);
-	connect(&settings, &ApplicationSettings::clippingToggled, this, &GraphicsSubsystem::enableClipping);
-	connect(&settings, &ApplicationSettings::backfaceCullingToggled, this, &GraphicsSubsystem::enableBackfaceCulling);
-	connect(&settings, &ApplicationSettings::polygonModeChanged, this, &GraphicsSubsystem::setPolygonMode);
-	connect(&settings, &ApplicationSettings::shadeModelChanged, this, &GraphicsSubsystem::setShadeModel);
-	connect(&settings, &ApplicationSettings::lineAntiAliasingToggled, this, &GraphicsSubsystem::enableLineAntiAliasing);
-	connect(&settings, &ApplicationSettings::scissorTestChanged, this, &GraphicsSubsystem::enableScissorTest);
-	connect(&settings, &ApplicationSettings::stencilTestChanged, this, &GraphicsSubsystem::enableStencilTest);
-	connect(&settings, &ApplicationSettings::depthTestChanged, this, &GraphicsSubsystem::enableDepthTest);
+	connect(this, &GraphicsSubsystem::shaderProgramChanged,     this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::primitiveTopologyChanged, this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::clippingToggled,          this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::backfaceCullingToggled,   this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::polygonModeChanged,       this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::shadeModelChanged,        this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::lineAntiAliasingToggled,  this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::scissorTestToggled,       this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::stencilTestToggled,       this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::depthTestToggled,         this, &GraphicsSubsystem::renderingContextChanged);
 
 	return Error::None;
 }
@@ -125,6 +125,18 @@ GraphicsSubsystem::getFramebuffer() {
 }
 
 
+bool
+GraphicsSubsystem::isFpsCounterEnabled() const {
+	return false;
+}
+
+
+void
+GraphicsSubsystem::enableFpsCounter(const bool enable) {
+	Q_UNUSED(enable);
+}
+
+
 clockwork::ShaderProgramIdentifier
 GraphicsSubsystem::getShaderProgramIdentifier() const {
 	return renderingContext_.shaderProgramIdentifier;
@@ -133,7 +145,11 @@ GraphicsSubsystem::getShaderProgramIdentifier() const {
 
 void
 GraphicsSubsystem::setShaderProgram(const ShaderProgramIdentifier identifier) {
-	renderingContext_.shaderProgramIdentifier = identifier;
+	if (renderingContext_.shaderProgramIdentifier != identifier) {
+		renderingContext_.shaderProgramIdentifier = identifier;
+		emit shaderProgramChanged(identifier);
+		emit shaderProgramChanged_(enum_traits<ShaderProgramIdentifier>::ordinal(identifier));
+	}
 }
 
 
@@ -144,8 +160,12 @@ GraphicsSubsystem::getPrimitiveTopology() const {
 
 
 void
-GraphicsSubsystem::setPrimitiveTopology(const clockwork::PrimitiveTopology topology) {
-	renderingContext_.primitiveTopology = topology;
+GraphicsSubsystem::setPrimitiveTopology(const PrimitiveTopology topology) {
+	if (renderingContext_.primitiveTopology != topology) {
+		renderingContext_.primitiveTopology = topology;
+		emit primitiveTopologyChanged(topology);
+		emit primitiveTopologyChanged_(enum_traits<PrimitiveTopology>::ordinal(topology));
+	}
 }
 
 
@@ -157,7 +177,10 @@ GraphicsSubsystem::isClippingEnabled() const {
 
 void
 GraphicsSubsystem::enableClipping(const bool enable) {
-	renderingContext_.enableClipping = enable;
+	if (renderingContext_.enableClipping != enable) {
+		renderingContext_.enableClipping = enable;
+		emit clippingToggled(enable);
+	}
 }
 
 
@@ -169,7 +192,10 @@ GraphicsSubsystem::isBackfaceCullingEnabled() const {
 
 void
 GraphicsSubsystem::enableBackfaceCulling(const bool enable) {
-	renderingContext_.enableBackfaceCulling = enable;
+	if (renderingContext_.enableBackfaceCulling != enable) {
+		renderingContext_.enableBackfaceCulling = enable;
+		emit backfaceCullingToggled(enable);
+	}
 }
 
 
@@ -181,7 +207,11 @@ GraphicsSubsystem::getPolygonMode() const {
 
 void
 GraphicsSubsystem::setPolygonMode(const PolygonMode mode) {
-	renderingContext_.polygonMode = mode;
+	if (renderingContext_.polygonMode != mode) {
+		renderingContext_.polygonMode = mode;
+		emit polygonModeChanged(mode);
+		emit polygonModeChanged_(enum_traits<PolygonMode>::ordinal(mode));
+	}
 }
 
 
@@ -193,7 +223,11 @@ GraphicsSubsystem::getShadeModel() const {
 
 void
 GraphicsSubsystem::setShadeModel(const ShadeModel model) {
-	renderingContext_.shadeModel = model;
+	if (renderingContext_.shadeModel != model) {
+		renderingContext_.shadeModel = model;
+		emit shadeModelChanged(model);
+		emit shadeModelChanged_(enum_traits<ShadeModel>::ordinal(model));
+	}
 }
 
 
@@ -205,7 +239,10 @@ GraphicsSubsystem::isLineAntiAliasingEnabled() const {
 
 void
 GraphicsSubsystem::enableLineAntiAliasing(const bool enable) {
-	renderingContext_.enableLineAntiAliasing = enable;
+	if (renderingContext_.enableLineAntiAliasing != enable) {
+		renderingContext_.enableLineAntiAliasing = enable;
+		emit lineAntiAliasingToggled(enable);
+	}
 }
 
 
@@ -217,7 +254,10 @@ GraphicsSubsystem::isScissorTestEnabled() const {
 
 void
 GraphicsSubsystem::enableScissorTest(const bool enable) {
-	renderingContext_.enableScissorTest = enable;
+	if (renderingContext_.enableScissorTest != enable) {
+		renderingContext_.enableScissorTest = enable;
+		emit scissorTestToggled(enable);
+	}
 }
 
 
@@ -229,7 +269,10 @@ GraphicsSubsystem::isStencilTestEnabled() const {
 
 void
 GraphicsSubsystem::enableStencilTest(const bool enable) {
-	renderingContext_.enableStencilTest = enable;
+	if (renderingContext_.enableStencilTest != enable) {
+		renderingContext_.enableStencilTest = enable;
+		emit stencilTestToggled(enable);
+	}
 }
 
 
@@ -241,7 +284,10 @@ GraphicsSubsystem::isDepthTestEnabled() const {
 
 void
 GraphicsSubsystem::enableDepthTest(const bool enable) {
-	renderingContext_.enableDepthTest = enable;
+	if (renderingContext_.enableDepthTest != enable) {
+		renderingContext_.enableDepthTest = enable;
+		emit depthTestToggled(enable);
+	}
 }
 
 

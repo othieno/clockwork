@@ -47,7 +47,6 @@ void
 ApplicationSettings::showFpsCounter(const bool visible) {
 	if (isFpsCounterVisible() != visible) {
 		setValue(Key::ShowFramesPerSecond, visible);
-		emit fpsCounterVisibilityChanged(visible);
 	}
 }
 
@@ -62,45 +61,46 @@ void
 ApplicationSettings::showBorderlessWindow(const bool visible) {
 	if (isWindowBorderless() != visible) {
 		setValue(Key::ShowBorderlessWindow, visible);
-		emit windowBorderVisibilityChanged(visible);
 	}
 }
 
 
-int
-ApplicationSettings::getShaderProgramOrdinal() const {
-	return value(
-		Key::ShaderProgram,
-		enum_traits<ShaderProgramIdentifier>::ordinal(ShaderProgramIdentifier::Minimal)
-	).toInt();
+clockwork::ShaderProgramIdentifier
+ApplicationSettings::getShaderProgramIdentifier() const {
+	using enum_traits = enum_traits<ShaderProgramIdentifier>;
+
+	static_assert(std::is_same<int, enum_traits::Ordinal>::value);
+	constexpr int DEFAULT_IDENTIFIER = enum_traits::ordinal(ShaderProgramIdentifier::Minimal);
+	const int identifier = value(Key::ShaderProgramIdentifier, DEFAULT_IDENTIFIER).toInt();
+
+	return enum_traits::enumerator(identifier);
 }
 
 
 void
-ApplicationSettings::setShaderProgram(const int identifier) {
-	if (getShaderProgramOrdinal() != identifier) {
-		setValue(Key::ShaderProgram, identifier);
-		emit shaderProgramChanged_(identifier);
-		emit shaderProgramChanged(enum_traits<ShaderProgramIdentifier>::enumerator(identifier));
+ApplicationSettings::setShaderProgramIdentifier(const ShaderProgramIdentifier identifier) {
+	if (getShaderProgramIdentifier() != identifier) {
+		setValue(Key::ShaderProgramIdentifier, enum_traits<ShaderProgramIdentifier>::ordinal(identifier));
 	}
 }
 
 
-int
-ApplicationSettings::getPrimitiveTopologyOrdinal() const {
-	return value(
-		Key::PrimitiveTopology,
-		enum_traits<PrimitiveTopology>::ordinal(PrimitiveTopology::Triangle)
-	).toInt();
+clockwork::PrimitiveTopology
+ApplicationSettings::getPrimitiveTopology() const {
+	using enum_traits = enum_traits<PrimitiveTopology>;
+
+	static_assert(std::is_same<int, enum_traits::Ordinal>::value);
+	constexpr int DEFAULT_TOPOLOGY = enum_traits::ordinal(PrimitiveTopology::Triangle);
+	const int topology = value(Key::PrimitiveTopology, DEFAULT_TOPOLOGY).toInt();
+
+	return enum_traits::enumerator(topology);
 }
 
 
 void
-ApplicationSettings::setPrimitiveTopology(const int topology) {
-	if (getPrimitiveTopologyOrdinal() != topology) {
-		setValue(Key::PrimitiveTopology, topology);
-		emit primitiveTopologyChanged_(topology);
-		emit primitiveTopologyChanged(enum_traits<PrimitiveTopology>::enumerator(topology));
+ApplicationSettings::setPrimitiveTopology(const PrimitiveTopology topology) {
+	if (getPrimitiveTopology() != topology) {
+		setValue(Key::PrimitiveTopology, enum_traits<PrimitiveTopology>::ordinal(topology));
 	}
 }
 
@@ -115,7 +115,6 @@ void
 ApplicationSettings::enableClipping(const bool enable) {
 	if (isClippingEnabled() != enable) {
 		setValue(Key::EnableClipping, enable);
-		emit clippingToggled(enable);
 	}
 }
 
@@ -130,45 +129,46 @@ void
 ApplicationSettings::enableBackfaceCulling(const bool enable) {
 	if (isBackfaceCullingEnabled() != enable) {
 		setValue(Key::EnableBackfaceCulling, enable);
-		emit backfaceCullingToggled(enable);
 	}
 }
 
 
-int
-ApplicationSettings::getPolygonModeOrdinal() const {
-	return value(
-		Key::PolygonMode,
-		enum_traits<PolygonMode>::ordinal(PolygonMode::Fill)
-	).toInt();
+clockwork::PolygonMode
+ApplicationSettings::getPolygonMode() const {
+	using enum_traits = enum_traits<PolygonMode>;
+
+	static_assert(std::is_same<int, enum_traits::Ordinal>::value);
+	constexpr int DEFAULT_MODE = enum_traits::ordinal(PolygonMode::Fill);
+	const int mode = value(Key::PolygonMode, DEFAULT_MODE).toInt();
+
+	return enum_traits::enumerator(mode);
 }
 
 
 void
-ApplicationSettings::setPolygonMode(const int mode) {
-	if (getPolygonModeOrdinal() != mode) {
-		setValue(Key::PolygonMode, mode);
-		emit polygonModeChanged_(mode);
-		emit polygonModeChanged(enum_traits<PolygonMode>::enumerator(mode));
+ApplicationSettings::setPolygonMode(const PolygonMode mode) {
+	if (getPolygonMode() != mode) {
+		setValue(Key::PolygonMode, enum_traits<PolygonMode>::ordinal(mode));
 	}
 }
 
 
-int
-ApplicationSettings::getShadeModelOrdinal() const {
-	return value(
-		Key::ShadeModel,
-		enum_traits<ShadeModel>::ordinal(ShadeModel::Flat)
-	).toInt();
+clockwork::ShadeModel
+ApplicationSettings::getShadeModel() const {
+	using enum_traits = enum_traits<ShadeModel>;
+
+	static_assert(std::is_same<int, enum_traits::Ordinal>::value);
+	constexpr int DEFAULT_MODEL = enum_traits::ordinal(ShadeModel::Flat);
+	const int model = value(Key::ShadeModel, DEFAULT_MODEL).toInt();
+
+	return enum_traits::enumerator(model);
 }
 
 
 void
-ApplicationSettings::setShadeModel(const int model) {
-	if (getShadeModelOrdinal() != model) {
-		setValue(Key::ShadeModel, model);
-		emit shadeModelChanged_(model);
-		emit shadeModelChanged(enum_traits<ShadeModel>::enumerator(model));
+ApplicationSettings::setShadeModel(const ShadeModel model) {
+	if (getShadeModel() != model) {
+		setValue(Key::ShadeModel, enum_traits<ShadeModel>::ordinal(model));
 	}
 }
 
@@ -183,7 +183,6 @@ void
 ApplicationSettings::enableLineAntiAliasing(const bool enable) {
 	if (isLineAntiAliasingEnabled() != enable) {
 		setValue(Key::EnableLineAntiAliasing, enable);
-		emit lineAntiAliasingToggled(enable);
 	}
 }
 
@@ -198,7 +197,6 @@ void
 ApplicationSettings::enableScissorTest(const bool enable) {
 	if (isScissorTestEnabled() != enable) {
 		setValue(Key::EnableScissorTest, enable);
-		emit scissorTestChanged(enable);
 	}
 }
 
@@ -213,7 +211,6 @@ void
 ApplicationSettings::enableStencilTest(const bool enable) {
 	if (isStencilTestEnabled() != enable) {
 		setValue(Key::EnableStencilTest, enable);
-		emit stencilTestChanged(enable);
 	}
 }
 
@@ -228,28 +225,7 @@ void
 ApplicationSettings::enableDepthTest(const bool enable) {
 	if (isDepthTestEnabled() != enable) {
 		setValue(Key::EnableDepthTest, enable);
-		emit depthTestChanged(enable);
 	}
-}
-
-
-QStringList
-ApplicationSettings::getAvailableLanguages() {
-	QStringList languages;
-	languages.append("English");
-
-
-	return languages;
-}
-
-
-QStringList
-ApplicationSettings::getAvailableFramebufferResolutions() {
-	QStringList resolutions;
-	for (const auto resolution : Framebuffer::getAvailableResolutions()) {
-		resolutions.append(toString(resolution));
-	}
-	return resolutions;
 }
 
 
@@ -278,7 +254,7 @@ ApplicationSettings::keyToString(const Key key) {
 			return "theme/ShowBorderlessWindow";
 		case Key::ShowFramesPerSecond:
 			return "debug/ShowFramesPerSecond";
-		case Key::ShaderProgram:
+		case Key::ShaderProgramIdentifier:
 			return "renderingcontext/ShaderProgram";
 		case Key::PrimitiveTopology:
 			return "renderingcontext/PrimitiveTopology";
