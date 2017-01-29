@@ -118,7 +118,7 @@ FramebufferView::Texture::resize(const QSize& size) {
 	gpuRenderTarget_.setFormat(QOpenGLTexture::RGBA8_UNorm);
 	gpuRenderTarget_.setMipLevels(0);
 	gpuRenderTarget_.setWrapMode(QOpenGLTexture::ClampToEdge);
-	gpuRenderTarget_.setMinMagFilters(QOpenGLTexture::Nearest, QOpenGLTexture::Nearest);
+	gpuRenderTarget_.setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Linear);
 	gpuRenderTarget_.allocateStorage();
 }
 
