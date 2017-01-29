@@ -49,6 +49,7 @@ UserInterface::initialize() {
 		qmlContext->setContextProperty("application", &application_);
 		qmlContext->setContextProperty("settings", &application_.getSettings());
 		qmlContext->setContextProperty("scene", &application_.getScene());
+		qmlContext->setContextProperty("graphics", &Service::Graphics);
 
 		registerEnumerations(*qmlContext);
 	} else {
