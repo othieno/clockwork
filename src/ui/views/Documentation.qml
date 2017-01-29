@@ -1,7 +1,7 @@
 /*
  * This file is part of Clockwork.
  *
- * Copyright (c) 2013-2016 Jeremy Othieno.
+ * Copyright (c) 2013-2017 Jeremy Othieno.
  *
  * The MIT License (MIT)
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,12 +23,10 @@
  * THE SOFTWARE.
  */
 import QtQuick 2.4
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
-import QtQuick.Layouts 1.0
 import Material 0.2
 
 
-Rectangle {
-	id: documentationView
+Page {
+	id: documentationPage
+	title: qsTr("Documentation")
 }

@@ -60,35 +60,44 @@ ApplicationWindow {
 		actionBar {
 			title: initialPage.title
 			elevation: foreground.state == "maximized" ? 0 : 1
+			actions: [
+				Action {
+					name: qsTr("Documentation")
+					iconSource: "qrc:/icon/action/book"
+					text: qsTr("Read the documentation")
+					onTriggered: pageStack.push("qrc:/view/Documentation.qml")
+					hasDividerAfter: true
+				},
+				Action {
+					name: qsTr("Scissor rectangle")
+					iconSource: "qrc:/icon/content/content_cut"
+					text: qsTr("Configure the scissor rectangle")
+					visible: graphics.enableScissorTest
+					enabled: foreground.state == "maximized"
+				},
+				Action {
+					name: qsTr("Stencil buffer")
+					iconSource: "qrc:/icon/image/compare"
+					text: qsTr("Configure the stencil buffer")
+					visible: graphics.enableStencilTest
+					enabled: foreground.state == "maximized"
+				},
+				Action {
+					name: qsTr("Rendering context")
+					iconSource: "qrc:/icon/av/tune"
+					text: qsTr("Configure the rendering context")
+					onTriggered: foreground.state = foreground.state == "maximized" ? "minimized" : "maximized"
+					hasDividerAfter: true
+				},
+				Action {
+					name: qsTr("Settings")
+					iconSource: "qrc:/icon/action/settings"
+					text: qsTr("Configure the application")
+					onTriggered: pageStack.push("qrc:/view/Settings.qml")
+					hoverAnimation: true
+				}
+			]
 		}
-		actions: [
-			Action {
-				iconSource: "qrc:/icon/action/book"
-				onTriggered: pageStack.push("qrc:/view/Documentation.qml")
-				visible: false
-			},
-			Action {
-				iconSource: "qrc:/icon/image/compare"
-				//visible: settings.enableStencilTest
-				enabled: foreground.state == "maximized"
-				visible: false
-			},
-			Action {
-				iconSource: "qrc:/icon/content/content_cut"
-				//visible: settings.enableScissorTest
-				enabled: foreground.state == "maximized"
-				visible: false
-			},
-			Action {
-				iconSource: "qrc:/icon/av/tune"
-				onTriggered: foreground.state = foreground.state == "maximized" ? "minimized" : "maximized"
-			},
-			Action {
-				iconSource: "qrc:/icon/action/settings"
-				onTriggered: pageStack.push("qrc:/view/Settings.qml")
-				hoverAnimation: true
-			}
-		]
 		View {
 			anchors {
 				fill: parent
