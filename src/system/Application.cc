@@ -36,6 +36,7 @@ userInterface_(*this) {
 	parseCommandLineArguments(argc, argv);
 
 	connect(&scene_, &Scene::updated, this, &Application::renderScene);
+	connect(&Service::Graphics, &GraphicsSubsystem::renderingContextChanged, this, &Application::renderScene);
 }
 
 
