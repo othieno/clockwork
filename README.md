@@ -4,8 +4,9 @@ Clockwork
 Clockwork is a software renderer written to understand the nitty-gritties of the graphics pipeline.
 
 <p align="center"><img src="/documentation/showcase/figure.1.png?raw=true" alt="Blender's Suzanne rendered in Clockwork."></p>
-<p align="center"><img src="/documentation/showcase/figure.2.png?raw=true" alt="Customizing Clockwork's rendering pipeline."></p>
-<p align="center"><img src="/documentation/showcase/figure.3.png?raw=true" alt="Adjusting the renderer's scissor box."></p>
+<p align="center"><img src="/documentation/showcase/figure.2.png?raw=true" alt="Configuring Clockwork's rendering context."></p>
+<p align="center"><img src="/documentation/showcase/figure.3.png?raw=true" alt="Blender's Suzanne rendered (wireframe) in Clockwork."></p>
+<p align="center"><img src="/documentation/showcase/figure.4.png?raw=true" alt="Adjusting the renderer's scissor box."></p>
 
 
 Requirements
