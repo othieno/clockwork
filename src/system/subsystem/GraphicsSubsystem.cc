@@ -43,6 +43,7 @@ GraphicsSubsystem::initialize(const ApplicationSettings& settings) {
 	renderingContext_.enableScissorTest = settings.isScissorTestEnabled();
 	renderingContext_.enableStencilTest = settings.isStencilTestEnabled();
 	renderingContext_.enableDepthTest = settings.isDepthTestEnabled();
+	renderingContext_.scissor = QRectF(0.0, 0.0, 1.0, 1.0);
 	renderingContext_.framebuffer.setResolution(Framebuffer::Resolution::XGA);
 
 	connect(this, &GraphicsSubsystem::shaderProgramChanged,     this, &GraphicsSubsystem::renderingContextChanged);
@@ -55,6 +56,7 @@ GraphicsSubsystem::initialize(const ApplicationSettings& settings) {
 	connect(this, &GraphicsSubsystem::scissorTestToggled,       this, &GraphicsSubsystem::renderingContextChanged);
 	connect(this, &GraphicsSubsystem::stencilTestToggled,       this, &GraphicsSubsystem::renderingContextChanged);
 	connect(this, &GraphicsSubsystem::depthTestToggled,         this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::scissorChanged,           this, &GraphicsSubsystem::renderingContextChanged);
 
 	return Error::None;
 }
@@ -287,6 +289,21 @@ GraphicsSubsystem::enableDepthTest(const bool enable) {
 	if (renderingContext_.enableDepthTest != enable) {
 		renderingContext_.enableDepthTest = enable;
 		emit depthTestToggled(enable);
+	}
+}
+
+
+const QRectF&
+GraphicsSubsystem::getScissor() const {
+	return renderingContext_.scissor;
+}
+
+
+void
+GraphicsSubsystem::setScissor(const QRectF& scissor) {
+	if (renderingContext_.scissor != scissor) {
+		renderingContext_.scissor = scissor;
+		emit scissorChanged(scissor);
 	}
 }
 

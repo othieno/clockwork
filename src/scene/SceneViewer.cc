@@ -36,7 +36,6 @@ isProjectionTransformDirty_(true),
 isViewTransformDirty_(true),
 isViewProjectionTransformDirty_(true),
 isViewportTransformDirty_(true),
-scissor_(0.0, 0.0, 1.0, 1.0),
 textureFilterIdentifier_(TextureFilter::Identifier::Bilinear) {
 	setPosition(0, 0, 3);
 
@@ -134,21 +133,6 @@ SceneViewer::setCenter(const QVector3D& center) {
 		viewFrustum_.center = center;
 		isViewTransformDirty_ = true;
 		emit centerChanged(viewFrustum_.center);
-	}
-}
-
-
-const QRectF&
-SceneViewer::getScissor() const {
-	return scissor_;
-}
-
-
-void
-SceneViewer::setScissor(const QRectF& scissor) {
-	if (scissor_ != scissor) {
-		scissor_ = scissor;
-		emit scissorChanged(scissor_);
 	}
 }
 

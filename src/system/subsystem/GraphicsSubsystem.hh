@@ -58,6 +58,7 @@ class GraphicsSubsystem : public QObject {
 	Q_PROPERTY(bool enableScissorTest READ isScissorTestEnabled WRITE enableScissorTest NOTIFY scissorTestToggled)
 	Q_PROPERTY(bool enableStencilTest READ isStencilTestEnabled WRITE enableStencilTest NOTIFY stencilTestToggled)
 	Q_PROPERTY(bool enableDepthTest READ isDepthTestEnabled WRITE enableDepthTest NOTIFY depthTestToggled)
+	Q_PROPERTY(QRectF scissor READ getScissor WRITE setScissor NOTIFY scissorChanged)
 	friend class Service;
 	static_assert(std::is_same<int, enum_traits<ShaderProgramIdentifier>::Ordinal>::value);
 	static_assert(std::is_same<int, enum_traits<PrimitiveTopology>::Ordinal>::value);
@@ -257,6 +258,15 @@ public:
 	 * @param enable enables the depth test if set to true, disables it otherwise.
 	 */
 	void enableDepthTest(const bool enable = true);
+	/**
+	 * Returns the scissor rectangle.
+	 */
+	const QRectF& getScissor() const;
+	/**
+	 * Sets the scissor rectangle.
+	 * @param scissor the scissor rectangle to set.
+	 */
+	void setScissor(const QRectF& scissor);
 private:
 	/**
 	 * Instantiates a GraphicsSubsystem object.
@@ -343,6 +353,11 @@ signals:
 	 * A signal that is emitted when the depth test is toggled.
 	 */
 	void depthTestToggled(const bool enabled);
+	/**
+	 * A signal that is emitted when the scissor rectangle changes.
+	 * @param scissor the new scissor rectangle.
+	 */
+	void scissorChanged(const QRectF& scissor);
 };
 } // namespace clockwork
 #endif // CLOCKWORK_GRAPHICS_SUBSYSTEM_HH

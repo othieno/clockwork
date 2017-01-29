@@ -31,6 +31,7 @@
 #include "ShadeModel.hh"
 #include "PolygonMode.hh"
 #include "Uniform.hh"
+#include <QRectF>
 
 
 namespace clockwork {
@@ -93,6 +94,10 @@ struct RenderingContext {
 	 * The viewport transformation matrix.
 	 */
 	QMatrix2x3 viewportTransform;
+	/**
+	 * The viewport scissor rectangle.
+	 */
+	QRectF scissor;
 };
 } // namespace clockwork
 
