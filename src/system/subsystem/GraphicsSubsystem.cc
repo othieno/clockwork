@@ -299,8 +299,14 @@ void
 			return &Renderer<Identifier::Minimal>::draw;
 		case Identifier::RandomColoredSurfaces:
 			return &Renderer<Identifier::RandomColoredSurfaces>::draw;
+		case Identifier::DepthMaps:
+			return &Renderer<Identifier::DepthMaps>::draw;
 		case Identifier::NormalMaps:
 			return &Renderer<Identifier::NormalMaps>::draw;
+		case Identifier::BumpMaps:
+			return &Renderer<Identifier::BumpMaps>::draw;
+		case Identifier::TextureMaps:
+			return &Renderer<Identifier::TextureMaps>::draw;
 		default:
 			qFatal("[GraphicsSubsystem::getDrawCommand] Undefined draw command!");
 	}

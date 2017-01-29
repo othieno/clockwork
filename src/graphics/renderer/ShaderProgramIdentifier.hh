@@ -35,7 +35,10 @@ namespace clockwork {
 enum class ShaderProgramIdentifier {
 	Minimal,
 	RandomColoredSurfaces,
+	DepthMaps,
 	NormalMaps,
+	BumpMaps,
+	TextureMaps,
 };
 /**
  * Declares a list of all available shader program identifiers.
@@ -43,7 +46,10 @@ enum class ShaderProgramIdentifier {
 DECLARE_ENUMERATOR_LIST(ShaderProgramIdentifier, {
 	ShaderProgramIdentifier::Minimal,
 	ShaderProgramIdentifier::RandomColoredSurfaces,
+	ShaderProgramIdentifier::DepthMaps,
 	ShaderProgramIdentifier::NormalMaps,
+	ShaderProgramIdentifier::BumpMaps,
+	ShaderProgramIdentifier::TextureMaps,
 })
 /**
  * Returns the human-readable name of the specified shader program identifier.
@@ -56,8 +62,14 @@ enum_traits<ShaderProgramIdentifier>::name(const ShaderProgramIdentifier identif
 			return "Minimal";
 		case ShaderProgramIdentifier::RandomColoredSurfaces:
 			return "Randomly colored surfaces";
+		case ShaderProgramIdentifier::DepthMaps:
+			return "Depth maps";
 		case ShaderProgramIdentifier::NormalMaps:
 			return "Normal maps";
+		case ShaderProgramIdentifier::BumpMaps:
+			return "Bump maps";
+		case ShaderProgramIdentifier::TextureMaps:
+			return "Texture maps";
 		default:
 			return "???";
 	}
