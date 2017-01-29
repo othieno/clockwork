@@ -55,7 +55,7 @@ enum_traits<ShaderProgramIdentifier>::name(const ShaderProgramIdentifier identif
 		case ShaderProgramIdentifier::Minimal:
 			return "Minimal";
 		case ShaderProgramIdentifier::RandomColoredSurfaces:
-			return "Random colored surfaces";
+			return "Randomly colored surfaces";
 		case ShaderProgramIdentifier::NormalMaps:
 			return "Normal maps";
 		default:
