@@ -25,6 +25,7 @@
 #ifndef CLOCKWORK_RENDERER_HH
 #define CLOCKWORK_RENDERER_HH
 
+#include "BaseRenderer.hh"
 #include "ShaderProgram.hh"
 
 
@@ -41,7 +42,7 @@ struct RenderingContext;
  *
  */
 template<ShaderProgramIdentifier identifier>
-class Renderer {
+class Renderer : public BaseRenderer {
 public:
 	/**
 	 *
@@ -244,15 +245,6 @@ private:
 	 *
 	 */
 	static void fragmentProcessing(const RenderingContext&, const Fragment&, Framebuffer&);
-	/**
-	 * Tests whether the specified fragment can be written to the framebuffer. If
-	 * the specified fragment passes all tests, the function will return a framebuffer
-	 * offset indicating a location where the fragment data can be written to.
-	 * If a fragment test fails, -1 will be returned.
-	 * @param context the rendering context.
-	 * @param fragment the fragment to test.
-	 */
-	static int fragmentPasses(const RenderingContext& context, const Fragment& fragment);
 };
 } // namespace clockwork
 

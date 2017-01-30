@@ -68,6 +68,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/filter/TextureFilterFactory.hh \
 		src/graphics/lighting/IlluminationModel.hh \
 		src/graphics/renderer/BaseFragment.hh \
+		src/graphics/renderer/BaseRenderer.hh \
 		src/graphics/renderer/BaseVertex.hh \
 		src/graphics/renderer/BaseVertexAttributes.hh \
 		src/graphics/renderer/Framebuffer.hh \
@@ -127,6 +128,7 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/graphics/filter/ImageFilter.cc \
 		src/graphics/filter/TextureFilter.cc \
 		src/graphics/renderer/BaseFragment.cc \
+		src/graphics/renderer/BaseRenderer.cc \
 		src/graphics/renderer/BaseVertex.cc \
 		src/graphics/renderer/BaseVertexAttributes.cc \
 		src/graphics/renderer/Framebuffer.cc \

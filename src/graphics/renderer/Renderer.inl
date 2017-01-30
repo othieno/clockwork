@@ -528,23 +528,6 @@ Renderer<I>::fragmentProcessing(
 		sbuffer[offset] = 0xFF;
 	}
 }
-
-
-template<ShaderProgramIdentifier I> int
-Renderer<I>::fragmentPasses(const RenderingContext& context, const Fragment& fragment) {
-	const int offset = context.framebuffer.getOffset(fragment.x, fragment.y);
-	if (offset >= 0) {
-		if (context.enableDepthTest) {
-			const double depthBufferValue = context.framebuffer.getDepthBuffer()[offset];
-			if (qFuzzyCompare(1.0 + fragment.z, 1.0 + depthBufferValue) || fragment.z > depthBufferValue) {
-				return -1;
-			}
-		}
-		// TODO Implement more fragment tests.
-		// @see https://www.opengl.org/wiki/Per-Sample_Processing
-	}
-	return offset;
-}
 } // namespace clockwork
 
 #endif // CLOCKWORK_RENDERER_INL
