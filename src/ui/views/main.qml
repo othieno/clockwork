@@ -24,6 +24,7 @@
  */
 import QtQuick 2.4
 import QtQuick.Window 2.2
+import QtQuick.Controls 1.4
 import Material 0.2
 
 
@@ -57,6 +58,9 @@ ApplicationWindow {
 	 */
 	initialPage: Page {
 		title: qsTr("Renderer")
+		ExclusiveGroup {
+			id: actionBarEditorGroup
+		}
 		actionBar {
 			title: initialPage.title
 			elevation: foreground.state == "maximized" ? 0 : 1
@@ -69,24 +73,35 @@ ApplicationWindow {
 					hasDividerAfter: true
 				},
 				Action {
+					id: scissorToggle
 					name: qsTr("Scissor rectangle")
 					iconSource: "qrc:/icon/content/content_cut"
 					text: qsTr("Configure the scissor rectangle")
 					visible: graphics.enableScissorTest
-					enabled: foreground.state == "maximized"
+					enabled: !renderingContextToggle.checked
+					exclusiveGroup: actionBarEditorGroup
+					checkable: true
+					onTriggered: this.checked = !this.checked
 				},
 				Action {
+					id: stencilToggle
 					name: qsTr("Stencil buffer")
 					iconSource: "qrc:/icon/image/compare"
 					text: qsTr("Configure the stencil buffer")
 					visible: graphics.enableStencilTest
-					enabled: foreground.state == "maximized"
+					enabled: !renderingContextToggle.checked
+					exclusiveGroup: actionBarEditorGroup
+					checkable: true
+					onTriggered: this.checked = !this.checked
 				},
 				Action {
+					id: renderingContextToggle
 					name: qsTr("Rendering context")
 					iconSource: "qrc:/icon/av/tune"
 					text: qsTr("Configure the rendering context")
-					onTriggered: foreground.state = foreground.state == "maximized" ? "minimized" : "maximized"
+					exclusiveGroup: actionBarEditorGroup
+					checkable: true
+					onTriggered: this.checked = !this.checked
 					hasDividerAfter: true
 				},
 				Action {
@@ -103,14 +118,14 @@ ApplicationWindow {
 				fill: parent
 			}
 			id: background
-			visible: foreground.state == "minimized"
+			visible: renderingContextToggle.checked
 			RenderingContext {
 				id: renderingContextView
 			}
 		}
 		View {
 			id: foreground
-			state: "maximized"
+			state: renderingContextToggle.checked ? "minimized" : "maximized"
 			states: [
 				State {
 					name: "minimized"
@@ -146,9 +161,9 @@ ApplicationWindow {
 			}
 			MouseArea {
 				anchors.fill: parent
-				enabled: foreground.state == "minimized"
+				enabled: renderingContextToggle.checked
 				hoverEnabled: true
-				onDoubleClicked: foreground.state = "maximized"
+				onDoubleClicked: renderingContextToggle.trigger()
 				onWheel: {}
 			}
 		}

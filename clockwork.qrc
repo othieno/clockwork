@@ -32,6 +32,7 @@
 		<file alias="PerformanceSettings.qml">src/ui/views/PerformanceSettings.qml</file>
 		<file alias="Renderer.qml">src/ui/views/Renderer.qml</file>
 		<file alias="RenderingContext.qml">src/ui/views/RenderingContext.qml</file>
+		<file alias="Scissor.qml">src/ui/views/Scissor.qml</file>
 		<file alias="Settings.qml">src/ui/views/Settings.qml</file>
 		<file alias="SoftwareLicense.qml">src/ui/views/SoftwareLicense.qml</file>
 		<file alias="ThemeSettings.qml">src/ui/views/ThemeSettings.qml</file>
