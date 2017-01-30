@@ -45,9 +45,10 @@ This is a work in progress and while I've done my best to make sure the code is 
 or create a pull request!
 
 
-Further Reading
----------------
+References and Further Reading
+------------------------------
 
+- [__The OpenGL Wiki__][khronos], The Khronos (TM) Group.
 - [__Graphics Programming Black Book__][abrash], Michael Abrash.
 - [__Designing the Framework of a Parallel Game Engine__][intel] [PDF], Intel (R) Developer Zone.
 - [__Understanding and Using Scene Graphs__][woolford] [PDF], David Woolford.
@@ -57,6 +58,8 @@ Further Reading
 - [__The Inefficiency of C++ Fact or Fiction?__][lundgren-frimanson] [PDF], Anders Lundgren & Lotta Frimanson.
 - [__Data alignment: Straighten up and fly right__][rentzsch] [PDF], Jonathan Rentzsch.
 
+
+[khronos]: https://www.khronos.org/opengl/wiki/
 [abrash]: https://github.com/othieno/GPBB
 [intel]: /documentation/research/Designing%20the%20Framework%20of%20a%20Parallel%20Game%20Engine.pdf?raw=true
 [woolford]: /documentation/research/Understanding%20and%20Using%20Scene%20Graphs.pdf?raw=true
@@ -65,4 +68,3 @@ Further Reading
 [lottes]: /documentation/research/FXAA%20white%20paper.pdf?raw=true
 [lundgren-frimanson]: /documentation/research/The%20Inefficiency%20of%20C++%20Fact%20or%20Fiction?.pdf?raw=true
 [rentzsch]: /documentation/research/Data%20alignment:%20Straighten%20up%20and%20fly%20right.pdf?raw=true
-
