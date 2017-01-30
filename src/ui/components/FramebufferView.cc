@@ -171,7 +171,7 @@ FramebufferView::MaterialShader::createMaterial(FramebufferView::Texture& textur
 			texture.setClientSideRenderTarget(framebuffer.getPixelBuffer());
 		};
 		connect(&framebuffer, &Framebuffer::resized, onFramebufferResized);
-		onFramebufferResized(framebuffer.getResolutionSize());
+		onFramebufferResized(framebuffer.getResolution());
 	}
 
 	return material;

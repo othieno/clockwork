@@ -79,18 +79,24 @@ public:
 	/**
 	 * Returns the framebuffer's resolution identifier.
 	 */
-	Resolution getResolution() const;
+	Resolution getResolutionIdentifier() const;
+	/**
+	 * Returns the framebuffer's resolution identifier.
+	 */
+	const QSize& getResolution() const;
+	/**
+	 * Returns the framebuffer's width.
+	 */
+	std::uint32_t getWidth() const;
+	/**
+	 * Returns the framebuffer's height.
+	 */
+	std::uint32_t getHeight() const;
 	/**
 	 * Resizes the framebuffer to the specified resolution.
 	 * @param resolution the framebuffer's new resolution.
 	 */
 	void setResolution(const Resolution resolution);
-	/**
-	 * Returns the framebuffer's actual width and height.
-	 */
-	inline QSize getResolutionSize() const {
-		return Framebuffer::getResolutionSize(resolution_);
-	}
 	/**
 	 * Returns the pixel buffer.
 	 */
@@ -169,19 +175,23 @@ public:
 	 */
 	static QList<Resolution> getAvailableResolutions();
 	/**
-	 * Returns the specified resolution's actual size.
-	 * @param resolution the resolution to query.
+	 * Returns the resolution based on the specified identifier.
+	 * @param resolutionIdentifier the resolution identifier to query.
 	 */
-	static QSize getResolutionSize(const Resolution resolution);
+	static QSize getResolution(const Resolution resolutionIdentifier);
 private:
 	/**
 	 * Resizes the framebuffer's attachments to the current resolution.
 	 */
 	void resize();
 	/**
-	 * The framebuffer's resolution.
+	 * The framebuffer's resolution identifier.
 	 */
-	Framebuffer::Resolution resolution_;
+	Framebuffer::Resolution resolutionIdentifier_;
+	/**
+	 * The framebuffer's actual resolution.
+	 */
+	QSize resolution_;
 	/**
 	 * The framebuffer's pixel buffer attachment.
 	 */

@@ -46,7 +46,7 @@ stencilBufferImage_(nullptr) {
 		stencilBufferImageColorTable_.push_back(qRgb(i, i, i));
 	}
 
-	onFramebufferResized(framebuffer.getResolutionSize());
+	onFramebufferResized(framebuffer.getResolution());
 	QObject::connect(&framebuffer, &Framebuffer::resized, std::bind(&FramebufferProvider::onFramebufferResized, this, _1));
 }
 
@@ -54,7 +54,7 @@ stencilBufferImage_(nullptr) {
 QImage
 FramebufferProvider::requestImage(const QString& id, QSize* const size, const QSize&) {
 	if (size != nullptr)
-		*size = framebuffer_.getResolutionSize();
+		*size = framebuffer_.getResolution();
 
 	if (id == "pixel" && pixelBufferImage_ != nullptr) {
 		return *pixelBufferImage_;

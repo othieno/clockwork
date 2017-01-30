@@ -62,15 +62,15 @@ GraphicsSubsystem::initialize(const ApplicationSettings& settings) {
 }
 
 
-clockwork::Framebuffer::Resolution
+const QSize&
 GraphicsSubsystem::getFramebufferResolution() const {
 	return renderingContext_.framebuffer.getResolution();
 }
 
 
 void
-GraphicsSubsystem::setFramebufferResolution(const Framebuffer::Resolution resolution) {
-	renderingContext_.framebuffer.setResolution(resolution);
+GraphicsSubsystem::setFramebufferResolution(const Framebuffer::Resolution resolutionIdentifier) {
+	renderingContext_.framebuffer.setResolution(resolutionIdentifier);
 }
 
 

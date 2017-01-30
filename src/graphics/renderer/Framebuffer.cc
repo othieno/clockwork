@@ -27,29 +27,53 @@
 using clockwork::Framebuffer;
 
 
-Framebuffer::Framebuffer(const Resolution resolution) :
-resolution_(resolution),
+Framebuffer::Framebuffer(const Resolution resolutionIdentifier) :
+resolutionIdentifier_(resolutionIdentifier),
+resolution_(getResolution(resolutionIdentifier_)),
 pixelBuffer_(nullptr),
 pixelBufferClearValue_(0xFF000000),
 depthBuffer_(nullptr),
 depthBufferClearValue_(std::numeric_limits<double>::max()),
 stencilBuffer_(nullptr),
-stencilBufferClearValue_(0x00) {}
+stencilBufferClearValue_(0x00) {
+	if (resolution_.isValid() && !resolution_.isNull()) {
+		resize();
+	}
+}
 
 
 Framebuffer::~Framebuffer() {}
 
 
 Framebuffer::Resolution
+Framebuffer::getResolutionIdentifier() const {
+	return resolutionIdentifier_;
+}
+
+
+const QSize&
 Framebuffer::getResolution() const {
 	return resolution_;
 }
 
 
+std::uint32_t
+Framebuffer::getWidth() const {
+	return resolution_.isValid() ? resolution_.width() : 0;
+}
+
+
+std::uint32_t
+Framebuffer::getHeight() const {
+	return resolution_.isValid() ? resolution_.height() : 0;
+}
+
+
 void
-Framebuffer::setResolution(const Resolution resolution) {
-	if (resolution_ != resolution) {
-		resolution_ = resolution;
+Framebuffer::setResolution(const Resolution resolutionIdentifier) {
+	if (resolutionIdentifier_ != resolutionIdentifier) {
+		resolutionIdentifier_ = resolutionIdentifier;
+		resolution_ = getResolution(resolutionIdentifier);
 		resize();
 	}
 }
@@ -135,11 +159,7 @@ Framebuffer::setStencilBufferClearValue(const std::uint8_t value) {
 
 void
 Framebuffer::clear() {
-	const auto& resolution = getResolutionSize();
-	if (!resolution.isValid()) {
-		return;
-	}
-	const std::size_t bufferSize = resolution.width() * resolution.height();
+	const std::size_t bufferSize = resolution_.width() * resolution_.height();
 	if (bufferSize > 0) {
 		auto* a = pixelBuffer_.get();
 		auto* b = depthBuffer_.get();
@@ -168,13 +188,10 @@ Framebuffer::discard(const std::uint32_t x, const std::uint32_t y) {
 int
 Framebuffer::getOffset(const std::uint32_t x, const std::uint32_t y) const {
 	int offset = -1;
-	const auto& resolution = getResolutionSize();
-	if (resolution.isValid()) {
-		const std::uint32_t w = resolution.width();
-		const std::uint32_t h = resolution.height();
-		if (x < w && y < h) {
-			offset = x + (y * w);
-		}
+	const std::uint32_t w = resolution_.width();
+	const std::uint32_t h = resolution_.height();
+	if (x < w && y < h) {
+		offset = x + (y * w);
 	}
 	return offset;
 }
@@ -196,8 +213,10 @@ Framebuffer::getAvailableResolutions() {
 
 
 QSize
-Framebuffer::getResolutionSize(const Resolution resolution) {
-	switch (resolution) {
+Framebuffer::getResolution(const Resolution resolutionIdentifier) {
+	switch (resolutionIdentifier) {
+		case Resolution::ZERO:
+			return QSize(0, 0);
 		case Resolution::VGA:
 			return QSize(640, 480);
 		case Resolution::SVGA:
@@ -212,23 +231,21 @@ Framebuffer::getResolutionSize(const Resolution resolution) {
 			return QSize(2560, 2048);
 		case Resolution::UHD8K:
 			return QSize(7680, 4320);
-		case Resolution::ZERO:
 		default:
-			return QSize(0, 0);
+			qFatal("[Framebuffer::getResolution] Unspecified resolution identifier!");
 	}
 }
 
 
 void
 Framebuffer::resize() {
-	const QSize& resolution = getResolutionSize();
-	const auto w = resolution.width();
-	const auto h = resolution.height();
-	const auto bufferSize = w * h;
-
 	// Destroy the reference to the previous pixel buffer before the buffer itself is destroyed.
 	pixelBufferImage_ = QImage();
 
+	const std::uint32_t w = resolution_.width();
+	const std::uint32_t h = resolution_.height();
+
+	const std::size_t bufferSize = w * h;
 	if (bufferSize == 0) {
 		pixelBuffer_.reset(nullptr);
 		depthBuffer_.reset(nullptr);
@@ -241,5 +258,5 @@ Framebuffer::resize() {
 	}
 
 	clear();
-	emit resized(resolution);
+	emit resized(resolution_);
 }

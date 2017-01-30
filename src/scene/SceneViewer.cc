@@ -233,7 +233,7 @@ SceneViewer::updateViewportTransform() {
 	if (isViewportTransformDirty_) {
 		isViewportTransformDirty_ = false;
 
-		const QSize& resolution = Service::Graphics.getFramebuffer().getResolutionSize();
+		const QSize& resolution = Service::Graphics.getFramebuffer().getResolution();
 
 		const qreal x = viewport_.x * resolution.width();
 		const qreal y = viewport_.y * resolution.height();
