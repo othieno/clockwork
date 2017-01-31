@@ -45,7 +45,12 @@ BaseRenderer::fragmentPassesPixelOwnershipTest(
 	const RenderingContext& context,
 	const BaseFragment& fragment
 ) {
-	return true;
+	const int x = fragment.x;
+	const int y = fragment.y;
+	const int w = context.framebuffer.getWidth();
+	const int h = context.framebuffer.getHeight();
+
+	return x >= 0 && y >= 0 && x < w && y < h;
 }
 
 
