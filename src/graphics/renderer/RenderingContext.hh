@@ -95,9 +95,13 @@ struct RenderingContext {
 	 */
 	QMatrix2x3 viewportTransform;
 	/**
-	 * The viewport scissor rectangle.
+	 * The viewport's normalized scissor box.
 	 */
-	QRectF scissor;
+	QRectF normalizedScissorBox;
+	/**
+	 * The viewport's scissor box.
+	 */
+	QRect scissorBox;
 };
 } // namespace clockwork
 

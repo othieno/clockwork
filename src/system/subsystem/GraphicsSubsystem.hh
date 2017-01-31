@@ -58,7 +58,7 @@ class GraphicsSubsystem : public QObject {
 	Q_PROPERTY(bool enableScissorTest READ isScissorTestEnabled WRITE enableScissorTest NOTIFY scissorTestToggled)
 	Q_PROPERTY(bool enableStencilTest READ isStencilTestEnabled WRITE enableStencilTest NOTIFY stencilTestToggled)
 	Q_PROPERTY(bool enableDepthTest READ isDepthTestEnabled WRITE enableDepthTest NOTIFY depthTestToggled)
-	Q_PROPERTY(QRectF scissor READ getScissor WRITE setScissor NOTIFY scissorChanged)
+	Q_PROPERTY(QRectF normalizedScissorBox READ getNormalizedScissorBox WRITE setNormalizedScissorBox NOTIFY normalizedScissorBoxChanged)
 	friend class Service;
 	static_assert(std::is_same<int, enum_traits<ShaderProgramIdentifier>::Ordinal>::value);
 	static_assert(std::is_same<int, enum_traits<PrimitiveTopology>::Ordinal>::value);
@@ -259,14 +259,14 @@ public:
 	 */
 	void enableDepthTest(const bool enable = true);
 	/**
-	 * Returns the scissor rectangle.
+	 * Returns the viewport's normalized scissor box.
 	 */
-	const QRectF& getScissor() const;
+	const QRectF& getNormalizedScissorBox() const;
 	/**
-	 * Sets the scissor rectangle.
-	 * @param scissor the scissor rectangle to set.
+	 * Sets the viewport's normalized scissor box.
+	 * @param scissorBox the normalized scissor box to set.
 	 */
-	void setScissor(const QRectF& scissor);
+	void setNormalizedScissorBox(const QRectF& scissorBox);
 private:
 	/**
 	 * Instantiates a GraphicsSubsystem object.
@@ -276,6 +276,11 @@ private:
 	 * Returns the current shader program's draw command.
 	 */
 	void (*getDrawCommand())(const RenderingContext&, const Mesh&, Framebuffer&);
+	/**
+	 * Updates the viewport's scissor box based on the normalized scissor box
+	 * and the framebuffer's current resolution.
+	 */
+	void updateScissorBox();
 	/**
 	 * The rendering context.
 	 */
@@ -354,10 +359,10 @@ signals:
 	 */
 	void depthTestToggled(const bool enabled);
 	/**
-	 * A signal that is emitted when the scissor rectangle changes.
-	 * @param scissor the new scissor rectangle.
+	 * A signal that is emitted when the viewport's normalized scissor box changes.
+	 * @param scissorBox the new scissor box.
 	 */
-	void scissorChanged(const QRectF& scissor);
+	void normalizedScissorBoxChanged(const QRectF& scissorBox);
 };
 } // namespace clockwork
 #endif // CLOCKWORK_GRAPHICS_SUBSYSTEM_HH

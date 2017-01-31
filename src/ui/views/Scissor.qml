@@ -32,23 +32,23 @@ Item {
 	/**
 	 *
 	 */
-	property var scissor: graphics.scissor
+	property var scissorBox: graphics.normalizedScissorBox
 	/**
 	 *
 	 */
-	property double sx: scissor.x
+	property double sx: scissorBox.x
 	/**
 	 *
 	 */
-	property double sy: scissor.y
+	property double sy: scissorBox.y
 	/**
 	 *
 	 */
-	property double sr: scissor.right
+	property double sr: scissorBox.right
 	/**
 	 *
 	 */
-	property double sb: scissor.bottom
+	property double sb: scissorBox.bottom
 	/**
 	 *
 	 */
@@ -61,17 +61,17 @@ Item {
 	 *
 	 */
 	Component.onCompleted: {
-		// When the scissor toggle is unchecked and the scissor rectangle is
+		// When the scissor toggle is unchecked and the scissor box is
 		// therefore hidden, the scene can then be rendered. Note that the
-		// scene is only rendered if the scissor rectangle has actually changed.
+		// scene is only rendered if the scissor box has actually changed.
 		scissorToggle.onToggled.connect(function(checked){
 			if (!checked) {
-				graphics.scissor = Qt.rect(sx, sy, sr, sb)
+				graphics.normalizedScissorBox = Qt.rect(sx, sy, sr, sb)
 			}
 		})
 	}
 	/**
-	 * The main scissor rectangle.
+	 * The main scissor box.
 	 */
 	Rectangle {
 		anchors {

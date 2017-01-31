@@ -43,20 +43,21 @@ GraphicsSubsystem::initialize(const ApplicationSettings& settings) {
 	renderingContext_.enableScissorTest = settings.isScissorTestEnabled();
 	renderingContext_.enableStencilTest = settings.isStencilTestEnabled();
 	renderingContext_.enableDepthTest = settings.isDepthTestEnabled();
-	renderingContext_.scissor = QRectF(0.0, 0.0, 1.0, 1.0);
 	renderingContext_.framebuffer.setResolution(Framebuffer::Resolution::XGA);
+	renderingContext_.normalizedScissorBox.setCoords(0.0, 0.0, 0.5, 0.5);
+	renderingContext_.scissorBox.setRect(0, 0, renderingContext_.framebuffer.getWidth(), renderingContext_.framebuffer.getHeight());
 
-	connect(this, &GraphicsSubsystem::shaderProgramChanged,     this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::primitiveTopologyChanged, this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::clippingToggled,          this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::backfaceCullingToggled,   this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::polygonModeChanged,       this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::shadeModelChanged,        this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::lineAntiAliasingToggled,  this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::scissorTestToggled,       this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::stencilTestToggled,       this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::depthTestToggled,         this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::scissorChanged,           this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::shaderProgramChanged,        this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::primitiveTopologyChanged,    this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::clippingToggled,             this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::backfaceCullingToggled,      this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::polygonModeChanged,          this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::shadeModelChanged,           this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::lineAntiAliasingToggled,     this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::scissorTestToggled,          this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::stencilTestToggled,          this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::depthTestToggled,            this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::normalizedScissorBoxChanged, this, &GraphicsSubsystem::renderingContextChanged);
 
 	return Error::None;
 }
@@ -70,7 +71,10 @@ GraphicsSubsystem::getFramebufferResolution() const {
 
 void
 GraphicsSubsystem::setFramebufferResolution(const Framebuffer::Resolution resolutionIdentifier) {
-	renderingContext_.framebuffer.setResolution(resolutionIdentifier);
+	if (renderingContext_.framebuffer.getResolutionIdentifier() != resolutionIdentifier) {
+		renderingContext_.framebuffer.setResolution(resolutionIdentifier);
+		updateScissorBox();
+	}
 }
 
 
@@ -294,16 +298,17 @@ GraphicsSubsystem::enableDepthTest(const bool enable) {
 
 
 const QRectF&
-GraphicsSubsystem::getScissor() const {
-	return renderingContext_.scissor;
+GraphicsSubsystem::getNormalizedScissorBox() const {
+	return renderingContext_.normalizedScissorBox;
 }
 
 
 void
-GraphicsSubsystem::setScissor(const QRectF& scissor) {
-	if (renderingContext_.scissor != scissor) {
-		renderingContext_.scissor = scissor;
-		emit scissorChanged(scissor);
+GraphicsSubsystem::setNormalizedScissorBox(const QRectF& normalizedScissorBox) {
+	if (renderingContext_.normalizedScissorBox != normalizedScissorBox) {
+		renderingContext_.normalizedScissorBox = normalizedScissorBox;
+		updateScissorBox();
+		emit normalizedScissorBoxChanged(normalizedScissorBox);
 	}
 }
 
@@ -327,4 +332,18 @@ void
 		default:
 			qFatal("[GraphicsSubsystem::getDrawCommand] Undefined draw command!");
 	}
+}
+
+
+void
+GraphicsSubsystem::updateScissorBox() {
+	const int w = renderingContext_.framebuffer.getWidth();
+	const int h = renderingContext_.framebuffer.getHeight();
+
+	const int t = qRound(h * renderingContext_.normalizedScissorBox.top());
+	const int b = qRound(h * renderingContext_.normalizedScissorBox.bottom());
+	const int l = qRound(w * renderingContext_.normalizedScissorBox.left());
+	const int r = qRound(w * renderingContext_.normalizedScissorBox.right());
+
+	renderingContext_.scissorBox.setRect(l, t, r - l, b - t);
 }
