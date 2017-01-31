@@ -66,7 +66,7 @@ Item {
 		// scene is only rendered if the scissor box has actually changed.
 		scissorToggle.onToggled.connect(function(checked){
 			if (!checked) {
-				graphics.normalizedScissorBox = Qt.rect(sx, sy, sr, sb)
+				graphics.normalizedScissorBox = Qt.rect(sx, sy, sr - sx, sb - sy)
 			}
 		})
 	}

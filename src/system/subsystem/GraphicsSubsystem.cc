@@ -44,7 +44,7 @@ GraphicsSubsystem::initialize(const ApplicationSettings& settings) {
 	renderingContext_.enableStencilTest = settings.isStencilTestEnabled();
 	renderingContext_.enableDepthTest = settings.isDepthTestEnabled();
 	renderingContext_.framebuffer.setResolution(Framebuffer::Resolution::XGA);
-	renderingContext_.normalizedScissorBox.setCoords(0.0, 0.0, 0.5, 0.5);
+	renderingContext_.normalizedScissorBox.setRect(0.0, 0.0, 1.0, 1.0);
 	renderingContext_.scissorBox.setRect(0, 0, renderingContext_.framebuffer.getWidth(), renderingContext_.framebuffer.getHeight());
 
 	connect(this, &GraphicsSubsystem::shaderProgramChanged,        this, &GraphicsSubsystem::renderingContextChanged);

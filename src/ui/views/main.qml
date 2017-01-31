@@ -74,9 +74,9 @@ ApplicationWindow {
 				},
 				Action {
 					id: scissorToggle
-					name: qsTr("Scissor rectangle")
+					name: qsTr("Scissor box")
 					iconSource: "qrc:/icon/content/content_cut"
-					text: qsTr("Configure the scissor rectangle")
+					text: qsTr("Configure the scissor box")
 					visible: graphics.enableScissorTest
 					enabled: !renderingContextToggle.checked
 					exclusiveGroup: actionBarEditorGroup

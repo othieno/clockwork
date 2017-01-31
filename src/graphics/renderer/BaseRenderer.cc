@@ -61,6 +61,7 @@ BaseRenderer::fragmentPassesScissorTest(
 ) {
 	bool passes = true;
 	if (context.enableScissorTest) {
+		passes = context.scissorBox.contains(fragment.x, fragment.y);
 	}
 	return passes;
 }
