@@ -45,8 +45,9 @@ Page {
 		boundsBehavior: Flickable.StopAtBounds
 		Column {
 			anchors.fill: parent
-			ListItem.Standard {
+			ListItem.Subtitled {
 				text: qsTr("About Clockwork")
+				subText: qsTr("Copyright (c) 2013-2017 Jeremy Othieno.")
 				onClicked: pageStack.push("qrc:/view/AboutClockwork.qml")
 				action: Icon {
 					anchors.centerIn: parent

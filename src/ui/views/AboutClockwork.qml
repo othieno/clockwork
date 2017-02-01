@@ -66,12 +66,6 @@ Page {
 				subText: qsTr("Creative Commons License (CC BY-NC-SA 4.0).")
 				onClicked: pageStack.push("qrc:/view/DocumentationLicense.qml")
 			}
-			ListItem.Divider {}
-			ListItem.Subtitled {
-				enabled: false
-				text: qsTr("Copyright notice")
-				subText: qsTr("Copyright (c) 2013-2016 Jeremy Othieno.")
-			}
 		}
 	}
 }
