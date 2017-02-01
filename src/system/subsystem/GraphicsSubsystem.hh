@@ -59,11 +59,13 @@ class GraphicsSubsystem : public QObject {
 	Q_PROPERTY(bool enableStencilTest READ isStencilTestEnabled WRITE enableStencilTest NOTIFY stencilTestToggled)
 	Q_PROPERTY(bool enableDepthTest READ isDepthTestEnabled WRITE enableDepthTest NOTIFY depthTestToggled)
 	Q_PROPERTY(QRectF normalizedScissorBox READ getNormalizedScissorBox WRITE setNormalizedScissorBox NOTIFY normalizedScissorBoxChanged)
+	Q_PROPERTY(int framebufferResolution READ getFramebufferResolution_ WRITE setFramebufferResolution_ NOTIFY framebufferResolutionChanged_)
 	friend class Service;
 	static_assert(std::is_same<int, enum_traits<ShaderProgramIdentifier>::Ordinal>::value);
 	static_assert(std::is_same<int, enum_traits<PrimitiveTopology>::Ordinal>::value);
 	static_assert(std::is_same<int, enum_traits<PolygonMode>::Ordinal>::value);
 	static_assert(std::is_same<int, enum_traits<ShadeModel>::Ordinal>::value);
+	static_assert(std::is_same<int, enum_traits<Framebuffer::Resolution>::Ordinal>::value);
 public:
 	/**
 	 *
@@ -91,10 +93,23 @@ public:
 	 */
 	const QSize& getFramebufferResolution() const;
 	/**
+	 * Returns the framebuffer resolution identifier as an integer value.
+	 */
+	inline int getFramebufferResolution_() const {
+		return enum_traits<Framebuffer::Resolution>::ordinal(renderingContext_.framebuffer.getResolutionIdentifier());
+	}
+	/**
 	 * Sets the framebuffer's resolution.
 	 * @param resolutionIdentifier the identifier of the resolution to set.
 	 */
 	void setFramebufferResolution(const Framebuffer::Resolution resolutionIdentifier);
+	/**
+	 * Sets the framebuffer's resolution.
+	 * @param resolution the integer value of the resolution identifier to set.
+	 */
+	inline void setFramebufferResolution_(const int resolution) {
+		setFramebufferResolution(enum_traits<Framebuffer::Resolution>::enumerator(resolution));
+	}
 	/**
 	 * Clears the framebuffer.
 	 */
@@ -363,6 +378,16 @@ signals:
 	 * @param scissorBox the new scissor box.
 	 */
 	void normalizedScissorBoxChanged(const QRectF& scissorBox);
+	/**
+	 * A signal that is emitted when the framebuffer's resolution changes.
+	 * @param resolution the new framebuffer resolution's identifier.
+	 */
+	void framebufferResolutionChanged(const Framebuffer::Resolution resolution);
+	/**
+	 * A signal that is emitted when the framebuffer's resolution changes.
+	 * @param resolution the integer value of the new framebuffer resolution's identifier.
+	 */
+	void framebufferResolutionChanged_(const int resolution);
 };
 } // namespace clockwork
 #endif // CLOCKWORK_GRAPHICS_SUBSYSTEM_HH

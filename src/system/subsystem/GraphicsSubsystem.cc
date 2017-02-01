@@ -47,17 +47,18 @@ GraphicsSubsystem::initialize(const ApplicationSettings& settings) {
 	renderingContext_.normalizedScissorBox.setRect(0.0, 0.0, 1.0, 1.0);
 	renderingContext_.scissorBox.setRect(0, 0, renderingContext_.framebuffer.getWidth(), renderingContext_.framebuffer.getHeight());
 
-	connect(this, &GraphicsSubsystem::shaderProgramChanged,        this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::primitiveTopologyChanged,    this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::clippingToggled,             this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::backfaceCullingToggled,      this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::polygonModeChanged,          this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::shadeModelChanged,           this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::lineAntiAliasingToggled,     this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::scissorTestToggled,          this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::stencilTestToggled,          this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::depthTestToggled,            this, &GraphicsSubsystem::renderingContextChanged);
-	connect(this, &GraphicsSubsystem::normalizedScissorBoxChanged, this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::shaderProgramChanged,         this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::primitiveTopologyChanged,     this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::clippingToggled,              this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::backfaceCullingToggled,       this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::polygonModeChanged,           this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::shadeModelChanged,            this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::lineAntiAliasingToggled,      this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::scissorTestToggled,           this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::stencilTestToggled,           this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::depthTestToggled,             this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::normalizedScissorBoxChanged,  this, &GraphicsSubsystem::renderingContextChanged);
+	connect(this, &GraphicsSubsystem::framebufferResolutionChanged, this, &GraphicsSubsystem::renderingContextChanged);
 
 	return Error::None;
 }
@@ -74,6 +75,8 @@ GraphicsSubsystem::setFramebufferResolution(const Framebuffer::Resolution resolu
 	if (renderingContext_.framebuffer.getResolutionIdentifier() != resolutionIdentifier) {
 		renderingContext_.framebuffer.setResolution(resolutionIdentifier);
 		updateScissorBox();
+		emit framebufferResolutionChanged(resolutionIdentifier);
+		emit framebufferResolutionChanged_(enum_traits<Framebuffer::Resolution>::ordinal(resolutionIdentifier));
 	}
 }
 
