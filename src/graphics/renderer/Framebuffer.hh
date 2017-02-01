@@ -29,6 +29,7 @@
 #include <QSize>
 #include <QImage>
 #include <memory>
+#include "enum_traits.hh"
 
 
 namespace clockwork {
@@ -39,7 +40,7 @@ class Framebuffer final : public QObject {
 	Q_OBJECT
 public:
 	/**
-	 * Available framebuffer resolutions.
+	 * An enumeration of all available framebuffer resolutions.
 	 */
 	enum class Resolution {
 		ZERO,    //    0 x 0
@@ -230,6 +231,46 @@ signals:
 	 */
 	void resized(const QSize& resolution);
 };
+/**
+ * Declares a list of all available framebuffer resolutions.
+ */
+DECLARE_ENUMERATOR_LIST(Framebuffer::Resolution, {
+	Framebuffer::Resolution::ZERO,
+	Framebuffer::Resolution::VGA,
+	Framebuffer::Resolution::SVGA,
+	Framebuffer::Resolution::XGA,
+	Framebuffer::Resolution::SXGA,
+	Framebuffer::Resolution::FHD,
+	Framebuffer::Resolution::QSXGA,
+	Framebuffer::Resolution::UHD8K,
+})
+/**
+ * Returns the human-readable name of the specified framebuffer resolution.
+ * @param resolution the framebuffer resolution to query.
+ */
+template<> template<class String> String
+enum_traits<Framebuffer::Resolution>::name(const Framebuffer::Resolution resolution) {
+	switch (resolution) {
+		case Framebuffer::Resolution::ZERO:
+			return "ZERO (0 x 0)";
+		case Framebuffer::Resolution::VGA:
+			return "VGA (640 x 480)";
+		case Framebuffer::Resolution::SVGA:
+			return "SVGA (800 x 600)";
+		case Framebuffer::Resolution::XGA:
+			return "XGA (1024 x 768)";
+		case Framebuffer::Resolution::SXGA:
+			return "SXGA (1280 x 1024)";
+		case Framebuffer::Resolution::FHD:
+			return "FHD (1920 x 1080)";
+		case Framebuffer::Resolution::QSXGA:
+			return "QSXGA (2560 x 2048)";
+		case Framebuffer::Resolution::UHD8K:
+			return "UHD8K (7680 x 4320)";
+		default:
+			return "???";
+	}
+}
 } // namespace clockwork
 
 #endif // CLOCKWORK_FRAMEBUFFER_HH

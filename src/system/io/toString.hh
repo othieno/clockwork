@@ -26,21 +26,10 @@
 #define CLOCKWORK_TO_STRING_HH
 
 #include <QString>
-#include "Error.hh"
-#include "Framebuffer.hh"
-#include "Language.hh"
 #include "SceneObjectProperty.hh"
 
 
 namespace clockwork {
-/**
- * Returns the human-readable name of the specified framebuffer resolution.
- */
-QString toString(const Framebuffer::Resolution resolution);
-/**
- * Returns the human-readable name of the specified language.
- */
-QString toString(const Language);
 /**
  * Returns the human-readable name of the specified SceneObjectProperty type.
  */
