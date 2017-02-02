@@ -28,14 +28,14 @@ set -o pipefail
 MAKE=$(type -P make)
 if [ ! -x "$MAKE" ]
 then
-	echo "Error! Could not find 'make'. Check to make sure it's installed, in the PATH, and executable."
+	echo "Error! Could not find 'make'. Check to make sure it's installed, in your PATH, and executable."
 	exit 1
 fi
 
 QMAKE=$(type -P qmake)
 if [ ! -x "$QMAKE" ]
 then
-	echo "Error! Could not find 'qmake'. Check to make sure it's installed, in the PATH, and executable."
+	echo "Error! Could not find 'qmake'. Check to make sure it's installed, in your PATH, and executable."
 	exit 1
 fi
 

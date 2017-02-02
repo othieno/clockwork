@@ -34,8 +34,9 @@ Hierarchy
 The folders provided with this software are structured in the following manner:
 * __documentation__ contains research, design and implementation documentation;
 * __resources__ contains binary or data files such as 3D model assets;
+* __scripts__ contains scripts that automate various tasks;
 * __src__ contains the full source code tree;
-* __test__ contains unit tests as well as various benchmarks.
+* __tests__ contains unit tests as well as benchmarks.
 
 
 Contributing
