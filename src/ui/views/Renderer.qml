@@ -133,6 +133,33 @@ Item {
 			}
 		}
 	}
+	Text {
+		property int frameRenderTime
+		property int framesPerSecond
+		font {
+			bold: true
+			pixelSize: 16
+		}
+		text: "%1 ms (%2 FPS)".arg(frameRenderTime).arg(framesPerSecond)
+		color: {
+			if (framesPerSecond < 30) {
+				return "red"
+			} else if (framesPerSecond < 60) {
+				return "yellow"
+			} else {
+				return "green"
+			}
+		}
+		/**
+		 *
+		 */
+		Component.onCompleted: function() {
+			application.frameRendered.connect(function(){
+				frameRenderTime = graphics.frameRenderTime
+				framesPerSecond = 1000 / frameRenderTime
+			});
+		}
+	}
 	Scissor {
 		id: scissor
 	}

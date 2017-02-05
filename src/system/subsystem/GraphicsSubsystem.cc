@@ -27,6 +27,7 @@
 #include "Scene.hh"
 #include "RandomColoredSurfacesShaderProgram.hh"
 #include "NormalMapsShaderProgram.hh"
+#include <QElapsedTimer>
 
 using clockwork::GraphicsSubsystem;
 
@@ -89,6 +90,12 @@ GraphicsSubsystem::clear() {
 
 void
 GraphicsSubsystem::render(const Scene& scene) {
+	static QElapsedTimer TIMER;
+	if (!TIMER.isValid()) {
+		TIMER.start();
+	}
+	frameRenderTime_ = TIMER.elapsed();
+
 	const auto* const viewer = scene.getViewer();
 	if (viewer != nullptr) {
 		const QMatrix4x4& VIEW = viewer->getViewTransform();
@@ -125,6 +132,8 @@ GraphicsSubsystem::render(const Scene& scene) {
 			}
 		}
 	}
+
+	frameRenderTime_ = TIMER.elapsed() - frameRenderTime_;
 }
 
 

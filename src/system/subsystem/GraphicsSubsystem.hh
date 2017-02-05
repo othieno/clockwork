@@ -60,6 +60,7 @@ class GraphicsSubsystem : public QObject {
 	Q_PROPERTY(bool enableDepthTest READ isDepthTestEnabled WRITE enableDepthTest NOTIFY depthTestToggled)
 	Q_PROPERTY(QRectF normalizedScissorBox READ getNormalizedScissorBox WRITE setNormalizedScissorBox NOTIFY normalizedScissorBoxChanged)
 	Q_PROPERTY(int framebufferResolution READ getFramebufferResolution_ WRITE setFramebufferResolution_ NOTIFY framebufferResolutionChanged_)
+	Q_PROPERTY(int frameRenderTime READ getFrameRenderTime CONSTANT)
 	friend class Service;
 	static_assert(std::is_same<int, enum_traits<ShaderProgramIdentifier>::Ordinal>::value);
 	static_assert(std::is_same<int, enum_traits<PrimitiveTopology>::Ordinal>::value);
@@ -282,6 +283,12 @@ public:
 	 * @param scissorBox the normalized scissor box to set.
 	 */
 	void setNormalizedScissorBox(const QRectF& scissorBox);
+	/**
+	 * Returns the time it took to render the previous frame in milliseconds.
+	 */
+	int getFrameRenderTime() const {
+		return frameRenderTime_;
+	}
 private:
 	/**
 	 * Instantiates a GraphicsSubsystem object.
@@ -300,6 +307,10 @@ private:
 	 * The rendering context.
 	 */
 	RenderingContext renderingContext_;
+	/**
+	 * The time it took to render the previous frame in milliseconds.
+	 */
+	int frameRenderTime_;
 signals:
 	/**
 	 * A signal that is emitted when the rendering context changes.
