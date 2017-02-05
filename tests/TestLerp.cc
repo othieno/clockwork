@@ -23,6 +23,7 @@
  * THE SOFTWARE.
  */
 #include "TestLerp.hh"
+#include "lerp.hh"
 
 using clockwork::testsuite::TestLerp;
 
@@ -30,3 +31,74 @@ using clockwork::testsuite::TestLerp;
 TestLerp::TestLerp(QObject& parent) :
 Test(parent)
 {}
+
+
+void
+TestLerp::testQReal_data() {
+	QTest::addColumn<qreal>("from");
+	QTest::addColumn<qreal>("to");
+	QTest::addColumn<qreal>("percentage");
+	QTest::addColumn<qreal>("result");
+
+	QTest::newRow("0% interpolation") << 0.0 << 1.0 << 0.0 << 0.0;
+	QTest::newRow("25% interpolation") << -1.0 << 1.0 << 0.25 << -0.5;
+	QTest::newRow("50% interpolation") << 0.0 << 1.0 << 0.5 << 0.5;
+	QTest::newRow("75% interpolation") << -1.0 << 1.0 << 0.75 << 0.5;
+	QTest::newRow("100% interpolation") << 0.0 << 1.0 << 1.0 << 1.0;
+}
+
+
+void
+TestLerp::testQReal() {
+	QFETCH(qreal, from);
+	QFETCH(qreal, to);
+	QFETCH(qreal, percentage);
+	QFETCH(qreal, result);
+
+	QCOMPARE(lerp(from, to, percentage), result);
+
+	QBENCHMARK {
+		lerp(from, to, percentage);
+	}
+}
+
+/*
+void
+TestLerp::testQPointF_data() {
+}
+
+
+void
+TestLerp::testQPointF() {
+}
+
+
+void
+TestLerp::testQVector3D_data() {
+}
+
+
+void
+TestLerp::testQVector3D() {
+}
+
+
+void
+TestLerp::testQVector4D_data() {
+}
+
+
+void
+TestLerp::testQVector4D() {
+}
+
+
+void
+TestLerp::testColor_data() {
+}
+
+
+void
+TestLerp::testColor() {
+}
+*/

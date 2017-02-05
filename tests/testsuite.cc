@@ -27,8 +27,7 @@
 
 
 int main(int argc, char** argv) {
-	clockwork::testsuite::run<
+	return clockwork::testsuite::run<
 		clockwork::testsuite::TestLerp
 	>(argc, argv);
-	return 0;
 }

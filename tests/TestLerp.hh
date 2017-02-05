@@ -35,12 +35,22 @@ namespace testsuite {
  * @see src/math/lerp.hh.
  */
 class TestLerp : public Test {
+	Q_OBJECT
 public:
-	/**
-	 * Instantiates a TestLerp object.
-	 * @param parent the object's parent.
-	 */
 	explicit TestLerp(QObject& parent);
+private slots:
+	void testQReal_data();
+	void testQReal();
+/*
+	void testQPointF_data();
+	void testQPointF();
+	void testQVector3D_data();
+	void testQVector3D();
+	void testQVector4D_data();
+	void testQVector4D();
+	void testColor_data();
+	void testColor();
+*/
 };
 } // namespace testsuite
 } // namespace clockwork
