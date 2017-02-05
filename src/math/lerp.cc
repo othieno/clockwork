@@ -33,34 +33,19 @@ clockwork::lerp(const qreal from, const qreal to, const qreal p) {
 
 QPointF
 clockwork::lerp(const QPointF& from, const QPointF& to, const qreal p) {
-	const qreal pp = 1.0 - p;
-	return QPointF(
-		(pp * from.x()) + (p * to.x()),
-		(pp * from.y()) + (p * to.y())
-	);
+	return ((1.0 - p) * from) + (p * to);
 }
 
 
 QVector3D
 clockwork::lerp(const QVector3D& from, const QVector3D& to, const qreal p) {
-	const qreal pp = 1.0 - p;
-	return QVector3D(
-		(pp * from.x()) + (p * to.x()),
-		(pp * from.y()) + (p * to.y()),
-		(pp * from.z()) + (p * to.z())
-	);
+	return ((1.0 - p) * from) + (p * to);
 }
 
 
 QVector4D
 clockwork::lerp(const QVector4D& from, const QVector4D& to, const qreal p) {
-	const qreal pp = 1.0 - p;
-	return QVector4D(
-		(pp * from.x()) + (p * to.x()),
-		(pp * from.y()) + (p * to.y()),
-		(pp * from.z()) + (p * to.z()),
-		(pp * from.w()) + (p * to.w())
-	);
+	return ((1.0 - p) * from) + (p * to);
 }
 
 
