@@ -36,27 +36,27 @@ namespace clockwork {
  * Performs a linear interpolation to find a value at a specified
  * percentage between two other values.
  */
-double lerp(const double from, const double to, const double percentage);
+qreal lerp(const qreal from, const qreal to, const qreal percentage);
 /**
  * Performs a linear interpolation to find the QPointF at a specified
  * percentage between two QPointF instances.
  */
-QPointF lerp(const QPointF& from, const QPointF& to, const double percentage);
+QPointF lerp(const QPointF& from, const QPointF& to, const qreal percentage);
 /**
  * Performs a linear interpolation to find the QVector3D at a specified
  * percentage between two QVector3D instances.
  */
-QVector3D lerp(const QVector3D& from, const QVector3D& to, const double percentage);
+QVector3D lerp(const QVector3D& from, const QVector3D& to, const qreal percentage);
 /**
  * Performs a linear interpolation to find the QVector4D at a specified
  * percentage between two QVector4D instances.
  */
-QVector4D lerp(const QVector4D& from, const QVector4D& to, const double percentage);
+QVector4D lerp(const QVector4D& from, const QVector4D& to, const qreal percentage);
 /**
  * Performs a linear interpolation to find the Color at a specified
  * percentage between two Color instances.
  */
-Color lerp(const Color& from, const Color& to, const double percentage);
+Color lerp(const Color& from, const Color& to, const qreal percentage);
 } // namespace clockwork
 
 #endif // CLOCKWORK_LERP_HH

@@ -25,15 +25,15 @@
 #include "lerp.hh"
 
 
-double
-clockwork::lerp(const double from, const double to, const double p) {
+qreal
+clockwork::lerp(const qreal from, const qreal to, const qreal p) {
 	return ((1.0 - p) * from) + (p * to);
 }
 
 
 QPointF
-clockwork::lerp(const QPointF& from, const QPointF& to, const double p) {
-	const double pp = 1.0 - p;
+clockwork::lerp(const QPointF& from, const QPointF& to, const qreal p) {
+	const qreal pp = 1.0 - p;
 	return QPointF(
 		(pp * from.x()) + (p * to.x()),
 		(pp * from.y()) + (p * to.y())
@@ -42,8 +42,8 @@ clockwork::lerp(const QPointF& from, const QPointF& to, const double p) {
 
 
 QVector3D
-clockwork::lerp(const QVector3D& from, const QVector3D& to, const double p) {
-	const double pp = 1.0 - p;
+clockwork::lerp(const QVector3D& from, const QVector3D& to, const qreal p) {
+	const qreal pp = 1.0 - p;
 	return QVector3D(
 		(pp * from.x()) + (p * to.x()),
 		(pp * from.y()) + (p * to.y()),
@@ -53,8 +53,8 @@ clockwork::lerp(const QVector3D& from, const QVector3D& to, const double p) {
 
 
 QVector4D
-clockwork::lerp(const QVector4D& from, const QVector4D& to, const double p) {
-	const double pp = 1.0 - p;
+clockwork::lerp(const QVector4D& from, const QVector4D& to, const qreal p) {
+	const qreal pp = 1.0 - p;
 	return QVector4D(
 		(pp * from.x()) + (p * to.x()),
 		(pp * from.y()) + (p * to.y()),
@@ -65,8 +65,8 @@ clockwork::lerp(const QVector4D& from, const QVector4D& to, const double p) {
 
 
 clockwork::Color
-clockwork::lerp(const Color& from, const Color& to, const double p) {
-	const double pp = 1.0 - p;
+clockwork::lerp(const Color& from, const Color& to, const qreal p) {
+	const qreal pp = 1.0 - p;
 	return Color(
 		(pp * from.red)   + (p * to.red),
 		(pp * from.green) + (p * to.green),
