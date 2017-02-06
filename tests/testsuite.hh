@@ -35,13 +35,17 @@ namespace testsuite {
  */
 template<class... Tests>
 int run(int argc, char** argv) {
-	int status = 0;
-
+	// The parent object is used to manage the memory dynamically allocated
+	// for each test object, i.e. when it goes out of scope and is destroyed,
+	// each test object attached to it will be destroyed too.
 	QObject parent;
-	for (Test* const test : {new Tests(parent)...}) {
-		status |= QTest::qExec(test, argc, argv);
+	const std::initializer_list<Test*> tests = {new Tests(parent)...};
+
+	int exitStatus = 0;
+	for (auto* const test : tests) {
+		exitStatus |= QTest::qExec(test, argc, argv);
 	}
-	return status;
+	return exitStatus;
 }
 } // namespace testsuite
 } // namespace clockwork
