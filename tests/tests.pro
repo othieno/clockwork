@@ -48,8 +48,10 @@ UI_DIR = ../$${UI_DIR}
 
 HEADERS += \
 	Test.hh \
+	TestFramebuffer.hh \
 	TestLerp.hh \
 	testsuite.hh
 SOURCES += \
+	TestFramebuffer.cc \
 	TestLerp.cc \
 	testsuite.cc

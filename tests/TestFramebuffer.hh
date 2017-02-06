@@ -22,14 +22,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "testsuite.hh"
-#include "TestFramebuffer.hh"
-#include "TestLerp.hh"
+#ifndef CLOCKWORK_TEST_FRAMEBUFFER_HH
+#define CLOCKWORK_TEST_FRAMEBUFFER_HH
+
+#include "Test.hh"
 
 
-int main(int argc, char** argv) {
-	return clockwork::testsuite::run<
-		clockwork::testsuite::TestFramebuffer,
-		clockwork::testsuite::TestLerp
-	>(argc, argv);
-}
+namespace clockwork {
+namespace testsuite {
+/**
+ * Tests the framebuffer class.
+ * @see src/graphics/renderer/Framebuffer.hh.
+ */
+class TestFramebuffer : public Test {
+	Q_OBJECT
+public:
+	explicit TestFramebuffer(QObject& parent);
+private slots:
+	void testClear_data();
+	void testClear();
+};
+} // namespace testsuite
+} // namespace clockwork
+
+#endif // CLOCKWORK_TEST_FRAMEBUFFER_HH

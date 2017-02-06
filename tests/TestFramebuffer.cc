@@ -22,14 +22,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "testsuite.hh"
 #include "TestFramebuffer.hh"
-#include "TestLerp.hh"
+#include "Framebuffer.hh"
+
+using clockwork::testsuite::TestFramebuffer;
 
 
-int main(int argc, char** argv) {
-	return clockwork::testsuite::run<
-		clockwork::testsuite::TestFramebuffer,
-		clockwork::testsuite::TestLerp
-	>(argc, argv);
+TestFramebuffer::TestFramebuffer(QObject& parent) :
+Test(parent)
+{}
+
+
+void
+TestFramebuffer::testClear_data() {
+	using enum_traits = enum_traits<Framebuffer::Resolution>;
+	QTest::addColumn<enum_traits::Ordinal>("resolution");
+
+	QTest::newRow("ZERO") << enum_traits::ordinal(Framebuffer::Resolution::ZERO);
+	QTest::newRow("VGA") << enum_traits::ordinal(Framebuffer::Resolution::VGA);
+	QTest::newRow("SVGA") << enum_traits::ordinal(Framebuffer::Resolution::SVGA);
+	QTest::newRow("XGA") << enum_traits::ordinal(Framebuffer::Resolution::XGA);
+	QTest::newRow("SXGA") << enum_traits::ordinal(Framebuffer::Resolution::SXGA);
+	QTest::newRow("FHD") << enum_traits::ordinal(Framebuffer::Resolution::FHD);
+	QTest::newRow("QSXGA") << enum_traits::ordinal(Framebuffer::Resolution::QSXGA);
+	QTest::newRow("UHD8K") << enum_traits::ordinal(Framebuffer::Resolution::UHD8K);
+}
+
+
+void
+TestFramebuffer::testClear() {
+	using enum_traits = enum_traits<Framebuffer::Resolution>;
+	QFETCH(enum_traits::Ordinal, resolution);
+
+	Framebuffer framebuffer(enum_traits::enumerator(resolution));
+
+	QBENCHMARK {
+		framebuffer.clear();
+	}
 }
