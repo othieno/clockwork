@@ -159,18 +159,15 @@ Framebuffer::setStencilBufferClearValue(const std::uint8_t value) {
 
 void
 Framebuffer::clear() {
-	const std::size_t bufferSize = resolution_.width() * resolution_.height();
-	if (bufferSize > 0) {
-		auto* a = pixelBuffer_.get();
-		auto* b = depthBuffer_.get();
-		auto* c = stencilBuffer_.get();
-
-		for (std::size_t i = 0; i < bufferSize; ++i) {
-			*a++ = pixelBufferClearValue_;
-			*b++ = depthBufferClearValue_;
-			*c++ = stencilBufferClearValue_;
-		}
+	if (resolutionIdentifier_ == Resolution::ZERO) {
+		return;
 	}
+	const std::size_t size = resolution_.width() * resolution_.height();
+	Q_ASSERT(size > 0);
+
+	std::fill_n(pixelBuffer_.get(), size, pixelBufferClearValue_);
+	std::fill_n(depthBuffer_.get(), size, depthBufferClearValue_);
+	std::fill_n(stencilBuffer_.get(), size, stencilBufferClearValue_);
 }
 
 
