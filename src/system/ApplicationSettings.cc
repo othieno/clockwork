@@ -25,7 +25,6 @@
 #include "ApplicationSettings.hh"
 #include "Application.hh"
 #include "Framebuffer.hh"
-#include "toString.hh"
 #include <QStandardPaths>
 
 using clockwork::ApplicationSettings;

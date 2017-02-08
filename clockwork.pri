@@ -119,7 +119,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/system/io/fileReader.hh \
 		src/system/io/Resource.hh \
 		src/system/io/ResourceManager.hh \
-		src/system/io/toString.hh \
 		src/system/task/Task.hh \
 		src/system/task/TaskManager.hh \
 		src/system/subsystem/GraphicsSubsystem.hh \
@@ -170,7 +169,6 @@ greaterThan(QT_MAJOR_VERSION, 4):greaterThan(QT_MINOR_VERSION, 4) {
 		src/system/io/fileReader.cc \
 		src/system/io/Resource.cc \
 		src/system/io/ResourceManager.cc \
-		src/system/io/toString.cc \
 		src/system/task/Task.cc \
 		src/system/task/TaskManager.cc \
 		src/system/subsystem/GraphicsSubsystem.cc \
