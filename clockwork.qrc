@@ -6,7 +6,6 @@
 		<file alias="triangle.obj">resources/assets/models/triangle.obj</file>
 	</qresource>
 	<qresource prefix="/icon">
-		<file alias="action/book">resources/icons/material-design/action/svg/production/ic_book_48px.svg</file>
 		<file alias="action/done">resources/icons/material-design/action/svg/production/ic_done_48px.svg</file>
 		<file alias="action/delete">resources/icons/material-design/action/svg/production/ic_delete_48px.svg</file>
 		<file alias="action/info_outline">resources/icons/material-design/action/svg/production/ic_info_outline_48px.svg</file>
@@ -27,7 +26,6 @@
 	<qresource prefix="/view">
 		<file alias="main.qml">src/ui/views/main.qml</file>
 		<file alias="AboutClockwork.qml">src/ui/views/AboutClockwork.qml</file>
-		<file alias="Documentation.qml">src/ui/views/Documentation.qml</file>
 		<file alias="DocumentationLicense.qml">src/ui/views/DocumentationLicense.qml</file>
 		<file alias="PerformanceSettings.qml">src/ui/views/PerformanceSettings.qml</file>
 		<file alias="Renderer.qml">src/ui/views/Renderer.qml</file>

@@ -66,13 +66,6 @@ ApplicationWindow {
 			elevation: foreground.state == "maximized" ? 0 : 1
 			actions: [
 				Action {
-					name: qsTr("Documentation")
-					iconSource: "qrc:/icon/action/book"
-					text: qsTr("Read the documentation")
-					onTriggered: pageStack.push("qrc:/view/Documentation.qml")
-					hasDividerAfter: true
-				},
-				Action {
 					id: scissorToggle
 					name: qsTr("Scissor box")
 					iconSource: "qrc:/icon/content/content_cut"
