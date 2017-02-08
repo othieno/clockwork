@@ -1,7 +1,7 @@
 /*
  * This file is part of Clockwork.
  *
- * Copyright (c) 2013-2016 Jeremy Othieno.
+ * Copyright (c) 2013-2017 Jeremy Othieno.
  *
  * The MIT License (MIT)
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,3 +23,19 @@
  * THE SOFTWARE.
  */
 #include "DepthMapShaderProgram.hh"
+
+using clockwork::ShaderProgramIdentifier;
+using ShaderProgram = clockwork::detail::ShaderProgram<ShaderProgramIdentifier::DepthMaps>;
+
+
+template<> std::uint32_t
+ShaderProgram::fragmentShader(const Uniforms&, const Varying&, const Fragment& fragment) {
+	// The fragment's depth value is multiplied by a depth scale and then added to
+	// a depth bias. The Color.merge function guarantees that this result is clamped to
+	// the [0, 1] range.
+	const double depthScale = 1.0;
+	const double depthBias = 0.15;
+	const double depth = (fragment.z * depthScale) + depthBias;
+
+	return Color(depth, depth, depth);
+}

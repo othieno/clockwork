@@ -27,6 +27,7 @@
 #include "Scene.hh"
 #include "RandomColoredSurfacesShaderProgram.hh"
 #include "NormalMapsShaderProgram.hh"
+#include "DepthMapShaderProgram.hh"
 #include <QElapsedTimer>
 
 using clockwork::GraphicsSubsystem;

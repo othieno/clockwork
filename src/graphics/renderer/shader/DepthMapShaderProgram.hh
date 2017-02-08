@@ -1,7 +1,7 @@
 /*
  * This file is part of Clockwork.
  *
- * Copyright (c) 2013-2016 Jeremy Othieno.
+ * Copyright (c) 2013-2017 Jeremy Othieno.
  *
  * The MIT License (MIT)
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,5 +26,17 @@
 #define CLOCKWORK_DEPTH_MAP_SHADER_PROGRAM_HH
 
 #include "ShaderProgram.hh"
+
+
+namespace clockwork {
+namespace detail {
+/**
+ * The fragment shader used by the depth mapping renderer.
+ * It will convert a fragment's depth into a shade of gray.
+ */
+template<> std::uint32_t
+ShaderProgram<ShaderProgramIdentifier::DepthMaps>::fragmentShader(const Uniforms&, const Varying&, const Fragment&);
+} // namespace detail
+} // namespace clockwork
 
 #endif // CLOCKWORK_DEPTH_MAP_SHADER_PROGRAM_HH
