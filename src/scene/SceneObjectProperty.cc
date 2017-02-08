@@ -23,13 +23,12 @@
  * THE SOFTWARE.
  */
 #include "SceneObject.hh"
-#include "toString.hh"
 
 using clockwork::SceneObjectProperty;
 
 
 SceneObjectProperty::SceneObjectProperty(const Type type) :
-SceneNode(SceneNode::Type::Property, toString(type)),
+SceneNode(SceneNode::Type::Property, enum_traits<Type>::name(type)),
 type_(type) {}
 
 
@@ -42,11 +41,4 @@ SceneObjectProperty::getType() const {
 const clockwork::SceneObject&
 SceneObjectProperty::getOwner() const {
 	return *static_cast<const SceneObject*>(getParent());
-}
-
-
-uint
-clockwork::qHash(SceneObjectProperty::Type propertyType) {
-	using UnderlyingType = std::underlying_type<SceneObjectProperty::Type>::type;
-	return ::qHash(static_cast<UnderlyingType>(propertyType));
 }

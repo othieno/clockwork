@@ -29,7 +29,6 @@
 #include <QQuaternion>
 #include <QMatrix4x4>
 #include "SceneObjectAppearance.hh"
-#include "toString.hh"
 
 
 namespace clockwork {
@@ -111,7 +110,7 @@ public:
 	 */
 	template<class Property> Property* getProperty(const SceneObjectProperty::Type type) {
 		static_assert(std::is_base_of<SceneObjectProperty, Property>::value);
-		return getChild<Property>(toString(type));
+		return getChild<Property>(enum_traits<SceneObjectProperty::Type>::name(type));
 	}
 	/**
 	 * Returns the property with the specified type, if one exists.
@@ -119,7 +118,7 @@ public:
 	 */
 	template<class Property> const Property* getProperty(const SceneObjectProperty::Type type) const {
 		static_assert(std::is_base_of<SceneObjectProperty, Property>::value);
-		return getChild<const Property>(toString(type));
+		return getChild<const Property>(enum_traits<SceneObjectProperty::Type>::name(type));
 	}
 	/**
 	 * Adds a property to the SceneObject and returns its instance.

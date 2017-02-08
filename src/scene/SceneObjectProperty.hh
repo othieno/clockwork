@@ -26,6 +26,7 @@
 #define CLOCKWORK_SCENE_OBJECT_PROPERTY_HH
 
 #include "SceneNode.hh"
+#include "enum_traits.hh"
 
 
 namespace clockwork {
@@ -83,10 +84,32 @@ private:
 	const Type type_;
 };
 /**
- * Returns the specified type's hash.
- * @param type the SceneObjectProperty type to hash.
+ * Declares a list of all available scene object property types.
  */
-uint qHash(SceneObjectProperty::Type type);
+DECLARE_ENUMERATOR_LIST(SceneObjectProperty::Type, {
+	SceneObjectProperty::Type::Appearance,
+})
+/**
+ * Returns the human-readable name of the specified scene object property type.
+ * @param type the scene object property type to query.
+ */
+template<> template<class String> String
+enum_traits<SceneObjectProperty::Type>::name(const SceneObjectProperty::Type type) {
+	switch (type) {
+		case SceneObjectProperty::Type::Appearance:
+			return "Appearance";
+		default:
+			return "???";
+	}
+}
+/**
+ * Returns the specified scene object property type's hash.
+ * @param type the scene object property type to hash.
+ */
+constexpr uint
+qHash(SceneObjectProperty::Type type) {
+	return ::qHash(enum_traits<SceneObjectProperty::Type>::ordinal(type));
+}
 } // namespace clockwork
 
 #endif // CLOCKWORK_SCENE_OBJECT_PROPERTY_HH
