@@ -86,7 +86,7 @@ private:
 		QList<SelectModel::Option> options;
 		for (const auto enumerator : enum_traits::enumerators()) {
 			options << SelectModel::Option(
-				enum_traits::template name<QString>(enumerator),
+				enum_traits::name(enumerator),
 				enum_traits::ordinal(enumerator)
 			);
 		}

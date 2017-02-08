@@ -27,7 +27,6 @@
 
 #include <initializer_list>
 #include <type_traits>
-#include <string>
 #include <stdexcept>
 #include <iterator>
 
@@ -64,7 +63,7 @@ struct enum_traits {
 	 * This function must be specialized for each enumeration.
 	 * @param enumerator the enumerator to query.
 	 */
-	template<class String = std::string> static String name(const E enumerator);
+	template<class String = const char*> static String name(const E enumerator);
 	/**
 	 * Returns the specified enumerator's integral value.
 	 */
