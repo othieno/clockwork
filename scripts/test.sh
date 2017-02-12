@@ -39,7 +39,7 @@ then
 	exit 1
 fi
 
-BASE_DIR="$(dirname $0 | xargs dirname | xargs realpath)"
+BASE_DIR="$(readlink -f $0 | xargs realpath | xargs dirname | xargs dirname)"
 WORK_DIR="$BASE_DIR/tests"
 
 "$QMAKE" "$WORK_DIR" -o "$WORK_DIR/Makefile" && \

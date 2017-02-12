@@ -43,10 +43,10 @@ fi
 set -e
 
 # The absolute path to the Clockwork project's directory.
-ROOT_DIR="$(dirname $0 | xargs dirname | xargs realpath)"
+BASE_DIR="$(readlink -f $0 | xargs realpath | xargs dirname | xargs dirname)"
 BUILD_DIRS=(
-	"$ROOT_DIR/resources/theme/material/"
-	"$ROOT_DIR"
+	"$BASE_DIR/resources/theme/material/"
+	"$BASE_DIR"
 )
 for directory in ${BUILD_DIRS[*]}; do cd "$directory"; $QMAKE; $MAKE; done
 
