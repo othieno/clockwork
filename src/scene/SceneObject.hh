@@ -125,10 +125,12 @@ public:
 	 * @param type the type of property to add to the object.
 	 */
 	template<class Property> Property& addProperty(const SceneObjectProperty::Type type) {
+		static_assert(std::is_base_of<SceneObjectProperty, Property>::value);
 		Property* property = getProperty<Property>(type);
 		if (property == nullptr) {
 			switch (type) {
 				case SceneObjectProperty::Type::Appearance:
+					Q_ASSERT((std::is_same<Property, SceneObjectAppearance>::value));
 					property = SceneNode::addChild<SceneObjectAppearance>();
 					break;
 				default:
